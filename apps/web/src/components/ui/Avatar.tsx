@@ -11,24 +11,44 @@ import { clsx } from 'clsx';
 export interface AvatarProps {
   src?: string;
   alt?: string;
+  name?: string; // Name for generating initials fallback
   fallback?: string | ReactNode;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  status?: 'online' | 'away' | 'busy' | 'offline';
   className?: string;
   onClick?: () => void;
 }
 
 const sizeClasses = {
+  xs: 'w-6 h-6 text-[10px]',
   sm: 'w-8 h-8 text-xs',
   md: 'w-10 h-10 text-sm',
   lg: 'w-12 h-12 text-base',
   xl: 'w-16 h-16 text-lg',
 };
 
+const statusClasses = {
+  online: 'bg-green-500',
+  away: 'bg-yellow-500',
+  busy: 'bg-red-500',
+  offline: 'bg-gray-400',
+};
+
+const statusSizeClasses = {
+  xs: 'w-1.5 h-1.5',
+  sm: 'w-2 h-2',
+  md: 'w-2.5 h-2.5',
+  lg: 'w-3 h-3',
+  xl: 'w-3.5 h-3.5',
+};
+
 export default function Avatar({
   src,
   alt = 'Avatar',
+  name,
   fallback,
   size = 'md',
+  status,
   className,
   onClick,
 }: AvatarProps) {
@@ -41,7 +61,10 @@ export default function Avatar({
       .slice(0, 2);
   };
 
-  const fallbackText = typeof fallback === 'string' ? getInitials(fallback) : fallback;
+  // Use name as fallback if fallback is not provided
+  const fallbackText = fallback 
+    ? (typeof fallback === 'string' ? getInitials(fallback) : fallback)
+    : (name ? getInitials(name) : '?');
 
   return (
     <div
@@ -57,9 +80,19 @@ export default function Avatar({
       onClick={onClick}
     >
       {src ? (
-        <img src={src} alt={alt} className="w-full h-full object-cover" />
+        <img src={src} alt={alt || name} className="w-full h-full object-cover" />
       ) : (
-        <span className="font-medium">{fallbackText ?? '?'}</span>
+        <span className="font-medium">{fallbackText}</span>
+      )}
+      {status && (
+        <span
+          className={clsx(
+            'absolute bottom-0 right-0 rounded-full border-2 border-white dark:border-gray-800',
+            statusClasses[status],
+            statusSizeClasses[size]
+          )}
+          aria-label={`Status: ${status}`}
+        />
       )}
     </div>
   );
