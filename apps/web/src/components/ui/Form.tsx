@@ -214,10 +214,15 @@ export interface FormFieldProps {
   required?: boolean;
   error?: string;
   helpText?: string;
-  children: ReactElement;
+  children: ReactNode;
 }
 
 export function FormField({ label, name, required, error, helpText, children }: FormFieldProps) {
+  // Handle multiple children - clone the first element if it's a valid React element
+  const childrenArray = Array.isArray(children) ? children : children ? [children] : [];
+  const firstChild = childrenArray[0];
+  const restChildren = childrenArray.slice(1);
+
   return (
     <div className="space-y-2">
       <label
@@ -227,14 +232,15 @@ export function FormField({ label, name, required, error, helpText, children }: 
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      {isValidElement(children)
-        ? cloneElement(children, {
+      {firstChild && isValidElement(firstChild)
+        ? cloneElement(firstChild, {
             id: name,
             name,
             'aria-invalid': error ? 'true' : 'false',
             'aria-describedby': error ? `${name}-error` : helpText ? `${name}-help` : undefined,
           })
-        : children}
+        : firstChild}
+      {restChildren.length > 0 && restChildren}
       {error && (
         <p id={`${name}-error`} className="text-sm text-red-600 dark:text-red-400">
           {error}
