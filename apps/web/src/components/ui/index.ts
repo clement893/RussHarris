@@ -20,6 +20,7 @@ export type { DropdownItem } from './Dropdown';
 
 // Layout Components
 export { default as Card } from './Card';
+export { default as Container } from './Container';
 export { default as Tabs, TabList, Tab, TabPanels, TabPanel } from './Tabs';
 export type { Tab, TabListProps, TabProps, TabPanelsProps, TabPanelProps } from './Tabs';
 export { default as Accordion } from './Accordion';
@@ -33,6 +34,8 @@ export type { Column, DataTableProps } from './DataTable';
 export type { BulkAction, ExportOption, DataTableEnhancedProps } from './DataTableEnhanced';
 export { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from './Table';
 export { default as Pagination } from './Pagination';
+export { default as EmptyState } from './EmptyState';
+export { default as StatsCard } from './StatsCard';
 
 // Overlay Components
 export { default as Modal, ConfirmModal } from './Modal';
@@ -68,3 +71,4 @@ export { default as ThemeToggle, ThemeToggleWithIcon } from './ThemeToggle';
 
 // Utility Components
 export { default as ClientOnly } from './ClientOnly';
+export { default as SearchBar } from './SearchBar';
