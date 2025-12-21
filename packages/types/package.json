@@ -2,14 +2,28 @@
   "name": "@modele/types",
   "version": "1.0.0",
   "description": "Shared TypeScript types for MODELE-NEXTJS-FULLSTACK",
-  "main": "index.ts",
-  "types": "index.ts",
-  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "type-check": "tsc --noEmit"
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
-  }
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist",
+    "src"
+  ]
 }
-

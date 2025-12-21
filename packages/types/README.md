@@ -1,19 +1,34 @@
 # @modele/types
 
-Shared TypeScript types for MODELE-NEXTJS-FULLSTACK.
+Shared TypeScript types for MODELE-NEXTJS-FULLSTACK project.
+
+## Installation
+
+This package is part of the monorepo workspace and is automatically linked.
 
 ## Usage
 
 ```typescript
-import { User, TokenResponse } from '@modele/types';
+import { User, ApiResponse, PaginatedResponse } from '@modele/types';
+
+// Use types in your code
+const user: User = {
+  id: '1',
+  email: 'user@example.com',
+  isActive: true,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
 ```
 
-## Types
+## Building
 
-- `User` - User entity
-- `UserCreate` - User creation payload
-- `UserUpdate` - User update payload
-- `UserLogin` - Login credentials
-- `TokenResponse` - Authentication token response
-- `RefreshTokenRequest` - Refresh token request
+```bash
+pnpm build
+```
 
+## Development
+
+```bash
+pnpm dev  # Watch mode
+```
