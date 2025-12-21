@@ -5,17 +5,32 @@
 
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
 
-// JWT_SECRET must be set in environment variables
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET || JWT_SECRET === 'default-secret-change-in-production') {
-  throw new Error(
-    'JWT_SECRET environment variable is required and must not be the default value. ' +
-    'Please set a secure secret in your .env file. ' +
-    'Generate one with: openssl rand -base64 32'
-  );
+// Lazy-load JWT_SECRET to avoid build-time errors
+function getJWTSecret(): Uint8Array {
+  const JWT_SECRET = process.env.JWT_SECRET;
+  
+  // During build time, allow placeholder to prevent build failures
+  // The actual secret will be required at runtime
+  if (!JWT_SECRET || JWT_SECRET === 'default-secret-change-in-production') {
+    // Check if we're in a build context (Next.js sets this during build)
+    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
+                        process.env.NEXT_PHASE === 'phase-development-build' ||
+                        process.env.__NEXT_PRIVATE_PREBUNDLED_REACT;
+    
+    if (isBuildTime) {
+      // Use placeholder during build to allow build to complete
+      return new TextEncoder().encode('build-placeholder-secret-do-not-use-in-production');
+    }
+    
+    // At runtime, enforce the secret requirement
+    throw new Error(
+      'JWT_SECRET environment variable is required and must not be the default value. ' +
+      'Please set a secure secret in your .env file. ' +
+      'Generate one with: openssl rand -base64 32'
+    );
+  }
+  return new TextEncoder().encode(JWT_SECRET);
 }
-
-const secret = new TextEncoder().encode(JWT_SECRET);
 
 export interface TokenPayload extends JWTPayload {
   userId: string;
@@ -36,7 +51,7 @@ export async function createAccessToken(payload: TokenPayload): Promise<string> 
     .setExpirationTime(expirationTime)
     .setIssuer(process.env.JWT_ISSUER ?? 'modele-app')
     .setAudience(process.env.JWT_AUDIENCE ?? 'modele-users')
-    .sign(secret);
+    .sign(getJWTSecret());
 }
 
 /**
@@ -52,7 +67,7 @@ export async function createRefreshToken(payload: TokenPayload): Promise<string>
     .setExpirationTime(expirationTime)
     .setIssuer(process.env.JWT_ISSUER ?? 'modele-app')
     .setAudience(process.env.JWT_AUDIENCE ?? 'modele-users')
-    .sign(secret);
+    .sign(getJWTSecret());
 }
 
 /**
@@ -60,7 +75,7 @@ export async function createRefreshToken(payload: TokenPayload): Promise<string>
  */
 export async function verifyToken(token: string): Promise<TokenPayload> {
   try {
-    const { payload } = await jwtVerify(token, secret, {
+    const { payload } = await jwtVerify(token, getJWTSecret(), {
       issuer: process.env.JWT_ISSUER ?? 'modele-app',
       audience: process.env.JWT_AUDIENCE ?? 'modele-users',
     });
