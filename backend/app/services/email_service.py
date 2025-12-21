@@ -127,7 +127,7 @@ class EmailService:
         Best regards,
         The {self.from_name} Team
         """
-        return await self.send_email(to_email, subject, html_content, text_content)
+        return self.send_email(to_email, subject, html_content, text_content)
 
     def send_password_reset_email(
         self, to_email: str, name: str, reset_token: str, reset_url: Optional[str] = None
@@ -175,7 +175,7 @@ class EmailService:
         Best regards,
         The {self.from_name} Team
         """
-        return await self.send_email(to_email, subject, html_content, text_content)
+        return self.send_email(to_email, subject, html_content, text_content)
 
     def send_verification_email(
         self, to_email: str, name: str, verification_token: str, verification_url: Optional[str] = None
@@ -220,5 +220,5 @@ class EmailService:
         Best regards,
         The {self.from_name} Team
         """
-        return await self.send_email(to_email, subject, html_content, text_content)
+        return self.send_email(to_email, subject, html_content, text_content)
 
