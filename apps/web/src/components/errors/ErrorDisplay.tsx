@@ -7,7 +7,8 @@
 
 import { type ReactNode } from 'react';
 import Button from '@/components/ui/Button';
-import { AppError, type ErrorCode } from '@/lib/errors';
+import { AppError } from '@/lib/errors/AppError';
+import { type ErrorCode } from '@/lib/errors';
 import { logger } from '@/lib/logger';
 
 interface ErrorDisplayProps {
