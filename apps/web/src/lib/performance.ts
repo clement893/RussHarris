@@ -69,13 +69,14 @@ export function reportWebVitals(metric: {
 
 /**
  * Lazy load un composant avec loading state
+ * Note: Utilisez directement React.lazy() dans vos composants
  */
-export function lazyLoad<T extends React.ComponentType<any>>(
-  importFn: () => Promise<{ default: T }>,
-  fallback?: React.ReactNode
-) {
-  return React.lazy(importFn);
-}
+// export function lazyLoad<T extends React.ComponentType<any>>(
+//   importFn: () => Promise<{ default: T }>,
+//   fallback?: React.ReactNode
+// ) {
+//   return React.lazy(importFn);
+// }
 
 /**
  * Debounce function pour optimiser les appels fréquents
