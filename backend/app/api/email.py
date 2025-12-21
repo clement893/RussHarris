@@ -58,6 +58,24 @@ async def email_health_check(
     }
 
 
+@router.get("/test")
+async def get_test_email_info(
+    current_user: User = Depends(get_current_user),
+):
+    """Get information about test email endpoint (GET endpoint for testing)."""
+    email_service = EmailService()
+    
+    return {
+        "message": "To send a test email, use POST /api/email/test with body: {\"to_email\": \"your-email@example.com\"}",
+        "configured": email_service.is_configured(),
+        "from_email": email_service.from_email,
+        "from_name": email_service.from_name,
+        "method": "POST",
+        "endpoint": "/api/email/test",
+        "required_fields": ["to_email"],
+    }
+
+
 @router.post("/send", response_model=EmailResponse)
 async def send_email_endpoint(
     request_data: SendEmailRequest,
