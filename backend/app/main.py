@@ -11,7 +11,7 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.database import init_db, close_db
-from app.api import auth, users, resources, upload, health
+from app.api import auth, users, resources, upload, health, ai
 
 
 # Lifespan context manager
@@ -146,6 +146,7 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(resources.router)
 app.include_router(upload.router)
+app.include_router(ai.router)
 
 
 @app.get("/")
