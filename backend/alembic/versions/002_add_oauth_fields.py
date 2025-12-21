@@ -1,0 +1,42 @@
+"""Add OAuth fields to users table
+
+Revision ID: 002
+Revises: 001
+Create Date: 2025-12-21 12:30:00.000000
+
+"""
+from typing import Sequence, Union
+
+from alembic import op
+import sqlalchemy as sa
+
+# revision identifiers, used by Alembic.
+revision: str = '002'
+down_revision: Union[str, None] = '001'
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
+
+
+def upgrade() -> None:
+    # Make password_hash nullable for OAuth users
+    op.alter_column('users', 'password_hash', nullable=True)
+    
+    # Add OAuth fields
+    op.add_column('users', sa.Column('provider', sa.String(50), nullable=True))
+    op.add_column('users', sa.Column('provider_id', sa.String(255), nullable=True))
+    
+    # Create index on provider_id for faster lookups
+    op.create_index('idx_users_provider_id', 'users', ['provider_id'])
+
+
+def downgrade() -> None:
+    # Drop index
+    op.drop_index('idx_users_provider_id', table_name='users')
+    
+    # Remove OAuth columns
+    op.drop_column('users', 'provider_id')
+    op.drop_column('users', 'provider')
+    
+    # Note: password_hash remains nullable to avoid data loss
+    # If you need to make it required, update existing OAuth users first
+

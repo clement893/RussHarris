@@ -86,9 +86,50 @@ class UserService:
         if not user:
             return None
 
+        # OAuth users don't have password_hash
+        if not user.password_hash:
+            return None
+
         if not verify_password(password, user.password_hash):
             return None
 
+        return user
+
+    async def get_or_create_oauth_user(
+        self,
+        email: str,
+        name: str,
+        provider: str,
+        provider_id: str,
+    ) -> User:
+        """Get or create OAuth user."""
+        # Check if user exists by email
+        user = await self.get_user_by_email(email)
+        
+        if user:
+            # Update provider info if not set
+            if not user.provider:
+                user.provider = provider
+                user.provider_id = provider_id
+                user.is_verified = True  # OAuth users are verified
+                await self.db.commit()
+                await self.db.refresh(user)
+            return user
+        
+        # Create new OAuth user
+        user = User(
+            email=email,
+            name=name,
+            password_hash=None,  # OAuth users don't have password
+            provider=provider,
+            provider_id=provider_id,
+            is_verified=True,  # OAuth users are verified
+        )
+        
+        self.db.add(user)
+        await self.db.commit()
+        await self.db.refresh(user)
+        
         return user
 
     async def list_users(self, skip: int = 0, limit: int = 10) -> list[User]:

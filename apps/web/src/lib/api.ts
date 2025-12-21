@@ -51,6 +51,9 @@ export const authAPI = {
   logout: () => {
     return apiClient.post('/auth/logout');
   },
+  getGoogleAuthUrl: () => {
+    return apiClient.get('/auth/google');
+  },
 };
 
 export const usersAPI = {
