@@ -2,6 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme Variables - Dynamically updated by ThemeManager */
+:root {
+  --color-primary-500: #3B82F6;
+  --color-primary-rgb: 59, 130, 246;
+  --color-secondary-500: #10B981;
+  --color-secondary-rgb: 16, 185, 129;
+  --color-danger-500: #EF4444;
+  --color-danger-rgb: 239, 68, 68;
+  --color-warning-500: #F59E0B;
+  --color-warning-rgb: 245, 158, 11;
+  --color-info-500: #06B6D4;
+  --color-info-rgb: 6, 182, 212;
+  --font-family: Inter, sans-serif;
+  --border-radius: 0.5rem;
+}
+
+/* Apply theme variables to Tailwind classes */
+@layer utilities {
+  .bg-primary-500 {
+    background-color: var(--color-primary-500);
+  }
+  .bg-secondary-500 {
+    background-color: var(--color-secondary-500);
+  }
+  .bg-danger-500 {
+    background-color: var(--color-danger-500);
+  }
+  .bg-warning-500 {
+    background-color: var(--color-warning-500);
+  }
+  .bg-info-500 {
+    background-color: var(--color-info-500);
+  }
+  .text-primary-500 {
+    color: var(--color-primary-500);
+  }
+  .text-secondary-500 {
+    color: var(--color-secondary-500);
+  }
+  .text-danger-500 {
+    color: var(--color-danger-500);
+  }
+  .text-warning-500 {
+    color: var(--color-warning-500);
+  }
+  .text-info-500 {
+    color: var(--color-info-500);
+  }
+  .border-primary-500 {
+    border-color: var(--color-primary-500);
+  }
+  .border-secondary-500 {
+    border-color: var(--color-secondary-500);
+  }
+  .border-danger-500 {
+    border-color: var(--color-danger-500);
+  }
+  .border-warning-500 {
+    border-color: var(--color-warning-500);
+  }
+  .border-info-500 {
+    border-color: var(--color-info-500);
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
