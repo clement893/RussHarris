@@ -170,12 +170,33 @@ export default function FormBuilder({
 
       case 'radio':
         return (
-          <Radio
-            {...commonProps}
-            value={String(formData[field.name] ?? '')}
-            onChange={(value) => handleChange(field.name, value)}
-            options={field.options || []}
-          />
+          <div className="space-y-2">
+            {field.label && (
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                {field.label}
+                {field.required && <span className="text-red-500 ml-1">*</span>}
+              </label>
+            )}
+            {field.options?.map((option) => (
+              <Radio
+                key={option.value}
+                name={field.name}
+                id={`${field.name}-${option.value}`}
+                value={option.value}
+                checked={formData[field.name] === option.value}
+                onChange={(e) => handleChange(field.name, e.target.value)}
+                label={option.label}
+                error={errors[field.name]}
+                onBlur={() => handleBlur(field.name)}
+              />
+            ))}
+            {errors[field.name] && (
+              <p className="text-sm text-red-600 dark:text-red-400">{errors[field.name]}</p>
+            )}
+            {field.helperText && !errors[field.name] && (
+              <p className="text-sm text-gray-500 dark:text-gray-400">{field.helperText}</p>
+            )}
+          </div>
         );
 
       case 'date':
