@@ -5,7 +5,7 @@
 
 'use client';
 
-import { type ReactNode, type FormEvent, cloneElement, isValidElement } from 'react';
+import { type ReactNode, type FormEvent, type ReactElement, cloneElement, isValidElement } from 'react';
 import { clsx } from 'clsx';
 
 export interface FormField {
@@ -233,7 +233,7 @@ export function FormField({ label, name, required, error, helpText, children }: 
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       {firstChild && isValidElement(firstChild)
-        ? cloneElement(firstChild, {
+        ? cloneElement(firstChild as ReactElement<any>, {
             id: name,
             name,
             'aria-invalid': error ? 'true' : 'false',
