@@ -16,7 +16,10 @@ const nextConfig = {
     optimizePackageImports: ['@modele/types', 'clsx'],
   },
   
-  // Webpack optimizations
+  // Turbopack configuration (Next.js 16 default)
+  turbopack: {},
+  
+  // Webpack optimizations (fallback for --webpack flag)
   webpack: (config, { isServer }) => {
     // Optimisations pour le bundle
     if (!isServer) {
