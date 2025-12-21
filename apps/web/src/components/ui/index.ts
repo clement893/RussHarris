@@ -46,3 +46,6 @@ export { default as Tooltip } from './Tooltip';
 export { default as Dropdown } from './Dropdown';
 export { default as SearchBar } from './SearchBar';
 export { default as Accordion } from './Accordion';
+
+// Theme
+export { default as ThemeToggle, ThemeToggleWithIcon } from './ThemeToggle';
