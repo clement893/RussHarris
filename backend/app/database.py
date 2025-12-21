@@ -10,7 +10,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "postgresql+asyncpg://postgres:postgres@localhost:5432/modele_db"
-)
+).strip()  # Remove leading/trailing whitespace
 
 # Create async engine
 engine = create_async_engine(
