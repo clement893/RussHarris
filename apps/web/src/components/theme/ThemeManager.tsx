@@ -66,35 +66,64 @@ export function ThemeManager() {
         : null;
     };
 
-    const primaryRgb = hexToRgb(theme.primary);
-    const secondaryRgb = hexToRgb(theme.secondary);
-    const dangerRgb = hexToRgb(theme.danger);
-    const warningRgb = hexToRgb(theme.warning);
-    const infoRgb = hexToRgb(theme.info);
+    // Fonction pour générer les nuances d'une couleur
+    const generateColorShades = (hex: string, baseName: string) => {
+      const rgb = hexToRgb(hex);
+      if (!rgb) return;
 
-    if (primaryRgb) {
-      root.style.setProperty('--color-primary-500', theme.primary);
-      root.style.setProperty('--color-primary-rgb', `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}`);
-    }
-    if (secondaryRgb) {
-      root.style.setProperty('--color-secondary-500', theme.secondary);
-      root.style.setProperty('--color-secondary-rgb', `${secondaryRgb.r}, ${secondaryRgb.g}, ${secondaryRgb.b}`);
-    }
-    if (dangerRgb) {
-      root.style.setProperty('--color-danger-500', theme.danger);
-      root.style.setProperty('--color-danger-rgb', `${dangerRgb.r}, ${dangerRgb.g}, ${dangerRgb.b}`);
-    }
-    if (warningRgb) {
-      root.style.setProperty('--color-warning-500', theme.warning);
-      root.style.setProperty('--color-warning-rgb', `${warningRgb.r}, ${warningRgb.g}, ${warningRgb.b}`);
-    }
-    if (infoRgb) {
-      root.style.setProperty('--color-info-500', theme.info);
-      root.style.setProperty('--color-info-rgb', `${infoRgb.r}, ${infoRgb.g}, ${infoRgb.b}`);
-    }
+      // Générer les nuances (50-950)
+      const shades = {
+        50: { r: Math.min(255, rgb.r + 200), g: Math.min(255, rgb.g + 200), b: Math.min(255, rgb.b + 200) },
+        100: { r: Math.min(255, rgb.r + 150), g: Math.min(255, rgb.g + 150), b: Math.min(255, rgb.b + 150) },
+        200: { r: Math.min(255, rgb.r + 100), g: Math.min(255, rgb.g + 100), b: Math.min(255, rgb.b + 100) },
+        300: { r: Math.min(255, rgb.r + 50), g: Math.min(255, rgb.g + 50), b: Math.min(255, rgb.b + 50) },
+        400: { r: Math.min(255, rgb.r + 25), g: Math.min(255, rgb.g + 25), b: Math.min(255, rgb.b + 25) },
+        500: rgb,
+        600: { r: Math.max(0, rgb.r - 25), g: Math.max(0, rgb.g - 25), b: Math.max(0, rgb.b - 25) },
+        700: { r: Math.max(0, rgb.r - 50), g: Math.max(0, rgb.g - 50), b: Math.max(0, rgb.b - 50) },
+        800: { r: Math.max(0, rgb.r - 100), g: Math.max(0, rgb.g - 100), b: Math.max(0, rgb.b - 100) },
+        900: { r: Math.max(0, rgb.r - 150), g: Math.max(0, rgb.g - 150), b: Math.max(0, rgb.b - 150) },
+      };
 
+      Object.entries(shades).forEach(([shade, color]) => {
+        const hexValue = `#${[color.r, color.g, color.b].map(x => {
+          const hex = x.toString(16);
+          return hex.length === 1 ? '0' + hex : hex;
+        }).join('')}`;
+        root.style.setProperty(`--color-${baseName}-${shade}`, hexValue);
+      });
+
+      root.style.setProperty(`--color-${baseName}-rgb`, `${rgb.r}, ${rgb.g}, ${rgb.b}`);
+    };
+
+    // Générer les nuances pour chaque couleur
+    generateColorShades(theme.primary, 'primary');
+    generateColorShades(theme.secondary, 'secondary');
+    generateColorShades(theme.danger, 'danger');
+    generateColorShades(theme.warning, 'warning');
+    generateColorShades(theme.info, 'info');
+
+    // Appliquer la police
     root.style.setProperty('--font-family', theme.fontFamily);
+    document.body.style.fontFamily = `var(--font-family), sans-serif`;
+
+    // Appliquer le border radius
     root.style.setProperty('--border-radius', theme.borderRadius);
+    const style = document.createElement('style');
+    style.id = 'theme-border-radius';
+    style.textContent = `
+      * {
+        --rounded: var(--border-radius);
+      }
+      .rounded-lg {
+        border-radius: var(--border-radius) !important;
+      }
+    `;
+    const existingStyle = document.getElementById('theme-border-radius');
+    if (existingStyle) {
+      existingStyle.remove();
+    }
+    document.head.appendChild(style);
 
     // Appliquer dark mode
     if (isDark) {
