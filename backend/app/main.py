@@ -23,6 +23,7 @@ from app.core.error_handler import (
     database_exception_handler,
     general_exception_handler,
 )
+from app.core.rate_limit import setup_rate_limiting
 from app.api.v1.router import api_router
 
 
@@ -31,8 +32,10 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Lifespan context manager for startup and shutdown events"""
     # Startup
     await init_db()
+    await init_cache()
     yield
     # Shutdown
+    await close_cache()
     await close_db()
 
 
@@ -47,6 +50,9 @@ def create_app() -> FastAPI:
         redoc_url="/redoc",
         lifespan=lifespan,
     )
+
+    # Rate Limiting
+    app = setup_rate_limiting(app)
 
     # CORS Middleware
     app.add_middleware(

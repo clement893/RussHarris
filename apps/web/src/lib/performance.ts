@@ -60,8 +60,25 @@ export function reportWebVitals(metric: {
 }) {
   // En production, envoyer à votre service d'analytics
   if (process.env.NODE_ENV === 'production') {
-    // Exemple: envoyer à Google Analytics, Sentry, etc.
-    // gtag('event', metric.name, { value: metric.value, ... });
+    // Envoyer à Sentry si disponible
+    if (typeof window !== 'undefined' && (window as any).Sentry) {
+      (window as any).Sentry.metrics.distribution(metric.name.toLowerCase(), metric.value, {
+        tags: {
+          id: metric.id,
+          label: metric.label,
+        },
+      });
+    }
+
+    // Exemple: envoyer à Google Analytics
+    // if (typeof window !== 'undefined' && (window as any).gtag) {
+    //   (window as any).gtag('event', metric.name, {
+    //     value: Math.round(metric.value),
+    //     event_category: 'Web Vitals',
+    //     event_label: metric.id,
+    //     non_interaction: true,
+    //   });
+    // }
   } else {
     console.log('[Web Vitals]', metric);
   }

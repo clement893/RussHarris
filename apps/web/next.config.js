@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const { withSentryConfig } = require('@sentry/nextjs');
+
 const nextConfig = {
   // Optimisations de performance
   compress: true,
@@ -15,6 +17,7 @@ const nextConfig = {
   // Experimental features
   experimental: {
     optimizePackageImports: ['@modele/types', 'clsx', 'zod'],
+    instrumentationHook: true, // Pour Sentry
   },
   
   // Webpack optimizations
@@ -107,12 +110,23 @@ const nextConfig = {
   },
 };
 
-// Bundle Analyzer (optionnel)
-if (process.env.ANALYZE === 'true') {
-  const withBundleAnalyzer = require('@next/bundle-analyzer')({
-    enabled: true,
-  });
-  module.exports = withBundleAnalyzer(nextConfig);
-} else {
-  module.exports = nextConfig;
-}
+// Bundle Analyzer
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+// Sentry Configuration
+const sentryWebpackPluginOptions = {
+  silent: true,
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  widenClientFileUpload: true,
+  hideSourceMaps: true,
+  disableClientWebpackPlugin: !process.env.SENTRY_DSN,
+  disableServerWebpackPlugin: !process.env.SENTRY_DSN,
+};
+
+module.exports = withSentryConfig(
+  withBundleAnalyzer(nextConfig),
+  sentryWebpackPluginOptions
+);
