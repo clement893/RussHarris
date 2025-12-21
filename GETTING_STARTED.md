@@ -304,11 +304,12 @@ npm run build
 
 ## 📚 Documentation Complémentaire
 
-- [README Principal](./README.md)
+- [README Principal](./README.md) - Overview and features
+- [Development Guide](./DEVELOPMENT.md) - Development tools and workflows
+- [Monorepo Structure](./MONOREPO.md) - Monorepo configuration
+- [Contributing Guide](./CONTRIBUTING.md) - How to contribute
 - [Documentation Backend](./backend/README.md)
 - [Documentation Frontend](./apps/web/README.md)
-- [Génération de Types](./scripts/generate/types/README.md)
-- [Authentification](./apps/web/AUTHENTICATION.md)
 
 ## 🤝 Besoin d'Aide ?
 

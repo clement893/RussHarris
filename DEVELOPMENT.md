@@ -1,287 +1,359 @@
-# Guide de Développement
+# 🛠️ Development Guide
 
-Ce document décrit les outils de développement disponibles dans ce projet.
+This guide covers development tools, workflows, and best practices for the MODELE-NEXTJS-FULLSTACK template.
 
-## 📚 Storybook
+## 📋 Table of Contents
 
-Storybook est configuré pour documenter et tester les composants UI de manière isolée.
+- [Development Tools](#development-tools)
+- [Code Generation](#code-generation)
+- [Database Migrations](#database-migrations)
+- [Testing](#testing)
+- [Code Quality](#code-quality)
+- [Hot Reload](#hot-reload)
+- [Pre-commit Hooks](#pre-commit-hooks)
 
-### Installation
+## 🛠️ Development Tools
 
-Les dépendances Storybook sont déjà dans `package.json`. Si nécessaire :
+### Storybook
+
+Storybook is configured for documenting and testing UI components in isolation.
 
 ```bash
-pnpm install
-```
-
-### Utilisation
-
-```bash
-# Démarrer Storybook en mode développement
+# Start Storybook
 pnpm storybook
 
-# Build Storybook pour production
+# Build Storybook for production
 pnpm build-storybook
 ```
 
-Storybook sera accessible sur `http://localhost:6006`
+Storybook will be available at `http://localhost:6006`
 
-### Créer une Story
-
-Créez un fichier `.stories.tsx` à côté de votre composant :
-
-```typescript
-// Button.stories.tsx
-import type { Meta, StoryObj } from '@storybook/react';
-import Button from './Button';
-
-const meta: Meta<typeof Button> = {
-  title: 'UI/Button',
-  component: Button,
-  tags: ['autodocs'],
-};
-
-export default meta;
-type Story = StoryObj<typeof Button>;
-
-export const Primary: Story = {
-  args: {
-    children: 'Button',
-    variant: 'primary',
-  },
-};
-```
-
-### Stories existantes
-
-- `Button.stories.tsx` - Exemples pour le composant Button
-- `Input.stories.tsx` - Exemples pour le composant Input
-
-## 🎭 Tests E2E avec Playwright
-
-Playwright est configuré pour les tests end-to-end.
-
-### Installation
+### Playwright (E2E Testing)
 
 ```bash
-# Installer les dépendances
-pnpm install
-
-# Installer les navigateurs Playwright
+# Install Playwright browsers
 pnpm exec playwright install --with-deps
-```
 
-### Utilisation
-
-```bash
-# Lancer tous les tests E2E
+# Run E2E tests
 pnpm test:e2e
 
-# Lancer les tests avec UI interactive
+# Run with UI
 pnpm test:e2e:ui
 
-# Lancer les tests en mode debug
+# Run in debug mode
+pnpm test:e2e:debug
+```
+
+## 🏗️ Code Generation
+
+### Generate a React Component
+
+```bash
+npm run generate:component ComponentName
+
+# With custom path
+node scripts/generate-component.js ComponentName --path=src/components/ui
+```
+
+**Files created:**
+- `ComponentName/ComponentName.tsx` - Main component
+- `ComponentName/index.ts` - Export file
+- `ComponentName/ComponentName.module.css` - Styles
+
+### Generate a Next.js Page
+
+```bash
+# App Router (default)
+npm run generate:page page-name --app
+
+# Pages Router
+npm run generate:page page-name
+```
+
+**Files created:**
+- `page-name/page.tsx` - Page component
+- `page-name/layout.tsx` - Layout (App Router only)
+
+### Generate an API Route
+
+```bash
+# GET route (default)
+npm run generate:api route-name
+
+# POST route
+npm run generate:api route-name --method=POST
+```
+
+**Files created:**
+- `route-name/route.ts` - API route handler
+
+### Generate TypeScript Types
+
+```bash
+# Generate types from Pydantic schemas
+npm run generate:types
+
+# Fallback version (without Python)
+npm run generate:types:fallback
+```
+
+Types are generated in `packages/types/src/generated.ts` and exported via `@modele/types`.
+
+## 🗄️ Database Migrations
+
+### Using Alembic
+
+```bash
+cd backend
+
+# Create a new migration
+alembic revision --autogenerate -m "Description"
+
+# Apply migrations
+alembic upgrade head
+
+# Rollback one migration
+alembic downgrade -1
+
+# Check current revision
+alembic current
+
+# View migration history
+alembic history
+```
+
+### Using npm scripts
+
+```bash
+# Create migration
+npm run migrate create MigrationName
+
+# Apply migrations
+npm run migrate upgrade
+
+# Rollback
+npm run migrate downgrade
+```
+
+## 🧪 Testing
+
+### Frontend Tests (Vitest)
+
+```bash
+# Run all tests
+pnpm test
+
+# Run with UI
+pnpm test:ui
+
+# Run in watch mode
+pnpm test --watch
+
+# Run with coverage
+pnpm test:coverage
+```
+
+### Backend Tests (pytest)
+
+```bash
+cd backend
+
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=app --cov-report=html
+
+# Run specific test file
+pytest tests/test_auth.py
+
+# Run with verbose output
+pytest -v
+```
+
+### E2E Tests (Playwright)
+
+```bash
+# Run all E2E tests
+pnpm test:e2e
+
+# Run with UI
+pnpm test:e2e:ui
+
+# Run in debug mode
 pnpm test:e2e:debug
 
-# Lancer les tests sur un navigateur spécifique
+# Run on specific browser
 pnpm exec playwright test --project=chromium
 ```
 
-### Tests existants
+## ✅ Code Quality
 
-- `e2e/homepage.spec.ts` - Tests de la page d'accueil
-- `e2e/auth.spec.ts` - Tests d'authentification
-
-### Configuration
-
-La configuration Playwright se trouve dans `playwright.config.ts`. Elle inclut :
-
-- Tests sur Chrome, Firefox, Safari
-- Tests sur mobile (Chrome Mobile, Safari Mobile)
-- Serveur de développement automatique
-- Screenshots et traces en cas d'échec
-
-## 🔄 CI/CD avec GitHub Actions
-
-Deux workflows GitHub Actions sont configurés :
-
-### 1. CI (`.github/workflows/ci.yml`)
-
-Exécuté sur chaque push et pull request :
-
-- **Lint & Type Check** : Vérifie le code avec ESLint et TypeScript
-- **Unit Tests** : Exécute les tests Vitest
-- **Build** : Vérifie que l'application se build correctement
-- **E2E Tests** : Exécute les tests Playwright
-
-### 2. Deploy (`.github/workflows/deploy.yml`)
-
-Exécuté uniquement sur la branche `main` :
-
-- Déploie automatiquement sur Railway
-- Nécessite le secret `RAILWAY_TOKEN` dans GitHub
-
-### Configuration des secrets GitHub
-
-1. Allez dans Settings > Secrets and variables > Actions
-2. Ajoutez les secrets suivants :
-   - `RAILWAY_TOKEN` : Token d'API Railway
-   - `NEXT_PUBLIC_API_URL` : URL de l'API (optionnel, pour les tests)
-
-## 🚂 Déploiement Railway
-
-### Scripts de déploiement
-
-Deux scripts sont disponibles :
-
-**Linux/Mac :**
-```bash
-chmod +x scripts/deploy-railway.sh
-./scripts/deploy-railway.sh
-```
-
-**Windows PowerShell :**
-```powershell
-.\scripts\deploy-railway.ps1
-```
-
-### Déploiement manuel
+### Linting
 
 ```bash
-# Installer Railway CLI
-npm install -g @railway/cli
+# Lint all code
+npm run lint
 
-# Se connecter
-railway login
+# Fix linting issues
+npm run lint:fix
 
-# Aller dans le répertoire du projet
-cd apps/web
-
-# Déployer
-railway up
+# Lint specific package
+pnpm --filter @modele/web lint
 ```
 
-### Configuration Railway
-
-Le projet utilise Nixpacks pour le build automatique. Assurez-vous que :
-
-1. Le service Railway pointe vers `apps/web`
-2. Les variables d'environnement sont configurées :
-   - `NEXT_PUBLIC_API_URL`
-   - `DATABASE_URL` (si nécessaire)
-   - Autres variables selon vos besoins
-
-### Variables d'environnement Railway
-
-Configurez ces variables dans le dashboard Railway :
-
-- `NEXT_PUBLIC_API_URL` - URL de votre API backend
-- `NODE_ENV=production`
-- Toutes les autres variables nécessaires à votre application
-
-## 🧪 Tests
-
-### Tests unitaires (Vitest)
+### Type Checking
 
 ```bash
-# Lancer tous les tests
-pnpm test
+# Check TypeScript types
+npm run type-check
 
-# Lancer avec UI
-pnpm test:ui
-
-# Lancer en mode watch
-pnpm test --watch
+# Check specific package
+pnpm --filter @modele/web type-check
 ```
 
-### Tests E2E (Playwright)
-
-Voir la section Playwright ci-dessus.
-
-## 📝 Linting et Formatage
+### Formatting
 
 ```bash
-# Linter le code
-pnpm lint
+# Format all code
+npm run format
 
-# Formater le code
-pnpm format
-
-# Vérifier les types TypeScript
-pnpm type-check
+# Check formatting
+npm run format:check
 ```
 
-## 🏗️ Build
+## 🔥 Hot Reload
+
+Hot reload is automatically configured:
+
+- **Frontend**: Next.js hot reload with `next dev`
+- **Backend**: FastAPI hot reload with `uvicorn --reload`
+
+### Development Scripts
 
 ```bash
-# Build de production
-pnpm build
+# Start everything (frontend + backend)
+npm run dev:full
 
-# Démarrer en production
-pnpm start
+# Start frontend only
+npm run dev:frontend
+
+# Start backend only
+npm run dev:backend
+
+# Start with Turborepo (recommended)
+npm run dev
 ```
 
-## 📦 Structure des outils
+### Docker Compose
 
-```
-.
-├── .github/
-│   └── workflows/
-│       ├── ci.yml          # CI automatique
-│       └── deploy.yml      # Déploiement Railway
-├── apps/web/
-│   ├── .storybook/         # Configuration Storybook
-│   ├── e2e/                # Tests Playwright
-│   │   ├── homepage.spec.ts
-│   │   └── auth.spec.ts
-│   ├── playwright.config.ts
-│   └── src/
-│       └── components/
-│           └── ui/
-│               ├── Button.stories.tsx
-│               └── Input.stories.tsx
-└── scripts/
-    ├── deploy-railway.sh   # Script déploiement (Linux/Mac)
-    └── deploy-railway.ps1  # Script déploiement (Windows)
+Hot reload is also configured in `docker-compose.yml`:
+
+```yaml
+backend:
+  command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+  volumes:
+    - ./backend:/app  # Mount for hot reload
 ```
 
-## 🚀 Workflow de développement recommandé
+## ✅ Pre-commit Hooks
 
-1. **Développement local**
+Git hooks are configured with **Husky** and **lint-staged** to:
+
+1. Format and lint only modified files
+2. Run TypeScript type checking
+3. Run tests (optional)
+
+### Manual Execution
+
+```bash
+# Run pre-commit checks manually
+npm run pre-commit
+
+# Skip tests (faster)
+npm run pre-commit:skip-tests
+```
+
+### Disable Temporarily
+
+```bash
+# Commit without hooks (not recommended)
+git commit --no-verify -m "message"
+```
+
+## 🚀 Development Workflow
+
+### Recommended Workflow
+
+1. **Create a feature branch**
    ```bash
-   pnpm dev
+   git checkout -b feat/feature-name
    ```
 
-2. **Tester les composants**
+2. **Generate code if needed**
+   ```bash
+   npm run generate:component MyComponent
+   npm run generate:page my-page
+   ```
+
+3. **Start development**
+   ```bash
+   npm run dev:full
+   ```
+
+4. **Test components in Storybook**
    ```bash
    pnpm storybook
    ```
 
-3. **Tests unitaires**
+5. **Write tests**
    ```bash
    pnpm test --watch
    ```
 
-4. **Tests E2E**
+6. **Before committing**
    ```bash
-   pnpm test:e2e:ui
+   npm run lint
+   npm run type-check
+   npm run test
    ```
 
-5. **Vérifier avant commit**
+7. **Commit and push**
    ```bash
-   pnpm lint
-   pnpm type-check
-   pnpm test
+   git add .
+   git commit -m "feat: add new feature"
+   git push origin feat/feature-name
    ```
 
-6. **Commit et push**
-   - Le CI s'exécutera automatiquement
-   - Si sur `main`, le déploiement Railway se déclenchera
+## 🔧 CI/CD
 
-## 📚 Ressources
+### GitHub Actions
+
+Two workflows are configured:
+
+1. **CI** (`.github/workflows/ci.yml`)
+   - Runs on every push and PR
+   - Lint & Type Check
+   - Unit Tests
+   - Build verification
+   - E2E Tests
+
+2. **Deploy** (`.github/workflows/deploy.yml`)
+   - Runs only on `main` branch
+   - Deploys to Railway automatically
+
+### Railway Deployment
+
+The project uses Nixpacks for automatic builds. Ensure:
+
+1. Railway service points to correct directory
+2. Environment variables are configured
+3. Build commands are correct in `nixpacks.toml`
+
+## 📚 Resources
 
 - [Storybook Documentation](https://storybook.js.org/docs)
 - [Playwright Documentation](https://playwright.dev/docs/intro)
+- [Alembic Documentation](https://alembic.sqlalchemy.org/)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [Railway Documentation](https://docs.railway.app/)
-

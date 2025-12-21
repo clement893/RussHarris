@@ -1,83 +1,83 @@
 # MODELE-NEXTJS-FULLSTACK
 
-A production-ready full-stack template with Next.js 16 frontend and FastAPI backend.
+A production-ready full-stack template with Next.js 16 frontend and FastAPI backend, perfect for building modern web applications.
 
 ## 🎯 Features
 
 ### Frontend (Next.js 16)
-- ✅ **Next.js 16** avec App Router et Turbopack
-- ✅ **React 19** avec Server Components
-- ✅ **TypeScript 5** avec configuration stricte
-- ✅ **Tailwind CSS 3** pour le styling
-- ✅ **Bibliothèque UI complète** (20+ composants ERP)
-- ✅ **Hooks réutilisables** (useForm, usePagination, useFilters, usePermissions)
-- ✅ **NextAuth.js v5** avec OAuth Google
-- ✅ **Middleware** de protection des routes
-- ✅ **Gestion d'erreurs** centralisée
-- ✅ **Logging structuré**
+- ✅ **Next.js 16** with App Router and Turbopack
+- ✅ **React 19** with Server Components
+- ✅ **TypeScript 5** with strict configuration
+- ✅ **Tailwind CSS 3** for styling
+- ✅ **Complete UI Library** (20+ ERP components)
+- ✅ **Reusable Hooks** (useForm, usePagination, useFilters, usePermissions)
+- ✅ **NextAuth.js v5** with Google OAuth
+- ✅ **Route Protection** middleware
+- ✅ **Centralized Error Handling**
+- ✅ **Structured Logging**
 
 ### Backend (FastAPI)
-- ✅ **FastAPI** avec OpenAPI/Swagger auto-généré
-- ✅ **Pydantic v2** pour validation des données
-- ✅ **SQLAlchemy async** pour ORM
-- ✅ **Alembic** pour migrations DB
-- ✅ **PostgreSQL** avec support async
-- ✅ **JWT authentication** avec refresh tokens
-- ✅ **Tests** avec pytest
-- ✅ **Logging** avec loguru
-- ✅ **Gestion d'erreurs** standardisée
+- ✅ **FastAPI** with auto-generated OpenAPI/Swagger docs
+- ✅ **Pydantic v2** for data validation
+- ✅ **SQLAlchemy async** ORM
+- ✅ **Alembic** for database migrations
+- ✅ **PostgreSQL** with async support
+- ✅ **JWT Authentication** with refresh tokens
+- ✅ **Tests** with pytest
+- ✅ **Logging** with loguru
+- ✅ **Standardized Error Handling**
 
-### Types Partagés
-- ✅ **Package `@modele/types`** pour types partagés
-- ✅ **Génération automatique** TypeScript depuis Pydantic
-- ✅ **Synchronisation** frontend/backend automatique
+### Shared Types
+- ✅ **`@modele/types` package** for shared TypeScript types
+- ✅ **Automatic generation** from Pydantic schemas
+- ✅ **Frontend/backend synchronization**
 
-### DevOps & Outils
-- ✅ **Turborepo** pour monorepo optimisé
-- ✅ **pnpm workspaces** pour gestion des dépendances
+### DevOps & Tools
+- ✅ **Turborepo** for optimized monorepo
+- ✅ **pnpm workspaces** for dependency management
 - ✅ **GitHub Actions** CI/CD
-- ✅ **Pre-commit hooks** avec Husky
+- ✅ **Pre-commit hooks** with Husky
 - ✅ **Docker & Docker Compose**
 - ✅ **Railway** deployment ready
-- ✅ **Générateur de code** (composants, pages, API)
-- ✅ **Scripts de migration** DB
+- ✅ **Code generators** (components, pages, API routes)
+- ✅ **Database migration scripts**
 
 ## 🚀 Quick Start
 
-> 📖 **Guide complet disponible** : [GETTING_STARTED.md](./GETTING_STARTED.md)
+> 📖 **Complete guide**: [GETTING_STARTED.md](./GETTING_STARTED.md)
 
 ### Prerequisites
 
-- **Node.js** 22+ ([télécharger](https://nodejs.org/))
+- **Node.js** 22+ ([download](https://nodejs.org/))
 - **pnpm** 9+ (`npm install -g pnpm`)
-- **Python** 3.11+ ([télécharger](https://www.python.org/downloads/))
-- **PostgreSQL** 14+ ([télécharger](https://www.postgresql.org/download/))
-- **Docker & Docker Compose** (optionnel)
+- **Python** 3.11+ ([download](https://www.python.org/downloads/))
+- **PostgreSQL** 14+ ([download](https://www.postgresql.org/download/))
+- **Docker & Docker Compose** (optional)
 
-### Installation Express
+### Installation
 
 ```bash
-# 1. Cloner le projet
+# 1. Clone the project
 git clone https://github.com/clement893/MODELE-NEXTJS-FULLSTACK.git
 cd MODELE-NEXTJS-FULLSTACK
 
-# 2. Installer les dépendances
+# 2. Install dependencies
 pnpm install
 
-# 3. Configurer les variables d'environnement
+# 3. Configure environment variables
 cp backend/.env.example backend/.env
 cp apps/web/.env.example apps/web/.env.local
-# Éditer les fichiers .env avec vos valeurs
+# Edit .env files with your values
 
-# 4. Initialiser la base de données
+# 4. Initialize database
 createdb modele_db
 cd backend && alembic upgrade head && cd ..
 
-# 5. Démarrer le projet
+# 5. Start the project
 npm run dev:full
 ```
 
-**Accès :**
+**Access:**
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000
 - API Docs: http://localhost:8000/docs
@@ -93,28 +93,23 @@ MODELE-NEXTJS-FULLSTACK/
 │       │   ├── components/    # React components
 │       │   └── lib/           # Utilities
 │       ├── package.json
-│       ├── Dockerfile
-│       └── railway.json
+│       └── Dockerfile
 ├── backend/                    # FastAPI backend
 │   ├── app/
-│   │   ├── api/               # Endpoints
+│   │   ├── api/               # API endpoints
 │   │   ├── models/            # SQLAlchemy models
 │   │   ├── schemas/           # Pydantic schemas
 │   │   ├── services/          # Business logic
-│   │   ├── tasks/             # Celery tasks
 │   │   └── main.py
-│   ├── tests/
-│   ├── requirements.txt
-│   ├── Dockerfile
-│   └── railway.json
+│   ├── alembic/               # Database migrations
+│   └── requirements.txt
 ├── packages/                   # Shared code
-│   ├── types/
-│   ├── schemas/
-│   ├── config/
-│   └── utils/
+│   └── types/                 # Shared TypeScript types
+├── scripts/                    # Utility scripts
+│   └── generate/              # Code generators
 ├── docker-compose.yml
-├── turbo.json
-└── package.json
+├── turbo.json                 # Turborepo config
+└── package.json               # Root package.json
 ```
 
 ## 🔗 API Endpoints
@@ -122,104 +117,71 @@ MODELE-NEXTJS-FULLSTACK/
 ### Authentication
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login user
-- `POST /api/auth/refresh` - Refresh token
+- `POST /api/auth/google` - Google OAuth login
+- `POST /api/auth/refresh` - Refresh access token
 
 ### Users
 - `GET /api/users/me` - Get current user
 - `PUT /api/users/me` - Update current user
 - `GET /api/users/{user_id}` - Get user by ID
 - `GET /api/users` - List all users
-- `DELETE /api/users/{user_id}` - Delete user
 
-### Resources
-- `GET /api/resources` - List resources
-- `POST /api/resources` - Create resource
-- `GET /api/resources/{resource_id}` - Get resource
-- `PUT /api/resources/{resource_id}` - Update resource
-- `DELETE /api/resources/{resource_id}` - Delete resource
+### Organizations
+- `GET /api/organizations` - List organizations
+- `POST /api/organizations` - Create organization
+- `GET /api/organizations/{id}` - Get organization
+- `PUT /api/organizations/{id}` - Update organization
 
-### Upload
-- `POST /api/upload/file` - Upload file
-- `GET /api/upload/{file_id}` - Get file
-- `DELETE /api/upload/{file_id}` - Delete file
+### Donateurs (Donors)
+- `GET /api/donateurs` - List donors
+- `POST /api/donateurs` - Create donor
+- `GET /api/donateurs/{id}` - Get donor
+- `PUT /api/donateurs/{id}` - Update donor
+- `POST /api/donateurs/import` - Import donors from file
+- `POST /api/donateurs/export` - Export donors to file
 
 ### Health
 - `GET /health` - Health check
 - `GET /api/health` - API health check
 
-## 🧪 Testing
-
-### Backend Tests
-
-```bash
-cd backend
-pytest
-pytest --cov=app --cov-report=html
-```
-
-### Frontend Tests
-
-```bash
-cd apps/web
-npm run test
-npm run test:ui
-```
-
-## 📦 Deployment
-
-### Railway
-
-1. Push to GitHub:
-
-```bash
-git push origin main
-```
-
-2. Connect Railway to GitHub repository
-
-3. Set environment variables in Railway dashboard:
-
-**Backend:**
-```
-DATABASE_URL=postgresql://...
-REDIS_URL=redis://...
-SECRET_KEY=your-secret-key
-FRONTEND_URL=https://your-frontend.railway.app
-```
-
-**Frontend:**
-```
-NEXT_PUBLIC_API_URL=https://your-backend.railway.app
-NEXTAUTH_URL=https://your-frontend.railway.app
-NEXTAUTH_SECRET=your-secret-key
-```
-
-4. Deploy
-
-### Docker
-
-Build and run locally:
-
-```bash
-docker-compose up --build
-```
+> 📡 **Full API documentation**: http://localhost:8000/docs (Swagger) or http://localhost:8000/redoc (ReDoc)
 
 ## 🛠️ Development
 
-### Code Quality
+### Available Scripts
 
 ```bash
-# Linting
-npm run lint
+# Development
+npm run dev:full          # Start frontend + backend
+npm run dev:frontend      # Start frontend only
+npm run dev:backend       # Start backend only
 
-# Type checking
-npm run type-check
+# Code Generation
+npm run generate:component ComponentName
+npm run generate:page page-name
+npm run generate:api route-name
+npm run generate:types    # Generate TypeScript types from Pydantic
 
-# Formatting
-npm run format
+# Database Migrations
+npm run migrate create MigrationName
+npm run migrate upgrade
+npm run migrate downgrade
 
-# All checks
-npm run build
+# Code Quality
+npm run lint              # Lint code
+npm run lint:fix          # Fix linting issues
+npm run type-check        # TypeScript type checking
+npm run format            # Format code with Prettier
+
+# Testing
+npm run test              # Run all tests
+npm run test:web          # Frontend tests
+npm run test:backend      # Backend tests
+npm run test:e2e          # E2E tests with Playwright
+
+# Build
+npm run build             # Build all packages
+npm run build:web         # Build frontend only
 ```
 
 ### Database Migrations
@@ -227,40 +189,44 @@ npm run build
 ```bash
 cd backend
 
-# Create migration
+# Create a new migration
 alembic revision --autogenerate -m "Add new table"
 
 # Apply migrations
 alembic upgrade head
 
-# Rollback
+# Rollback one migration
 alembic downgrade -1
 ```
 
-### Celery Tasks
+## 📦 Deployment
+
+### Railway
+
+1. Push to GitHub
+2. Connect Railway to your GitHub repository
+3. Set environment variables in Railway dashboard (see [GETTING_STARTED.md](./GETTING_STARTED.md))
+4. Deploy automatically
+
+### Docker
 
 ```bash
-# Start worker
-celery -A app.celery_app worker --loglevel=info
-
-# Monitor tasks
-celery -A app.celery_app events
+# Build and run locally
+docker-compose up --build
 ```
 
 ## 📚 Documentation
 
-- 📖 [Guide de Démarrage Rapide](./GETTING_STARTED.md) - **Nouveau !**
-- 🔍 [Audit du Projet](./PROJECT_AUDIT.md) - Analyse complète
-- 🎨 [Documentation Backend](./backend/README.md)
-- ⚛️ [Documentation Frontend](./apps/web/README.md)
-- 🔐 [Authentification](./apps/web/AUTHENTICATION.md)
-- 🔄 [Génération de Types](./scripts/generate/types/README.md)
-- 📡 [API Documentation](http://localhost:8000/docs) (Swagger)
-- 📘 [ReDoc](http://localhost:8000/redoc)
+- 📖 [Getting Started Guide](./GETTING_STARTED.md) - Complete setup guide
+- 🛠️ [Development Guide](./DEVELOPMENT.md) - Development tools and workflows
+- 🤝 [Contributing Guide](./CONTRIBUTING.md) - How to contribute
+- 📝 [Changelog](./CHANGELOG.md) - Version history
+- 🎨 [Backend Documentation](./backend/README.md)
+- ⚛️ [Frontend Documentation](./apps/web/README.md)
 
 ## 🔐 Security
 
-- JWT authentication
+- JWT authentication with refresh tokens
 - Password hashing with bcrypt
 - CORS protection
 - SQL injection prevention (SQLAlchemy)
@@ -271,30 +237,38 @@ celery -A app.celery_app events
 
 ### Backend (.env)
 
-```
+```env
 ENVIRONMENT=development
 DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/modele_db
-REDIS_URL=redis://localhost:6379/0
-FRONTEND_URL=http://localhost:3000
 SECRET_KEY=your-secret-key-change-in-production
-ALGORITHM=HS256
+FRONTEND_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
 ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_DAYS=7
 ```
 
 ### Frontend (.env.local)
 
-```
+```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your-secret-key-change-in-production
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
 ```
+
+> See `.env.example` files for complete configuration options.
 
 ## 🤝 Contributing
 
-1. Create a feature branch: `git checkout -b feat/feature-name`
-2. Make changes and commit: `git commit -am 'Add feature'`
-3. Push to branch: `git push origin feat/feature-name`
-4. Submit a Pull Request
+We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feat/feature-name`
+3. Make your changes
+4. Commit with clear messages: `git commit -m "feat: add new feature"`
+5. Push to your fork: `git push origin feat/feature-name`
+6. Open a Pull Request
 
 ## 📄 License
 
