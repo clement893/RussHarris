@@ -48,17 +48,23 @@ ALLOWED_ORIGINS = [
 # Remove duplicates and empty strings
 ALLOWED_ORIGINS = list(set([origin for origin in ALLOWED_ORIGINS if origin]))
 
-# In production, be more permissive with Railway domains
-if ENVIRONMENT == "production" or "railway" in str(ALLOWED_ORIGINS).lower():
-    # Allow all Railway subdomains
-    ALLOWED_ORIGINS.extend([
-        "https://*.up.railway.app",
-        "https://*.railway.app",
-    ])
+# Custom function to check if origin should be allowed (for Railway domains)
+def is_origin_allowed(origin: str) -> bool:
+    """Check if origin is allowed, including Railway domains."""
+    if not origin:
+        return False
+    if origin in ALLOWED_ORIGINS:
+        return True
+    # Allow Railway domains
+    if origin.endswith(".up.railway.app") or origin.endswith(".railway.app"):
+        return True
+    return False
 
+# Add CORS middleware with custom origin check
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS if "*" not in str(ALLOWED_ORIGINS) else ["*"],
+    allow_origin_regex=r"https?://.*\.(railway\.app|up\.railway\.app)|http://localhost:\d+",
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
