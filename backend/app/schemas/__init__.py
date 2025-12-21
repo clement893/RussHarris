@@ -8,6 +8,12 @@ from app.schemas.user import (
     UserLogin,
     TokenResponse,
 )
+from app.schemas.file import (
+    FileBase,
+    FileCreate,
+    FileResponse,
+    FileUploadResponse,
+)
 
 __all__ = [
     "UserBase",
@@ -16,4 +22,8 @@ __all__ = [
     "UserResponse",
     "UserLogin",
     "TokenResponse",
+    "FileBase",
+    "FileCreate",
+    "FileResponse",
+    "FileUploadResponse",
 ]
