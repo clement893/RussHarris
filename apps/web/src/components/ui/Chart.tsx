@@ -109,8 +109,9 @@ export default function Chart({
               key={index}
               d={pathData}
               fill={point.color || `hsl(${(index * 360) / data.length}, 70%, 50%)`}
-              title={`${point.label}: ${point.value}`}
-            />
+            >
+              <title>{`${point.label}: ${point.value}`}</title>
+            </path>
           );
         })}
       </svg>
