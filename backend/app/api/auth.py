@@ -195,7 +195,10 @@ async def google_callback(
             
             # Get user info from Google
             userinfo_endpoint = "https://www.googleapis.com/oauth2/v2/userinfo"
-            userinfo_response = await client.get(userinfo_endpoint, token=access_token)
+            userinfo_response = await client.get(
+                userinfo_endpoint,
+                headers={"Authorization": f"Bearer {access_token}"}
+            )
             userinfo = userinfo_response.json()
             
             email = userinfo.get("email")
