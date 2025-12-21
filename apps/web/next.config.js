@@ -10,8 +10,11 @@ try {
 
 const nextConfig = {
   // Optimisations de performance
-  compress: true,
-  poweredByHeader: false,
+  compress: true,?
+  poweredByHeader: false,?
+  reactStrictMode: true,?
+  productionBrowserSourceMaps: false,?
+  output: 'standalone',
   
   // Images
   images: {
