@@ -1,233 +1,240 @@
-# Backend - FastAPI + SQLAlchemy
+# MODELE Backend API
 
-Backend for MODELE-NEXTJS-FULLSTACK built with FastAPI and SQLAlchemy.
+FastAPI backend with OpenAPI/Swagger auto-generation, Pydantic v2 validation, Alembic migrations, and automated tests.
 
-## Features
+## 🚀 Features
 
-- FastAPI web framework
-- SQLAlchemy ORM with async support
-- JWT authentication
-- PostgreSQL database
-- Redis caching
-- Celery for async tasks
-- Comprehensive test suite with pytest
-- Docker support
-- Railway deployment ready
+- **FastAPI** with automatic OpenAPI/Swagger documentation
+- **Pydantic v2** for request/response validation
+- **Alembic** for database migrations with rollback support
+- **Automated API tests** with pytest
+- **Async SQLAlchemy** for database operations
+- **JWT authentication** with password hashing
 
-## Installation
-
-### Prerequisites
+## 📋 Prerequisites
 
 - Python 3.11+
-- PostgreSQL 14+
-- Redis 7+
+- PostgreSQL (or SQLite for development)
+- pip or poetry
 
-### Setup
+## 🛠️ Installation
 
 1. Create virtual environment:
-
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
 2. Install dependencies:
-
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Create `.env` file:
-
+3. Copy environment file:
 ```bash
 cp .env.example .env
 ```
 
-4. Update environment variables in `.env`
+4. Update `.env` with your configuration
 
-## Running Locally
+## 🗄️ Database Setup
 
-### With Docker Compose
-
+1. Create database:
 ```bash
-docker-compose up
+createdb modele
 ```
-
-This will start:
-- PostgreSQL on port 5432
-- Redis on port 6379
-- Backend on port 8000
-- Celery worker
-
-### Without Docker
-
-1. Start PostgreSQL and Redis
 
 2. Run migrations:
-
 ```bash
-alembic upgrade head
+python scripts/migrate.py upgrade
 ```
 
-3. Start the development server:
-
+Or create initial migration:
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+python scripts/migrate.py create "Initial migration"
+python scripts/migrate.py upgrade
 ```
 
-4. Start Celery worker (in another terminal):
+## 🏃 Running the Application
 
+### Development
 ```bash
-celery -A app.celery_app worker --loglevel=info
+python run.py
 ```
 
-## API Documentation
-
-Once the server is running, visit:
-
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-
-## Project Structure
-
-```
-backend/
-├── app/
-│   ├── api/              # API endpoints
-│   ├── models/           # SQLAlchemy models
-│   ├── schemas/          # Pydantic schemas
-│   ├── services/         # Business logic
-│   ├── tasks/            # Celery tasks
-│   ├── core/             # Security and config
-│   ├── database.py       # Database configuration
-│   ├── dependencies.py   # FastAPI dependencies
-│   ├── celery_app.py     # Celery configuration
-│   └── main.py           # FastAPI application
-├── tests/                # Test suite
-├── alembic/              # Database migrations
-│   ├── versions/         # Migration files
-│   ├── env.py           # Alembic environment
-│   └── script.py.mako   # Migration template
-├── requirements.txt      # Python dependencies
-├── Dockerfile            # Docker image
-├── .env.example          # Environment template
-└── README.md
-```
-
-## Database Migrations
-
-### Create a migration
-
+Or with uvicorn directly:
 ```bash
-alembic revision --autogenerate -m "Add new table"
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Apply migrations
-
+### Production
 ```bash
-alembic upgrade head
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 ```
 
-### Rollback migrations
+## 📚 API Documentation
 
-```bash
-alembic downgrade -1
-```
+Once the server is running:
 
-## Testing
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+- **OpenAPI JSON**: http://localhost:8000/api/v1/openapi.json
 
-Run tests:
+## 🧪 Testing
 
+Run all tests:
 ```bash
 pytest
 ```
 
-Run tests with coverage:
-
+Run with coverage:
 ```bash
 pytest --cov=app --cov-report=html
 ```
 
-## Code Quality
-
-### Linting
-
+Run specific test file:
 ```bash
-ruff check .
+pytest tests/test_auth.py
 ```
 
-### Formatting
+## 🔄 Database Migrations
 
+### Create Migration
 ```bash
-ruff format .
+python scripts/migrate.py create "Description of changes"
 ```
 
-### Type checking
+### Upgrade Database
+```bash
+python scripts/migrate.py upgrade
+```
 
+### Downgrade Database
+```bash
+python scripts/migrate.py downgrade -1  # Go back one revision
+python scripts/migrate.py downgrade <revision_id>  # Go to specific revision
+```
+
+### View Current Revision
+```bash
+python scripts/migrate.py current
+```
+
+### View Migration History
+```bash
+python scripts/migrate.py history
+```
+
+## 📁 Project Structure
+
+```
+backend/
+├── app/
+│   ├── api/
+│   │   └── v1/
+│   │       ├── endpoints/     # API endpoints
+│   │       └── router.py      # Main router
+│   ├── core/
+│   │   ├── config.py          # Settings with Pydantic
+│   │   └── database.py        # Database configuration
+│   ├── models/                # SQLAlchemy models
+│   ├── schemas/               # Pydantic schemas
+│   └── main.py                # FastAPI app
+├── alembic/                   # Alembic migrations
+├── tests/                     # Test suite
+├── scripts/
+│   └── migrate.py             # Migration helper script
+├── requirements.txt
+├── pyproject.toml
+└── alembic.ini
+```
+
+## 🔐 Authentication
+
+The API uses JWT tokens for authentication:
+
+1. Register a user:
+```bash
+POST /api/v1/auth/register
+{
+  "email": "user@example.com",
+  "password": "SecurePass123",
+  "first_name": "John",
+  "last_name": "Doe"
+}
+```
+
+2. Login:
+```bash
+POST /api/v1/auth/login
+username=user@example.com&password=SecurePass123
+```
+
+3. Use token in requests:
+```bash
+Authorization: Bearer <access_token>
+```
+
+## 🎯 API Endpoints
+
+### Health
+- `GET /api/v1/health/` - Health check
+- `GET /api/v1/health/ready` - Readiness check
+
+### Authentication
+- `POST /api/v1/auth/register` - Register new user
+- `POST /api/v1/auth/login` - Login and get token
+- `GET /api/v1/auth/me` - Get current user (protected)
+
+### Users
+- `GET /api/v1/users/` - List users
+- `GET /api/v1/users/{id}` - Get user by ID
+
+## 🧹 Code Quality
+
+### Format code:
+```bash
+black app tests
+```
+
+### Lint code:
+```bash
+ruff check app tests
+```
+
+### Type checking:
 ```bash
 mypy app
 ```
 
-## Endpoints
+## 📝 Environment Variables
 
-### Authentication
+See `.env.example` for all available environment variables.
 
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/refresh` - Refresh token
+Key variables:
+- `DATABASE_URL` - Database connection string
+- `SECRET_KEY` - Secret key for JWT tokens
+- `CORS_ORIGINS` - Allowed CORS origins
+- `DEBUG` - Enable debug mode
 
-### Users
+## 🐛 Troubleshooting
 
-- `GET /api/users/me` - Get current user
-- `PUT /api/users/me` - Update current user
-- `GET /api/users/{user_id}` - Get user by ID
-- `GET /api/users` - List all users
-- `DELETE /api/users/{user_id}` - Delete user
+### Database connection errors
+- Verify `DATABASE_URL` is correct
+- Ensure PostgreSQL is running
+- Check database exists
 
-### Resources
+### Migration errors
+- Ensure all models are imported in `alembic/env.py`
+- Check database schema matches models
 
-- `GET /api/resources` - List resources
-- `POST /api/resources` - Create resource
-- `GET /api/resources/{resource_id}` - Get resource
-- `PUT /api/resources/{resource_id}` - Update resource
-- `DELETE /api/resources/{resource_id}` - Delete resource
+### Test failures
+- Ensure test database is clean
+- Check fixtures are properly configured
 
-### Upload
+## 📚 Resources
 
-- `POST /api/upload/file` - Upload file
-- `GET /api/upload/{file_id}` - Get file
-- `DELETE /api/upload/{file_id}` - Delete file
-
-### Health
-
-- `GET /health` - Health check
-- `GET /api/health` - API health check
-
-## Deployment
-
-### Railway
-
-1. Push to GitHub
-2. Connect Railway to GitHub repository
-3. Set environment variables in Railway dashboard
-4. Deploy
-
-Environment variables needed:
-
-```
-DATABASE_URL=postgresql://...
-REDIS_URL=redis://...
-SECRET_KEY=your-secret-key
-FRONTEND_URL=https://your-frontend-url
-```
-
-## Contributing
-
-1. Create a feature branch
-2. Make changes
-3. Run tests and linting
-4. Submit PR
-
-## License
-
-MIT
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Pydantic v2 Documentation](https://docs.pydantic.dev/)
+- [Alembic Documentation](https://alembic.sqlalchemy.org/)
+- [SQLAlchemy Async Documentation](https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html)

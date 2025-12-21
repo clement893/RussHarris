@@ -1,62 +1,44 @@
-"""User schemas."""
+"""
+User Schemas
+Pydantic v2 models for user management
+"""
 
 from datetime import datetime
 from typing import Optional
-from uuid import UUID
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 
 
 class UserBase(BaseModel):
-    """Base user schema."""
-
-    email: EmailStr
-    name: str = Field(..., min_length=1, max_length=255)
+    """Base user schema"""
+    email: EmailStr = Field(..., description="User email address")
+    first_name: Optional[str] = Field(None, max_length=100, description="First name")
+    last_name: Optional[str] = Field(None, max_length=100, description="Last name")
+    is_active: bool = Field(default=True, description="User active status")
 
 
 class UserCreate(UserBase):
-    """User creation schema."""
-
-    password: str = Field(..., min_length=8, max_length=255)
+    """User creation schema"""
+    password: str = Field(..., min_length=8, description="User password")
 
 
 class UserUpdate(BaseModel):
-    """User update schema."""
-
+    """User update schema"""
     email: Optional[EmailStr] = None
-    name: Optional[str] = Field(None, min_length=1, max_length=255)
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    is_active: Optional[bool] = None
 
 
-class UserResponse(UserBase):
-    """User response schema."""
-
-    id: UUID
-    is_active: bool
-    is_verified: bool
+class User(UserBase):
+    """User response schema"""
+    id: int
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
-class UserLogin(BaseModel):
-    """User login schema."""
-
-    email: EmailStr
-    password: str
-
-
-class TokenResponse(BaseModel):
-    """Token response schema."""
-
-    access_token: str
-    refresh_token: Optional[str] = None
-    token_type: str = "bearer"
-    user: UserResponse
-
-
-class RefreshTokenRequest(BaseModel):
-    """Refresh token request schema."""
-
-    refresh_token: str
+class UserInDB(User):
+    """User in database schema"""
+    hashed_password: str

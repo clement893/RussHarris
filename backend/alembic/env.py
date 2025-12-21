@@ -1,4 +1,7 @@
-"""Alembic environment configuration."""
+"""
+Alembic Environment Configuration
+"""
+
 import asyncio
 from logging.config import fileConfig
 
@@ -8,26 +11,24 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 
-import os
-import sys
+# Import your models and config
+from app.core.config import settings
+from app.core.database import Base
 
-# Add the app directory to the path
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
-from app.database import Base, DATABASE_URL
-from app.models import User  # noqa: F401
+# Import all models here for autogenerate
+from app.models import user  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
+# Set the database URL from settings
+config.set_main_option("sqlalchemy.url", str(settings.DATABASE_URL))
+
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
-
-# set sqlalchemy.url from environment
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
@@ -75,10 +76,8 @@ async def run_async_migrations() -> None:
     and associate a connection with the context.
 
     """
-    configuration = config.get_section(config.config_ini_section, {})
-    configuration["sqlalchemy.url"] = DATABASE_URL
     connectable = async_engine_from_config(
-        configuration,
+        config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
@@ -99,4 +98,3 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
-
