@@ -14,14 +14,22 @@ const meta: Meta<typeof DataTable> = {
 export default meta;
 type Story = StoryObj<typeof DataTable>;
 
-const sampleData = [
+type SampleData = {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+};
+
+const sampleData: SampleData[] = [
   { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active' },
   { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'Active' },
   { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'User', status: 'Inactive' },
   { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'Manager', status: 'Active' },
 ];
 
-const columns: Column<typeof sampleData[0]>[] = [
+const columns: Column<SampleData>[] = [
   { key: 'id', label: 'ID', sortable: true },
   { key: 'name', label: 'Name', sortable: true, filterable: true },
   { key: 'email', label: 'Email', sortable: true, filterable: true },
@@ -36,14 +44,14 @@ const columns: Column<typeof sampleData[0]>[] = [
 export const Default: Story = {
   args: {
     data: sampleData,
-    columns,
+    columns: columns as Column<Record<string, any>>[],
   },
 };
 
 export const WithSearch: Story = {
   args: {
     data: sampleData,
-    columns,
+    columns: columns as Column<Record<string, any>>[],
     searchable: true,
     searchPlaceholder: 'Search users...',
   },
@@ -58,7 +66,7 @@ export const WithPagination: Story = {
       role: ['Admin', 'User', 'Manager'][i % 3],
       status: ['Active', 'Inactive'][i % 2],
     })),
-    columns,
+    columns: columns as Column<Record<string, any>>[],
     pageSize: 5,
   },
 };
@@ -66,7 +74,7 @@ export const WithPagination: Story = {
 export const WithActions: Story = {
   args: {
     data: sampleData,
-    columns,
+    columns: columns as Column<Record<string, any>>[],
     actions: (row) => [
       { label: 'Edit', onClick: () => console.log('Edit', row) },
       { label: 'Delete', onClick: () => console.log('Delete', row), variant: 'danger' },
@@ -77,7 +85,7 @@ export const WithActions: Story = {
 export const Loading: Story = {
   args: {
     data: [],
-    columns,
+    columns: columns as Column<Record<string, any>>[],
     loading: true,
   },
 };
@@ -85,7 +93,7 @@ export const Loading: Story = {
 export const Empty: Story = {
   args: {
     data: [],
-    columns,
+    columns: columns as Column<Record<string, any>>[],
     emptyMessage: 'No users found',
   },
 };
@@ -93,7 +101,7 @@ export const Empty: Story = {
 export const KeyboardNavigation: Story = {
   args: {
     data: sampleData,
-    columns,
+    columns: columns as Column<Record<string, any>>[],
     onRowClick: (row) => console.log('Row clicked', row),
   },
   parameters: {
