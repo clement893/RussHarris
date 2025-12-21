@@ -1,84 +1,75 @@
 /**
- * Barrel Export pour les composants UI
- * Permet d'importer plusieurs composants depuis un seul endroit
- * 
- * Usage:
- * import { Button, Input, Modal } from '@/components/ui';
+ * UI Components Library
+ * Complete ERP component library exports
  */
 
-export { default as Accordion } from './Accordion';
-export type { AccordionItem, AccordionProps } from './Accordion';
-
-export { default as Alert } from './Alert';
-export type { AlertProps } from './Alert';
-
-export { default as Avatar } from './Avatar';
-export type { AvatarProps } from './Avatar';
-
-export { default as Badge } from './Badge';
-export type { BadgeProps } from './Badge';
-
+// Core Components
 export { default as Button } from './Button';
-
-export { default as Card } from './Card';
-export type { CardProps } from './Card';
-
+export { default as Input } from './Input';
+export { default as Textarea } from './Textarea';
+export { default as Select } from './Select';
+export type { SelectOption } from './Select';
 export { default as Checkbox } from './Checkbox';
-export type { CheckboxProps } from './Checkbox';
-
-export { default as DataTable } from './DataTable';
-export type { Column, DataTableProps } from './DataTable';
-
+export { default as Radio } from './Radio';
+export { default as Switch } from './Switch';
 export { default as DatePicker } from './DatePicker';
-export type { DatePickerProps } from './DatePicker';
-
+export { default as FileUpload } from './FileUpload';
+export { default as Badge } from './Badge';
 export { default as Dropdown } from './Dropdown';
 export type { DropdownItem } from './Dropdown';
 
-export { default as FileUpload } from './FileUpload';
-export type { FileUploadProps } from './FileUpload';
-
-export { default as Form, FormField } from './Form';
-export type { FormProps, FormFieldProps } from './Form';
-
-export { default as Input } from './Input';
-
-export { default as Loading } from './Loading';
-export type { LoadingProps } from './Loading';
-
-export { default as Modal } from './Modal';
-export type { ModalProps } from './Modal';
-export { ConfirmModal } from './Modal';
-
-export { default as Pagination } from './Pagination';
-
-export { default as Progress } from './Progress';
-export type { ProgressProps } from './Progress';
-
-export { default as Radio } from './Radio';
-export type { RadioProps } from './Radio';
-
-export { default as Select } from './Select';
-export type { SelectProps } from './Select';
-
-export { default as Skeleton } from './Skeleton';
-export type { SkeletonProps } from './Skeleton';
-
-export { default as Spinner } from './Spinner';
-export type { SpinnerProps } from './Spinner';
-
-export { default as Switch } from './Switch';
-export type { SwitchProps } from './Switch';
-
-export { default as Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from './Table';
-
+// Layout Components
+export { default as Card } from './Card';
+export { default as Container } from './Container';
 export { default as Tabs, TabList, Tab, TabPanels, TabPanel } from './Tabs';
+export type { Tab, TabListProps, TabProps, TabPanelsProps, TabPanelProps } from './Tabs';
+export { default as Accordion } from './Accordion';
+export type { AccordionItem } from './Accordion';
+export { default as Sidebar } from './Sidebar';
 
-export { default as Textarea } from './Textarea';
-export type { TextareaProps } from './Textarea';
+// Data Components
+export { default as DataTable } from './DataTable';
+export { default as DataTableEnhanced } from './DataTableEnhanced';
+export type { Column, DataTableProps } from './DataTable';
+export type { BulkAction, ExportOption, DataTableEnhancedProps } from './DataTableEnhanced';
+export { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from './Table';
+export { default as Pagination } from './Pagination';
+export { default as EmptyState } from './EmptyState';
+export { default as StatsCard } from './StatsCard';
 
-export { default as Toast, ToastContainer } from './Toast';
-export type { ToastProps } from './Toast';
-
+// Overlay Components
+export { default as Modal, ConfirmModal } from './Modal';
+export type { ModalProps } from './Modal';
 export { default as Tooltip } from './Tooltip';
 export type { TooltipProps } from './Tooltip';
+
+// Form Components
+export { default as Form, FormField } from './Form';
+export type { FormProps, FormField as FormFieldType, FormFieldProps } from './Form';
+
+// Feedback Components
+export { default as Alert } from './Alert';
+export type { AlertProps, AlertVariant } from './Alert';
+export { default as ToastContainer } from './ToastContainer';
+export { useToast } from './ToastContainer';
+export { default as Toast } from './Toast';
+export type { ToastProps } from './Toast';
+export type { ToastData } from './ToastContainer';
+export { default as Loading } from './Loading';
+export { default as Skeleton } from './Skeleton';
+export { default as Progress } from './Progress';
+export { default as Spinner } from './Spinner';
+
+// Chart Components
+export { default as Chart } from './Chart';
+export type { ChartProps, ChartDataPoint } from './Chart';
+
+// Avatar Components (if exists)
+export { default as Avatar, AvatarImage, AvatarFallback } from './Avatar';
+
+// Theme Components
+export { default as ThemeToggle, ThemeToggleWithIcon } from './ThemeToggle';
+
+// Utility Components
+export { default as ClientOnly } from './ClientOnly';
+export { default as SearchBar } from './SearchBar';
