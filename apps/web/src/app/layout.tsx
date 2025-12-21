@@ -13,7 +13,7 @@ const inter = Inter({
 // Force dynamic rendering to avoid static generation issues with useSearchParams
 export const dynamic = 'force-dynamic';
 
-
+export const metadata: Metadata = {
   title: 'MODELE-NEXTJS-FULLSTACK',
   description: 'Full-stack template with Next.js 16 frontend and FastAPI backend',
   viewport: 'width=device-width, initial-scale=1',
