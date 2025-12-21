@@ -70,7 +70,7 @@ export const authConfig: NextAuthConfig = {
         const allowedDomains = process.env.ALLOWED_EMAIL_DOMAINS?.split(',') ?? [];
         if (allowedDomains.length > 0 && user.email) {
           const domain = user.email.split('@')[1];
-          if (!allowedDomains.includes(domain)) {
+          if (domain && !allowedDomains.includes(domain)) {
             return false;
           }
         }
