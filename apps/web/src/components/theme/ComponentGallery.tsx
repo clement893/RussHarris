@@ -42,7 +42,7 @@ export function ComponentGallery() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const { showToast } = useToast();
+  const { toasts, showToast } = useToast();
 
   const tableData = [
     { id: '1', name: 'John Doe', email: 'john@example.com', role: 'Admin' },
@@ -87,7 +87,7 @@ export function ComponentGallery() {
 
   return (
     <div className="space-y-8">
-      <ToastContainer />
+      <ToastContainer toasts={toasts} />
 
       {/* Buttons */}
       <Card title="Boutons">
