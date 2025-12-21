@@ -60,6 +60,12 @@ class Settings(BaseSettings):
         ]
     )
 
+    # Redis Cache (optional)
+    REDIS_URL: str = Field(
+        default="",
+        description="Redis connection URL for caching",
+    )
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

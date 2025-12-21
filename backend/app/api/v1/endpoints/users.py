@@ -8,6 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
+from app.core.cache import cached
 from app.models.user import User
 from app.schemas.user import User as UserSchema
 
@@ -15,6 +16,7 @@ router = APIRouter()
 
 
 @router.get("/", response_model=List[UserSchema])
+@cached(expire=300, key_prefix="users")
 async def get_users(
     skip: int = 0,
     limit: int = 100,

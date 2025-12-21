@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
+from app.core.rate_limit import rate_limit_decorator
 from app.models.user import User
 from app.schemas.auth import Token, TokenData, UserCreate, UserResponse
 
@@ -77,6 +78,7 @@ async def get_current_user(
 
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@rate_limit_decorator("3/minute")
 async def register(
     user_data: UserCreate,
     db: Annotated[AsyncSession, Depends(get_db)],
@@ -119,6 +121,7 @@ async def register(
 
 
 @router.post("/login", response_model=Token)
+@rate_limit_decorator("5/minute")
 async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Annotated[AsyncSession, Depends(get_db)],
