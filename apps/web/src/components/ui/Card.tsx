@@ -5,17 +5,16 @@
 
 'use client';
 
-import { type ReactNode } from 'react';
+import { type ReactNode, type HTMLAttributes } from 'react';
 import { clsx } from 'clsx';
 
-export interface CardProps {
+export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> {
   children: ReactNode;
   title?: string;
   subtitle?: string;
   header?: ReactNode;
   footer?: ReactNode;
   actions?: ReactNode; // Alias for footer
-  className?: string;
   hover?: boolean;
   onClick?: () => void;
   padding?: boolean;
@@ -32,6 +31,7 @@ export default function Card({
   hover = false,
   onClick,
   padding = true,
+  ...props
 }: CardProps) {
   // Use actions as footer if footer is not provided
   const cardFooter = footer || actions;
@@ -45,6 +45,7 @@ export default function Card({
         className
       )}
       onClick={onClick}
+      {...props}
     >
       {(title || subtitle || header) && (
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
