@@ -164,7 +164,7 @@ export default function DataTable<T extends Record<string, any>>({
                     return (
                       <select
                         key={column.key}
-                        value={filters[column.key] || ''}
+                        value={String(filters[column.key] ?? '')}
                         onChange={(e) => handleFilterChange(column.key, e.target.value)}
                         className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
                       >
@@ -181,7 +181,7 @@ export default function DataTable<T extends Record<string, any>>({
                     <Input
                       key={column.key}
                       placeholder={`Filtrer ${column.label}`}
-                      value={filters[column.key] || ''}
+                      value={String(filters[column.key] ?? '')}
                       onChange={(e) => handleFilterChange(column.key, e.target.value)}
                       className="w-48"
                     />
