@@ -13,8 +13,10 @@ export function useLogger() {
       debug: (message: string, context?: LogContext) => logger.debug(message, context),
       info: (message: string, context?: LogContext) => logger.info(message, context),
       warn: (message: string, context?: LogContext) => logger.warn(message, context),
-      error: (message: string, error?: Error | unknown, context?: LogContext) =>
-        logger.error(message, error, context),
+      error: (message: string, error?: Error | unknown, context?: LogContext) => {
+        const normalizedError = error instanceof Error ? error : error ? new Error(String(error)) : undefined;
+        logger.error(message, normalizedError, context);
+      },
     }),
     []
   );
