@@ -20,8 +20,8 @@ export type { DropdownItem } from './Dropdown';
 
 // Layout Components
 export { default as Card } from './Card';
-export { default as Tabs } from './Tabs';
-export type { Tab } from './Tabs';
+export { default as Tabs, TabList, Tab, TabPanels, TabPanel } from './Tabs';
+export type { Tab, TabListProps, TabProps, TabPanelsProps, TabPanelProps } from './Tabs';
 export { default as Accordion } from './Accordion';
 export type { AccordionItem } from './Accordion';
 
