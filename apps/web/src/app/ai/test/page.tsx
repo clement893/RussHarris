@@ -146,13 +146,13 @@ export default function AITestPage() {
             <div className="flex gap-4 mb-4">
               <button
                 onClick={() => setMode('simple')}
-                className={px-4 py-2 rounded-lg transition }
+                className={`px-4 py-2 rounded-lg transition ${mode === 'simple' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
               >
                 Simple Chat
               </button>
               <button
                 onClick={() => setMode('chat')}
-                className={px-4 py-2 rounded-lg transition }
+                className={`px-4 py-2 rounded-lg transition ${mode === 'chat' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
               >
                 Full Chat
               </button>

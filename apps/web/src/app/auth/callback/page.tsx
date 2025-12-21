@@ -27,9 +27,9 @@ function CallbackContent() {
 
       // Fetch user info
       const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/$/, '');
-      fetch(${apiUrl}/api/users/me, {
+      fetch(`${apiUrl}/api/users/me`, {
         headers: {
-          Authorization: Bearer ,
+          Authorization: `Bearer ${accessToken}`,
         },
       })
         .then((res) => res.json())
