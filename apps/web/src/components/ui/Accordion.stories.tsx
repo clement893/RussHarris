@@ -47,8 +47,10 @@ export const AllowMultiple: Story = {
 
 export const DefaultOpen: Story = {
   args: {
-    items,
-    defaultOpen: ['1'],
+    items: items.map((item, index) => ({
+      ...item,
+      defaultOpen: index === 0, // First item open by default
+    })),
   },
 };
 
