@@ -6,7 +6,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { ComponentType } from 'react';
+import { ComponentType, type ReactNode } from 'react';
 import Skeleton from './Skeleton';
 
 // DataTable - Composant lourd avec beaucoup de logique
@@ -70,12 +70,13 @@ export const LazyAccordion = dynamic(
 export function createLazyComponent<T extends ComponentType<any>>(
   importFn: () => Promise<{ default: T }>,
   options?: {
-    loading?: ComponentType;
+    loading?: (props?: { error?: Error; isLoading?: boolean; pastDelay?: boolean; retry?: () => void; timedOut?: boolean }) => ReactNode;
     ssr?: boolean;
   }
 ) {
+  const loadingComponent = options?.loading ?? ((_props?: { error?: Error; isLoading?: boolean; pastDelay?: boolean; retry?: () => void; timedOut?: boolean }) => <Skeleton className="h-32 w-full" />);
   return dynamic(importFn, {
-    loading: options?.loading || (() => <Skeleton className="h-32 w-full" />),
+    loading: loadingComponent,
     ssr: options?.ssr ?? true,
   });
 }
