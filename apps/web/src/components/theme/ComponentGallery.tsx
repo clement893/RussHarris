@@ -268,8 +268,7 @@ export function ComponentGallery() {
           <StatsCard
             title="Statistiques"
             value="1,234"
-            change={12}
-            trend="up"
+            change={{ value: 12, type: 'increase', period: 'last month' }}
           />
 
           <EmptyState
