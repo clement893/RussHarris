@@ -3,7 +3,7 @@
 import { ReactNode, useState, useRef, useEffect } from 'react';
 import { clsx } from 'clsx';
 
-type DropdownItem =
+export type DropdownItem =
   | {
       label: string;
       onClick: () => void;

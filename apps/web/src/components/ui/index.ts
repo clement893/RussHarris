@@ -44,6 +44,7 @@ export { default as StatsCard } from './StatsCard';
 export { default as Avatar } from './Avatar';
 export { default as Tooltip } from './Tooltip';
 export { default as Dropdown } from './Dropdown';
+export type { DropdownItem } from './Dropdown';
 export { default as SearchBar } from './SearchBar';
 export { default as Accordion } from './Accordion';
 
