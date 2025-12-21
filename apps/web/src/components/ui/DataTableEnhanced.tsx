@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState, useMemo, type ReactNode } from 'react';
+import { useState, useMemo, type ReactNode, type ChangeEvent } from 'react';
 import { clsx } from 'clsx';
 import DataTable from './DataTable';
 import type { Column } from './DataTable';
@@ -70,7 +70,8 @@ export default function DataTableEnhanced<T extends Record<string, unknown>>({
     return (row.id as string | number) ?? index;
   };
 
-  const handleSelectAll = (checked: boolean) => {
+  const handleSelectAll = (event: ChangeEvent<HTMLInputElement>) => {
+    const checked = event.target.checked;
     if (checked) {
       const allKeys = new Set(data.map((row, index) => getRowKey(row, index)));
       setSelectedRows(allKeys);
@@ -221,7 +222,7 @@ export default function DataTableEnhanced<T extends Record<string, unknown>>({
                     <div className="flex items-center gap-3">
                       <Checkbox
                         checked={selectedRows.has(getRowKey(row, index))}
-                        onChange={(checked) => handleSelectRow(row, index, checked)}
+                        onChange={(e) => handleSelectRow(row, index, e.target.checked)}
                         onClick={(e) => e.stopPropagation()}
                       />
                       {content}
