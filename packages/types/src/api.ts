@@ -2,7 +2,28 @@
  * API-related types
  */
 
-import type { ApiResponse, PaginatedResponse, PaginationParams } from './index';
+// Import types directly to avoid circular dependency
+export interface ApiResponse<T = unknown> {
+  success: boolean;
+  data?: T;
+  message?: string;
+  error?: string;
+}
+
+export interface PaginatedResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+export interface PaginationParams {
+  page?: number;
+  pageSize?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
 
 // HTTP Methods
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -34,7 +55,4 @@ export interface ApiClient {
 export interface PaginatedRequest extends PaginationParams {
   [key: string]: unknown;
 }
-
-// Export everything from index
-export * from './index';
 
