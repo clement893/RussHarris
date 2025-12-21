@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
-const { withSentryConfig } = require('@sentry/nextjs');
+// Sentry is optional - only use if package is installed
+let withSentryConfig = null;
+try {
+  withSentryConfig = require('@sentry/nextjs').withSentryConfig;
+} catch (e) {
+  // Sentry not installed, continue without it
+  console.log('Sentry not installed, skipping Sentry configuration');
+}
 
 const nextConfig = {
   // Optimisations de performance
@@ -20,7 +27,10 @@ const nextConfig = {
     instrumentationHook: true, // Pour Sentry
   },
   
-  // Webpack optimizations
+  // Turbopack configuration (Next.js 16 default)
+  turbopack: {},
+  
+  // Webpack optimizations (fallback for --webpack flag)
   webpack: (config, { isServer, dev }) => {
     // Optimisations pour le bundle
     if (!isServer) {
@@ -110,23 +120,31 @@ const nextConfig = {
   },
 };
 
-// Bundle Analyzer
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
+// Bundle Analyzer (optional)
+let config = nextConfig;
+if (process.env.ANALYZE === 'true') {
+  try {
+    const withBundleAnalyzer = require('@next/bundle-analyzer')({
+      enabled: true,
+    });
+    config = withBundleAnalyzer(config);
+  } catch (e) {
+    console.log('Bundle Analyzer not installed, skipping');
+  }
+}
 
-// Sentry Configuration
-const sentryWebpackPluginOptions = {
-  silent: true,
-  org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT,
-  widenClientFileUpload: true,
-  hideSourceMaps: true,
-  disableClientWebpackPlugin: !process.env.SENTRY_DSN,
-  disableServerWebpackPlugin: !process.env.SENTRY_DSN,
-};
+// Sentry Configuration (optional)
+if (withSentryConfig) {
+  const sentryWebpackPluginOptions = {
+    silent: true,
+    org: process.env.SENTRY_ORG,
+    project: process.env.SENTRY_PROJECT,
+    widenClientFileUpload: true,
+    hideSourceMaps: true,
+    disableClientWebpackPlugin: !process.env.SENTRY_DSN,
+    disableServerWebpackPlugin: !process.env.SENTRY_DSN,
+  };
+  config = withSentryConfig(config, sentryWebpackPluginOptions);
+}
 
-module.exports = withSentryConfig(
-  withBundleAnalyzer(nextConfig),
-  sentryWebpackPluginOptions
-);
+module.exports = config;
