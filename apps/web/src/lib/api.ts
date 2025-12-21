@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { handleApiError, isClientError, isNetworkError } from './errors/api';
 
 // Remove trailing slash from API URL to avoid double slashes
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/$/, '');
@@ -12,30 +13,84 @@ const apiClient = axios.create({
 
 // Add request interceptor to include auth token
 apiClient.interceptors.request.use(
-  (config) => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  (config: AxiosRequestConfig) => {
+    if (typeof window !== 'undefined' && config.headers) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
-  (error) => {
+  (error: AxiosError) => {
     return Promise.reject(error);
   }
 );
 
 // Add response interceptor to handle errors
 apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  (response: AxiosResponse) => response,
+  async (error: AxiosError) => {
+    if (typeof window === 'undefined') {
+      return Promise.reject(error);
+    }
+
+    // Convert to AppError for better error handling
+    const appError = handleApiError(error);
+
+    // Handle 401 Unauthorized - try to refresh token or logout
     if (error.response?.status === 401) {
-      // Clear token and redirect to login
-      if (typeof window !== 'undefined') {
+      const refreshToken = localStorage.getItem('refreshToken');
+      
+      // Try to refresh token if available
+      if (refreshToken) {
+        try {
+          const response = await axios.post(`${API_URL}/api/auth/refresh`, {
+            refresh_token: refreshToken,
+          });
+          
+          const { access_token, refresh_token: newRefreshToken } = response.data;
+          localStorage.setItem('token', access_token);
+          if (newRefreshToken) {
+            localStorage.setItem('refreshToken', newRefreshToken);
+          }
+          
+          // Retry original request
+          if (error.config) {
+            error.config.headers = error.config.headers || {};
+            error.config.headers.Authorization = `Bearer ${access_token}`;
+            return apiClient.request(error.config);
+          }
+        } catch (refreshError) {
+          // Refresh failed, clear tokens and redirect
+          localStorage.removeItem('token');
+          localStorage.removeItem('refreshToken');
+          window.location.href = '/auth/login?error=session_expired';
+          return Promise.reject(refreshError);
+        }
+      } else {
+        // No refresh token, clear tokens and redirect
         localStorage.removeItem('token');
-        window.location.href = '/auth/login';
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/auth/login?error=unauthorized';
       }
     }
-    return Promise.reject(error);
+
+    // Handle network errors
+    if (isNetworkError(appError)) {
+      console.error('Network error:', appError.message);
+      // Could show a toast notification here
+    }
+
+    // Handle client errors (4xx) - don't redirect, let component handle
+    if (isClientError(appError)) {
+      // Component will handle the error display
+      return Promise.reject(appError);
+    }
+
+    // Handle server errors (5xx) - show generic error
+    console.error('Server error:', appError.message);
+    return Promise.reject(appError);
   }
 );
 
@@ -82,10 +137,10 @@ export const resourcesAPI = {
   getResource: (resourceId: string) => {
     return apiClient.get(`/resources/${resourceId}`);
   },
-  createResource: (data: any) => {
+  createResource: (data: Record<string, unknown>) => {
     return apiClient.post('/resources', data);
   },
-  updateResource: (resourceId: string, data: any) => {
+  updateResource: (resourceId: string, data: Record<string, unknown>) => {
     return apiClient.put(`/resources/${resourceId}`, data);
   },
   deleteResource: (resourceId: string) => {
@@ -128,4 +183,5 @@ export const emailAPI = {
 };
 
 export default apiClient;
+
 

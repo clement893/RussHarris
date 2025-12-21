@@ -1,0 +1,187 @@
+/**
+ * useAuth Hook
+ * Centralized authentication logic and token management
+ */
+
+import { useCallback, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/store';
+import { authAPI, usersAPI } from '@/lib/api';
+import { handleApiError } from '@/lib/errors/api';
+import type { User } from '@modele/types';
+
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+interface RegisterData {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export function useAuth() {
+  const router = useRouter();
+  const { user, token, isAuthenticated, login, logout, setUser, setError, error } = useAuthStore();
+
+  /**
+   * Login with email and password
+   */
+  const handleLogin = useCallback(
+    async (credentials: LoginCredentials) => {
+      try {
+        setError(null);
+        const response = await authAPI.login(credentials.email, credentials.password);
+        const { access_token, refresh_token, user: userData } = response.data;
+
+        // Store tokens
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', access_token);
+          if (refresh_token) {
+            localStorage.setItem('refreshToken', refresh_token);
+          }
+        }
+
+        // Update store
+        login(userData, access_token, refresh_token);
+
+        return { success: true, user: userData };
+      } catch (err) {
+        const appError = handleApiError(err);
+        setError(appError.message);
+        return { success: false, error: appError };
+      }
+    },
+    [login, setError]
+  );
+
+  /**
+   * Register new user
+   */
+  const handleRegister = useCallback(
+    async (data: RegisterData) => {
+      try {
+        setError(null);
+        const response = await authAPI.register(data.email, data.password, data.name);
+        const userData = response.data;
+
+        // Auto-login after registration
+        const loginResponse = await authAPI.login(data.email, data.password);
+        const { access_token, refresh_token } = loginResponse.data;
+
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', access_token);
+          if (refresh_token) {
+            localStorage.setItem('refreshToken', refresh_token);
+          }
+        }
+
+        login(userData, access_token);
+        return { success: true, user: userData };
+      } catch (err) {
+        const appError = handleApiError(err);
+        setError(appError.message);
+        return { success: false, error: appError };
+      }
+    },
+    [login, setError]
+  );
+
+  /**
+   * Logout user
+   */
+  const handleLogout = useCallback(async () => {
+    try {
+      await authAPI.logout();
+    } catch (err) {
+      // Ignore logout errors
+      console.error('Logout error:', err);
+    } finally {
+      // Clear tokens
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+      }
+      logout();
+      router.push('/auth/login');
+    }
+  }, [logout, router]);
+
+  /**
+   * Refresh access token
+   */
+  const refreshToken = useCallback(async () => {
+    try {
+      const refreshTokenValue = typeof window !== 'undefined' ? localStorage.getItem('refreshToken') : null;
+      if (!refreshTokenValue) {
+        throw new Error('No refresh token available');
+      }
+
+      const response = await authAPI.refresh(refreshTokenValue);
+      const { access_token, refresh_token: newRefreshToken } = response.data;
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('token', access_token);
+        if (newRefreshToken) {
+          localStorage.setItem('refreshToken', newRefreshToken);
+        }
+      }
+
+      useAuthStore.getState().setToken(access_token);
+      return { success: true };
+    } catch (err) {
+      // Refresh failed, logout user
+      handleLogout();
+      return { success: false, error: err };
+    }
+  }, [handleLogout]);
+
+  /**
+   * Check if user is authenticated and refresh token if needed
+   */
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const checkAuth = async () => {
+      const storedToken = localStorage.getItem('token');
+      const storedRefreshToken = localStorage.getItem('refreshToken');
+
+      // If we have a refresh token but no access token, try to refresh
+      if (!storedToken && storedRefreshToken) {
+        await refreshToken();
+      }
+
+      // If we have a token but no user, try to fetch user
+      if (storedToken && !user) {
+        try {
+          const response = await usersAPI.getMe();
+          if (response.data) {
+            setUser(response.data);
+          }
+        } catch (err) {
+          // Token might be invalid, try refresh
+          if (storedRefreshToken) {
+            await refreshToken();
+          } else {
+            handleLogout();
+          }
+        }
+      }
+    };
+
+    checkAuth();
+  }, [user, refreshToken, setUser, handleLogout]);
+
+  return {
+    user,
+    token,
+    isAuthenticated: isAuthenticated(),
+    error,
+    login: handleLogin,
+    register: handleRegister,
+    logout: handleLogout,
+    refreshToken,
+  };
+}
+

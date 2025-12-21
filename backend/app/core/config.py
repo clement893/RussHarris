@@ -52,6 +52,24 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
+    @field_validator("SECRET_KEY")
+    @classmethod
+    def validate_secret_key(cls, v: str) -> str:
+        """Validate SECRET_KEY is set and secure"""
+        import os
+        env = os.getenv("ENVIRONMENT", "development")
+        
+        if not v or v == "change-this-secret-key-in-production":
+            if env == "production":
+                raise ValueError(
+                    "SECRET_KEY must be set to a secure value in production. "
+                    "Generate one with: python -c 'import secrets; print(secrets.token_urlsafe(32))'"
+                )
+        elif len(v) < 32:
+            raise ValueError("SECRET_KEY must be at least 32 characters long")
+        
+        return v
+
     # OpenAPI
     OPENAPI_TAGS: List[dict] = Field(
         default_factory=lambda: [

@@ -11,8 +11,27 @@ from pydantic import ValidationError
 # Password hashing context
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
+def get_secret_key() -> str:
+    """Get SECRET_KEY from environment with validation."""
+    secret_key = os.getenv("SECRET_KEY")
+    if not secret_key:
+        env = os.getenv("ENVIRONMENT", "development")
+        if env == "production":
+            raise ValueError(
+                "SECRET_KEY must be set in production. "
+                "Generate one with: python -c 'import secrets; print(secrets.token_urlsafe(32))'"
+            )
+        secret_key = "change-this-secret-key-in-production"
+    
+    if len(secret_key) < 32:
+        raise ValueError("SECRET_KEY must be at least 32 characters long")
+    
+    return secret_key
+
+
 # JWT settings
-SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
+SECRET_KEY = get_secret_key()
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", "7"))
