@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import { Spinner } from '@/components/ui';
 
-const ThemeContent = dynamic(() => import('./ThemeContent'), {
+const ThemeContent = nextDynamic(() => import('./ThemeContent'), {
   ssr: false,
 });
 
