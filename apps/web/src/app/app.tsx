@@ -5,14 +5,14 @@
 
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { reportWebVitals } from '@/lib/performance';
 import { logger } from '@/lib/logger';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-export const App = React.memo(({ children }: { children: React.ReactNode }) => {
+function AppContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isInternalPage = pathname?.startsWith('/dashboard');
@@ -117,6 +117,14 @@ export const App = React.memo(({ children }: { children: React.ReactNode }) => {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export const App = React.memo(({ children }: { children: React.ReactNode }) => {
+  return (
+    <Suspense fallback={<>{children}</>}>
+      <AppContent>{children}</AppContent>
+    </Suspense>
   );
 });
 
