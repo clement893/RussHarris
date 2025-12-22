@@ -4,11 +4,29 @@
 // Route segment config (export const dynamic) only works in Server Components.
 // If you need to prevent static generation, create a Server Component wrapper.
 
-import { useMemo } from 'react';
-import Card from '@/components/ui/Card';
+import { Card } from '@/components/ui';
+
+// Type definitions for static data
+type UIComponentName = string;
+type HookName = string;
+
+interface TechStackItem {
+  name: string;
+  version: string;
+}
+
+interface FeatureCategory {
+  category: string;
+  items: readonly string[];
+}
+
+interface ScriptGroup {
+  title: string;
+  scripts: readonly { command: string; description: string }[];
+}
 
 // Move static data outside component to prevent recreation on every render
-const UI_COMPONENTS = [
+const UI_COMPONENTS: readonly UIComponentName[] = [
   'Accordion', 'Alert', 'Badge', 'Breadcrumb', 'Button', 'Card', 'Checkbox',
   'DataTable', 'DataTableEnhanced', 'DatePicker', 'Dropdown', 'ExportButton',
   'FileUpload', 'FileUploadWithPreview', 'Form', 'FormBuilder', 'Input',
@@ -16,12 +34,12 @@ const UI_COMPONENTS = [
   'Skeleton', 'Spinner', 'Switch', 'Tabs', 'Textarea', 'Toast', 'Tooltip'
 ] as const;
 
-const HOOKS = [
+const HOOKS: readonly HookName[] = [
   'useAuth', 'useForm', 'usePagination', 'useFilters', 'usePermissions',
   'useLogger', 'useDebounce', 'useLocalStorage', 'useMediaQuery'
 ] as const;
 
-const FEATURES = [
+const FEATURES: readonly FeatureCategory[] = [
   {
     category: 'Frontend',
     items: [
@@ -29,12 +47,12 @@ const FEATURES = [
       'React 19 avec Server Components',
       'TypeScript 5 avec configuration stricte',
       'Tailwind CSS 3 pour le styling',
-      'Bibliotheque UI complete (30+ composants ERP)',
-      'Hooks reutilisables personnalises',
+      'Bibliothèque UI complète (30+ composants ERP)',
+      'Hooks réutilisables personnalisés',
       'NextAuth.js v5 avec OAuth Google',
       'Protection des routes avec middleware',
-      'Gestion centralisee des erreurs',
-      'Logging structure',
+      'Gestion centralisée des erreurs',
+      'Logging structuré',
       'Support du mode sombre',
       'Responsive design mobile-first'
     ]
@@ -43,24 +61,24 @@ const FEATURES = [
     category: 'Backend',
     items: [
       'FastAPI avec documentation OpenAPI/Swagger automatique',
-      'Pydantic v2 pour la validation des donnees',
+      'Pydantic v2 pour la validation des données',
       'SQLAlchemy async ORM',
-      'Alembic pour les migrations de base de donnees',
+      'Alembic pour les migrations de base de données',
       'PostgreSQL avec support async',
       'Authentification JWT avec refresh tokens',
       'Tests avec pytest',
       'Logging avec loguru',
-      'Gestion standardisee des erreurs',
-      'API RESTful complete',
-      'Support CORS configure',
+      'Gestion standardisée des erreurs',
+      'API RESTful complète',
+      'Support CORS configuré',
       'Rate limiting'
     ]
   },
   {
-    category: 'Types Partages',
+    category: 'Types Partagés',
     items: [
-      'Package @modele/types pour les types TypeScript partages',
-      'Generation automatique depuis les schemas Pydantic',
+      'Package @modele/types pour les types TypeScript partagés',
+      'Génération automatique depuis les schémas Pydantic',
       'Synchronisation frontend/backend',
       'Types type-safe end-to-end'
     ]
@@ -68,75 +86,122 @@ const FEATURES = [
   {
     category: 'DevOps & Outils',
     items: [
-      'Turborepo pour monorepo optimise',
-      'pnpm workspaces pour la gestion des dependances',
+      'Turborepo pour monorepo optimisé',
+      'pnpm workspaces pour la gestion des dépendances',
       'GitHub Actions CI/CD',
       'Pre-commit hooks avec Husky',
       'Docker & Docker Compose',
-      'Pret pour deploiement Railway',
-      'Generateurs de code (composants, pages, routes API)',
-      'Scripts de migration de base de donnees',
+      'Prêt pour déploiement Railway',
+      'Générateurs de code (composants, pages, routes API)',
+      'Scripts de migration de base de données',
       'Configuration ESLint et Prettier',
       'Storybook pour la documentation des composants'
     ]
   }
 ] as const;
 
-const PROJECT_STRUCTURE = 'MODELE-NEXTJS-FULLSTACK/\n+-- apps/\n|   +-- web/\n|   |   +-- src/\n|   |   |   +-- app/\n|   |   |   +-- components/\n|   |   |   |   +-- ui/\n|   |   |   |   +-- providers/\n|   |   |   +-- hooks/\n|   |   |   +-- lib/\n|   |   |   |   +-- api/\n|   |   |   |   +-- auth/\n|   |   |   |   +-- errors/\n|   |   |   |   +-- logger/\n|   |   |   |   +-- store/\n|   |   +-- package.json\n|   +-- api/\n|       +-- app/\n|       |   +-- api/\n|       |   +-- models/\n|       |   +-- schemas/\n|       |   +-- services/\n|       +-- alembic/\n+-- packages/\n    +-- types/';
+const PROJECT_STRUCTURE = `MODELE-NEXTJS-FULLSTACK/
++-- apps/
+|   +-- web/
+|   |   +-- src/
+|   |   |   +-- app/
+|   |   |   +-- components/
+|   |   |   |   +-- ui/
+|   |   |   |   +-- providers/
+|   |   |   +-- hooks/
+|   |   |   +-- lib/
+|   |   |   |   +-- api/
+|   |   |   |   +-- auth/
+|   |   |   |   +-- errors/
+|   |   |   |   +-- logger/
+|   |   |   |   +-- store/
+|   |   +-- package.json
++-- backend/
+|   +-- app/
+|   |   +-- api/
+|   |   +-- models/
+|   |   +-- schemas/
+|   |   +-- services/
+|   +-- alembic/
++-- packages/
+    +-- types/`;
+
+const SCRIPTS: readonly ScriptGroup[] = [
+  {
+    title: 'Développement',
+    scripts: [
+      { command: 'pnpm dev', description: 'Démarrer le frontend' },
+      { command: 'pnpm dev:full', description: 'Démarrer frontend + backend' },
+      { command: 'pnpm build', description: 'Build de production' },
+      { command: 'pnpm lint', description: 'Linter le code' }
+    ]
+  },
+  {
+    title: 'Backend',
+    scripts: [
+      { command: 'alembic upgrade head', description: 'Migrations DB' },
+      { command: 'pytest', description: 'Lancer les tests' },
+      { command: 'uvicorn app.main:app --reload', description: 'Démarrer le serveur' }
+    ]
+  }
+] as const;
+
+const TECH_STACK: readonly TechStackItem[] = [
+  { name: 'Next.js', version: '16.1.0' },
+  { name: 'React', version: '19.0.0' },
+  { name: 'TypeScript', version: '5.3.3' },
+  { name: 'Tailwind CSS', version: '3.4.1' },
+  { name: 'FastAPI', version: '0.115+' },
+  { name: 'Python', version: '3.11+' },
+  { name: 'PostgreSQL', version: '14+' },
+  { name: 'Turborepo', version: '2.0.0' }
+] as const;
 
 export default function DocsPage() {
-  // Memoize tech stack to prevent recreation
-  const techStack = useMemo(() => [
-    { name: 'Next.js', version: '16.1.0' },
-    { name: 'React', version: '19.0.0' },
-    { name: 'TypeScript', version: '5.x' },
-    { name: 'Tailwind CSS', version: '3.x' },
-    { name: 'FastAPI', version: '0.115+' },
-    { name: 'Python', version: '3.11+' },
-    { name: 'PostgreSQL', version: '14+' },
-    { name: 'Turborepo', version: '2.x' },
-  ], []);
+  const componentCount = UI_COMPONENTS.length;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
+        <header className="mb-8" role="banner">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Documentation Technique du Template
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
-            Vue d'ensemble complete de tous les elements inclus dans ce template full-stack
+            Vue d'ensemble complète de tous les éléments inclus dans ce template full-stack
           </p>
-        </div>
+        </header>
 
-        <Card title="Composants UI (30+)" className="mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Card title={`Composants UI (${componentCount}+)`} className="mb-6" aria-label={`Liste de ${componentCount} composants UI`}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" role="list">
             {UI_COMPONENTS.map((component) => (
               <div
                 key={component}
                 className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg text-sm font-mono"
+                role="listitem"
               >
                 {component}
               </div>
             ))}
           </div>
           <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
-            Tous les composants sont disponibles dans <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">@/components/ui</code> et exportes depuis <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">@/components/ui/index.ts</code>
+            Tous les composants sont disponibles dans <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">@/components/ui</code> et exportés depuis <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">@/components/ui/index.ts</code>
           </p>
         </Card>
 
-        <Card title="Hooks Personnalises" className="mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Card title="Hooks Personnalisés" className="mb-6" aria-label="Liste des hooks personnalisés disponibles">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" role="list">
             {HOOKS.map((hook) => (
               <div
                 key={hook}
                 className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg"
+                role="listitem"
               >
-                <code className="text-sm font-mono text-blue-600 dark:text-blue-400">
+                <code className="text-sm font-mono text-blue-600 dark:text-blue-400" aria-label={`Hook ${hook}`}>
                   {hook}
                 </code>
                 <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                  Disponible dans <code>@/hooks/{hook.toLowerCase()}</code>
+                  Disponible dans <code className="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded">@/hooks/{hook.toLowerCase()}</code>
                 </p>
               </div>
             ))}
@@ -148,11 +213,12 @@ export default function DocsPage() {
             key={feature.category}
             title={feature.category}
             className="mb-6"
+            aria-label={`Fonctionnalités ${feature.category}`}
           >
-            <ul className="space-y-2">
+            <ul className="space-y-2" role="list">
               {feature.items.map((item, index) => (
-                <li key={`${feature.category}-${index}`} className="flex items-start">
-                  <span className="text-green-500 mr-2">*</span>
+                <li key={`${feature.category}-${index}`} className="flex items-start" role="listitem">
+                  <span className="text-green-500 mr-2" aria-hidden="true">•</span>
                   <span className="text-gray-700 dark:text-gray-300">{item}</span>
                 </li>
               ))}
@@ -160,40 +226,43 @@ export default function DocsPage() {
           </Card>
         ))}
 
-        <Card title="Structure du Projet" className="mb-6">
+        <Card title="Structure du Projet" className="mb-6" aria-label="Structure du projet">
           <div className="font-mono text-sm bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
-            <pre>{PROJECT_STRUCTURE}</pre>
+            <pre className="whitespace-pre-wrap break-words" role="textbox" aria-label="Structure du projet">
+              {PROJECT_STRUCTURE}
+            </pre>
           </div>
         </Card>
 
-        <Card title="Scripts Disponibles" className="mb-6">
+        <Card title="Scripts Disponibles" className="mb-6" aria-label="Scripts disponibles">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h4 className="font-semibold mb-2">Developpement</h4>
-              <ul className="space-y-1 text-sm">
-                <li><code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">pnpm dev</code> - Demarrer le frontend</li>
-                <li><code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">pnpm dev:full</code> - Demarrer frontend + backend</li>
-                <li><code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">pnpm build</code> - Build de production</li>
-                <li><code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">pnpm lint</code> - Linter le code</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-2">Backend</h4>
-              <ul className="space-y-1 text-sm">
-                <li><code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">alembic upgrade head</code> - Migrations DB</li>
-                <li><code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">pytest</code> - Lancer les tests</li>
-                <li><code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">uvicorn app.main:app --reload</code> - Demarrer le serveur</li>
-              </ul>
-            </div>
+            {SCRIPTS.map((group) => (
+              <div key={group.title}>
+                <h4 className="font-semibold mb-2">{group.title}</h4>
+                <ul className="space-y-1 text-sm" role="list">
+                  {group.scripts.map((script, index) => (
+                    <li key={`${group.title}-${index}`} role="listitem">
+                      <code className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded" aria-label={`Commande: ${script.command}`}>
+                        {script.command}
+                      </code>
+                      {' - '}
+                      <span>{script.description}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </Card>
 
-        <Card title="Stack Technologique" className="mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {techStack.map((tech) => (
+        <Card title="Stack Technologique" className="mb-6" aria-label="Stack technologique utilisée">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" role="list">
+            {TECH_STACK.map((tech) => (
               <div
                 key={tech.name}
                 className="p-3 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg"
+                role="listitem"
+                aria-label={`${tech.name} version ${tech.version}`}
               >
                 <div className="font-semibold text-gray-900 dark:text-white">{tech.name}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">{tech.version}</div>
