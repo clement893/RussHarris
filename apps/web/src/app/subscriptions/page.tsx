@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Card, Button, Alert } from '@/components/ui';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Alert } from '@/components/ui/Alert';
 import { api } from '@/lib/api';
 import { Loader2 } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
