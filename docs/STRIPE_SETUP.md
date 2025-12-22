@@ -37,6 +37,17 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...  # Your Stripe publishable key
    - Set the billing interval (monthly, yearly, etc.)
    - Copy the Price ID (starts with `price_...`)
 
+### Seeding Default Plans
+
+First, seed the default plans in your database:
+
+```bash
+cd backend
+python scripts/seed_plans.py
+```
+
+This will create three default plans: Free, Pro, and Enterprise.
+
 ### Updating Plans in Database
 
 After creating prices in Stripe, update your plans in the database:
@@ -48,17 +59,23 @@ from app.core.database import AsyncSessionLocal
 
 async def update_plan_stripe_ids():
     async with AsyncSessionLocal() as session:
-        # Update Free plan
-        free_plan = await session.get(Plan, 1)
-        free_plan.stripe_price_id = "price_..."  # Your Stripe price ID
+        from sqlalchemy import select
         
-        # Update Pro plan
-        pro_plan = await session.get(Plan, 2)
-        pro_plan.stripe_price_id = "price_..."  # Your Stripe price ID
+        # Get plans by name
+        result = await session.execute(select(Plan).where(Plan.name == "Free"))
+        free_plan = result.scalar_one_or_none()
+        if free_plan:
+            free_plan.stripe_price_id = "price_..."  # Your Stripe price ID
         
-        # Update Enterprise plan
-        enterprise_plan = await session.get(Plan, 3)
-        enterprise_plan.stripe_price_id = "price_..."  # Your Stripe price ID
+        result = await session.execute(select(Plan).where(Plan.name == "Pro"))
+        pro_plan = result.scalar_one_or_none()
+        if pro_plan:
+            pro_plan.stripe_price_id = "price_..."  # Your Stripe price ID
+        
+        result = await session.execute(select(Plan).where(Plan.name == "Enterprise"))
+        enterprise_plan = result.scalar_one_or_none()
+        if enterprise_plan:
+            enterprise_plan.stripe_price_id = "price_..."  # Your Stripe price ID
         
         await session.commit()
 ```

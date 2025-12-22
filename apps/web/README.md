@@ -235,6 +235,9 @@ NEXTAUTH_SECRET=your-secret-key-change-in-production
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 
+# Stripe (Frontend)
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
+
 # Sentry (Error Tracking)
 NEXT_PUBLIC_SENTRY_DSN=your-sentry-dsn
 SENTRY_DSN=your-sentry-dsn
@@ -257,6 +260,9 @@ SENTRY_AUTH_TOKEN=your-token
 - `/dashboard` - Main dashboard
 - `/components` - Component gallery & theme manager
 - `/email/test` - Email testing interface
+- `/pricing` - Subscription plans and pricing
+- `/subscriptions` - Manage your subscription
+- `/subscriptions/success` - Subscription success page
 
 ### System Pages
 - `/404` - Not found page
@@ -470,6 +476,8 @@ docker run -p 3000:3000 modele-web
 - 🎨 [UI Components](./UI_COMPONENTS.md) - Component library documentation
 - 🔐 [Authentication](./AUTHENTICATION.md) - Auth setup guide
 - ⚠️ [Error Handling](./ERROR_HANDLING.md) - Error handling patterns
+- 💳 [Stripe Setup](../../docs/STRIPE_SETUP.md) - Payment and subscription setup
+- 📋 [Subscriptions Guide](../../docs/SUBSCRIPTIONS_GUIDE.md) - Using subscriptions API
 - 📧 [Email Integration](../../docs/SENDGRID_SETUP.md) - SendGrid setup
 
 ## 🛠️ Available Scripts
