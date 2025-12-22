@@ -3,16 +3,9 @@
  * Helper functions for internationalization
  */
 
-import { useTranslations as useNextIntlTranslations } from 'next-intl';
-import { useLocale as useNextIntlLocale } from 'next-intl';
-
-export function useTranslations(namespace?: string) {
-  return useNextIntlTranslations(namespace);
-}
-
-export function useLocale() {
-  return useNextIntlLocale();
-}
+// Note: These hooks are re-exported from hooks.ts to maintain compatibility
+// The actual implementation doesn't use next-intl
+export { useTranslations, useLocale } from './hooks';
 
 export function formatDate(date: Date | string, locale: string = 'fr'): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
