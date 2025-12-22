@@ -148,7 +148,7 @@ export default function AITestPage() {
             {healthStatus && (
               <div className="mt-2 text-sm">
                 <p>Configured: {healthStatus.configured ? 'Yes' : 'No'}</p>
-                <p>Model: {healthStatus.model || 'N/A'}</p>
+                <p>Model: {healthStatus.model ? String(healthStatus.model) : 'N/A'}</p>
                 <p>Available: {healthStatus.available ? 'Yes' : 'No'}</p>
                 {healthStatus.error && (
                   <p className="text-red-600">Error: {healthStatus.error}</p>
