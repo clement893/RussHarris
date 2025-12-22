@@ -3,6 +3,11 @@
  * Centralized error handling for API calls
  */
 
+/**
+ * API Error Handling
+ * Centralized error handling for API calls with Sentry integration
+ */
+
 import { AxiosError } from 'axios';
 import {
   AppError,
@@ -15,6 +20,7 @@ import {
   ValidationError,
 } from './AppError';
 import { ErrorCode, type ApiErrorResponse } from './types';
+import { captureException } from '@/lib/sentry/client';
 
 /**
  * Convert HTTP status code to ErrorCode
@@ -162,13 +168,27 @@ export function handleApiError(error: unknown): AppError {
       message = `Validation failed for fields: ${validationFields}. ${message}`;
     }
 
-    return createErrorFromStatusCode(statusCode, message, details);
+    const appError = createErrorFromStatusCode(statusCode, message, details);
+    
+    // Send to Sentry for server errors (5xx) and unexpected client errors
+    if (statusCode >= 500 || (statusCode >= 400 && !responseData?.error?.message)) {
+      captureException(new Error(message), {
+        tags: {
+          errorType: 'api_error',
+          statusCode: String(statusCode),
+          method: requestMethod,
+        },
+        extra: details,
+      });
+    }
+    
+    return appError;
   }
 
   // Network error - provide clear guidance
   if (error instanceof Error) {
     if (error.message.includes('Network Error') || error.message.includes('timeout')) {
-      return new AppError(
+      const networkError = new AppError(
         ErrorCode.NETWORK_ERROR,
         'Unable to connect to the server. Please check your internet connection and try again.',
         0,
@@ -177,18 +197,48 @@ export function handleApiError(error: unknown): AppError {
           suggestion: 'Check your network connection or try again in a few moments.',
         }
       );
+      
+      // Log network errors to Sentry (less critical, but useful for monitoring)
+      captureException(error, {
+        tags: {
+          errorType: 'network_error',
+        },
+        level: 'warning',
+      });
+      
+      return networkError;
     }
-    return new InternalServerError(
+    
+    const unexpectedError = new InternalServerError(
       `An unexpected error occurred: ${error.message}`,
       { originalError: error.message }
     );
+    
+    // Send unexpected errors to Sentry
+    captureException(error, {
+      tags: {
+        errorType: 'unexpected_error',
+      },
+    });
+    
+    return unexpectedError;
   }
 
   // Unknown error - provide fallback with context
-  return new InternalServerError(
+  const unknownError = new InternalServerError(
     'An unknown error occurred. Please try again or contact support if the problem persists.',
     { errorType: typeof error, errorValue: String(error) }
   );
+  
+  // Send unknown errors to Sentry
+  captureException(new Error('Unknown error type'), {
+    tags: {
+      errorType: 'unknown_error',
+    },
+    extra: { errorType: typeof error, errorValue: String(error) },
+  });
+  
+  return unknownError;
 }
 
 /**

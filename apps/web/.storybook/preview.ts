@@ -10,8 +10,9 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    // Configuration accessibilité
+    // Configuration accessibilité complète
     a11y: {
+      element: '#storybook-root',
       config: {
         rules: [
           {
@@ -26,8 +27,41 @@ const preview: Preview = {
             id: 'aria-required-attr',
             enabled: true,
           },
+          {
+            id: 'aria-roles',
+            enabled: true,
+          },
+          {
+            id: 'label',
+            enabled: true,
+          },
+          {
+            id: 'heading-order',
+            enabled: true,
+          },
+          {
+            id: 'image-alt',
+            enabled: true,
+          },
+          {
+            id: 'link-name',
+            enabled: true,
+          },
+          {
+            id: 'button-name',
+            enabled: true,
+          },
+          {
+            id: 'form-field-multiple-labels',
+            enabled: true,
+          },
         ],
       },
+      options: {
+        checks: { 'color-contrast': { options: { noScroll: true } } },
+        restoreScroll: true,
+      },
+      manual: true,
     },
     // Thèmes dark/light
     backgrounds: {

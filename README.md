@@ -1,338 +1,251 @@
 # MODELE-NEXTJS-FULLSTACK
 
-A production-ready full-stack template with Next.js 16 frontend and FastAPI backend, perfect for building modern web applications.
+> 🚀 **Template Full-Stack Production-Ready** avec Next.js 16 et FastAPI
 
-## 🎯 Features
+Un template complet et moderne pour démarrer rapidement vos projets full-stack avec les meilleures pratiques de développement.
 
-### Frontend (Next.js 16)
-- ✅ **Next.js 16** with App Router and Turbopack
-- ✅ **React 19** with Server Components
-- ✅ **TypeScript 5** with strict configuration
-- ✅ **Tailwind CSS 3** for styling
-- ✅ **Complete UI Library** (20+ ERP components)
-- ✅ **Reusable Hooks** (useForm, usePagination, useFilters, usePermissions)
-- ✅ **NextAuth.js v5** with Google OAuth
-- ✅ **Route Protection** middleware
-- ✅ **Centralized Error Handling**
-- ✅ **Structured Logging**
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)](https://fastapi.tiangolo.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-### Backend (FastAPI)
-- ✅ **FastAPI** with auto-generated OpenAPI/Swagger docs
-- ✅ **Pydantic v2** for data validation
-- ✅ **SQLAlchemy async** ORM
-- ✅ **Alembic** for database migrations
-- ✅ **PostgreSQL** with async support
-- ✅ **JWT Authentication** with refresh tokens
-- ✅ **SendGrid Email Service** with 7+ transaction templates
-- ✅ **Celery** for background task processing
-- ✅ **Tests** with pytest
-- ✅ **Logging** with loguru
-- ✅ **Standardized Error Handling**
+---
 
-### Shared Types
-- ✅ **`@modele/types` package** for shared TypeScript types
-- ✅ **Automatic generation** from Pydantic schemas
-- ✅ **Frontend/backend synchronization**
+## ✨ Fonctionnalités
 
-### DevOps & Tools
-- ✅ **Turborepo** for optimized monorepo
-- ✅ **pnpm workspaces** for dependency management
-- ✅ **GitHub Actions** CI/CD
-- ✅ **Pre-commit hooks** with Husky
-- ✅ **Docker & Docker Compose**
-- ✅ **Railway** deployment ready
-- ✅ **Code generators** (components, pages, API routes)
-- ✅ **Database migration scripts**
+### 🎨 Frontend (Next.js 16)
+- ⚡ **Next.js 16** avec App Router et Turbopack
+- ⚛️ **React 19** avec Server Components
+- 📘 **TypeScript 5** avec configuration stricte
+- 🎨 **Tailwind CSS 3** pour le styling
+- 🧩 **Bibliothèque UI complète** (20+ composants ERP)
+- 🪝 **Hooks réutilisables** (useForm, usePagination, useFilters, usePermissions)
+- 🔐 **NextAuth.js v5** avec OAuth Google
+- 🛡️ **Protection des routes** avec middleware
+- 📝 **Gestion d'erreurs centralisée**
+- 📊 **Logging structuré**
 
-## 🚀 Quick Start
+### ⚙️ Backend (FastAPI)
+- 🚀 **FastAPI** avec documentation OpenAPI/Swagger auto-générée
+- ✅ **Pydantic v2** pour la validation des données
+- 🗄️ **SQLAlchemy async** ORM
+- 🔄 **Alembic** pour les migrations de base de données
+- 🐘 **PostgreSQL** avec support async
+- 🔑 **Authentification JWT** avec refresh tokens
+- 📧 **Service Email SendGrid** avec 7+ templates transactionnels
+- ⚡ **Celery** pour le traitement de tâches en arrière-plan
+- 🧪 **Tests** avec pytest
+- 📋 **Logging** structuré
+- 🛡️ **Gestion d'erreurs standardisée**
 
-> 📖 **Complete guide**: [GETTING_STARTED.md](./GETTING_STARTED.md)
+### 🔗 Types Partagés
+- 📦 **Package `@modele/types`** pour les types TypeScript partagés
+- 🔄 **Génération automatique** depuis les schémas Pydantic
+- 🔗 **Synchronisation frontend/backend**
 
-### Prerequisites
+### 🛠️ DevOps & Outils
+- ⚡ **Turborepo** pour monorepo optimisé
+- 📦 **pnpm workspaces** pour la gestion des dépendances
+- 🔄 **GitHub Actions** CI/CD
+- 🪝 **Pre-commit hooks** avec Husky
+- 🐳 **Docker & Docker Compose**
+- 🚂 **Railway** prêt pour déploiement
+- 🎯 **Générateurs de code** (composants, pages, routes API)
+- 📊 **Scripts de migration** de base de données
 
-- **Node.js** 22+ ([download](https://nodejs.org/))
+---
+
+## 🚀 Démarrage Rapide
+
+### Prérequis
+
+- **Node.js** 22+ ([télécharger](https://nodejs.org/))
 - **pnpm** 9+ (`npm install -g pnpm`)
-- **Python** 3.11+ ([download](https://www.python.org/downloads/))
-- **PostgreSQL** 14+ ([download](https://www.postgresql.org/download/))
-- **Docker & Docker Compose** (optional)
+- **Python** 3.11+ ([télécharger](https://www.python.org/downloads/))
+- **PostgreSQL** 14+ ([télécharger](https://www.postgresql.org/download/))
+- **Redis** 7+ (optionnel, pour Celery)
+- **Git** ([télécharger](https://git-scm.com/))
 
 ### Installation
 
 ```bash
-# 1. Clone the project
+# 1. Cloner le projet
 git clone https://github.com/clement893/MODELE-NEXTJS-FULLSTACK.git
 cd MODELE-NEXTJS-FULLSTACK
 
-# 2. Install dependencies
+# 2. Installer les dépendances
 pnpm install
 
-# 3. Configure environment variables
+# 3. Configurer les variables d'environnement
 cp backend/.env.example backend/.env
 cp apps/web/.env.example apps/web/.env.local
-# Edit .env files with your values
+# Éditer les fichiers .env avec vos valeurs
 
-# 4. Initialize database
+# 4. Initialiser la base de données
 createdb modele_db
 cd backend && alembic upgrade head && cd ..
 
-# 5. Start the project
-npm run dev:full
+# 5. Démarrer le projet
+pnpm dev:full
 ```
 
-**Access:**
+**Accès :**
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000
 - API Docs: http://localhost:8000/docs
 
-## 📁 Project Structure
+> 📖 **Guide complet** : [GETTING_STARTED.md](./GETTING_STARTED.md)
+
+---
+
+## 📁 Structure du Projet
 
 ```
 MODELE-NEXTJS-FULLSTACK/
 ├── apps/
 │   └── web/                    # Next.js 16 frontend
 │       ├── src/
-│       │   ├── app/           # Pages and layouts
-│       │   ├── components/    # React components
-│       │   └── lib/           # Utilities
-│       ├── package.json
-│       └── Dockerfile
+│       │   ├── app/           # Pages et layouts
+│       │   ├── components/    # Composants React
+│       │   └── lib/           # Utilitaires
+│       └── package.json
 ├── backend/                    # FastAPI backend
 │   ├── app/
-│   │   ├── api/               # API endpoints
-│   │   ├── models/            # SQLAlchemy models
-│   │   ├── schemas/           # Pydantic schemas
-│   │   ├── services/          # Business logic
+│   │   ├── api/               # Endpoints API
+│   │   ├── models/            # Modèles SQLAlchemy
+│   │   ├── schemas/           # Schémas Pydantic
+│   │   ├── services/          # Logique métier
 │   │   └── main.py
-│   ├── alembic/               # Database migrations
+│   ├── alembic/               # Migrations
 │   └── requirements.txt
-├── packages/                   # Shared code
-│   └── types/                 # Shared TypeScript types
-├── scripts/                    # Utility scripts
-│   └── generate/              # Code generators
+├── packages/                   # Code partagé
+│   └── types/                 # Types TypeScript partagés
+├── scripts/                    # Scripts utilitaires
+│   └── generate/              # Générateurs de code
+├── docs/                       # Documentation
 ├── docker-compose.yml
-├── turbo.json                 # Turborepo config
-└── package.json               # Root package.json
+├── turbo.json                 # Configuration Turborepo
+└── package.json               # Package.json racine
 ```
 
-## 🔗 API Endpoints
+---
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/google` - Google OAuth login
-- `POST /api/auth/refresh` - Refresh access token
+## 📚 Documentation
 
-### Users
-- `GET /api/users/me` - Get current user
-- `PUT /api/users/me` - Update current user
-- `GET /api/users/{user_id}` - Get user by ID
-- `GET /api/users` - List all users
+### 📖 Guides Principaux
+- [🚀 Guide de Démarrage](./GETTING_STARTED.md) - Guide complet d'installation
+- [🛠️ Guide de Développement](./docs/DEVELOPMENT.md) - Outils et workflows de développement
+- [🧪 Guide des Tests](./docs/TESTING.md) - Comment écrire et exécuter les tests
+- [🔒 Sécurité](./docs/SECURITY.md) - Bonnes pratiques de sécurité
+- [📧 Configuration SendGrid](./docs/SENDGRID_SETUP.md) - Configuration du service email
+- [💳 Configuration Stripe](./docs/STRIPE_SETUP.md) - Configuration des paiements
+- [🤝 Contribuer](./CONTRIBUTING.md) - Guide de contribution
 
-### Organizations
-- `GET /api/organizations` - List organizations
-- `POST /api/organizations` - Create organization
-- `GET /api/organizations/{id}` - Get organization
-- `PUT /api/organizations/{id}` - Update organization
+### 📋 Documentation Technique
+- [🎨 Composants UI](./docs/COMPONENTS.md) - Documentation des composants
+- [🪝 Hooks Personnalisés](./docs/HOOKS.md) - Documentation des hooks
+- [🛠️ Utilitaires](./docs/UTILS.md) - Documentation des utilitaires
+- [🔧 Dépannage](./docs/TROUBLESHOOTING.md) - Résolution des problèmes courants
 
-### Donateurs (Donors)
-- `GET /api/donateurs` - List donors
-- `POST /api/donateurs` - Create donor
-- `GET /api/donateurs/{id}` - Get donor
-- `PUT /api/donateurs/{id}` - Update donor
-- `POST /api/donateurs/import` - Import donors from file
-- `POST /api/donateurs/export` - Export donors to file
+---
 
-### Email (SendGrid)
-- `POST /api/email/welcome` - Send welcome email
-- `POST /api/email/invoice` - Send invoice email
-- `POST /api/email/subscription/created` - Send subscription created email
-- `POST /api/email/subscription/cancelled` - Send subscription cancelled email
-- `POST /api/email/trial/ending` - Send trial ending email
-- `POST /api/email/test` - Send test email
-- `GET /api/email/health` - Email service health check
-
-### Health
-- `GET /health` - Health check
-- `GET /api/health` - API health check
-
-> 📡 **Full API documentation**: http://localhost:8000/docs (Swagger) or http://localhost:8000/redoc (ReDoc)
-> 📧 **Email Setup Guide**: [docs/SENDGRID_SETUP.md](./docs/SENDGRID_SETUP.md)
-
-## 🛠️ Development
-
-### Available Scripts
+## 🛠️ Scripts Disponibles
 
 ```bash
-# Development
-npm run dev:full          # Start frontend + backend
-npm run dev:frontend      # Start frontend only
-npm run dev:backend       # Start backend only
+# Développement
+pnpm dev:full          # Démarrer frontend + backend
+pnpm dev:frontend      # Frontend uniquement
+pnpm dev:backend       # Backend uniquement
 
-# Code Generation
-npm run generate:component ComponentName
-npm run generate:page page-name
-npm run generate:api route-name
-npm run generate:types    # Generate TypeScript types from Pydantic
+# Génération de code
+pnpm generate:component ComponentName
+pnpm generate:page page-name
+pnpm generate:api route-name
+pnpm generate:types    # Générer types TypeScript depuis Pydantic
 
-# Database Migrations
-npm run migrate create MigrationName
-npm run migrate upgrade
-npm run migrate downgrade
+# Tests
+pnpm test              # Tous les tests
+pnpm test:web          # Tests frontend
+pnpm test:backend      # Tests backend
+pnpm test:coverage     # Avec couverture
 
-# Code Quality
-npm run lint              # Lint code
-npm run lint:fix          # Fix linting issues
-npm run type-check        # TypeScript type checking
-npm run format            # Format code with Prettier
+# Qualité de code
+pnpm lint              # Linter
+pnpm lint:fix          # Corriger les erreurs
+pnpm type-check        # Vérification TypeScript
+pnpm format            # Formater avec Prettier
 
-# Testing
-npm run test              # Run all tests
-npm run test:web          # Frontend tests
-npm run test:backend      # Backend tests
-npm run test:e2e          # E2E tests with Playwright
-
-# Build
-npm run build             # Build all packages
-npm run build:web         # Build frontend only
+# Base de données
+pnpm migrate create MigrationName
+pnpm migrate upgrade
+pnpm migrate downgrade
 ```
 
-### Database Migrations
+---
 
-```bash
-cd backend
+## 🔐 Sécurité
 
-# Create a new migration
-alembic revision --autogenerate -m "Add new table"
+- ✅ Authentification JWT avec refresh tokens
+- ✅ Hachage de mots de passe avec bcrypt
+- ✅ Protection CORS
+- ✅ Rate limiting
+- ✅ Headers de sécurité (CSP, HSTS, X-Frame-Options)
+- ✅ Validation des entrées (Pydantic)
+- ✅ Protection contre les injections SQL (SQLAlchemy ORM)
+- ✅ Protection XSS (DOMPurify)
 
-# Apply migrations
-alembic upgrade head
+> 🔒 **Audit de sécurité** : [docs/SECURITY_AUDIT_REPORT.md](./docs/SECURITY_AUDIT_REPORT.md)
 
-# Rollback one migration
-alembic downgrade -1
-```
+---
 
-## 📦 Deployment
+## 📦 Déploiement
 
 ### Railway
 
-1. Push to GitHub
-2. Connect Railway to your GitHub repository
-3. Set environment variables in Railway dashboard (see [GETTING_STARTED.md](./GETTING_STARTED.md))
-4. Deploy automatically
+1. Push vers GitHub
+2. Connecter Railway à votre dépôt GitHub
+3. Configurer les variables d'environnement dans Railway
+4. Déploiement automatique
 
 ### Docker
 
 ```bash
-# Build and run locally
 docker-compose up --build
 ```
 
-## 📚 Documentation
+---
 
-### Documentation Principale
+## 🤝 Contribution
 
-- 📖 [Getting Started Guide](./GETTING_STARTED.md) - Complete setup guide
-- 🛠️ [Development Guide](./DEVELOPMENT.md) - Development tools and workflows
-- 📧 [SendGrid Email Setup](./docs/SENDGRID_SETUP.md) - Email service configuration
-- 🤝 [Contributing Guide](./CONTRIBUTING.md) - How to contribute
-- 📝 [Changelog](./CHANGELOG.md) - Version history
-- 🎨 [Backend Documentation](./backend/README.md)
-- ⚛️ [Frontend Documentation](./apps/web/README.md)
+Les contributions sont les bienvenues ! Veuillez lire [CONTRIBUTING.md](./CONTRIBUTING.md) pour les guidelines.
 
-### Documentation Composants UI
-
-- 📚 [Index Documentation](./docs/INDEX.md) - Index complet de toute la documentation
-- 🎨 [Composants UI README](./apps/web/src/components/ui/README.md) - Vue d'ensemble des composants
-- 📖 [Documentation API](./apps/web/src/app/components/docs/API.md) - Documentation complète de tous les composants
-- ♿ [Guide d'Accessibilité](./apps/web/src/components/ui/ACCESSIBILITY.md) - Standards WCAG 2.1
-- 🎨 [Système de Thème](./apps/web/src/components/theme/README.md) - Personnalisation du thème
-- 📚 [Storybook Guide](./apps/web/.storybook/README.md) - Guide Storybook
-- 🎯 [Exemples SaaS](./apps/web/src/app/examples/README.md) - Documentation des exemples
-
-### Guides Développeurs
-
-- 🪝 [Documentation Hooks](./docs/HOOKS.md) - Guide complet des hooks personnalisés
-- 🛠️ [Documentation Utilitaires](./docs/UTILS.md) - Guide complet des utilitaires
-- 🧪 [Guide des Tests](./docs/TESTING.md) - Guide pour écrire et exécuter des tests
-- 🔧 [Guide de Dépannage](./docs/TROUBLESHOOTING.md) - Résolution des problèmes courants
-
-### Documentation Template SaaS
-
-- 🚀 [Template SaaS README](./README_TEMPLATE_SAAS.md) - Documentation complète du template
-- 📋 [Guide de Démarrage](./GUIDE_DEMARRAGE.md) - Guide de démarrage rapide
-- 📊 [Analyse Complète](./docs/ANALYSE.md) - Analyse détaillée du template (score 9.2/10)
-
-## 🔐 Security
-
-- JWT authentication with refresh tokens
-- Password hashing with bcrypt
-- CORS protection
-- SQL injection prevention (SQLAlchemy)
-- Environment variable management
-- HTTPS ready
-
-## 📝 Environment Variables
-
-### Backend (.env)
-
-```env
-ENVIRONMENT=development
-DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/modele_db
-SECRET_KEY=your-secret-key-change-in-production
-FRONTEND_URL=http://localhost:3000
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-REFRESH_TOKEN_EXPIRE_DAYS=7
-
-# SendGrid Email Configuration
-SENDGRID_API_KEY=your-sendgrid-api-key
-SENDGRID_FROM_EMAIL=noreply@yourdomain.com
-SENDGRID_FROM_NAME=Your App Name
-```
-
-### Frontend (.env.local)
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your-secret-key-change-in-production
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
-```
-
-> See `.env.example` files for complete configuration options.
-
-## 🤝 Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feat/feature-name`
-3. Make your changes
-4. Commit with clear messages: `git commit -m "feat: add new feature"`
-5. Push to your fork: `git push origin feat/feature-name`
-6. Open a Pull Request
-
-## 📄 License
-
-MIT
-
-## 👨‍💻 Author
-
-Created by [clement893](https://github.com/clement893)
-
-## 🙏 Acknowledgments
-
-- [Next.js](https://nextjs.org/)
-- [FastAPI](https://fastapi.tiangolo.com/)
-- [SQLAlchemy](https://www.sqlalchemy.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Railway](https://railway.app/)
-
-## 📞 Support
-
-For issues and questions, please open an issue on GitHub.
+1. Fork le projet
+2. Créer une branche (`git checkout -b feat/ma-fonctionnalite`)
+3. Commit vos changements (`git commit -m 'feat: ajouter ma fonctionnalité'`)
+4. Push vers la branche (`git push origin feat/ma-fonctionnalite`)
+5. Ouvrir une Pull Request
 
 ---
 
-**Happy coding! 🚀**
+## 📄 License
+
+MIT License - voir [LICENSE](./LICENSE) pour plus de détails.
+
+---
+
+## 🙏 Remerciements
+
+- [Next.js](https://nextjs.org/)
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Turborepo](https://turbo.build/)
+
+---
+
+## 📞 Support
+
+Pour les questions et problèmes, veuillez ouvrir une [issue](https://github.com/clement893/MODELE-NEXTJS-FULLSTACK/issues).
+
+---
+
+**Créé avec ❤️ par clement893**
