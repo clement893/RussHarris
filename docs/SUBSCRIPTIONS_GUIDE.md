@@ -211,7 +211,9 @@ Webhooks are automatically handled at `/webhooks/stripe`. Configure in Stripe Da
 - `amount_due`: Amount due in cents
 - `status`: Invoice status
 
-## Migration
+## Setup
+
+### 1. Run Database Migration
 
 Run the migration to create tables:
 
@@ -220,11 +222,22 @@ cd backend
 alembic upgrade head
 ```
 
-Seed default plans:
+### 2. Seed Default Plans
+
+Seed default plans in the database:
 
 ```bash
 python scripts/seed_plans.py
 ```
+
+This creates three default plans:
+- **Free**: $0/month - Perfect for getting started
+- **Pro**: $29/month - For growing teams (marked as popular)
+- **Enterprise**: $99/month - For large organizations
+
+### 3. Configure Stripe Price IDs
+
+After creating products and prices in Stripe Dashboard, update the `stripe_price_id` for each plan in your database (see [STRIPE_SETUP.md](./STRIPE_SETUP.md) for details).
 
 ## Environment Variables
 

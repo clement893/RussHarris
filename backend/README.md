@@ -10,6 +10,7 @@ FastAPI backend with OpenAPI/Swagger auto-generation, Pydantic v2 validation, Al
 - **Automated API tests** with pytest
 - **Async SQLAlchemy** for database operations
 - **JWT authentication** with password hashing
+- **Stripe Integration** for payments and subscriptions
 - **SendGrid Email Service** with 7+ transaction templates
 - **Celery** for background task processing (emails, notifications)
 - **Redis** for caching and Celery broker
@@ -201,6 +202,16 @@ Authorization: Bearer <access_token>
 - `GET /api/v1/users/` - List users
 - `GET /api/v1/users/{id}` - Get user by ID
 
+### Subscriptions & Payments (Stripe)
+- `GET /api/v1/subscriptions/plans` - List all subscription plans
+- `GET /api/v1/subscriptions/plans/{id}` - Get plan details
+- `GET /api/v1/subscriptions/me` - Get current user's subscription
+- `POST /api/v1/subscriptions/checkout` - Create Stripe checkout session
+- `POST /api/v1/subscriptions/portal` - Create customer portal session
+- `POST /api/v1/subscriptions/cancel` - Cancel subscription
+- `POST /api/v1/subscriptions/upgrade/{plan_id}` - Upgrade/downgrade plan
+- `POST /webhooks/stripe` - Stripe webhook endpoint
+
 ### Email (SendGrid)
 - `POST /api/email/welcome` - Send welcome email
 - `POST /api/email/invoice` - Send invoice email
@@ -210,6 +221,8 @@ Authorization: Bearer <access_token>
 - `POST /api/email/test` - Send test email
 - `GET /api/email/health` - Email service health check
 
+> 💳 **Stripe Setup Guide**: [docs/STRIPE_SETUP.md](../../docs/STRIPE_SETUP.md)  
+> 📋 **Subscriptions Guide**: [docs/SUBSCRIPTIONS_GUIDE.md](../../docs/SUBSCRIPTIONS_GUIDE.md)  
 > 📧 **Email Setup Guide**: [docs/SENDGRID_SETUP.md](../../docs/SENDGRID_SETUP.md)
 
 ## 🧹 Code Quality
@@ -243,6 +256,9 @@ Key variables:
 - `SENDGRID_FROM_EMAIL` - Default sender email address
 - `SENDGRID_FROM_NAME` - Default sender name
 - `FRONTEND_URL` - Frontend URL for email links
+- `STRIPE_SECRET_KEY` - Stripe secret key for payments
+- `STRIPE_PUBLISHABLE_KEY` - Stripe publishable key
+- `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
 
 ## 🐛 Troubleshooting
 
