@@ -7,7 +7,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { clsx } from 'clsx';
-import Button from './Button';
 
 export interface RichTextEditorProps {
   value?: string;
