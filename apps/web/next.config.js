@@ -45,6 +45,61 @@ const nextConfig = {
     );
     
     // Handle CSS files that don't exist during build (like default-stylesheet.css)
+    // Create CSS file for both server and client builds
+    const path = require('path');
+    const fs = require('fs');
+    const createCSSFile = (outputPath) => {
+      const cssDir = path.join(outputPath, 'browser');
+      const cssFile = path.join(cssDir, 'default-stylesheet.css');
+      
+      try {
+        if (!fs.existsSync(cssDir)) {
+          fs.mkdirSync(cssDir, { recursive: true });
+        }
+        // Always write the file to ensure it exists
+        fs.writeFileSync(cssFile, '', 'utf8');
+      } catch (e) {
+        // Log warning but don't fail the build
+        console.warn('Could not create default-stylesheet.css:', e.message);
+      }
+    };
+    
+    // Create CSS file immediately when webpack config is called
+    const outputPath = path.join(process.cwd(), '.next');
+    createCSSFile(outputPath);
+    
+    // Add a plugin to intercept and replace default-stylesheet.css imports
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(
+        /default-stylesheet\.css$/,
+        require.resolve('./src/lib/empty-css.js')
+      )
+    );
+    
+    // Add a custom plugin to create the CSS file early in the build
+    config.plugins.push({
+      apply: (compiler) => {
+        const getOutputPath = () => {
+          return compiler.options.output?.path || path.join(process.cwd(), '.next');
+        };
+        
+        // Create CSS file as early as possible - after plugins are initialized
+        compiler.hooks.afterPlugins.tap('DefaultStylesheetPlugin', () => {
+          createCSSFile(getOutputPath());
+        });
+        
+        // Create CSS file when environment is set up
+        compiler.hooks.environment.tap('DefaultStylesheetPlugin', () => {
+          createCSSFile(getOutputPath());
+        });
+        
+        // Also try to create it before compilation
+        compiler.hooks.beforeCompile.tap('DefaultStylesheetPlugin', () => {
+          createCSSFile(getOutputPath());
+        });
+      },
+    });
+    
     if (isServer) {
       // Add a plugin to log what's trying to import default-stylesheet.css
       config.plugins.push({
@@ -62,60 +117,6 @@ const nextConfig = {
                 }
               }
             });
-          });
-        },
-      });
-      
-      // Add a plugin to intercept and replace default-stylesheet.css imports
-      config.plugins.push(
-        new webpack.NormalModuleReplacementPlugin(
-          /default-stylesheet\.css$/,
-          require.resolve('./src/lib/empty-css.js')
-        )
-      );
-      
-      // Add a custom plugin to create the CSS file early in the build
-      config.plugins.push({
-        apply: (compiler) => {
-          // Create CSS file as early as possible
-          compiler.hooks.environment.tap('DefaultStylesheetPlugin', () => {
-            const path = require('path');
-            const fs = require('fs');
-            const outputPath = compiler.options.output.path || path.join(process.cwd(), '.next');
-            const cssDir = path.join(outputPath, 'browser');
-            const cssFile = path.join(cssDir, 'default-stylesheet.css');
-            
-            // Ensure directory exists and create empty CSS file
-            try {
-              if (!fs.existsSync(cssDir)) {
-                fs.mkdirSync(cssDir, { recursive: true });
-              }
-              // Always write the file to ensure it exists
-              fs.writeFileSync(cssFile, '', 'utf8');
-            } catch (e) {
-              // Log warning but don't fail the build
-              console.warn('Could not create default-stylesheet.css:', e.message);
-            }
-          });
-          
-          // Also try to create it before compilation
-          compiler.hooks.beforeCompile.tap('DefaultStylesheetPlugin', () => {
-            const path = require('path');
-            const fs = require('fs');
-            const outputPath = compiler.options.output.path || path.join(process.cwd(), '.next');
-            const cssDir = path.join(outputPath, 'browser');
-            const cssFile = path.join(cssDir, 'default-stylesheet.css');
-            
-            try {
-              if (!fs.existsSync(cssDir)) {
-                fs.mkdirSync(cssDir, { recursive: true });
-              }
-              if (!fs.existsSync(cssFile)) {
-                fs.writeFileSync(cssFile, '', 'utf8');
-              }
-            } catch (e) {
-              // Ignore errors
-            }
           });
         },
       });

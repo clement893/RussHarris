@@ -3,8 +3,7 @@
 import { PageHeader, PageContainer } from '@/components/layout';
 
 // Disable static generation to avoid CSS file issues during build
-// Using 'error' instead of 'force-dynamic' to prevent any static generation attempts
-export const dynamic = 'error';
+export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 export const runtime = 'nodejs';
 export const fetchCache = 'force-no-store';
