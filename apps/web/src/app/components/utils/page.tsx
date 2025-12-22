@@ -37,7 +37,7 @@ export default function UtilsPage() {
       shortcut: '⌘,',
     },
   ];
-  const { isOpen: isCommandPaletteOpen, open: openCommandPalette, close: closeCommandPalette } = useCommandPalette(commands);
+  const { isOpen: isCommandPaletteOpen, open: openCommandPalette, close: closeCommandPalette } = useCommandPalette();
 
   const multiSelectOptions: MultiSelectOption[] = [
     { label: 'React', value: 'react', group: 'Frameworks' },

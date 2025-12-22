@@ -110,7 +110,7 @@ const commands: Command[] = [
   },
 ];
 
-const { isOpen, open, close } = useCommandPalette(commands);
+const { isOpen, open, close } = useCommandPalette();
 
 <CommandPalette commands={commands} isOpen={isOpen} onClose={close} />
 ```

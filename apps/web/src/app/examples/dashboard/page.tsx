@@ -54,7 +54,7 @@ export default function DashboardExample() {
     { id: '1', label: 'Nouveau utilisateur', category: 'Actions', action: () => alert('Créer utilisateur') },
     { id: '2', label: 'Paramètres', category: 'Navigation', action: () => alert('Paramètres') },
   ];
-  const { isOpen, close } = useCommandPalette(commands);
+  const { isOpen, close } = useCommandPalette();
 
   return (
     <PageContainer>
