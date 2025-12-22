@@ -76,7 +76,7 @@ pnpm build-storybook    # Build de production
 
 ## 🧪 Tests
 
-- **[README Tests](../apps/web/src/components/ui/__tests__/README.md)** - Guide des tests
+- **[Guide des Tests](./TESTING.md)** - Guide complet pour écrire et exécuter des tests
 - **[Tests CommandPalette](../apps/web/src/components/ui/__tests__/CommandPalette.test.tsx)** - Tests pour CommandPalette
 - **[Tests MultiSelect](../apps/web/src/components/ui/__tests__/MultiSelect.test.tsx)** - Tests pour MultiSelect
 
@@ -106,12 +106,11 @@ pnpm test:coverage     # Couverture de code
 
 ---
 
-## 📊 Évaluations & Audits
+## 📊 Analyses & Évaluations
 
-- **[Évaluation Template SaaS](../EVALUATION_SAAS_TEMPLATE.md)** - Évaluation complète du template
-- **[Résumé Améliorations](../RESUME_AMELIORATIONS.md)** - Résumé de toutes les améliorations
-- **[Audit Performance](../docs/PERFORMANCE_AUDIT.md)** - Audit de performance
-- **[Audit Sécurité](../docs/SECURITY_AUDIT.md)** - Audit de sécurité
+- **[Analyse Complète](../docs/ANALYSE.md)** - Analyse détaillée du template (score 9.2/10)
+- **[Analyse Qualité Code](../ANALYSE_QUALITE_CODE.md)** - Analyse de la qualité du code
+- **[Analyse Qualité Documentation](../ANALYSE_QUALITE_DOCUMENTATION.md)** - Analyse de la documentation
 
 ---
 
@@ -146,7 +145,7 @@ pnpm test:coverage     # Couverture de code
 
 ### Pour les Testeurs
 
-1. **[README Tests](../apps/web/src/components/ui/__tests__/README.md)** - Guide des tests
+1. **[Guide des Tests](./TESTING.md)** - Guide complet pour écrire et exécuter des tests
 2. **[Tests Unitaires](../apps/web/src/components/ui/__tests__/)** - Tests existants
 3. **[Storybook](../apps/web/.storybook/README.md)** - Tests visuels
 
@@ -166,8 +165,11 @@ pnpm test:coverage     # Couverture de code
 
 - **Thème** → [README Thème](../apps/web/src/components/theme/README.md)
 - **Accessibilité** → [ACCESSIBILITY.md](../apps/web/src/components/ui/ACCESSIBILITY.md)
-- **Tests** → [README Tests](../apps/web/src/components/ui/__tests__/README.md)
+- **Tests** → [Guide des Tests](./TESTING.md)
 - **Storybook** → [README Storybook](../apps/web/.storybook/README.md)
+- **Hooks** → [Documentation Hooks](./HOOKS.md)
+- **Utilitaires** → [Documentation Utilitaires](./UTILS.md)
+- **Dépannage** → [Guide de Dépannage](./TROUBLESHOOTING.md)
 
 ### Par Page
 

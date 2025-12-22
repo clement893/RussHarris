@@ -12,7 +12,6 @@ A production-ready full-stack template with Next.js 16 frontend and FastAPI back
 - ✅ **Complete UI Library** (20+ ERP components)
 - ✅ **Reusable Hooks** (useForm, usePagination, useFilters, usePermissions)
 - ✅ **NextAuth.js v5** with Google OAuth
-- ✅ **Subscription Management** pages (pricing, subscriptions, checkout)
 - ✅ **Route Protection** middleware
 - ✅ **Centralized Error Handling**
 - ✅ **Structured Logging**
@@ -24,10 +23,8 @@ A production-ready full-stack template with Next.js 16 frontend and FastAPI back
 - ✅ **Alembic** for database migrations
 - ✅ **PostgreSQL** with async support
 - ✅ **JWT Authentication** with refresh tokens
-- ✅ **Stripe Integration** for payments and subscriptions
 - ✅ **SendGrid Email Service** with 7+ transaction templates
 - ✅ **Celery** for background task processing
-- ✅ **Redis** for caching and rate limiting
 - ✅ **Tests** with pytest
 - ✅ **Logging** with loguru
 - ✅ **Standardized Error Handling**
@@ -145,16 +142,6 @@ MODELE-NEXTJS-FULLSTACK/
 - `POST /api/donateurs/import` - Import donors from file
 - `POST /api/donateurs/export` - Export donors to file
 
-### Subscriptions & Payments (Stripe)
-- `GET /api/v1/subscriptions/plans` - List all subscription plans
-- `GET /api/v1/subscriptions/plans/{id}` - Get plan details
-- `GET /api/v1/subscriptions/me` - Get current user's subscription
-- `POST /api/v1/subscriptions/checkout` - Create Stripe checkout session
-- `POST /api/v1/subscriptions/portal` - Create customer portal session
-- `POST /api/v1/subscriptions/cancel` - Cancel subscription
-- `POST /api/v1/subscriptions/upgrade/{plan_id}` - Upgrade/downgrade plan
-- `POST /webhooks/stripe` - Stripe webhook endpoint
-
 ### Email (SendGrid)
 - `POST /api/email/welcome` - Send welcome email
 - `POST /api/email/invoice` - Send invoice email
@@ -166,12 +153,10 @@ MODELE-NEXTJS-FULLSTACK/
 
 ### Health
 - `GET /health` - Health check
-- `GET /api/v1/health` - API health check
+- `GET /api/health` - API health check
 
-> 📡 **Full API documentation**: http://localhost:8000/docs (Swagger) or http://localhost:8000/redoc (ReDoc)  
-> 💳 **Stripe Setup Guide**: [docs/STRIPE_SETUP.md](./docs/STRIPE_SETUP.md)  
-> 📧 **Email Setup Guide**: [docs/SENDGRID_SETUP.md](./docs/SENDGRID_SETUP.md)  
-> 📋 **Subscriptions Guide**: [docs/SUBSCRIPTIONS_GUIDE.md](./docs/SUBSCRIPTIONS_GUIDE.md)
+> 📡 **Full API documentation**: http://localhost:8000/docs (Swagger) or http://localhost:8000/redoc (ReDoc)
+> 📧 **Email Setup Guide**: [docs/SENDGRID_SETUP.md](./docs/SENDGRID_SETUP.md)
 
 ## 🛠️ Development
 
@@ -244,15 +229,38 @@ docker-compose up --build
 
 ## 📚 Documentation
 
+### Documentation Principale
+
 - 📖 [Getting Started Guide](./GETTING_STARTED.md) - Complete setup guide
 - 🛠️ [Development Guide](./DEVELOPMENT.md) - Development tools and workflows
-- 💳 [Stripe Setup Guide](./docs/STRIPE_SETUP.md) - Payment and subscription setup
-- 📋 [Subscriptions Guide](./docs/SUBSCRIPTIONS_GUIDE.md) - Using subscriptions API
 - 📧 [SendGrid Email Setup](./docs/SENDGRID_SETUP.md) - Email service configuration
 - 🤝 [Contributing Guide](./CONTRIBUTING.md) - How to contribute
 - 📝 [Changelog](./CHANGELOG.md) - Version history
 - 🎨 [Backend Documentation](./backend/README.md)
 - ⚛️ [Frontend Documentation](./apps/web/README.md)
+
+### Documentation Composants UI
+
+- 📚 [Index Documentation](./docs/INDEX.md) - Index complet de toute la documentation
+- 🎨 [Composants UI README](./apps/web/src/components/ui/README.md) - Vue d'ensemble des composants
+- 📖 [Documentation API](./apps/web/src/app/components/docs/API.md) - Documentation complète de tous les composants
+- ♿ [Guide d'Accessibilité](./apps/web/src/components/ui/ACCESSIBILITY.md) - Standards WCAG 2.1
+- 🎨 [Système de Thème](./apps/web/src/components/theme/README.md) - Personnalisation du thème
+- 📚 [Storybook Guide](./apps/web/.storybook/README.md) - Guide Storybook
+- 🎯 [Exemples SaaS](./apps/web/src/app/examples/README.md) - Documentation des exemples
+
+### Guides Développeurs
+
+- 🪝 [Documentation Hooks](./docs/HOOKS.md) - Guide complet des hooks personnalisés
+- 🛠️ [Documentation Utilitaires](./docs/UTILS.md) - Guide complet des utilitaires
+- 🧪 [Guide des Tests](./docs/TESTING.md) - Guide pour écrire et exécuter des tests
+- 🔧 [Guide de Dépannage](./docs/TROUBLESHOOTING.md) - Résolution des problèmes courants
+
+### Documentation Template SaaS
+
+- 🚀 [Template SaaS README](./README_TEMPLATE_SAAS.md) - Documentation complète du template
+- 📋 [Guide de Démarrage](./GUIDE_DEMARRAGE.md) - Guide de démarrage rapide
+- 📊 [Analyse Complète](./docs/ANALYSE.md) - Analyse détaillée du template (score 9.2/10)
 
 ## 🔐 Security
 
@@ -281,11 +289,6 @@ REFRESH_TOKEN_EXPIRE_DAYS=7
 SENDGRID_API_KEY=your-sendgrid-api-key
 SENDGRID_FROM_EMAIL=noreply@yourdomain.com
 SENDGRID_FROM_NAME=Your App Name
-
-# Stripe Configuration
-STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
-STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 ```
 
 ### Frontend (.env.local)
@@ -295,9 +298,6 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your-secret-key-change-in-production
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
-
-# Stripe (Frontend)
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
 ```
 
 > See `.env.example` files for complete configuration options.
