@@ -184,11 +184,21 @@ class StripeService:
                 logger.error(f"No subscription items found for {subscription.stripe_subscription_id}")
                 return False
 
+            # Get the subscription item ID (should be only one for our use case)
+            subscription_item_id = stripe_subscription.items.data[0].id
+            
+            # If there are multiple items, log a warning but use the first one
+            if len(stripe_subscription.items.data) > 1:
+                logger.warning(
+                    f"Subscription {subscription.stripe_subscription_id} has multiple items, "
+                    f"updating first item {subscription_item_id}"
+                )
+
             # Update subscription with new price
             stripe.Subscription.modify(
                 subscription.stripe_subscription_id,
                 items=[{
-                    "id": stripe_subscription.items.data[0].id,  # Use subscription item ID, not subscription ID
+                    "id": subscription_item_id,  # Use subscription item ID, not subscription ID
                     "price": new_plan.stripe_price_id,
                 }],
                 proration_behavior="always_invoice",

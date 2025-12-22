@@ -121,6 +121,15 @@ async def handle_checkout_completed(event_object: dict, db: AsyncSession, subscr
             logger.info(f"Subscription {subscription_id} already exists, skipping creation")
             return
     
+    # For checkout.session.completed, subscription_id might be None for one-time payments
+    # In that case, we should still create a subscription record if it's a subscription checkout
+    if not subscription_id:
+        logger.warning(f"Checkout completed but no subscription_id for user {user_id}, plan {plan_id}")
+        # Check if this is a subscription checkout by checking mode
+        # If it's not a subscription, we might not want to create a subscription record
+        # For now, we'll skip creation if no subscription_id
+        return
+    
     # Get subscription details from Stripe if subscription_id exists
     trial_end = None
     current_period_start = None
@@ -184,17 +193,23 @@ async def handle_subscription_created(
 ):
     """Handle customer.subscription.created event"""
     subscription_id = event_object.get("id")
-    status_str = event_object.get("status", "")
+    if not subscription_id:
+        logger.warning("customer.subscription.created event missing subscription ID")
+        return
     
+    status_str = event_object.get("status", "")
     status = map_stripe_status(status_str)
     period_start, period_end = _parse_subscription_periods(event_object)
     
-    await subscription_service.update_subscription_status(
+    result = await subscription_service.update_subscription_status(
         stripe_subscription_id=subscription_id,
         status=status,
         current_period_start=period_start,
         current_period_end=period_end,
     )
+    
+    if not result:
+        logger.warning(f"Could not update subscription {subscription_id} - may not exist yet")
 
 
 async def handle_subscription_updated(
@@ -204,17 +219,23 @@ async def handle_subscription_updated(
 ):
     """Handle customer.subscription.updated event"""
     subscription_id = event_object.get("id")
-    status_str = event_object.get("status", "")
+    if not subscription_id:
+        logger.warning("customer.subscription.updated event missing subscription ID")
+        return
     
+    status_str = event_object.get("status", "")
     status = map_stripe_status(status_str)
     period_start, period_end = _parse_subscription_periods(event_object)
     
-    await subscription_service.update_subscription_status(
+    result = await subscription_service.update_subscription_status(
         stripe_subscription_id=subscription_id,
         status=status,
         current_period_start=period_start,
         current_period_end=period_end,
     )
+    
+    if not result:
+        logger.warning(f"Could not update subscription {subscription_id} - subscription not found")
 
 
 async def handle_subscription_deleted(
@@ -226,11 +247,17 @@ async def handle_subscription_deleted(
     from app.models.subscription import SubscriptionStatus
     
     subscription_id = event_object.get("id")
+    if not subscription_id:
+        logger.warning("customer.subscription.deleted event missing subscription ID")
+        return
     
-    await subscription_service.update_subscription_status(
+    result = await subscription_service.update_subscription_status(
         stripe_subscription_id=subscription_id,
         status=SubscriptionStatus.CANCELED,
     )
+    
+    if not result:
+        logger.warning(f"Could not cancel subscription {subscription_id} - subscription not found")
 
 
 async def handle_invoice_paid(event_object: dict, db: AsyncSession):

@@ -136,6 +136,10 @@ class SubscriptionService:
         current_period_end: Optional[datetime] = None
     ) -> Optional[Subscription]:
         """Update subscription status from webhook"""
+        if not stripe_subscription_id:
+            logger.warning("update_subscription_status called with empty stripe_subscription_id")
+            return None
+        
         result = await self.db.execute(
             select(Subscription).where(
                 Subscription.stripe_subscription_id == stripe_subscription_id
@@ -144,6 +148,7 @@ class SubscriptionService:
         subscription = result.scalar_one_or_none()
 
         if not subscription:
+            logger.debug(f"Subscription with stripe_subscription_id {stripe_subscription_id} not found")
             return None
 
         subscription.status = status
@@ -151,6 +156,10 @@ class SubscriptionService:
             subscription.current_period_start = current_period_start
         if current_period_end:
             subscription.current_period_end = current_period_end
+        
+        # Update canceled_at if status is CANCELED
+        if status == SubscriptionStatus.CANCELED and not subscription.canceled_at:
+            subscription.canceled_at = datetime.now(timezone.utc)
 
         await self.db.commit()
         await self.db.refresh(subscription)
