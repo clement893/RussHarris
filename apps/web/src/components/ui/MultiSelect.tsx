@@ -163,7 +163,7 @@ export default function MultiSelect({
           ))}
 
           {/* Input */}
-          {(!maxSelected || value.length < maxSelected) && (
+          {searchable && (!maxSelected || value.length < maxSelected) && (
             <input
               ref={inputRef}
               type="text"
