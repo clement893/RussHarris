@@ -121,6 +121,8 @@ export default function InvitationsPage() {
     try {
       // TODO: Replace with actual API call
       // await invitationsAPI.cancel(invitationId);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      void invitationId; // Will be used when API is implemented
       await loadInvitations();
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Erreur lors de l\'annulation');
@@ -131,6 +133,8 @@ export default function InvitationsPage() {
     try {
       // TODO: Replace with actual API call
       // await invitationsAPI.resend(invitationId);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      void invitationId; // Will be used when API is implemented
       await loadInvitations();
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Erreur lors de la réenvoi');
