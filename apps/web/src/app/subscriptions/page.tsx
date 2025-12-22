@@ -346,3 +346,11 @@ function SubscriptionsPageContent() {
     </Suspense>
   );
 }
+
+export default function SubscriptionsPage() {
+  return (
+    <ProtectedRoute>
+      <SubscriptionsPageContent />
+    </ProtectedRoute>
+  );
+}
