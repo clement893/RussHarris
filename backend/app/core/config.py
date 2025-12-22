@@ -14,7 +14,10 @@ class Settings(BaseSettings):
     """Application settings with validation"""
 
     # Project
-    PROJECT_NAME: str = "MODELE API"
+    PROJECT_NAME: str = Field(
+        default=os.getenv("PROJECT_NAME", "API"),
+        description="Project name"
+    )
     VERSION: str = "1.0.0"
     DESCRIPTION: str = "FastAPI backend with OpenAPI/Swagger auto-generation"
     API_V1_STR: str = "/api/v1"
