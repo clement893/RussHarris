@@ -134,11 +134,14 @@ MODELE-NEXTJS-FULLSTACK/
 
 ### 📖 Guides Principaux
 - [🚀 Guide de Démarrage](./GETTING_STARTED.md) - Guide complet d'installation
+- [📚 Utilisation du Template](./TEMPLATE_USAGE.md) - Comment utiliser ce template
 - [🛠️ Guide de Développement](./docs/DEVELOPMENT.md) - Outils et workflows de développement
 - [🧪 Guide des Tests](./docs/TESTING.md) - Comment écrire et exécuter les tests
 - [🔒 Sécurité](./docs/SECURITY.md) - Bonnes pratiques de sécurité
+- [🚀 Déploiement](./docs/DEPLOYMENT.md) - Guide de déploiement en production
 - [📧 Configuration SendGrid](./docs/SENDGRID_SETUP.md) - Configuration du service email
 - [💳 Configuration Stripe](./docs/STRIPE_SETUP.md) - Configuration des paiements
+- [🔐 Variables d'Environnement](./docs/ENV_VARIABLES.md) - Documentation complète des variables
 - [🤝 Contribuer](./CONTRIBUTING.md) - Guide de contribution
 
 ### 📋 Documentation Technique

@@ -53,11 +53,11 @@ export default function RBACPage() {
     try {
       setLoading(true);
       setError('');
-      // TODO: Replace with actual API call when backend is ready
-      // const response = await rbacAPI.listRoles();
-      // setRoles(response.data);
+      // Note: Replace mock data with actual API call when backend endpoint is ready
+      // Example: const response = await rbacAPI.listRoles();
+      //          setRoles(response.data);
       
-      // Mock data for now
+      // Temporary mock data for development
       setRoles([
         { id: '1', name: 'Super Admin', permissions: ['*'], description: 'Accès complet à toutes les fonctionnalités' },
         { id: '2', name: 'Admin', permissions: ['users.read', 'users.write', 'organizations.read', 'organizations.write'], description: 'Gestion des utilisateurs et organisations' },
@@ -73,9 +73,9 @@ export default function RBACPage() {
 
   const loadPermissions = async () => {
     try {
-      // TODO: Replace with actual API call when backend is ready
-      // const response = await rbacAPI.listPermissions();
-      // setPermissions(response.data);
+      // Note: Replace mock data with actual API call when backend endpoint is ready
+      // Example: const response = await rbacAPI.listPermissions();
+      //          setPermissions(response.data);
       
       // Mock data for now
       setPermissions([
@@ -100,7 +100,7 @@ export default function RBACPage() {
     }
 
     try {
-      // TODO: Replace with actual API call
+      // Note: Replace mock data with actual API call when backend endpoint is ready
       // await rbacAPI.createRole({ name: newRoleName, description: newRoleDescription });
       await loadRoles();
       setShowCreateModal(false);

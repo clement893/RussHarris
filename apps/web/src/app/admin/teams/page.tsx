@@ -62,11 +62,11 @@ export default function TeamsPage() {
     try {
       setLoading(true);
       setError('');
-      // TODO: Replace with actual API call when backend is ready
-      // const response = await teamsAPI.list();
-      // setTeams(response.data);
+      // Note: Replace mock data with actual API call when backend endpoint is ready
+      // Example: const response = await teamsAPI.list();
+      //          setTeams(response.data);
       
-      // Mock data for now
+      // Temporary mock data for development
       setTeams([
         { id: '1', name: 'Équipe Marketing', description: 'Gestion des campagnes marketing', member_count: 5, organization_id: '1', created_at: '2024-01-15' },
         { id: '2', name: 'Équipe Donateurs', description: 'Gestion de la relation donateurs', member_count: 3, organization_id: '1', created_at: '2024-01-20' },

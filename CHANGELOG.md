@@ -102,6 +102,34 @@ et ce projet adhère à [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [1.3.0] - 2025-12-22
+
+### Added
+- **Script setup.js** - Initialisation automatique du projet avec génération de secrets
+- **Script rename-project.js** - Renommage automatique du projet
+- **Dockerfiles** - Dockerfile pour frontend et backend
+- **docker-compose.prod.yml** - Configuration Docker Compose pour production
+- **Templates GitHub** - Templates pour issues, PR et Dependabot
+- **TEMPLATE_USAGE.md** - Guide complet d'utilisation du template
+- **docs/ENV_VARIABLES.md** - Documentation complète des variables d'environnement
+- **docs/DEPLOYMENT.md** - Guide de déploiement en production
+- **docs/TEMPLATE_WEAKNESSES.md** - Analyse des faiblesses du template
+
+### Changed
+- **Hardcodings remplacés** - "MODELE" remplacé par variables d'environnement
+- **Configuration backend** - PROJECT_NAME et SENDGRID_FROM_NAME utilisent des variables
+- **Configuration frontend** - BASE_URL utilise NEXT_PUBLIC_APP_URL
+- **TODOs corrigés** - Remplacement des TODOs par des notes explicatives
+- **Validation améliorée** - Script validate-env.js amélioré avec validation production
+- **package.json** - Ajout des scripts `setup` et `rename`
+
+### Security
+- **Génération automatique de secrets** - Le script setup génère tous les secrets nécessaires
+- **Validation stricte** - Validation renforcée des variables en production
+- **PROJECT_NAME** - Variable d'environnement pour personnalisation
+
+---
+
 ## [1.2.0] - 2025-12-22
 
 ### Changed

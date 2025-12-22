@@ -49,11 +49,11 @@ export default function InvitationsPage() {
     try {
       setLoading(true);
       setError('');
-      // TODO: Replace with actual API call when backend is ready
-      // const response = await invitationsAPI.list();
-      // setInvitations(response.data);
+      // Note: Replace mock data with actual API call when backend endpoint is ready
+      // Example: const response = await invitationsAPI.list();
+      //          setInvitations(response.data);
       
-      // Mock data for now
+      // Temporary mock data for development
       setInvitations([
         {
           id: '1',

@@ -60,7 +60,7 @@ function SubscriptionsContent() {
     try {
       setLoading(true);
       setError('');
-      // TODO: Replace with actual API call when backend is ready
+      // Note: Replace mock data with actual API call when backend endpoint is ready
       // const response = await subscriptionsAPI.getCurrent();
       // setSubscription(response.data);
       

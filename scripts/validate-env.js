@@ -42,10 +42,13 @@ const requiredVars = {
     backend: [
       'DATABASE_URL',
       'SECRET_KEY',
+      'FRONTEND_URL',
     ],
     frontend: [
       'NEXTAUTH_SECRET',
+      'NEXTAUTH_URL',
       'NEXT_PUBLIC_API_URL',
+      'NEXT_PUBLIC_APP_URL',
     ],
   },
   production: {
@@ -53,11 +56,13 @@ const requiredVars = {
       'DATABASE_URL',
       'SECRET_KEY',
       'FRONTEND_URL',
+      'PROJECT_NAME',
     ],
     frontend: [
       'NEXTAUTH_SECRET',
-      'NEXT_PUBLIC_API_URL',
       'NEXTAUTH_URL',
+      'NEXT_PUBLIC_API_URL',
+      'NEXT_PUBLIC_APP_URL',
     ],
   },
 };
