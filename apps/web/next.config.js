@@ -26,7 +26,7 @@ const nextConfig = {
   // Experimental features
   experimental: {
     optimizePackageImports: ['@modele/types', 'clsx', 'zod', '@brandbook/ui'],
-    optimizeCss: true,
+    optimizeCss: false, // Temporarily disabled due to CSS file errors during static generation
     serverActions: {
       bodySizeLimit: '2mb',
     },
