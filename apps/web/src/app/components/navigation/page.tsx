@@ -6,7 +6,7 @@ import { PageHeader, PageContainer, Section, PageNavigation } from '@/components
 
 // Dynamically import components to avoid CSS issues during build
 const Sidebar = dynamicImport(() => import('@/components/ui/Sidebar').then(mod => ({ default: mod.default })), { ssr: false });
-const Tabs = dynamicImport(() => import('@/components/ui/Tabs').then(mod => ({ default: mod.Tabs })), { ssr: false });
+const Tabs = dynamicImport(() => import('@/components/ui/Tabs').then(mod => ({ default: mod.default })), { ssr: false });
 const TabList = dynamicImport(() => import('@/components/ui/Tabs').then(mod => ({ default: mod.TabList })), { ssr: false });
 const Tab = dynamicImport(() => import('@/components/ui/Tabs').then(mod => ({ default: mod.Tab })), { ssr: false });
 const TabPanels = dynamicImport(() => import('@/components/ui/Tabs').then(mod => ({ default: mod.TabPanels })), { ssr: false });
