@@ -67,7 +67,7 @@ export default function MultiSelect({
   // Filter options based on search
   const filteredOptions = options.filter((option) => {
     if (disabled || option.disabled) return false;
-    if (!search) return true;
+    if (!searchable || !search) return true;
     return option.label.toLowerCase().includes(search.toLowerCase());
   });
 
