@@ -77,31 +77,31 @@ export interface TeamListResponse {
 
 export const teamsAPI = {
   listTeams: async (skip = 0, limit = 100): Promise<ApiResponse<TeamListResponse>> => {
-    return apiClient.get<TeamListResponse>(/teams?skip=&limit=);
+    return apiClient.get<TeamListResponse>(`/teams?skip=${skip}&limit=${limit}`);
   },
   getTeam: async (teamId: number): Promise<ApiResponse<Team>> => {
-    return apiClient.get<Team>(/teams/);
+    return apiClient.get<Team>(`/teams/${teamId}`);
   },
   createTeam: async (data: TeamCreate): Promise<ApiResponse<Team>> => {
     return apiClient.post<Team>('/teams', data);
   },
   updateTeam: async (teamId: number, data: TeamUpdate): Promise<ApiResponse<Team>> => {
-    return apiClient.put<Team>(/teams/, data);
+    return apiClient.put<Team>(`/teams/${teamId}`, data);
   },
   deleteTeam: async (teamId: number): Promise<ApiResponse<void>> => {
-    return apiClient.delete<void>(/teams/);
+    return apiClient.delete<void>(`/teams/${teamId}`);
   },
   getTeamMembers: async (teamId: number): Promise<ApiResponse<TeamMember[]>> => {
-    return apiClient.get<TeamMember[]>(/teams//members);
+    return apiClient.get<TeamMember[]>(`/teams/${teamId}/members`);
   },
   addTeamMember: async (teamId: number, data: TeamMemberAdd): Promise<ApiResponse<TeamMember>> => {
-    return apiClient.post<TeamMember>(/teams//members, data);
+    return apiClient.post<TeamMember>(`/teams/${teamId}/members`, data);
   },
   updateTeamMember: async (teamId: number, memberId: number, data: TeamMemberUpdate): Promise<ApiResponse<TeamMember>> => {
-    return apiClient.put<TeamMember>(/teams//members/, data);
+    return apiClient.put<TeamMember>(`/teams/${teamId}/members/${memberId}`, data);
   },
   removeTeamMember: async (teamId: number, memberId: number): Promise<ApiResponse<void>> => {
-    return apiClient.delete<void>(/teams//members/);
+    return apiClient.delete<void>(`/teams/${teamId}/members/${memberId}`);
   },
   getMyTeams: async (): Promise<ApiResponse<TeamListResponse>> => {
     return apiClient.get<TeamListResponse>('/teams');
