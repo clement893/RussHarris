@@ -7,7 +7,7 @@ from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_
 from sqlalchemy.orm import selectinload
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import os
 
 from app.models import Invitation, Team, Role, User
@@ -33,7 +33,7 @@ class InvitationService:
     ) -> Invitation:
         """Create a new invitation"""
         token = Invitation.generate_token()
-        expires_at = datetime.utcnow() + timedelta(days=expires_in_days)
+        expires_at = datetime.now(timezone.utc) + timedelta(days=expires_in_days)
 
         invitation = Invitation(
             email=email,
@@ -219,7 +219,7 @@ class InvitationService:
 
         # Update invitation status
         invitation.status = "accepted"
-        invitation.accepted_at = datetime.utcnow()
+        invitation.accepted_at = datetime.now(timezone.utc)
         await self.db.commit()
         await self.db.refresh(invitation)
 
@@ -258,7 +258,7 @@ class InvitationService:
         result = await self.db.execute(
             select(Invitation)
             .where(Invitation.status == "pending")
-            .where(Invitation.expires_at < datetime.utcnow())
+            .where(Invitation.expires_at < datetime.now(timezone.utc))
         )
         invitations = result.scalars().all()
         

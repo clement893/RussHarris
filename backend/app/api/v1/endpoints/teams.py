@@ -53,7 +53,15 @@ async def create_team(
     
     # Convert to response format
     team_dict = {
-        **team.__dict__,
+        "id": team.id,
+        "name": team.name,
+        "slug": team.slug,
+        "description": team.description,
+        "owner_id": team.owner_id,
+        "is_active": team.is_active,
+        "settings": team.settings,
+        "created_at": team.created_at,
+        "updated_at": team.updated_at,
         "owner": {
             "id": team.owner.id,
             "email": team.owner.email,
@@ -81,7 +89,15 @@ async def list_teams(
     teams_response = []
     for team in teams:
         team_dict = {
-            **team.__dict__,
+            "id": team.id,
+            "name": team.name,
+            "slug": team.slug,
+            "description": team.description,
+            "owner_id": team.owner_id,
+            "is_active": team.is_active,
+            "settings": team.settings,
+            "created_at": team.created_at,
+            "updated_at": team.updated_at,
             "owner": {
                 "id": team.owner.id,
                 "email": team.owner.email,
@@ -112,7 +128,15 @@ async def get_team(
     
     # Convert to dict with owner and members
     team_dict = {
-        **team.__dict__,
+        "id": team.id,
+        "name": team.name,
+        "slug": team.slug,
+        "description": team.description,
+        "owner_id": team.owner_id,
+        "is_active": team.is_active,
+        "settings": team.settings,
+        "created_at": team.created_at,
+        "updated_at": team.updated_at,
         "owner": {
             "id": team.owner.id,
             "email": team.owner.email,
@@ -149,7 +173,15 @@ async def update_team(
     # Reload with relationships
     team = await team_service.get_team(team_id)
     team_dict = {
-        **team.__dict__,
+        "id": team.id,
+        "name": team.name,
+        "slug": team.slug,
+        "description": team.description,
+        "owner_id": team.owner_id,
+        "is_active": team.is_active,
+        "settings": team.settings,
+        "created_at": team.created_at,
+        "updated_at": team.updated_at,
         "owner": {
             "id": team.owner.id,
             "email": team.owner.email,

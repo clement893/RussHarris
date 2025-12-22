@@ -43,14 +43,18 @@ class TeamService:
             select(Role).where(Role.slug == "admin")
         )
         admin_role_obj = admin_role_result.scalar_one_or_none()
-        if admin_role_obj:
-            team_member = TeamMember(
-                team_id=team.id,
-                user_id=owner_id,
-                role_id=admin_role_obj.id,
-            )
-            self.db.add(team_member)
-            await self.db.commit()
+        if not admin_role_obj:
+            # If admin role doesn't exist, try to find any role or raise error
+            # This should not happen in production, but handle gracefully
+            raise ValueError("Admin role not found. Please ensure roles are initialized.")
+        
+        team_member = TeamMember(
+            team_id=team.id,
+            user_id=owner_id,
+            role_id=admin_role_obj.id,
+        )
+        self.db.add(team_member)
+        await self.db.commit()
 
         return team
 

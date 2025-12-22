@@ -61,7 +61,14 @@ async def list_roles(
     for role in roles:
         permissions = await rbac_service.get_role_permissions(role.id)
         role_dict = {
-            **role.__dict__,
+            "id": role.id,
+            "name": role.name,
+            "slug": role.slug,
+            "description": role.description,
+            "is_system": role.is_system,
+            "is_active": role.is_active,
+            "created_at": role.created_at,
+            "updated_at": role.updated_at,
             "permissions": [PermissionResponse.model_validate(p) for p in permissions],
         }
         roles_with_permissions.append(RoleResponse.model_validate(role_dict))
@@ -108,7 +115,14 @@ async def get_role(
     rbac_service = RBACService(db)
     permissions = await rbac_service.get_role_permissions(role_id)
     role_dict = {
-        **role.__dict__,
+        "id": role.id,
+        "name": role.name,
+        "slug": role.slug,
+        "description": role.description,
+        "is_system": role.is_system,
+        "is_active": role.is_active,
+        "created_at": role.created_at,
+        "updated_at": role.updated_at,
         "permissions": [PermissionResponse.model_validate(p) for p in permissions],
     }
     
@@ -151,7 +165,14 @@ async def update_role(
     rbac_service = RBACService(db)
     permissions = await rbac_service.get_role_permissions(role_id)
     role_dict = {
-        **role.__dict__,
+        "id": role.id,
+        "name": role.name,
+        "slug": role.slug,
+        "description": role.description,
+        "is_system": role.is_system,
+        "is_active": role.is_active,
+        "created_at": role.created_at,
+        "updated_at": role.updated_at,
         "permissions": [PermissionResponse.model_validate(p) for p in permissions],
     }
     
@@ -201,11 +222,21 @@ async def assign_permission_to_role(
     
     from app.models import Role
     result = await db.execute(select(Role).where(Role.id == role_id))
-    role = result.scalar_one()
+    role = result.scalar_one_or_none()
+    
+    if not role:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Role not found")
     
     permissions = await rbac_service.get_role_permissions(role_id)
     role_dict = {
-        **role.__dict__,
+        "id": role.id,
+        "name": role.name,
+        "slug": role.slug,
+        "description": role.description,
+        "is_system": role.is_system,
+        "is_active": role.is_active,
+        "created_at": role.created_at,
+        "updated_at": role.updated_at,
         "permissions": [PermissionResponse.model_validate(p) for p in permissions],
     }
     
@@ -285,7 +316,10 @@ async def assign_role_to_user(
         .where(UserRole.id == user_role.id)
         .options(selectinload(UserRole.role))
     )
-    user_role_with_role = result.scalar_one()
+    user_role_with_role = result.scalar_one_or_none()
+    
+    if not user_role_with_role:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User role not found")
     
     return UserRoleResponse.model_validate(user_role_with_role)
 
@@ -324,7 +358,14 @@ async def get_user_roles(
     for role in roles:
         permissions = await rbac_service.get_role_permissions(role.id)
         role_dict = {
-            **role.__dict__,
+            "id": role.id,
+            "name": role.name,
+            "slug": role.slug,
+            "description": role.description,
+            "is_system": role.is_system,
+            "is_active": role.is_active,
+            "created_at": role.created_at,
+            "updated_at": role.updated_at,
             "permissions": [PermissionResponse.model_validate(p) for p in permissions],
         }
         roles_with_permissions.append(RoleResponse.model_validate(role_dict))

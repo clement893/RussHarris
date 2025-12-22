@@ -3,7 +3,7 @@ Invitation Model
 SQLAlchemy model for team/user invitations
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text, ForeignKey, func, Index
 from sqlalchemy.orm import relationship
 import secrets
@@ -53,11 +53,11 @@ class Invitation(Base):
     @staticmethod
     def default_expires_at() -> datetime:
         """Default expiration: 7 days from now"""
-        return datetime.utcnow() + timedelta(days=7)
+        return datetime.now(timezone.utc) + timedelta(days=7)
 
     def is_expired(self) -> bool:
         """Check if invitation is expired"""
-        return datetime.utcnow() > self.expires_at
+        return datetime.now(timezone.utc) > self.expires_at
 
     def is_valid(self) -> bool:
         """Check if invitation is valid (not expired and pending)"""
