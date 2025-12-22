@@ -1,10 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
-  
-  // Optimizations
-  optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   
   // Bundle analyzer configuration
   ...(process.env.ANALYZE === 'true' && {

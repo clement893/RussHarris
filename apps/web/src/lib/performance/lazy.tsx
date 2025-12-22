@@ -41,9 +41,11 @@ export function createLazyComponent<T extends ComponentType<unknown>>(
     // TypeScript limitation: LazyExoticComponent types don't properly propagate props
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const Component = LazyComponent as any;
+    // Ensure props is treated as an object for spread operator
+    const componentProps = props as Record<string, unknown>;
     return (
       <Suspense fallback={fallback || <Spinner />}>
-        <Component {...props} />
+        <Component {...componentProps} />
       </Suspense>
     );
   };
@@ -78,10 +80,12 @@ export function lazyLoad<T extends ComponentType<unknown>>(
     // TypeScript limitation: LazyExoticComponent types don't properly propagate props
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const Component = LazyComponent as any;
+    // Ensure props is treated as an object for spread operator
+    const componentProps = props as Record<string, unknown>;
     const fallback = LoadingComponent ? <LoadingComponent /> : <Spinner />;
     return (
       <Suspense fallback={fallback}>
-        <Component {...props} />
+        <Component {...componentProps} />
       </Suspense>
     );
   };
