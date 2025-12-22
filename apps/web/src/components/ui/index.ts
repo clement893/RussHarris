@@ -91,7 +91,7 @@ export type { TreeViewProps, TreeNode } from './TreeView';
 export { default as KanbanBoard } from './KanbanBoard';
 export type { KanbanBoardProps, KanbanCard, KanbanColumn } from './KanbanBoard';
 export { default as FormBuilder } from './FormBuilder';
-export type { FormBuilderProps, FormField, FieldType } from './FormBuilder';
+export type { FormBuilderProps, FormField as FormBuilderField, FieldType } from './FormBuilder';
 export { default as Calendar } from './Calendar';
 export type { CalendarProps, CalendarEvent } from './Calendar';
 export { default as CRUDModal } from './CRUDModal';

@@ -7,6 +7,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { clsx } from 'clsx';
+import Button from './Button';
+import DOMPurify from 'isomorphic-dompurify';
 
 export interface RichTextEditorProps {
   value?: string;
@@ -38,13 +40,25 @@ export default function RichTextEditor({
 
   useEffect(() => {
     if (editorRef.current && editorRef.current.innerHTML !== value) {
-      editorRef.current.innerHTML = value;
+      // Sanitize HTML before setting to prevent XSS
+      const sanitized = DOMPurify.sanitize(value, {
+        ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'blockquote'],
+        ALLOWED_ATTR: ['href', 'target', 'rel'],
+        ALLOW_DATA_ATTR: false,
+      });
+      editorRef.current.innerHTML = sanitized;
     }
   }, [value]);
 
   const handleInput = () => {
     if (editorRef.current && onChange) {
-      onChange(editorRef.current.innerHTML);
+      // Sanitize HTML before returning to prevent XSS
+      const sanitized = DOMPurify.sanitize(editorRef.current.innerHTML, {
+        ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'blockquote'],
+        ALLOWED_ATTR: ['href', 'target', 'rel'],
+        ALLOW_DATA_ATTR: false,
+      });
+      onChange(sanitized);
     }
   };
 
