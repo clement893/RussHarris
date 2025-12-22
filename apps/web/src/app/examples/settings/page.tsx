@@ -6,7 +6,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, Input, Select, Switch, Button, Tabs, TabList, Tab, TabPanels, TabPanel, Alert } from '@/components/ui';
+import { Card, Input, Switch, Button, Tabs, TabList, Tab, TabPanels, TabPanel, Alert } from '@/components/ui';
 import { ThemeManager } from '@/components/theme/ThemeManager';
 import { PageHeader, PageContainer, Section } from '@/components/layout';
 
