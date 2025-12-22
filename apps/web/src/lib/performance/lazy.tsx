@@ -9,7 +9,7 @@ import Spinner from '@/components/ui/Spinner';
 /**
  * Create a lazy-loaded component with loading fallback
  */
-export function createLazyComponent<T extends ComponentType<any>>(
+export function createLazyComponent<T extends ComponentType<Record<string, unknown>>>(
   importFn: () => Promise<{ default: T }>,
   fallback?: React.ReactNode
 ) {
@@ -27,7 +27,7 @@ export function createLazyComponent<T extends ComponentType<any>>(
 /**
  * Lazy load a component with custom loading component
  */
-export function lazyLoad<T extends ComponentType<any>>(
+export function lazyLoad<T extends ComponentType<Record<string, unknown>>>(
   importFn: () => Promise<{ default: T }>,
   LoadingComponent?: ComponentType
 ) {

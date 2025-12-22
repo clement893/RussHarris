@@ -28,6 +28,10 @@ export interface TeamMember {
   };
 }
 
+export interface TeamSettings {
+  [key: string]: string | number | boolean | null | undefined;
+}
+
 export interface Team {
   id: number;
   name: string;
@@ -35,7 +39,7 @@ export interface Team {
   description?: string;
   owner_id: number;
   is_active: boolean;
-  settings?: Record<string, any>;
+  settings?: TeamSettings;
   created_at: string;
   updated_at: string;
   members: TeamMember[];
@@ -52,13 +56,13 @@ export interface TeamCreate {
   name: string;
   slug: string;
   description?: string;
-  settings?: Record<string, any>;
+  settings?: TeamSettings;
 }
 
 export interface TeamUpdate {
   name?: string;
   description?: string;
-  settings?: Record<string, any>;
+  settings?: TeamSettings;
 }
 
 export interface TeamMemberAdd {

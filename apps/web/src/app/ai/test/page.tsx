@@ -6,10 +6,22 @@
 
 import { useState } from 'react';
 import { aiAPI } from '@/lib/api';
+import { AxiosError } from 'axios';
 
 interface Message {
   role: 'system' | 'user' | 'assistant';
   content: string;
+}
+
+interface HealthStatus {
+  status: string;
+  configured?: boolean;
+  [key: string]: unknown;
+}
+
+interface ApiErrorResponse {
+  detail?: string;
+  message?: string;
 }
 
 export default function AITestPage() {
@@ -22,7 +34,7 @@ export default function AITestPage() {
   const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [healthStatus, setHealthStatus] = useState<any>(null);
+  const [healthStatus, setHealthStatus] = useState<HealthStatus | null>(null);
   const [model, setModel] = useState('gpt-4o-mini');
   const [temperature, setTemperature] = useState(0.7);
   const [maxTokens, setMaxTokens] = useState(1000);
@@ -30,10 +42,11 @@ export default function AITestPage() {
   const checkHealth = async () => {
     try {
       const res = await aiAPI.health();
-      setHealthStatus(res.data);
+      setHealthStatus(res.data as HealthStatus);
       setError('');
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Failed to check health');
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+      setError(axiosError.response?.data?.detail || 'Failed to check health');
       setHealthStatus(null);
     }
   };
@@ -51,8 +64,9 @@ export default function AITestPage() {
     try {
       const res = await aiAPI.simpleChat(simpleMessage, systemPrompt || undefined, model);
       setResponse(res.data.response);
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Failed to get response');
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+      setError(axiosError.response?.data?.detail || 'Failed to get response');
     } finally {
       setIsLoading(false);
     }
@@ -80,8 +94,9 @@ export default function AITestPage() {
       
       // Add assistant response to messages
       setMessages([...validMessages, { role: 'assistant', content: res.data.content }]);
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Failed to get response');
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiErrorResponse>;
+      setError(axiosError.response?.data?.detail || 'Failed to get response');
     } finally {
       setIsLoading(false);
     }
@@ -258,7 +273,7 @@ export default function AITestPage() {
                     <div className="flex items-center gap-2 mb-2">
                       <select
                         value={msg.role}
-                        onChange={(e) => changeMessageRole(index, e.target.value as any)}
+                        onChange={(e) => changeMessageRole(index, e.target.value as Message['role'])}
                         className="px-2 py-1 border border-gray-300 rounded text-sm"
                       >
                         <option value="system">System</option>

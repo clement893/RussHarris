@@ -67,7 +67,7 @@ export const LazyAccordion = dynamic(
 );
 
 // Helper pour créer des composants lazy custom
-export function createLazyComponent<T extends ComponentType<any>>(
+export function createLazyComponent<T extends ComponentType<Record<string, unknown>>>(
   importFn: () => Promise<{ default: T }>,
   options?: {
     loading?: (props?: { error?: Error | null; isLoading?: boolean; pastDelay?: boolean; retry?: () => void; timedOut?: boolean }) => ReactNode;

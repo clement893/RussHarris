@@ -233,7 +233,7 @@ export function FormField({ label, name, required, error, helpText, children }: 
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       {firstChild && isValidElement(firstChild)
-        ? cloneElement(firstChild as ReactElement<any>, {
+        ? cloneElement(firstChild as ReactElement<Record<string, unknown>>, {
             id: name,
             name,
             'aria-invalid': error ? 'true' : 'false',

@@ -220,7 +220,11 @@ export default function DataTableEnhanced<T extends Record<string, unknown>>({
                 // Find the index of the row in the data array
                 const rowIndex = rowKey 
                   ? data.findIndex((r) => rowKey(r) === rowKey(row as T))
-                  : data.findIndex((r) => (r as any).id === (row as any).id);
+                  : data.findIndex((r) => {
+                      const rId = (r as Record<string, unknown>).id;
+                      const rowId = (row as Record<string, unknown>).id;
+                      return rId !== undefined && rowId !== undefined && rId === rowId;
+                    });
                 const actualIndex = rowIndex >= 0 ? rowIndex : data.indexOf(row as T);
 
                 if (selectable && col.key === columns[0]?.key) {

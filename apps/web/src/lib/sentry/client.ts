@@ -4,12 +4,47 @@
  * Sentry is optional - functions will no-op if @sentry/nextjs is not installed
  */
 
+// Type definitions for Sentry (optional dependency)
+interface SentryInitOptions {
+  dsn?: string;
+  environment?: string;
+  tracesSampleRate?: number;
+  debug?: boolean;
+  replaysOnErrorSampleRate?: number;
+  replaysSessionSampleRate?: number;
+  integrations?: unknown[];
+  beforeSend?: (event: SentryEvent, hint?: unknown) => SentryEvent | null;
+}
+
+interface SentryEvent {
+  request?: {
+    cookies?: Record<string, string>;
+    headers?: Record<string, string>;
+  };
+  [key: string]: unknown;
+}
+
+interface BrowserTracingOptions {
+  tracePropagationTargets?: (string | RegExp)[];
+}
+
+interface ReplayOptions {
+  maskAllText?: boolean;
+  blockAllMedia?: boolean;
+}
+
+interface CaptureExceptionOptions {
+  extra?: Record<string, unknown>;
+  tags?: Record<string, string>;
+  [key: string]: unknown;
+}
+
 // Type definition for Sentry (optional dependency)
 type SentryType = {
-  init: (options: any) => void;
-  BrowserTracing: new (options?: any) => any;
-  Replay: new (options?: any) => any;
-  captureException: (error: Error, options?: any) => void;
+  init: (options: SentryInitOptions) => void;
+  BrowserTracing: new (options?: BrowserTracingOptions) => unknown;
+  Replay: new (options?: ReplayOptions) => unknown;
+  captureException: (error: Error, options?: CaptureExceptionOptions) => void;
   captureMessage: (message: string, level?: string) => void;
   setUser: (user: { id: string; email?: string; username?: string } | null) => void;
 };
@@ -47,7 +82,7 @@ export function initSentry() {
       environment: process.env.NODE_ENV || 'development',
       tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
       debug: process.env.NODE_ENV === 'development',
-      beforeSend(event: any, _hint?: any) {
+      beforeSend(event: SentryEvent, _hint?: unknown) {
         // Filter out sensitive data
         if (event.request) {
           delete event.request.cookies;
@@ -78,7 +113,7 @@ export function initSentry() {
           blockAllMedia: true,
         }),
       ],
-      beforeSend(event: any, _hint?: any) {
+      beforeSend(event: SentryEvent, _hint?: unknown) {
         // Filter out sensitive data
         if (event.request) {
           delete event.request.cookies;

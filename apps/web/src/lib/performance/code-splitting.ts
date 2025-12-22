@@ -3,6 +3,8 @@
  * Optimize bundle size with dynamic imports
  */
 
+import type { ComponentType } from 'react';
+
 /**
  * Dynamically import a component only when needed
  */
@@ -16,9 +18,9 @@ export async function loadComponent<T>(
 /**
  * Preload a component for faster subsequent loads
  */
-export function preloadComponent(importFn: () => Promise<any>) {
+export function preloadComponent(importFn: () => Promise<{ default: ComponentType<Record<string, unknown>> }>) {
   if (typeof window !== 'undefined') {
-    importFn();
+    void importFn();
   }
 }
 

@@ -152,8 +152,8 @@ export const emailAPI = {
   /**
    * Get email API info
    */
-  info: async (): Promise<any> => {
-    return apiClient.get('/email/info');
+  info: async (): Promise<ApiResponse<Record<string, unknown>>> => {
+    return apiClient.get<Record<string, unknown>>('/email/info');
   },
 };
 

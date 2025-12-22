@@ -4,10 +4,33 @@
  * Sentry is optional - functions will no-op if @sentry/nextjs is not installed
  */
 
+// Type definitions for Sentry (optional dependency)
+interface SentryInitOptions {
+  dsn?: string;
+  environment?: string;
+  tracesSampleRate?: number;
+  debug?: boolean;
+  beforeSend?: (event: SentryEvent, hint?: unknown) => SentryEvent | null;
+}
+
+interface SentryEvent {
+  request?: {
+    cookies?: Record<string, string>;
+    headers?: Record<string, string>;
+  };
+  [key: string]: unknown;
+}
+
+interface CaptureExceptionOptions {
+  extra?: Record<string, unknown>;
+  tags?: Record<string, string>;
+  [key: string]: unknown;
+}
+
 // Type definition for Sentry (optional dependency)
 type SentryType = {
-  init: (options: any) => void;
-  captureException: (error: Error, options?: any) => void;
+  init: (options: SentryInitOptions) => void;
+  captureException: (error: Error, options?: CaptureExceptionOptions) => void;
   captureMessage: (message: string, level?: string) => void;
   setUser: (user: { id: string; email?: string; username?: string } | null) => void;
 };
@@ -43,7 +66,7 @@ export function initSentryServer() {
     environment: process.env.NODE_ENV || 'development',
     tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
     debug: process.env.NODE_ENV === 'development',
-    beforeSend(event: any, _hint?: any) {
+    beforeSend(event: SentryEvent, _hint?: unknown) {
       // Filter out sensitive data
       if (event.request) {
         delete event.request.cookies;

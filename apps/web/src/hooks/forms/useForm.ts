@@ -18,9 +18,9 @@ export interface FormField<T> {
   disabled?: boolean;
 }
 
-export interface UseFormOptions<T> {
+export interface UseFormOptions<T extends Record<string, unknown>> {
   initialValues?: Partial<T>;
-  validationSchema?: z.ZodObject<any>;
+  validationSchema?: z.ZodObject<z.ZodRawShape, 'strip', z.ZodTypeAny, T, T>;
   onSubmit: (data: T) => void | Promise<void>;
   onError?: (errors: Record<string, string>) => void;
   validateOnChange?: boolean;

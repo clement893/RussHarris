@@ -82,7 +82,7 @@ export default function FormBuilder({
     return null;
   };
 
-  const handleChange = (name: string, value: any) => {
+  const handleChange = (name: string, value: unknown) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     
     // Validate on change if field has been touched
