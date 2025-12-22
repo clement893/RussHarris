@@ -187,7 +187,7 @@ export default function UtilsPage() {
             </div>
             <div>
               <h4 className="text-sm font-semibold mb-2">Avec sélection multiple</h4>
-              <TreeView nodes={treeNodes} selectable multiple />
+              <TreeView nodes={treeNodes} multiSelect />
             </div>
           </div>
         </Section>
