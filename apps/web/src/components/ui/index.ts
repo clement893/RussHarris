@@ -46,7 +46,8 @@ export type { TooltipProps } from './Tooltip';
 
 // Form Components
 export { default as Form, FormField } from './Form';
-export type { FormProps, FormField as FormFieldType, FormFieldProps } from './Form';
+export type { FormProps, FormFieldProps } from './Form';
+export type { FormField as FormFieldType } from './Form';
 
 // Feedback Components
 export { default as Alert } from './Alert';
