@@ -73,70 +73,167 @@ function createErrorFromStatusCode(
 }
 
 /**
- * Handle Axios errors and convert to AppError
+ * Handles Axios errors and converts them to standardized AppError instances.
+ * 
+ * This function provides detailed error messages based on the error type:
+ * - Network errors: Clear message about connection issues
+ * - API errors: Uses server-provided message or generates contextual message
+ * - Validation errors: Includes field-level validation details
+ * - Unknown errors: Provides fallback message with error details
+ * 
+ * @param error - The error to handle (AxiosError, AppError, Error, or unknown)
+ * @returns A standardized AppError instance with detailed information
+ * 
+ * @example
+ * ```typescript
+ * try {
+ *   await apiClient.get('/users');
+ * } catch (error) {
+ *   const appError = handleApiError(error);
+ *   console.error(appError.message); // Detailed error message
+ *   console.error(appError.details); // Additional context
+ * }
+ * ```
  */
 export function handleApiError(error: unknown): AppError {
-  // Already an AppError
+  // Already an AppError - return as-is
   if (error instanceof AppError) {
     return error;
   }
 
-  // Axios error
+  // Axios error - extract detailed information
   if (error instanceof AxiosError) {
     const statusCode = error.response?.status ?? 500;
     const responseData = error.response?.data as ApiErrorResponse | undefined;
+    const requestUrl = error.config?.url ?? 'unknown';
+    const requestMethod = error.config?.method?.toUpperCase() ?? 'UNKNOWN';
 
-    // Use error message from API response if available
-    const message =
-      responseData?.error?.message ?? error.message ?? 'An error occurred';
+    // Generate contextual error message based on status code
+    let message = responseData?.error?.message ?? error.message;
+    
+    if (!message || message === 'Request failed with status code') {
+      // Generate user-friendly messages for common status codes
+      switch (statusCode) {
+        case 400:
+          message = `Invalid request to ${requestMethod} ${requestUrl}. Please check your input and try again.`;
+          break;
+        case 401:
+          message = 'Your session has expired. Please log in again.';
+          break;
+        case 403:
+          message = `You don't have permission to access ${requestUrl}.`;
+          break;
+        case 404:
+          message = `The resource at ${requestUrl} was not found.`;
+          break;
+        case 409:
+          message = `A conflict occurred while processing your request to ${requestUrl}.`;
+          break;
+        case 422:
+          message = 'Validation failed. Please check your input and try again.';
+          break;
+        case 429:
+          message = 'Too many requests. Please wait a moment and try again.';
+          break;
+        case 500:
+          message = 'Server error occurred. Our team has been notified. Please try again later.';
+          break;
+        case 503:
+          message = 'Service temporarily unavailable. Please try again in a few moments.';
+          break;
+        default:
+          message = `An error occurred while processing your request (${statusCode}).`;
+      }
+    }
 
-    // Extract details from API response
+    // Extract comprehensive details from API response
     const details: Record<string, unknown> = {
-      url: error.config?.url,
-      method: error.config?.method,
+      url: requestUrl,
+      method: requestMethod,
+      statusCode,
       ...responseData?.error?.details,
     };
 
-    // Add validation errors if present
+    // Add validation errors if present (for 422 errors)
     if (responseData?.error?.validationErrors) {
       details.validationErrors = responseData.error.validationErrors;
+      // Enhance validation error message
+      const validationFields = Object.keys(responseData.error.validationErrors).join(', ');
+      message = `Validation failed for fields: ${validationFields}. ${message}`;
     }
 
     return createErrorFromStatusCode(statusCode, message, details);
   }
 
-  // Network error
+  // Network error - provide clear guidance
   if (error instanceof Error) {
     if (error.message.includes('Network Error') || error.message.includes('timeout')) {
       return new AppError(
         ErrorCode.NETWORK_ERROR,
-        'Network error. Please check your connection.',
-        0
+        'Unable to connect to the server. Please check your internet connection and try again.',
+        0,
+        {
+          originalMessage: error.message,
+          suggestion: 'Check your network connection or try again in a few moments.',
+        }
       );
     }
-    return new InternalServerError(error.message);
+    return new InternalServerError(
+      `An unexpected error occurred: ${error.message}`,
+      { originalError: error.message }
+    );
   }
 
-  // Unknown error
-  return new InternalServerError('An unknown error occurred');
+  // Unknown error - provide fallback with context
+  return new InternalServerError(
+    'An unknown error occurred. Please try again or contact support if the problem persists.',
+    { errorType: typeof error, errorValue: String(error) }
+  );
 }
 
 /**
- * Check if error is a client error (4xx)
+ * Checks if the error is a client error (4xx status code).
+ * 
+ * Client errors indicate issues with the request itself, such as:
+ * - Invalid input (400)
+ * - Authentication required (401)
+ * - Insufficient permissions (403)
+ * - Resource not found (404)
+ * - Validation errors (422)
+ * 
+ * @param error - The AppError instance to check
+ * @returns True if the error is a client error (4xx), false otherwise
  */
 export function isClientError(error: AppError): boolean {
   return error.statusCode >= 400 && error.statusCode < 500;
 }
 
 /**
- * Check if error is a server error (5xx)
+ * Checks if the error is a server error (5xx status code).
+ * 
+ * Server errors indicate issues on the server side, such as:
+ * - Internal server errors (500)
+ * - Service unavailable (503)
+ * - Gateway errors (502)
+ * 
+ * @param error - The AppError instance to check
+ * @returns True if the error is a server error (5xx), false otherwise
  */
 export function isServerError(error: AppError): boolean {
   return error.statusCode >= 500;
 }
 
 /**
- * Check if error is a network error
+ * Checks if the error is a network error.
+ * 
+ * Network errors occur when:
+ * - The request cannot reach the server
+ * - Connection timeout
+ * - DNS resolution failure
+ * - No internet connection
+ * 
+ * @param error - The AppError instance to check
+ * @returns True if the error is a network error, false otherwise
  */
 export function isNetworkError(error: AppError): boolean {
   return error.code === ErrorCode.NETWORK_ERROR || error.statusCode === 0;

@@ -1,11 +1,33 @@
+/**
+ * API Client Configuration
+ * 
+ * Axios client with automatic token injection, refresh token handling,
+ * and comprehensive error management.
+ * 
+ * Features:
+ * - Automatic JWT token injection in requests
+ * - Automatic token refresh on 401 errors
+ * - Request queuing to prevent concurrent refresh attempts
+ * - Centralized error handling and conversion
+ * 
+ * @module lib/api
+ */
+
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { handleApiError, isClientError, isNetworkError } from './errors/api';
 import { TokenStorage } from './auth/tokenStorage';
 import { logger } from '@/lib/logger';
 
-// Remove trailing slash from API URL to avoid double slashes
+/**
+ * API base URL with trailing slash removed to avoid double slashes
+ * Falls back to localhost:8000 if NEXT_PUBLIC_API_URL is not set
+ */
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/$/, '');
 
+/**
+ * Axios client instance configured for API requests
+ * Base URL includes /api prefix
+ */
 const apiClient = axios.create({
   baseURL: `${API_URL}/api`,
   headers: {
@@ -13,7 +35,10 @@ const apiClient = axios.create({
   },
 });
 
-// Add request interceptor to include auth token
+/**
+ * Request interceptor: Automatically adds JWT token to Authorization header
+ * Only runs in browser environment (not SSR)
+ */
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (typeof window !== 'undefined' && config.headers) {
@@ -29,7 +54,10 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Queue pour éviter les refresh tokens multiples simultanés
+/**
+ * Queue to prevent multiple simultaneous refresh token requests
+ * When a refresh is in progress, subsequent 401 errors wait for the same promise
+ */
 let refreshTokenPromise: Promise<string> | null = null;
 
 // Add response interceptor to handle errors

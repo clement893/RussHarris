@@ -113,16 +113,34 @@ def create_app() -> FastAPI:
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
         
-        # Content Security Policy (adjust based on your needs)
-        csp_policy = (
-            "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "  # Adjust for production
-            "style-src 'self' 'unsafe-inline'; "
-            "img-src 'self' data: https:; "
-            "font-src 'self' data:; "
-            "connect-src 'self' https://api.stripe.com; "
-            "frame-ancestors 'none';"
-        )
+        # Content Security Policy (strict in production, relaxed in development)
+        import os
+        environment = os.getenv("ENVIRONMENT", "development")
+        
+        if environment == "production":
+            # Strict CSP for production - no unsafe-inline or unsafe-eval
+            csp_policy = (
+                "default-src 'self'; "
+                "script-src 'self'; "  # Strict: no unsafe-inline/eval
+                "style-src 'self'; "  # Strict: no unsafe-inline (use nonces in production)
+                "img-src 'self' data: https:; "
+                "font-src 'self' data:; "
+                "connect-src 'self' https://api.stripe.com; "
+                "frame-ancestors 'none'; "
+                "base-uri 'self'; "
+                "form-action 'self';"
+            )
+        else:
+            # Relaxed CSP for development
+            csp_policy = (
+                "default-src 'self'; "
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "  # Development only
+                "style-src 'self' 'unsafe-inline'; "  # Development only
+                "img-src 'self' data: https:; "
+                "font-src 'self' data:; "
+                "connect-src 'self' https://api.stripe.com; "
+                "frame-ancestors 'none';"
+            )
         response.headers["Content-Security-Policy"] = csp_policy
         
         return response

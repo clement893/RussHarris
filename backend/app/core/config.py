@@ -98,6 +98,32 @@ class Settings(BaseSettings):
         description="Default sender name",
     )
 
+    @field_validator("SENDGRID_FROM_EMAIL")
+    @classmethod
+    def validate_email_format(cls, v: str) -> str:
+        """Validate email format"""
+        import re
+        if v and not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', v):
+            raise ValueError(f"Invalid email format: {v}")
+        return v
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def validate_database_url(cls, v: str | PostgresDsn) -> str:
+        """Validate DATABASE_URL is set in production"""
+        import os
+        env = os.getenv("ENVIRONMENT", "development")
+        
+        if env == "production":
+            if not v or v == "postgresql+asyncpg://user:password@localhost:5432/modele":
+                raise ValueError(
+                    "DATABASE_URL must be set to a valid PostgreSQL connection string in production"
+                )
+        
+        if isinstance(v, str):
+            return v
+        return str(v)
+
     # Database Connection Pool Configuration
     DB_POOL_SIZE: int = Field(
         default=10,
