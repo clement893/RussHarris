@@ -4,7 +4,7 @@
  */
 
 'use client';
-import { StatsCard, DataTable, Chart, Button, Badge, CommandPalette, useCommandPalette } from '@/components/ui';
+import { StatsCard, DataTable, Chart, Badge, CommandPalette, useCommandPalette } from '@/components/ui';
 import type { Column, Command, ChartDataPoint } from '@/components/ui';
 import { PageHeader, PageContainer, Section } from '@/components/layout';
 
