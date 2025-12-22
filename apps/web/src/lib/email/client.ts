@@ -100,10 +100,11 @@ export const emailAPI = {
    * Send welcome email
    */
   sendWelcome: async (toEmail: string, name?: string): Promise<ApiResponse<EmailResponse>> => {
-    return apiClient.post<EmailResponse>('/email/welcome', { 
-      to_email: toEmail,
-      ...(name && { name }),
-    });
+    const payload: { to_email: string; name?: string } = { to_email: toEmail };
+    if (name) {
+      payload.name = name;
+    }
+    return apiClient.post<EmailResponse>('/email/welcome', payload);
   },
 
   /**
