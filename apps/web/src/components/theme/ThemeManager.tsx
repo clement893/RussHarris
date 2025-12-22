@@ -48,9 +48,24 @@ const borderRadiusOptions = [
 
 export function ThemeManager() {
   const [theme, setTheme] = useState<ThemeConfig>(defaultTheme);
-  const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Charger le thème depuis localStorage au démarrage
+  useEffect(() => {
+    setMounted(true);
+    const savedTheme = localStorage.getItem('theme-colors');
+    if (savedTheme) {
+      try {
+        const parsedTheme = JSON.parse(savedTheme);
+        setTheme({ ...defaultTheme, ...parsedTheme });
+      } catch (e) {
+        console.error('Erreur lors du chargement du thème:', e);
+      }
+    }
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
     // Appliquer le thème via CSS variables
     const root = document.documentElement;
     
@@ -125,13 +140,9 @@ export function ThemeManager() {
     }
     document.head.appendChild(style);
 
-    // Appliquer dark mode
-    if (isDark) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [theme, isDark]);
+    // Sauvegarder dans localStorage
+    localStorage.setItem('theme-colors', JSON.stringify(theme));
+  }, [theme, mounted]);
 
   const updateColor = (key: keyof ThemeConfig, value: string) => {
     setTheme((prev) => ({ ...prev, [key]: value }));
@@ -147,29 +158,12 @@ export function ThemeManager() {
     alert('Thème copié dans le presse-papiers !');
   };
 
-  return (
-    <Card title="Gestionnaire de Thème" className="space-y-6">
-      {/* Dark Mode Toggle */}
-      <div>
-        <label className="flex items-center justify-between cursor-pointer">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Mode sombre
-          </span>
-          <button
-            onClick={() => setIsDark(!isDark)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              isDark ? 'bg-primary-600' : 'bg-gray-300'
-            }`}
-          >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                isDark ? 'translate-x-6' : 'translate-x-1'
-              }`}
-            />
-          </button>
-        </label>
-      </div>
+  if (!mounted) {
+    return null;
+  }
 
+  return (
+    <Card title="Gestionnaire de Couleurs" className="space-y-6">
       {/* Colors */}
       <div className="space-y-4">
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">

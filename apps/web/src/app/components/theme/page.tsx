@@ -3,6 +3,7 @@
 import { Card, Button, Input, Badge, ThemeToggle, ThemeToggleWithIcon, ClientOnly } from '@/components/ui';
 import { PageHeader, PageContainer, Section, ExampleCard } from '@/components/layout';
 import { useTheme } from '@/contexts/ThemeContext';
+import { ThemeManager } from '@/components/theme/ThemeManager';
 
 // Force dynamic rendering to avoid SSR issues with useTheme
 export const dynamic = 'force-dynamic';
@@ -155,6 +156,18 @@ function MyComponent() {
               </div>
             </div>
           </Card>
+        </Section>
+
+        {/* Gestionnaire de Couleurs */}
+        <Section title="Personnalisation des Couleurs">
+          <div className="max-w-2xl">
+            <ThemeManager />
+            <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <p className="text-sm text-blue-800 dark:text-blue-200">
+                <strong>Note :</strong> Les modifications de couleurs s'appliquent immédiatement à tous les composants du site et sont sauvegardées automatiquement.
+              </p>
+            </div>
+          </div>
         </Section>
       </div>
     </PageContainer>
