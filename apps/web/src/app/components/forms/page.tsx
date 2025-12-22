@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Input, Textarea, Select, Checkbox, Radio, Switch, DatePicker, FileUpload, Button, Form, FormField, FormBuilder } from '@/components/ui';
+import { Input, Textarea, Select, Checkbox, Radio, Switch, DatePicker, FileUpload, Button, Form, FormField, FormBuilder, RichTextEditor } from '@/components/ui';
 import type { FormField as FormBuilderField } from '@/components/ui';
 import { PageHeader, PageContainer, Section, PageNavigation } from '@/components/layout';
 
 export default function FormsPage() {
-  const [formData, setFormData] = useState({ email: '', password: '', description: '', country: '', newsletter: false, plan: 'basic', notifications: true, birthdate: '' });
+  const [formData, setFormData] = useState({ email: '', password: '', description: '', country: '', newsletter: false, plan: 'basic', notifications: true, birthdate: '', richText: '' });
 
   return (
     <PageContainer>
@@ -134,6 +134,19 @@ export default function FormsPage() {
                 </div>
               </Form>
             </div>
+          </div>
+        </Section>
+
+        <Section title="RichTextEditor">
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400">Éditeur de texte riche avec barre d'outils.</p>
+            <RichTextEditor
+              value={formData.richText}
+              onChange={(value) => setFormData({ ...formData, richText: value })}
+              label="Description détaillée"
+              placeholder="Tapez votre texte ici..."
+              helperText="Utilisez la barre d'outils pour formater votre texte"
+            />
           </div>
         </Section>
 

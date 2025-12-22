@@ -96,13 +96,13 @@ export default function Calendar({
           key={day}
           className={clsx(
             'aspect-square border border-gray-200 dark:border-gray-700 p-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors',
-            isCurrentDay && 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 dark:border-blue-400'
+            isCurrentDay && 'bg-primary-50 dark:bg-primary-900/20 border-primary-500 dark:border-primary-400'
           )}
           onClick={() => onDateClick?.(date)}
         >
           <div className={clsx(
             'text-sm font-medium mb-1',
-            isCurrentDay ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-gray-100'
+            isCurrentDay ? 'text-primary-600 dark:text-primary-400' : 'text-gray-900 dark:text-gray-100'
           )}>
             {day}
           </div>
@@ -112,7 +112,7 @@ export default function Calendar({
                 key={event.id}
                 className={clsx(
                   'text-xs px-1 py-0.5 rounded truncate cursor-pointer',
-                  event.color || 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300'
+                  event.color || 'bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300'
                 )}
                 style={event.color ? { backgroundColor: event.color } : undefined}
                 onClick={(e) => {

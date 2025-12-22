@@ -33,28 +33,28 @@ export default function Toast({
 
   const variants = {
     success: {
-      bg: 'bg-green-50',
-      border: 'border-green-200',
-      text: 'text-green-800',
-      icon: 'text-green-400',
+      bg: 'bg-secondary-50 dark:bg-secondary-900/20',
+      border: 'border-secondary-200 dark:border-secondary-800',
+      text: 'text-secondary-800 dark:text-secondary-200',
+      icon: 'text-secondary-400',
     },
     error: {
-      bg: 'bg-red-50',
-      border: 'border-red-200',
-      text: 'text-red-800',
-      icon: 'text-red-400',
+      bg: 'bg-danger-50 dark:bg-danger-900/20',
+      border: 'border-danger-200 dark:border-danger-800',
+      text: 'text-danger-800 dark:text-danger-200',
+      icon: 'text-danger-400',
     },
     warning: {
-      bg: 'bg-yellow-50',
-      border: 'border-yellow-200',
-      text: 'text-yellow-800',
-      icon: 'text-yellow-400',
+      bg: 'bg-warning-50 dark:bg-warning-900/20',
+      border: 'border-warning-200 dark:border-warning-800',
+      text: 'text-warning-800 dark:text-warning-200',
+      icon: 'text-warning-400',
     },
     info: {
-      bg: 'bg-blue-50',
-      border: 'border-blue-200',
-      text: 'text-blue-800',
-      icon: 'text-blue-400',
+      bg: 'bg-primary-50 dark:bg-primary-900/20',
+      border: 'border-primary-200 dark:border-primary-800',
+      text: 'text-primary-800 dark:text-primary-200',
+      icon: 'text-primary-400',
     },
   };
 

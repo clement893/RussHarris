@@ -52,9 +52,9 @@ export default function CRUDModal({
       <div className="space-y-6">
         {mode === 'delete' ? (
           <div className="text-center py-4">
-            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-danger-100 dark:bg-danger-900/30 mb-4">
               <svg
-                className="h-6 w-6 text-red-600 dark:text-red-400"
+                className="h-6 w-6 text-danger-600 dark:text-danger-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

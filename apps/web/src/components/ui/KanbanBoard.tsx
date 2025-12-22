@@ -67,11 +67,11 @@ export default function KanbanBoard({
   const getPriorityColor = (priority?: string) => {
     switch (priority) {
       case 'high':
-        return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300';
+        return 'bg-danger-100 dark:bg-danger-900/30 text-danger-800 dark:text-danger-300';
       case 'medium':
-        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
+        return 'bg-warning-100 dark:bg-warning-900/30 text-warning-800 dark:text-warning-300';
       case 'low':
-        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
+        return 'bg-secondary-100 dark:bg-secondary-900/30 text-secondary-800 dark:text-secondary-300';
       default:
         return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
     }
@@ -87,7 +87,7 @@ export default function KanbanBoard({
             key={column.id}
             className={clsx(
               'flex-shrink-0 w-80 bg-gray-50 dark:bg-gray-900 rounded-lg p-4',
-              dragOverColumn === column.id && 'ring-2 ring-blue-500'
+              dragOverColumn === column.id && 'ring-2 ring-primary-500'
             )}
             onDragOver={(e) => handleDragOver(e, column.id)}
             onDragLeave={handleDragLeave}
@@ -99,7 +99,7 @@ export default function KanbanBoard({
                 <div
                   className={clsx(
                     'w-3 h-3 rounded-full',
-                    column.color || 'bg-blue-500'
+                    column.color || 'bg-primary-500'
                   )}
                   style={column.color ? { backgroundColor: column.color } : undefined}
                 />

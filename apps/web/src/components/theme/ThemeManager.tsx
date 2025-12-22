@@ -6,6 +6,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { clsx } from 'clsx';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
@@ -62,6 +63,46 @@ const defaultTheme: ThemeConfig = {
   borderRadius: '0.5rem',
 };
 
+// Theme Presets
+const themePresets = {
+  default: defaultTheme,
+  modern: {
+    ...defaultTheme,
+    primary: '#6366F1', // indigo-500
+    secondary: '#8B5CF6', // violet-500
+    fontFamily: 'Inter',
+    fontFamilyHeading: 'Poppins',
+    borderRadius: '0.75rem',
+  },
+  corporate: {
+    ...defaultTheme,
+    primary: '#1E40AF', // blue-800
+    secondary: '#059669', // emerald-600
+    fontFamily: 'Roboto',
+    fontFamilyHeading: 'Roboto',
+    borderRadius: '0.25rem',
+  },
+  vibrant: {
+    ...defaultTheme,
+    primary: '#EC4899', // pink-500
+    secondary: '#F59E0B', // amber-500
+    danger: '#EF4444',
+    warning: '#F59E0B',
+    info: '#06B6D4',
+    fontFamily: 'Poppins',
+    fontFamilyHeading: 'Poppins',
+    borderRadius: '1rem',
+  },
+  minimal: {
+    ...defaultTheme,
+    primary: '#000000',
+    secondary: '#6B7280',
+    fontFamily: 'Inter',
+    fontFamilyHeading: 'Inter',
+    borderRadius: '0rem',
+  },
+};
+
 const fontOptions = [
   { label: 'Inter', value: 'Inter' },
   { label: 'Roboto', value: 'Roboto' },
@@ -83,6 +124,7 @@ const borderRadiusOptions = [
 export function ThemeManager() {
   const [theme, setTheme] = useState<ThemeConfig>(defaultTheme);
   const [mounted, setMounted] = useState(false);
+  const [selectedPreset, setSelectedPreset] = useState<keyof typeof themePresets>('default');
 
   // Charger le thème depuis localStorage au démarrage
   useEffect(() => {
@@ -213,6 +255,13 @@ export function ThemeManager() {
 
   const resetTheme = () => {
     setTheme(defaultTheme);
+    setSelectedPreset('default');
+  };
+
+  const applyPreset = (presetName: keyof typeof themePresets) => {
+    const preset = themePresets[presetName];
+    setTheme(preset);
+    setSelectedPreset(presetName);
   };
 
   const exportTheme = () => {
@@ -227,6 +276,29 @@ export function ThemeManager() {
 
   return (
     <Card title="Gestionnaire de Thème Avancé" className="space-y-6">
+      {/* Presets */}
+      <div className="space-y-4">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+          Presets de Thème
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          {Object.entries(themePresets).map(([name, preset]) => (
+            <button
+              key={name}
+              onClick={() => applyPreset(name as keyof typeof themePresets)}
+              className={clsx(
+                'px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all',
+                selectedPreset === name
+                  ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-900 dark:text-primary-100'
+                  : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+              )}
+            >
+              {name.charAt(0).toUpperCase() + name.slice(1)}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Colors */}
       <div className="space-y-4">
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">

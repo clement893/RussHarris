@@ -1,0 +1,214 @@
+/**
+ * Rich Text Editor Component
+ * Simple rich text editor for SaaS applications
+ */
+
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import { clsx } from 'clsx';
+import Button from './Button';
+
+export interface RichTextEditorProps {
+  value?: string;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  label?: string;
+  error?: string;
+  helperText?: string;
+  disabled?: boolean;
+  minHeight?: string;
+  className?: string;
+  toolbar?: boolean;
+}
+
+export default function RichTextEditor({
+  value = '',
+  onChange,
+  placeholder = 'Tapez votre texte...',
+  label,
+  error,
+  helperText,
+  disabled = false,
+  minHeight = '200px',
+  className,
+  toolbar = true,
+}: RichTextEditorProps) {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== value) {
+      editorRef.current.innerHTML = value;
+    }
+  }, [value]);
+
+  const handleInput = () => {
+    if (editorRef.current && onChange) {
+      onChange(editorRef.current.innerHTML);
+    }
+  };
+
+  const execCommand = (command: string, value?: string) => {
+    document.execCommand(command, false, value);
+    editorRef.current?.focus();
+    handleInput();
+  };
+
+  const ToolbarButton = ({ 
+    command, 
+    value, 
+    icon, 
+    label 
+  }: { 
+    command: string; 
+    value?: string; 
+    icon: React.ReactNode; 
+    label: string;
+  }) => (
+    <button
+      type="button"
+      onClick={() => execCommand(command, value)}
+      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+      aria-label={label}
+      disabled={disabled}
+    >
+      {icon}
+    </button>
+  );
+
+  return (
+    <div className={clsx('flex flex-col', className)}>
+      {label && (
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          {label}
+        </label>
+      )}
+
+      <div
+        className={clsx(
+          'border rounded-lg overflow-hidden',
+          'bg-white dark:bg-gray-800',
+          error
+            ? 'border-danger-500 dark:border-danger-400'
+            : isFocused
+            ? 'border-primary-500 dark:border-primary-400 ring-2 ring-primary-500 dark:ring-primary-400'
+            : 'border-gray-300 dark:border-gray-600',
+          disabled && 'opacity-60 cursor-not-allowed'
+        )}
+      >
+        {toolbar && (
+          <div className="flex items-center gap-1 p-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+            <ToolbarButton
+              command="bold"
+              icon={
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z" />
+                </svg>
+              }
+              label="Gras"
+            />
+            <ToolbarButton
+              command="italic"
+              icon={
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 16M6 20l-4-16" />
+                </svg>
+              }
+              label="Italique"
+            />
+            <ToolbarButton
+              command="underline"
+              icon={
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              }
+              label="Souligné"
+            />
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
+            <ToolbarButton
+              command="formatBlock"
+              value="h2"
+              icon={
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                </svg>
+              }
+              label="Titre"
+            />
+            <ToolbarButton
+              command="insertUnorderedList"
+              icon={
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              }
+              label="Liste à puces"
+            />
+            <ToolbarButton
+              command="insertOrderedList"
+              icon={
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                </svg>
+              }
+              label="Liste numérotée"
+            />
+            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
+            <ToolbarButton
+              command="createLink"
+              icon={
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              }
+              label="Lien"
+            />
+          </div>
+        )}
+
+        <div
+          ref={editorRef}
+          contentEditable={!disabled}
+          onInput={handleInput}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className={clsx(
+            'p-4 outline-none',
+            'text-gray-900 dark:text-gray-100',
+            'min-h-[200px]',
+            disabled && 'cursor-not-allowed'
+          )}
+          style={{ minHeight }}
+          data-placeholder={placeholder}
+          suppressContentEditableWarning
+          aria-label={label || 'Rich text editor'}
+          role="textbox"
+          aria-multiline="true"
+        />
+      </div>
+
+      <style jsx>{`
+        [contenteditable][data-placeholder]:empty:before {
+          content: attr(data-placeholder);
+          color: #9ca3af;
+          pointer-events: none;
+        }
+      `}</style>
+
+      {error && (
+        <p className="mt-1 text-sm text-danger-600 dark:text-danger-400" role="alert">
+          {error}
+        </p>
+      )}
+      {helperText && !error && (
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          {helperText}
+        </p>
+      )}
+    </div>
+  );
+}
+

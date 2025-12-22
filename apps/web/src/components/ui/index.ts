@@ -100,3 +100,15 @@ export { default as ExportButton } from './ExportButton';
 export type { ExportButtonProps } from './ExportButton';
 export { default as FileUploadWithPreview } from './FileUploadWithPreview';
 export type { FileUploadWithPreviewProps } from './FileUploadWithPreview';
+
+// Command Palette
+export { default as CommandPalette, useCommandPalette } from './CommandPalette';
+export type { CommandPaletteProps, Command } from './CommandPalette';
+
+// MultiSelect
+export { default as MultiSelect } from './MultiSelect';
+export type { MultiSelectProps, MultiSelectOption } from './MultiSelect';
+
+// Rich Text Editor
+export { default as RichTextEditor } from './RichTextEditor';
+export type { RichTextEditorProps } from './RichTextEditor';

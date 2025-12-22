@@ -1,13 +1,52 @@
 'use client';
 
 import { useState } from 'react';
-import { Avatar, Tooltip, Dropdown, SearchBar, Accordion, Badge, Button, Autocomplete, TreeView, Container, Toast, ToastContainer, useToast } from '@/components/ui';
-import type { AutocompleteOption, TreeNode } from '@/components/ui';
+import { Avatar, Tooltip, Dropdown, SearchBar, Accordion, Badge, Button, Autocomplete, TreeView, Container, Toast, ToastContainer, useToast, CommandPalette, useCommandPalette, MultiSelect } from '@/components/ui';
+import type { AutocompleteOption, TreeNode, Command, MultiSelectOption } from '@/components/ui';
 import { PageHeader, PageContainer, Section, PageNavigation } from '@/components/layout';
 
 export default function UtilsPage() {
   const [searchValue, setSearchValue] = useState('');
+  const [multiSelectValue, setMultiSelectValue] = useState<string[]>([]);
   const { toasts, showToast } = useToast();
+  
+  // Command Palette setup
+  const commands: Command[] = [
+    {
+      id: '1',
+      label: 'Créer un utilisateur',
+      description: 'Ouvrir le formulaire de création',
+      category: 'Actions',
+      action: () => alert('Créer un utilisateur'),
+      shortcut: '⌘N',
+    },
+    {
+      id: '2',
+      label: 'Rechercher',
+      description: 'Ouvrir la recherche',
+      category: 'Navigation',
+      action: () => alert('Rechercher'),
+      shortcut: '⌘K',
+    },
+    {
+      id: '3',
+      label: 'Paramètres',
+      description: 'Ouvrir les paramètres',
+      category: 'Navigation',
+      action: () => alert('Paramètres'),
+      shortcut: '⌘,',
+    },
+  ];
+  const { isOpen: isCommandPaletteOpen, open: openCommandPalette, close: closeCommandPalette } = useCommandPalette(commands);
+
+  const multiSelectOptions: MultiSelectOption[] = [
+    { label: 'React', value: 'react', group: 'Frameworks' },
+    { label: 'Vue', value: 'vue', group: 'Frameworks' },
+    { label: 'Angular', value: 'angular', group: 'Frameworks' },
+    { label: 'TypeScript', value: 'typescript', group: 'Languages' },
+    { label: 'JavaScript', value: 'javascript', group: 'Languages' },
+    { label: 'Python', value: 'python', group: 'Languages' },
+  ];
 
   const autocompleteOptions: AutocompleteOption[] = [
     { label: 'Paris', value: 'paris' },
@@ -196,8 +235,52 @@ export default function UtilsPage() {
             <p className="text-sm text-gray-600 dark:text-gray-400">Les toasts s'affichent en haut à droite de l'écran.</p>
           </div>
         </Section>
+
+        <Section title="Command Palette (⌘K)">
+          <div className="space-y-4">
+            <div>
+              <h4 className="text-sm font-semibold mb-2">Palette de commandes moderne</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Appuyez sur <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-xs">⌘K</kbd> ou cliquez sur le bouton pour ouvrir la palette de commandes.
+              </p>
+              <Button onClick={openCommandPalette} variant="primary">
+                Ouvrir Command Palette
+              </Button>
+            </div>
+            <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                <strong>Fonctionnalités :</strong> Recherche instantanée, navigation au clavier, catégorisation, raccourcis clavier affichés.
+              </p>
+            </div>
+          </div>
+        </Section>
+
+        <Section title="MultiSelect avec Tags">
+          <div className="space-y-4">
+            <div>
+              <h4 className="text-sm font-semibold mb-2">Sélection multiple avec tags</h4>
+              <MultiSelect
+                options={multiSelectOptions}
+                value={multiSelectValue}
+                onChange={setMultiSelectValue}
+                label="Technologies"
+                placeholder="Sélectionnez des technologies..."
+                helperText="Vous pouvez sélectionner plusieurs options"
+                maxSelected={5}
+                searchable
+                clearable
+              />
+              {multiSelectValue.length > 0 && (
+                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                  Sélectionné : {multiSelectValue.join(', ')}
+                </p>
+              )}
+            </div>
+          </div>
+        </Section>
       </div>
 
+      <CommandPalette commands={commands} isOpen={isCommandPaletteOpen} onClose={closeCommandPalette} />
       <ToastContainer toasts={toasts} />
       <PageNavigation prev={{ label: 'Données', href: '/components/data' }} home={{ label: 'Retour à l\'accueil', href: '/components' }} />
     </PageContainer>
