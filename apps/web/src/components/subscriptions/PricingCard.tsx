@@ -1,9 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import { Button, Card, Badge } from '@/components/ui';
 import { Check } from 'lucide-react';
 import clsx from 'clsx';
 

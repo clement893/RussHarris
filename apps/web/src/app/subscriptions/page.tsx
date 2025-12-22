@@ -3,9 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Card } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Alert } from '@/components/ui/Alert';
+import { Card, Button, Alert } from '@/components/ui';
 import { api } from '@/lib/api';
 import { Loader2 } from 'lucide-react';
 

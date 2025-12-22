@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Avatar, Tooltip, Dropdown, SearchBar, Accordion, Badge, Button, Autocomplete, TreeView, Container, Toast, ToastContainer, useToast, CommandPalette, useCommandPalette, MultiSelect } from '@/components/ui';
+import { Avatar, Tooltip, Dropdown, SearchBar, Accordion, Badge, Button, Autocomplete, TreeView, Container, ToastContainer, useToast, CommandPalette, useCommandPalette, MultiSelect } from '@/components/ui';
 import type { AutocompleteOption, TreeNode, Command, MultiSelectOption } from '@/components/ui';
 import { PageHeader, PageContainer, Section, PageNavigation } from '@/components/layout';
 
