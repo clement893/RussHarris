@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { Card, Input, Switch, Button, Tabs, TabList, Tab, TabPanels, TabPanel, Alert } from '@/components/ui';
 import { ThemeManager } from '@/components/theme/ThemeManager';
-import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { PageHeader, PageContainer } from '@/components/layout';
 
 export default function SettingsExample() {
   const [notifications, setNotifications] = useState(true);
