@@ -83,6 +83,8 @@ export default function TeamsPage() {
       // TODO: Replace with actual API call
       // const response = await teamsAPI.getMembers(teamId);
       // setTeamMembers(response.data);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      void teamId; // Will be used when API is implemented
       
       // Mock data
       setTeamMembers([
