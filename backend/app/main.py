@@ -65,13 +65,7 @@ def create_app() -> FastAPI:
     # Rate Limiting
     app = setup_rate_limiting(app)
 
-    # Compression Middleware (should be before CORS)
-    app.add_middleware(CompressionMiddleware)
-
-    # Cache Headers Middleware
-    app.add_middleware(CacheHeadersMiddleware, default_max_age=300)
-
-    # CORS Middleware - Restricted for security
+    # CORS Middleware - MUST be added first to handle preflight requests
     # Ensure CORS_ORIGINS is a list
     from app.core.logging import logger
     cors_origins = settings.CORS_ORIGINS
@@ -87,9 +81,15 @@ def create_app() -> FastAPI:
         allow_origins=cors_origins,
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-        allow_headers=["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+        allow_headers=["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
         expose_headers=["X-Process-Time", "X-Timestamp", "X-Response-Time"],
     )
+
+    # Compression Middleware (after CORS)
+    app.add_middleware(CompressionMiddleware)
+
+    # Cache Headers Middleware
+    app.add_middleware(CacheHeadersMiddleware, default_max_age=300)
 
     # Include API router
     app.include_router(api_router, prefix=settings.API_V1_STR)
