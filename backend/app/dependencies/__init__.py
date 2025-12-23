@@ -96,3 +96,4 @@ async def get_optional_user(
     except HTTPException:
         return None
 
+
