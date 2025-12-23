@@ -1,8 +1,9 @@
-'use client';
-
 import Link from 'next/link';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
+
+// Force dynamic rendering to avoid CSS file issues during build
+export const dynamic = 'force-dynamic';
 
 export default function DocsPage() {
   const sections = [
