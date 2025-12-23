@@ -21,25 +21,9 @@ export function middleware(request: NextRequest) {
     '/api/auth',
   ];
 
-  // Routes protégées qui nécessitent une authentification
-  const protectedRoutes = ['/dashboard', '/subscriptions', '/profile', '/settings'];
-  
-  // Routes admin qui nécessitent des droits administrateur
-  const adminRoutes = ['/admin'];
-
   // Vérifier si la route est publique
   const isPublicRoute = publicRoutes.some((route) => 
     pathname === route || pathname.startsWith(route + '/')
-  );
-
-  // Vérifier si la route est protégée
-  const isProtectedRoute = protectedRoutes.some((route) => 
-    pathname.startsWith(route)
-  );
-
-  // Vérifier si la route est admin
-  const isAdminRoute = adminRoutes.some((route) => 
-    pathname.startsWith(route)
   );
 
   // Si c'est une route publique, autoriser l'accès
