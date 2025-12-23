@@ -1,12 +1,10 @@
 ﻿'use client';
 
-// Note: Client Components are already dynamic by nature.
-// Route segment config (export const dynamic) only works in Server Components.
-// Client Components run on the client side, so they don't need this export.
-
 import { useState } from 'react';
 import { aiAPI } from '@/lib/api';
 import { AxiosError } from 'axios';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import { Button, Card, Input, Textarea, Alert, Badge, Select, Tabs, TabList, Tab } from '@/components/ui';
 
 interface Message {
   role: 'system' | 'user' | 'assistant';
@@ -16,6 +14,9 @@ interface Message {
 interface HealthStatus {
   status: string;
   configured?: boolean;
+  model?: string;
+  available?: boolean;
+  error?: string;
   [key: string]: unknown;
 }
 
@@ -24,7 +25,7 @@ interface ApiErrorResponse {
   message?: string;
 }
 
-export default function AITestPage() {
+function AITestContent() {
   const [mode, setMode] = useState<'simple' | 'chat'>('simple');
   const [simpleMessage, setSimpleMessage] = useState('');
   const [systemPrompt, setSystemPrompt] = useState('');
@@ -92,7 +93,6 @@ export default function AITestPage() {
       );
       setResponse(res.data.content);
       
-      // Add assistant response to messages
       setMessages([...validMessages, { role: 'assistant', content: res.data.content }]);
     } catch (err) {
       const axiosError = err as AxiosError<ApiErrorResponse>;
@@ -129,74 +129,68 @@ export default function AITestPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">AI Test Interface</h1>
-          
+    <main className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <Card title="AI Test Interface">
           {/* Health Check */}
-          <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Health Check</h2>
-              <button
-                onClick={checkHealth}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-              >
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Health Check</h2>
+              <Button variant="primary" onClick={checkHealth} size="sm">
                 Check Status
-              </button>
+              </Button>
             </div>
-            {healthStatus && (() => {
-              const hasError = healthStatus.error != null;
-              return (
-                <div className="mt-2 text-sm">
-                  <p>Configured: {healthStatus.configured ? 'Yes' : 'No'}</p>
-                  <p>Model: {healthStatus.model ? String(healthStatus.model) : 'N/A'}</p>
-                  <p>Available: {healthStatus.available ? 'Yes' : 'No'}</p>
-                  {hasError && (
-                    <p className="text-red-600">Error: {String(healthStatus.error)}</p>
-                  )}
+            {healthStatus && (
+              <div className="mt-2 text-sm space-y-2">
+                <div className="flex items-center gap-2">
+                  <strong className="text-gray-700 dark:text-gray-300">Configured:</strong>
+                  <Badge variant={healthStatus.configured ? 'success' : 'error'}>
+                    {healthStatus.configured ? 'Yes' : 'No'}
+                  </Badge>
                 </div>
-              );
-            })()}
+                <p className="text-gray-700 dark:text-gray-300">
+                  <strong>Model:</strong> {healthStatus.model ? String(healthStatus.model) : 'N/A'}
+                </p>
+                <p className="text-gray-700 dark:text-gray-300">
+                  <strong>Available:</strong> {healthStatus.available ? 'Yes' : 'No'}
+                </p>
+                {healthStatus.error && (
+                  <Alert variant="error" className="mt-2">
+                    Error: {String(healthStatus.error)}
+                  </Alert>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Mode Selection */}
           <div className="mb-6">
-            <div className="flex gap-4 mb-4">
-              <button
-                onClick={() => setMode('simple')}
-                className={`px-4 py-2 rounded-lg transition ${mode === 'simple' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-              >
-                Simple Chat
-              </button>
-              <button
-                onClick={() => setMode('chat')}
-                className={`px-4 py-2 rounded-lg transition ${mode === 'chat' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-              >
-                Full Chat
-              </button>
-            </div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Mode</label>
+            <Tabs defaultTab={mode} onChange={(value) => setMode(value as 'simple' | 'chat')}>
+              <TabList>
+                <Tab value="simple">Simple Chat</Tab>
+                <Tab value="chat">Full Chat</Tab>
+              </TabList>
+            </Tabs>
           </div>
 
           {/* Model Settings */}
-          <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-semibold mb-3">Model Settings</h3>
+          <Card title="Model Settings" className="mb-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Select
+                label="Model"
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+                options={[
+                  { label: 'gpt-4o-mini', value: 'gpt-4o-mini' },
+                  { label: 'gpt-4o', value: 'gpt-4o' },
+                  { label: 'gpt-4-turbo', value: 'gpt-4-turbo' },
+                  { label: 'gpt-3.5-turbo', value: 'gpt-3.5-turbo' },
+                ]}
+                fullWidth
+              />
               <div>
-                <label className="block text-sm font-medium mb-1">Model</label>
-                <select
-                  value={model}
-                  onChange={(e) => setModel(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                >
-                  <option value="gpt-4o-mini">gpt-4o-mini</option>
-                  <option value="gpt-4o">gpt-4o</option>
-                  <option value="gpt-4-turbo">gpt-4-turbo</option>
-                  <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">
+                <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
                   Temperature: {temperature}
                 </label>
                 <input
@@ -209,52 +203,47 @@ export default function AITestPage() {
                   className="w-full"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Max Tokens</label>
-                <input
-                  type="number"
-                  min="1"
-                  max="4000"
-                  value={maxTokens}
-                  onChange={(e) => setMaxTokens(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                />
-              </div>
+              <Input
+                type="number"
+                label="Max Tokens"
+                value={maxTokens.toString()}
+                onChange={(e) => setMaxTokens(parseInt(e.target.value) || 1000)}
+                min={1}
+                max={4000}
+                fullWidth
+              />
             </div>
-          </div>
+          </Card>
 
           {/* Simple Chat Mode */}
           {mode === 'simple' && (
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  System Prompt (optional)
-                </label>
-                <textarea
-                  value={systemPrompt}
-                  onChange={(e) => setSystemPrompt(e.target.value)}
-                  placeholder="You are a helpful assistant..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                  rows={2}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Your Message</label>
-                <textarea
-                  value={simpleMessage}
-                  onChange={(e) => setSimpleMessage(e.target.value)}
-                  placeholder="Type your message here..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                  rows={4}
-                />
-              </div>
-              <button
+              <Textarea
+                label="System Prompt (optional)"
+                value={systemPrompt}
+                onChange={(e) => setSystemPrompt(e.target.value)}
+                placeholder="You are a helpful assistant..."
+                rows={2}
+                fullWidth
+              />
+              <Textarea
+                label="Your Message"
+                value={simpleMessage}
+                onChange={(e) => setSimpleMessage(e.target.value)}
+                placeholder="Type your message here..."
+                rows={4}
+                required
+                fullWidth
+              />
+              <Button
                 onClick={handleSimpleChat}
                 disabled={isLoading}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                loading={isLoading}
+                variant="primary"
+                fullWidth
               >
                 {isLoading ? 'Sending...' : 'Send Message'}
-              </button>
+              </Button>
             </div>
           )}
 
@@ -263,71 +252,79 @@ export default function AITestPage() {
             <div className="space-y-4">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium">Messages</label>
-                  <button
-                    onClick={addMessage}
-                    className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm"
-                  >
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Messages</label>
+                  <Button variant="primary" onClick={addMessage} size="sm">
                     + Add Message
-                  </button>
+                  </Button>
                 </div>
                 {messages.map((msg, index) => (
-                  <div key={index} className="mb-3 p-3 border border-gray-300 rounded-lg">
+                  <Card key={index} className="mb-3">
                     <div className="flex items-center gap-2 mb-2">
-                      <select
+                      <Select
                         value={msg.role}
                         onChange={(e) => changeMessageRole(index, e.target.value as Message['role'])}
-                        className="px-2 py-1 border border-gray-300 rounded text-sm"
-                      >
-                        <option value="system">System</option>
-                        <option value="user">User</option>
-                        <option value="assistant">Assistant</option>
-                      </select>
+                        options={[
+                          { label: 'System', value: 'system' },
+                          { label: 'User', value: 'user' },
+                          { label: 'Assistant', value: 'assistant' },
+                        ]}
+                        className="flex-1"
+                      />
                       {messages.length > 1 && (
-                        <button
+                        <Button
+                          variant="danger"
                           onClick={() => removeMessage(index)}
-                          className="px-2 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700"
+                          size="sm"
                         >
                           Remove
-                        </button>
+                        </Button>
                       )}
                     </div>
-                    <textarea
+                    <Textarea
                       value={msg.content}
                       onChange={(e) => updateMessage(index, e.target.value)}
                       placeholder={`${msg.role} message...`}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                       rows={2}
+                      fullWidth
                     />
-                  </div>
+                  </Card>
                 ))}
               </div>
-              <button
+              <Button
                 onClick={handleChat}
                 disabled={isLoading}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                loading={isLoading}
+                variant="primary"
+                fullWidth
               >
                 {isLoading ? 'Sending...' : 'Send Chat'}
-              </button>
+              </Button>
             </div>
           )}
 
           {/* Error Display */}
           {error && (
-            <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <Alert variant="error" title="Error" className="mt-4">
               {error}
-            </div>
+            </Alert>
           )}
 
           {/* Response Display */}
           {response && (
-            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <h3 className="font-semibold mb-2 text-green-900">AI Response:</h3>
-              <div className="text-gray-800 whitespace-pre-wrap">{response}</div>
-            </div>
+            <Alert variant="success" title="AI Response" className="mt-6">
+              <div className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap mt-2">{response}</div>
+            </Alert>
           )}
-        </div>
+        </Card>
       </div>
     </main>
+  );
+}
+
+export default function AITestPage() {
+  return (
+    <ProtectedRoute>
+      <AITestContent />
+    </ProtectedRoute>
   );
 }
