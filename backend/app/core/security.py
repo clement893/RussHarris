@@ -4,8 +4,7 @@ import os
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
-import jwt
-from jwt import ExpiredSignatureError, InvalidTokenError
+from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import ValidationError
 
@@ -94,11 +93,8 @@ def decode_token(token: str, token_type: str = "access") -> Optional[dict]:
             return None
         
         return payload
-    except ExpiredSignatureError:
-        logger.debug("Token expired")
-        return None
-    except InvalidTokenError as e:
-        logger.warning(f"Invalid token: {e}")
+    except JWTError as e:
+        logger.warning(f"JWT error: {e}")
         return None
     except Exception as e:
         logger.error(f"Unexpected error decoding token: {e}", exc_info=True)
