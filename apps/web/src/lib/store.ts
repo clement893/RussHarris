@@ -54,9 +54,9 @@ interface AuthState {
    * @param token - JWT access token
    * @param refreshToken - Optional JWT refresh token
    */
-  login: (user: User, token: string, refreshToken?: string) => void;
+  login: (user: User, token: string, refreshToken?: string) => Promise<void>;
   /** Logs out the current user and clears all tokens */
-  logout: () => void;
+  logout: () => Promise<void>;
   /** 
    * Updates the current user data
    * @param user - Updated user data
@@ -66,12 +66,12 @@ interface AuthState {
    * Updates the access token
    * @param token - New JWT access token
    */
-  setToken: (token: string) => void;
+  setToken: (token: string) => Promise<void>;
   /** 
    * Updates the refresh token
    * @param refreshToken - New JWT refresh token
    */
-  setRefreshToken: (refreshToken: string) => void;
+  setRefreshToken: (refreshToken: string) => Promise<void>;
   /** Current error message or null */
   error: string | null;
   /** 
@@ -94,16 +94,13 @@ export const useAuthStore = create<AuthState>()(
         return !!state.token && !!state.user;
       },
 
-      login: (user: User, token: string, refreshToken?: string) => {
-        TokenStorage.setToken(token);
-        if (refreshToken) {
-          TokenStorage.setRefreshToken(refreshToken);
-        }
+      login: async (user: User, token: string, refreshToken?: string) => {
+        await TokenStorage.setToken(token, refreshToken);
         set({ user, token, refreshToken: refreshToken || null, error: null });
       },
 
-      logout: () => {
-        TokenStorage.removeTokens();
+      logout: async () => {
+        await TokenStorage.removeTokens();
         set({ user: null, token: null, refreshToken: null, error: null });
       },
 
@@ -111,13 +108,13 @@ export const useAuthStore = create<AuthState>()(
         set({ user });
       },
 
-      setToken: (token: string) => {
-        TokenStorage.setToken(token);
+      setToken: async (token: string) => {
+        await TokenStorage.setToken(token);
         set({ token });
       },
 
-      setRefreshToken: (refreshToken: string) => {
-        TokenStorage.setRefreshToken(refreshToken);
+      setRefreshToken: async (refreshToken: string) => {
+        await TokenStorage.setRefreshToken(refreshToken);
         set({ refreshToken });
       },
 

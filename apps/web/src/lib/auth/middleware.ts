@@ -5,9 +5,7 @@
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { auth } from './index';
-import { verifyToken, extractTokenFromHeader } from './jwt';
-import type { TokenPayload } from './jwt';
+import { verifyToken, extractTokenFromHeader, type TokenPayload } from './jwt';
 
 export interface AuthenticatedRequest extends NextRequest {
   user?: TokenPayload;
@@ -19,34 +17,28 @@ export interface AuthenticatedRequest extends NextRequest {
 export async function requireAuth(
   request: NextRequest
 ): Promise<{ user: TokenPayload; response?: NextResponse }> {
-  // Try to get session from NextAuth
-  const session = await auth();
-
-  if (session?.user) {
-    // Session-based authentication
-    return {
-      user: {
-        userId: session.user.id ?? '',
-        email: session.user.email ?? '',
-        role: (session.user as { role?: string }).role,
-      },
-    };
-  }
-
-  // Try JWT token from Authorization header
+  // Try JWT token from Authorization header or cookie
   const authHeader = request.headers.get('authorization');
-  const token = extractTokenFromHeader(authHeader);
+  const token = extractTokenFromHeader(authHeader) || request.cookies.get('auth-token')?.value;
 
   if (!token) {
     throw new Error('Authentication required');
   }
 
-  try {
-    const payload = await verifyToken(token);
-    return { user: payload };
-  } catch (error) {
+  const payload = await verifyToken(token);
+  
+  if (!payload) {
     throw new Error('Invalid or expired token');
   }
+
+  return { 
+    user: {
+      ...payload,
+      userId: payload.sub || (payload as { userId?: string }).userId || '',
+      email: (payload as { email?: string }).email,
+      role: (payload as { role?: string }).role,
+    } as TokenPayload
+  };
 }
 
 /**
@@ -89,6 +81,10 @@ export function withAuth(
   return async (request: NextRequest): Promise<Response> => {
     try {
       const { user } = await requireAuth(request);
+      // Ensure userId is always defined
+      if (!user.userId) {
+        user.userId = user.sub || '';
+      }
       return await handler(request, { user });
     } catch (error) {
       return NextResponse.json(

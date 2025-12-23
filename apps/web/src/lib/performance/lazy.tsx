@@ -39,13 +39,12 @@ export function createLazyComponent<T extends ComponentType<unknown>>(
 
   return function LazyWrapper(props: React.ComponentProps<T>) {
     // TypeScript limitation: LazyExoticComponent types don't properly propagate props
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const Component = LazyComponent as any;
-    // Ensure props is treated as an object for spread operator
-    const componentProps = props as Record<string, unknown>;
+    // We use a double cast through 'unknown' to ComponentType, which is more explicit
+    // than 'any' while acknowledging the type erasure needed for lazy components
+    const Component = LazyComponent as unknown as ComponentType<Record<string, unknown>>;
     return (
       <Suspense fallback={fallback || <Spinner />}>
-        <Component {...componentProps} />
+        <Component {...(props as Record<string, unknown>)} />
       </Suspense>
     );
   };
@@ -72,20 +71,19 @@ export function createLazyComponent<T extends ComponentType<unknown>>(
  */
 export function lazyLoad<T extends ComponentType<unknown>>(
   importFn: () => Promise<{ default: T }>,
-  LoadingComponent?: ComponentType
+  LoadingComponent?: ComponentType<Record<string, never>>
 ): ComponentType<React.ComponentProps<T>> {
   const LazyComponent = lazy(importFn) as LazyComponentType<T>;
 
   return function LazyWrapper(props: React.ComponentProps<T>) {
     // TypeScript limitation: LazyExoticComponent types don't properly propagate props
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const Component = LazyComponent as any;
-    // Ensure props is treated as an object for spread operator
-    const componentProps = props as Record<string, unknown>;
+    // We use a double cast through 'unknown' to ComponentType, which is more explicit
+    // than 'any' while acknowledging the type erasure needed for lazy components
+    const Component = LazyComponent as unknown as ComponentType<Record<string, unknown>>;
     const fallback = LoadingComponent ? <LoadingComponent /> : <Spinner />;
     return (
       <Suspense fallback={fallback}>
-        <Component {...componentProps} />
+        <Component {...(props as Record<string, unknown>)} />
       </Suspense>
     );
   };

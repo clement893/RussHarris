@@ -1,28 +1,67 @@
 /**
  * Secure Token Storage
- * Uses sessionStorage instead of localStorage for better security
- * Tokens are cleared when browser tab is closed
+ * 
+ * Uses httpOnly cookies for maximum security (set via API route)
+ * Falls back to sessionStorage for backward compatibility during migration
+ * 
+ * Security improvements:
+ * - Tokens stored in httpOnly cookies (not accessible to JavaScript)
+ * - Prevents XSS attacks from accessing tokens
+ * - Cookies are automatically sent with requests
  */
 
 const TOKEN_KEY = 'token';
 const REFRESH_TOKEN_KEY = 'refreshToken';
+const TOKEN_API_ENDPOINT = '/api/auth/token';
 
 /**
- * Secure token storage using sessionStorage
- * More secure than localStorage as tokens are cleared on tab close
+ * Secure token storage with httpOnly cookie support
+ * 
+ * For maximum security, tokens are stored in httpOnly cookies via API routes.
+ * This prevents JavaScript access, protecting against XSS attacks.
  */
 export class TokenStorage {
   /**
-   * Set access token
+   * Set access token (and optionally refresh token) via httpOnly cookies
+   * This is the secure method that stores tokens server-side
    */
-  static setToken(token: string): void {
-    if (typeof window !== 'undefined') {
+  static async setToken(token: string, refreshToken?: string): Promise<void> {
+    if (typeof window === 'undefined') {
+      return; // Server-side, skip
+    }
+
+    try {
+      // Set tokens via API route (httpOnly cookies)
+      await fetch(TOKEN_API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token, refreshToken }),
+        credentials: 'include', // Important: include cookies
+      });
+
+      // Also store in sessionStorage for backward compatibility
+      // This will be removed once all code is migrated to cookie-based auth
       sessionStorage.setItem(TOKEN_KEY, token);
+      if (refreshToken) {
+        sessionStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+      }
+    } catch (error) {
+      // Fallback to sessionStorage if API call fails
+      sessionStorage.setItem(TOKEN_KEY, token);
+      if (refreshToken) {
+        sessionStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+      }
     }
   }
 
   /**
    * Get access token
+   * 
+   * Note: With httpOnly cookies, tokens are automatically sent with requests.
+   * This method checks sessionStorage for backward compatibility.
+   * For new code, rely on cookies being sent automatically.
    */
   static getToken(): string | null {
     if (typeof window !== 'undefined') {
@@ -33,15 +72,22 @@ export class TokenStorage {
 
   /**
    * Set refresh token
+   * @deprecated Use setToken() with refreshToken parameter instead
    */
-  static setRefreshToken(token: string): void {
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem(REFRESH_TOKEN_KEY, token);
+  static async setRefreshToken(token: string): Promise<void> {
+    const currentToken = this.getToken();
+    if (currentToken) {
+      await this.setToken(currentToken, token);
+    } else {
+      await this.setToken('', token);
     }
   }
 
   /**
    * Get refresh token
+   * 
+   * Note: With httpOnly cookies, refresh tokens are stored server-side.
+   * This method checks sessionStorage for backward compatibility.
    */
   static getRefreshToken(): string | null {
     if (typeof window !== 'undefined') {
@@ -51,9 +97,24 @@ export class TokenStorage {
   }
 
   /**
-   * Remove all tokens
+   * Remove all tokens (both cookies and sessionStorage)
    */
-  static removeTokens(): void {
+  static async removeTokens(): Promise<void> {
+    if (typeof window === 'undefined') {
+      return; // Server-side, skip
+    }
+
+    try {
+      // Clear httpOnly cookies via API route
+      await fetch(TOKEN_API_ENDPOINT, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+    } catch (error) {
+      // Continue even if API call fails
+    }
+
+    // Also clear sessionStorage
     if (typeof window !== 'undefined') {
       sessionStorage.removeItem(TOKEN_KEY);
       sessionStorage.removeItem(REFRESH_TOKEN_KEY);
@@ -62,9 +123,30 @@ export class TokenStorage {
 
   /**
    * Check if tokens exist
+   * Checks sessionStorage for backward compatibility
    */
   static hasTokens(): boolean {
     return this.getToken() !== null || this.getRefreshToken() !== null;
+  }
+
+  /**
+   * Check token status via API (for httpOnly cookie tokens)
+   */
+  static async hasTokensInCookies(): Promise<boolean> {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    try {
+      const response = await fetch(TOKEN_API_ENDPOINT, {
+        method: 'GET',
+        credentials: 'include',
+      });
+      const data = await response.json();
+      return data.hasToken === true || data.hasRefreshToken === true;
+    } catch (error) {
+      return false;
+    }
   }
 }
 

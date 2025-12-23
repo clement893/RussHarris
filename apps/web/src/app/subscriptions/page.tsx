@@ -46,12 +46,25 @@ function SubscriptionsContent() {
 
   const handleSubscribe = useCallback(async (planId: string, period: 'month' | 'year') => {
     try {
-      // TODO: Replace with actual API call
-      // await subscriptionsAPI.create({ plan_id: planId, billing_period: period });
-      // Redirect to success page
-      router.push(`/subscriptions/success?plan=${planId}&period=${period}`);
+      setLoading(true);
+      setError('');
+      // Create checkout session via API
+      const { subscriptionsAPI } = await import('@/lib/api');
+      const response = await subscriptionsAPI.createCheckoutSession({
+        plan_id: parseInt(planId, 10),
+        success_url: `${window.location.origin}/subscriptions/success?plan=${planId}&period=${period}`,
+        cancel_url: `${window.location.origin}/subscriptions`,
+      });
+      
+      // Redirect to checkout URL if provided, otherwise to success page
+      if (response.data.checkout_url) {
+        window.location.href = response.data.checkout_url;
+      } else {
+        router.push(`/subscriptions/success?plan=${planId}&period=${period}`);
+      }
     } catch (err: unknown) {
-      setError(getErrorDetail(err) || getErrorMessage(err, 'Erreur lors de la souscription'));
+      setError(getErrorDetail(err) || getErrorMessage(err, 'Error subscribing to plan'));
+      setLoading(false);
     }
   }, [router]);
 
@@ -59,25 +72,31 @@ function SubscriptionsContent() {
     try {
       setLoading(true);
       setError('');
-      // Note: Replace mock data with actual API call when backend endpoint is ready
-      // const response = await subscriptionsAPI.getCurrent();
-      // setSubscription(response.data);
+      const { subscriptionsAPI } = await import('@/lib/api');
+      const response = await subscriptionsAPI.getMySubscription();
       
-      // Mock data for now
-      setSubscription({
-        id: '1',
-        plan_id: 'professional',
-        plan_name: 'Professional',
-        status: 'active',
-        current_period_start: '2024-01-01T00:00:00Z',
-        current_period_end: '2024-02-01T00:00:00Z',
-        cancel_at_period_end: false,
-        amount: 79,
-        currency: 'EUR',
-        billing_period: 'month',
-      });
+      if (response.data) {
+        const sub = response.data;
+        setSubscription({
+          id: String(sub.id),
+          plan_id: String(sub.plan_id),
+          plan_name: sub.plan?.name || 'Unknown Plan',
+          status: sub.status.toLowerCase() as 'active' | 'cancelled' | 'expired' | 'trial',
+          current_period_start: sub.current_period_start,
+          current_period_end: sub.current_period_end,
+          cancel_at_period_end: sub.cancel_at_period_end || false,
+          amount: sub.plan?.amount ? sub.plan.amount / 100 : 0, // Convert from cents
+          currency: sub.plan?.currency?.toUpperCase() || 'USD',
+          billing_period: (sub.plan?.interval?.toLowerCase() === 'year' ? 'year' : 'month') as 'month' | 'year',
+        });
+      }
     } catch (err: unknown) {
-      setError(getErrorDetail(err) || getErrorMessage(err, 'Erreur lors du chargement'));
+      // 404 means no subscription, which is fine
+      if (getErrorDetail(err)?.includes('404') || getErrorDetail(err)?.includes('not found')) {
+        setSubscription(null);
+      } else {
+        setError(getErrorDetail(err) || getErrorMessage(err, 'Error loading subscription'));
+      }
     } finally {
       setLoading(false);
     }
@@ -85,31 +104,29 @@ function SubscriptionsContent() {
 
   const loadPayments = useCallback(async () => {
     try {
-      // TODO: Replace with actual API call
-      // const response = await subscriptionsAPI.getPayments();
-      // setPayments(response.data);
+      // Note: Payment history endpoint may not be available yet
+      // This is a placeholder for when the backend implements it
+      // For now, we'll try to get payment info from subscription if available
+      const { logger } = await import('@/lib/logger');
+      logger.debug('Loading payment history');
       
-      // Mock data
-      setPayments([
-        {
-          id: '1',
-          amount: 79,
-          currency: 'EUR',
-          status: 'paid',
-          date: '2024-01-01T00:00:00Z',
-          invoice_url: '#',
-        },
-        {
-          id: '2',
-          amount: 79,
-          currency: 'EUR',
-          status: 'paid',
-          date: '2023-12-01T00:00:00Z',
-          invoice_url: '#',
-        },
-      ]);
+      // TODO: Implement when backend endpoint is ready
+      // const { subscriptionsAPI } = await import('@/lib/api');
+      // const response = await subscriptionsAPI.getPayments();
+      // setPayments(response.data.map(payment => ({
+      //   id: String(payment.id),
+      //   amount: payment.amount / 100,
+      //   currency: payment.currency.toUpperCase(),
+      //   status: payment.status.toLowerCase() as 'paid' | 'pending' | 'failed',
+      //   date: payment.created_at,
+      //   invoice_url: payment.invoice_url,
+      // })));
+      
+      // Empty array for now - will be populated when endpoint is ready
+      setPayments([]);
     } catch (err: unknown) {
-      console.error('Error loading payments:', err);
+      const { logger } = await import('@/lib/logger');
+      logger.error('Error loading payments', err as Error, { context: 'subscriptions' });
     }
   }, []);
 
@@ -128,26 +145,38 @@ function SubscriptionsContent() {
   }, [router, searchParams, handleSubscribe, loadSubscription, loadPayments]);
 
   const handleCancelSubscription = async () => {
-    if (!confirm('Êtes-vous sûr de vouloir annuler votre abonnement ? Il restera actif jusqu\'à la fin de la période en cours.')) {
+    if (!confirm('Are you sure you want to cancel your subscription? It will remain active until the end of the current period.')) {
       return;
     }
 
     try {
-      // TODO: Replace with actual API call
-      // await subscriptionsAPI.cancel();
+      setLoading(true);
+      setError('');
+      const { subscriptionsAPI } = await import('@/lib/api');
+      await subscriptionsAPI.cancelSubscription();
       await loadSubscription();
     } catch (err: unknown) {
-      setError(getErrorDetail(err) || getErrorMessage(err, 'Erreur lors de l\'annulation'));
+      setError(getErrorDetail(err) || getErrorMessage(err, 'Error canceling subscription'));
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleResumeSubscription = async () => {
     try {
-      // TODO: Replace with actual API call
-      // await subscriptionsAPI.resume();
-      await loadSubscription();
+      setLoading(true);
+      setError('');
+      // Note: Resume subscription may require creating a new checkout session
+      // or calling a specific resume endpoint if available
+      // If resume endpoint exists:
+      // const { subscriptionsAPI } = await import('@/lib/api');
+      // await subscriptionsAPI.resumeSubscription();
+      // Otherwise, redirect to pricing to resubscribe
+      router.push('/pricing');
     } catch (err: unknown) {
-      setError(getErrorDetail(err) || getErrorMessage(err, 'Erreur lors de la reprise'));
+      setError(getErrorDetail(err) || getErrorMessage(err, 'Error resuming subscription'));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -163,10 +192,10 @@ function SubscriptionsContent() {
 
   const getStatusLabel = (status: string) => {
     const labels: Record<string, string> = {
-      active: 'Actif',
-      cancelled: 'Annulé',
-      expired: 'Expiré',
-      trial: 'Essai',
+      active: 'Active',
+      cancelled: 'Cancelled',
+      expired: 'Expired',
+      trial: 'Trial',
     };
     return labels[status] || status;
   };
@@ -174,8 +203,8 @@ function SubscriptionsContent() {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Mes Abonnements</h1>
-        <p className="text-gray-600">Gérez votre abonnement et vos paiements</p>
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">My Subscriptions</h1>
+        <p className="text-gray-600">Manage your subscription and payments</p>
       </div>
 
       {error && (
@@ -185,7 +214,7 @@ function SubscriptionsContent() {
       {loading ? (
         <Card>
           <div className="py-12 text-center">
-            <div className="text-gray-500">Chargement...</div>
+            <div className="text-gray-500">Loading...</div>
           </div>
         </Card>
       ) : subscription ? (
@@ -205,22 +234,22 @@ function SubscriptionsContent() {
                     {subscription.amount}€
                   </div>
                   <div className="text-sm text-gray-600">
-                    /{subscription.billing_period === 'month' ? 'mois' : 'an'}
+                    /{subscription.billing_period === 'month' ? 'month' : 'year'}
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div>
-                  <div className="text-sm text-gray-600">Période actuelle</div>
+                  <div className="text-sm text-gray-600">Current Period</div>
                   <div className="text-lg font-semibold text-gray-900">
-                    {new Date(subscription.current_period_start).toLocaleDateString('fr-FR')} - {new Date(subscription.current_period_end).toLocaleDateString('fr-FR')}
+                    {new Date(subscription.current_period_start).toLocaleDateString()} - {new Date(subscription.current_period_end).toLocaleDateString()}
                   </div>
                 </div>
                 <div>
-                  <div className="text-sm text-gray-600">Prochain paiement</div>
+                  <div className="text-sm text-gray-600">Next Payment</div>
                   <div className="text-lg font-semibold text-gray-900">
-                    {new Date(subscription.current_period_end).toLocaleDateString('fr-FR')}
+                    {new Date(subscription.current_period_end).toLocaleDateString()}
                   </div>
                 </div>
               </div>
@@ -228,7 +257,7 @@ function SubscriptionsContent() {
               {subscription.cancel_at_period_end && (
                 <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                   <p className="text-yellow-800">
-                    Votre abonnement sera annulé le {new Date(subscription.current_period_end).toLocaleDateString('fr-FR')}.
+                    Your subscription will be canceled on {new Date(subscription.current_period_end).toLocaleDateString()}.
                   </p>
                 </div>
               )}
@@ -236,17 +265,17 @@ function SubscriptionsContent() {
               <div className="flex gap-3">
                 {subscription.status === 'active' && !subscription.cancel_at_period_end && (
                   <Button variant="outline" onClick={handleCancelSubscription} className="border-red-500 text-red-600 hover:bg-red-50">
-                    Annuler l'abonnement
+                    Cancel Subscription
                   </Button>
                 )}
                 {subscription.cancel_at_period_end && (
                   <Button onClick={handleResumeSubscription}>
-                    Reprendre l'abonnement
+                    Resume Subscription
                   </Button>
                 )}
                 <Link href="/pricing">
                   <Button variant="outline">
-                    Changer de plan
+                    Change Plan
                   </Button>
                 </Link>
               </div>
@@ -256,17 +285,17 @@ function SubscriptionsContent() {
           {/* Payment History */}
           <Card>
             <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Historique des paiements</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Payment History</h2>
               {payments.length === 0 ? (
-                <p className="text-gray-600">Aucun paiement pour le moment</p>
+                <p className="text-gray-600">No payments yet</p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200">
                         <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Date</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Montant</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Statut</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Amount</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Status</th>
                         <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
                       </tr>
                     </thead>
@@ -281,7 +310,7 @@ function SubscriptionsContent() {
                           </td>
                           <td className="px-4 py-3">
                             <Badge variant={payment.status === 'paid' ? 'success' : payment.status === 'failed' ? 'error' : 'default'}>
-                              {payment.status === 'paid' ? 'Payé' : payment.status === 'pending' ? 'En attente' : 'Échoué'}
+                              {payment.status === 'paid' ? 'Paid' : payment.status === 'pending' ? 'Pending' : 'Failed'}
                             </Badge>
                           </td>
                           <td className="px-4 py-3">
@@ -292,7 +321,7 @@ function SubscriptionsContent() {
                                 rel="noopener noreferrer"
                                 className="text-blue-600 hover:underline text-sm"
                               >
-                                Télécharger la facture
+                                Download Invoice
                               </a>
                             )}
                           </td>
@@ -308,9 +337,9 @@ function SubscriptionsContent() {
       ) : (
         <Card>
           <div className="py-12 text-center">
-            <p className="text-gray-600 mb-6">Vous n'avez pas d'abonnement actif</p>
+            <p className="text-gray-600 mb-6">You don't have an active subscription</p>
             <Link href="/pricing">
-              <Button>Voir les plans</Button>
+              <Button>View Plans</Button>
             </Link>
           </div>
         </Card>
@@ -326,7 +355,7 @@ function SubscriptionsPageContent() {
         <div className="container mx-auto px-4 py-12">
           <Card>
             <div className="py-12 text-center">
-              <div className="text-gray-500">Chargement...</div>
+              <div className="text-gray-500">Loading...</div>
             </div>
           </Card>
         </div>

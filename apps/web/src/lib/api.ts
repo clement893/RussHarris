@@ -33,6 +33,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Important: Include cookies in requests
 });
 
 /**
@@ -77,24 +78,23 @@ apiClient.interceptors.response.use(
       
       // Try to refresh token if available
       if (refreshToken) {
-        // Si un refresh est déjà en cours, attendre celui-ci
+        // If a refresh is already in progress, wait for it
         if (!refreshTokenPromise) {
           refreshTokenPromise = axios.post(`${API_URL}/api/auth/refresh`, {
             refresh_token: refreshToken,
-          }).then(response => {
+          }, {
+            withCredentials: true, // Include cookies
+          }).then(async response => {
             const { access_token, refresh_token: newRefreshToken } = response.data;
-            TokenStorage.setToken(access_token);
-            if (newRefreshToken) {
-              TokenStorage.setRefreshToken(newRefreshToken);
-            }
+            await TokenStorage.setToken(access_token, newRefreshToken);
             return access_token;
-          }).catch(refreshError => {
+          }).catch(async refreshError => {
             // Refresh failed, clear tokens and redirect
-            TokenStorage.removeTokens();
+            await TokenStorage.removeTokens();
             window.location.href = '/auth/login?error=session_expired';
             throw refreshError;
           }).finally(() => {
-            refreshTokenPromise = null; // Réinitialiser après
+            refreshTokenPromise = null; // Reset after completion
           });
         }
         
@@ -108,12 +108,12 @@ apiClient.interceptors.response.use(
             return apiClient.request(error.config);
           }
         } catch (refreshError) {
-          // Erreur déjà gérée dans la promise
+          // Error already handled in the promise
           return Promise.reject(refreshError);
         }
       } else {
         // No refresh token, clear tokens and redirect
-        TokenStorage.removeTokens();
+        await TokenStorage.removeTokens();
         window.location.href = '/auth/login?error=unauthorized';
       }
     }

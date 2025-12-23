@@ -20,12 +20,24 @@ export async function POST(request: Request) {
 
     // Verify refresh token
     const payload = await verifyToken(refreshToken);
+    
+    if (!payload) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid refresh token' },
+        { status: 401 }
+      );
+    }
+
+    // Extract user info from payload
+    const userId = payload.sub || (payload as { userId?: string }).userId || '';
+    const email = (payload as { email?: string }).email;
+    const role = (payload as { role?: string }).role;
 
     // Create new access token
     const accessToken = await createAccessToken({
-      userId: payload.userId,
-      email: payload.email,
-      role: payload.role,
+      userId,
+      email,
+      role,
     });
 
     // Return new tokens

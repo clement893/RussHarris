@@ -7,13 +7,15 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { withAuth } from '@/lib/auth/middleware';
 
-async function handler(_request: NextRequest, { user }: { user: { userId: string; email: string } }) {
+import type { TokenPayload } from '@/lib/auth/jwt';
+
+async function handler(_request: NextRequest, { user }: { user: TokenPayload }) {
   return NextResponse.json({
     success: true,
     message: 'This is a protected route',
     user: {
-      id: user.userId,
-      email: user.email,
+      id: user.userId || user.sub || '',
+      email: user.email || '',
     },
   });
 }

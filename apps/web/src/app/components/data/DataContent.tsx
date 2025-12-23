@@ -139,7 +139,10 @@ export default function DataContent() {
                 pageSize={10}
                 searchable
                 selectable
-                onSelectionChange={(selected) => console.log('Sélection:', selected)}
+                onSelectionChange={(selected) => {
+                  const { logger } = require('@/lib/logger');
+                  logger.debug('Table selection changed', { selected });
+                }}
               />
             </div>
           </div>
@@ -151,9 +154,18 @@ export default function DataContent() {
             <KanbanBoard
               columns={kanbanColumns}
               cards={kanbanCards}
-              onCardMove={(cardId, newStatus) => console.log('Carte déplacée:', cardId, newStatus)}
-              onCardClick={(card) => console.log('Carte cliquée:', card)}
-              onCardAdd={(status) => console.log('Ajouter une carte au statut:', status)}
+              onCardMove={(cardId, newStatus) => {
+                const { logger } = require('@/lib/logger');
+                logger.debug('Kanban card moved', { cardId, newStatus });
+              }}
+              onCardClick={(card) => {
+                const { logger } = require('@/lib/logger');
+                logger.debug('Kanban card clicked', { card });
+              }}
+              onCardAdd={(status) => {
+                const { logger } = require('@/lib/logger');
+                logger.debug('Add card to status', { status });
+              }}
             />
           </div>
         </Section>
@@ -163,8 +175,14 @@ export default function DataContent() {
             <p className="text-sm text-gray-600 dark:text-gray-400">Calendrier mensuel avec événements.</p>
             <Calendar
               events={calendarEvents}
-              onDateClick={(date) => console.log('Date cliquée:', date)}
-              onEventClick={(event) => console.log('Événement cliqué:', event)}
+              onDateClick={(date) => {
+                const { logger } = require('@/lib/logger');
+                logger.debug('Calendar date clicked', { date });
+              }}
+              onEventClick={(event) => {
+                const { logger } = require('@/lib/logger');
+                logger.debug('Calendar event clicked', { event });
+              }}
             />
           </div>
         </Section>

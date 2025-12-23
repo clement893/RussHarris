@@ -1,14 +1,21 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { verifyToken, extractTokenFromHeader } from '@/lib/auth/jwt';
 
 /**
- * Middleware pour protéger les routes authentifiées
- * Vérifie la présence du token JWT avant d'autoriser l'accès
+ * Middleware to protect authenticated routes
+ * Verifies JWT token presence and validity before allowing access
+ * 
+ * Security improvements:
+ * - Verifies JWT tokens server-side
+ * - Checks token expiration
+ * - Validates token signature
+ * - Supports both cookie-based and header-based authentication
  */
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Routes publiques qui ne nécessitent pas d'authentification
+  // Public routes that don't require authentication
   const publicRoutes = [
     '/',
     '/auth/login',
@@ -21,37 +28,71 @@ export function middleware(request: NextRequest) {
     '/api/auth',
   ];
 
-  // Vérifier si la route est publique
+  // Check if the route is public
   const isPublicRoute = publicRoutes.some((route) => 
     pathname === route || pathname.startsWith(route + '/')
   );
 
-  // Si c'est une route publique, autoriser l'accès
+  // Allow access to public routes
   if (isPublicRoute) {
     return NextResponse.next();
   }
 
-  // Vérifier le token JWT dans sessionStorage n'est pas accessible côté serveur
-  // On vérifie plutôt dans les cookies (si configuré) ou on laisse passer
-  // La vérification réelle se fera côté client et serveur (API)
-  
-  // Pour une sécurité maximale, on peut vérifier un cookie de session
-  // Pour l'instant, on laisse passer et la vérification se fait côté client
-  // mais on empêche le rendu du contenu jusqu'à vérification
-  
-  // Note: Pour une vraie protection côté serveur, il faudrait :
-  // 1. Stocker le token dans un cookie httpOnly
-  // 2. Vérifier le token dans le middleware
-  // 3. Utiliser Server Components pour vérifier l'auth
-  
-  // Pour l'instant, on redirige seulement si on détecte une tentative d'accès direct
-  // La vraie protection se fait dans le composant avec le loading state
+  // API routes - check Authorization header
+  if (pathname.startsWith('/api/')) {
+    // Allow auth API routes without token check
+    if (pathname.startsWith('/api/auth')) {
+      return NextResponse.next();
+    }
+    
+    const authHeader = request.headers.get('authorization');
+    const token = extractTokenFromHeader(authHeader);
+    
+    if (token) {
+      const payload = await verifyToken(token);
+      if (payload) {
+        // Check expiration
+        if (payload.exp && Date.now() < (payload.exp as number) * 1000) {
+          return NextResponse.next();
+        }
+      }
+    }
+    
+    // For API routes, return 401 if no valid token
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
 
-  // Si token présent, vérifier sa validité (optionnel - peut être fait côté serveur)
-  // Pour l'instant, on autorise l'accès si le token existe
-  // Une vérification complète devrait être faite dans une API route ou Server Component
+  // Page routes - check httpOnly cookie
+  const tokenCookie = request.cookies.get('auth-token');
+  
+  if (tokenCookie) {
+    const payload = await verifyToken(tokenCookie.value);
+    
+    if (payload) {
+      // Check if token is expired
+      if (payload.exp && Date.now() >= (payload.exp as number) * 1000) {
+        // Token expired, redirect to login
+        const loginUrl = new URL('/auth/login', request.url);
+        loginUrl.searchParams.set('redirect', pathname);
+        loginUrl.searchParams.set('error', 'session_expired');
+        return NextResponse.redirect(loginUrl);
+      }
+      
+      // Token is valid, allow access
+      // Add user info to headers for Server Components to use
+      const response = NextResponse.next();
+      response.headers.set('x-user-id', payload.sub || '');
+      return response;
+    }
+  }
 
-  return NextResponse.next();
+  // No valid token found, redirect to login
+  const loginUrl = new URL('/auth/login', request.url);
+  loginUrl.searchParams.set('redirect', pathname);
+  return NextResponse.redirect(loginUrl);
 }
 
 // Configurer les routes sur lesquelles le middleware s'applique

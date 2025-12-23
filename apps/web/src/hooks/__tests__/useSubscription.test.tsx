@@ -1,7 +1,8 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import { useSession } from 'next-auth/react';
+import { useSession, Session } from 'next-auth/react';
 import { useSubscription } from '../useSubscription';
 import { api } from '@/lib/api';
+import { AxiosResponse } from 'axios';
 
 // Mock next-auth
 jest.mock('next-auth/react', () => ({
@@ -27,7 +28,7 @@ describe('useSubscription', () => {
     mockUseSession.mockReturnValue({
       data: null,
       status: 'loading',
-    } as any);
+    } as ReturnType<typeof useSession>);
 
     const { result } = renderHook(() => useSubscription());
 
@@ -53,13 +54,13 @@ describe('useSubscription', () => {
     };
 
     mockUseSession.mockReturnValue({
-      data: { user: { id: 1 } },
+      data: { user: { id: 1 } } as Session,
       status: 'authenticated',
-    } as any);
+    } as ReturnType<typeof useSession>);
 
     mockApiGet.mockResolvedValue({
       data: mockSubscription,
-    } as any);
+    } as AxiosResponse<typeof mockSubscription>);
 
     const { result } = renderHook(() => useSubscription());
 
@@ -74,9 +75,9 @@ describe('useSubscription', () => {
 
   it('should handle 404 when no subscription exists', async () => {
     mockUseSession.mockReturnValue({
-      data: { user: { id: 1 } },
+      data: { user: { id: 1 } } as Session,
       status: 'authenticated',
-    } as any);
+    } as ReturnType<typeof useSession>);
 
     const error = {
       response: {
@@ -98,9 +99,9 @@ describe('useSubscription', () => {
 
   it('should handle other errors', async () => {
     mockUseSession.mockReturnValue({
-      data: { user: { id: 1 } },
+      data: { user: { id: 1 } } as Session,
       status: 'authenticated',
-    } as any);
+    } as ReturnType<typeof useSession>);
 
     const error = {
       response: {
@@ -121,17 +122,18 @@ describe('useSubscription', () => {
 
   it('should calculate hasActiveSubscription correctly', async () => {
     mockUseSession.mockReturnValue({
-      data: { user: { id: 1 } },
+      data: { user: { id: 1 } } as Session,
       status: 'authenticated',
-    } as any);
+    } as ReturnType<typeof useSession>);
 
+    const mockSubscriptionData = {
+      id: 1,
+      status: 'TRIALING',
+      plan: { id: 1, name: 'Pro', amount: 2900, currency: 'usd', interval: 'MONTH' },
+    };
     mockApiGet.mockResolvedValue({
-      data: {
-        id: 1,
-        status: 'TRIALING',
-        plan: { id: 1, name: 'Pro', amount: 2900, currency: 'usd', interval: 'MONTH' },
-      },
-    } as any);
+      data: mockSubscriptionData,
+    } as AxiosResponse<typeof mockSubscriptionData>);
 
     const { result } = renderHook(() => useSubscription());
 
@@ -144,13 +146,18 @@ describe('useSubscription', () => {
 
   it('should provide refresh function', async () => {
     mockUseSession.mockReturnValue({
-      data: { user: { id: 1 } },
+      data: { user: { id: 1 } } as Session,
       status: 'authenticated',
-    } as any);
+    } as ReturnType<typeof useSession>);
 
+    const mockSubscriptionData = {
+      id: 1,
+      status: 'ACTIVE',
+      plan: { id: 1, name: 'Pro', amount: 2900, currency: 'usd', interval: 'MONTH' },
+    };
     mockApiGet.mockResolvedValue({
-      data: { id: 1, status: 'ACTIVE', plan: { id: 1, name: 'Pro', amount: 2900, currency: 'usd', interval: 'MONTH' } },
-    } as any);
+      data: mockSubscriptionData,
+    } as AxiosResponse<typeof mockSubscriptionData>);
 
     const { result } = renderHook(() => useSubscription());
 

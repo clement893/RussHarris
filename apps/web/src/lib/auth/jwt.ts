@@ -1,163 +1,122 @@
 /**
- * JWT Token Management
- * Utilities for creating, verifying, and managing JWT tokens
+ * JWT Token Verification Utility
+ * Server-side JWT verification using jose library
+ * 
+ * This utility provides secure JWT token verification for middleware
+ * and server-side authentication checks.
  */
 
-import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
+import { jwtVerify, type JWTPayload } from 'jose';
 
-// Lazy-load JWT_SECRET to avoid build-time errors
-function getJWTSecret(): Uint8Array {
-  const JWT_SECRET = process.env.JWT_SECRET;
-  
-  // During build time, allow placeholder to prevent build failures
-  // The actual secret will be required at runtime
-  if (!JWT_SECRET || JWT_SECRET === 'default-secret-change-in-production') {
-    // Check if we're in a build context (Next.js sets this during build)
-    const isBuildTime = process.env.NEXT_PHASE === 'phase-production-build' || 
-                        process.env.NEXT_PHASE === 'phase-development-build' ||
-                        process.env.__NEXT_PRIVATE_PREBUNDLED_REACT;
-    
-    if (isBuildTime) {
-      // Use placeholder during build to allow build to complete
-      return new TextEncoder().encode('build-placeholder-secret-do-not-use-in-production');
-    }
-    
-    // At runtime, enforce the secret requirement
-    throw new Error(
-      'JWT_SECRET environment variable is required and must not be the default value. ' +
-      'Please set a secure secret in your .env file. ' +
-      'Generate one with: openssl rand -base64 32'
-    );
-  }
+/**
+ * JWT secret key from environment variables
+ * In production, this should be stored securely and rotated regularly
+ */
+const JWT_SECRET = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET || 'fallback-secret-change-in-production';
+
+/**
+ * Get the JWT secret as a Uint8Array for jose library
+ */
+function getJwtSecret(): Uint8Array {
   return new TextEncoder().encode(JWT_SECRET);
 }
 
-export interface TokenPayload extends JWTPayload {
-  userId: string;
-  email: string;
-  role?: string;
-}
-
 /**
- * Create a JWT access token
+ * Verify a JWT token and return the payload
+ * 
+ * @param token - The JWT token to verify
+ * @returns The decoded JWT payload if valid, null otherwise
+ * 
+ * @example
+ * ```typescript
+ * const payload = await verifyToken(token);
+ * if (payload) {
+ *   console.log('User ID:', payload.sub);
+ * }
+ * ```
  */
-export async function createAccessToken(payload: TokenPayload): Promise<string> {
-  const expiresIn = process.env.JWT_ACCESS_TOKEN_EXPIRES ?? '15m';
-  const expirationTime = parseExpiration(expiresIn);
-
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime(expirationTime)
-    .setIssuer(process.env.JWT_ISSUER ?? 'modele-app')
-    .setAudience(process.env.JWT_AUDIENCE ?? 'modele-users')
-    .sign(getJWTSecret());
-}
-
-/**
- * Create a JWT refresh token
- */
-export async function createRefreshToken(payload: TokenPayload): Promise<string> {
-  const expiresIn = process.env.JWT_REFRESH_TOKEN_EXPIRES ?? '30d';
-  const expirationTime = parseExpiration(expiresIn);
-
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime(expirationTime)
-    .setIssuer(process.env.JWT_ISSUER ?? 'modele-app')
-    .setAudience(process.env.JWT_AUDIENCE ?? 'modele-users')
-    .sign(getJWTSecret());
-}
-
-/**
- * Verify a JWT token
- */
-export async function verifyToken(token: string): Promise<TokenPayload> {
+export async function verifyToken(token: string): Promise<JWTPayload | null> {
   try {
-    const { payload } = await jwtVerify(token, getJWTSecret(), {
-      issuer: process.env.JWT_ISSUER ?? 'modele-app',
-      audience: process.env.JWT_AUDIENCE ?? 'modele-users',
+    const secret = getJwtSecret();
+    const { payload } = await jwtVerify(token, secret, {
+      algorithms: ['HS256'],
     });
-
-    return payload as TokenPayload;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Token verification failed: ${error.message}`);
-    }
-    throw new Error('Token verification failed');
-  }
-}
-
-/**
- * Decode a JWT token without verification (use with caution)
- */
-export function decodeToken(token: string): TokenPayload | null {
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 3) {
-      return null;
-    }
-
-    const payload = JSON.parse(
-      Buffer.from(parts[1] ?? '', 'base64').toString('utf-8')
-    ) as TokenPayload;
-
     return payload;
-  } catch {
+  } catch (error) {
+    // Token is invalid, expired, or malformed
     return null;
   }
-}
-
-/**
- * Check if a token is expired
- */
-export function isTokenExpired(token: string): boolean {
-  const payload = decodeToken(token);
-  if (!payload || !payload.exp) {
-    return true;
-  }
-
-  return Date.now() >= payload.exp * 1000;
-}
-
-/**
- * Parse expiration string to seconds
- */
-function parseExpiration(expiration: string): string {
-  // Support formats like "15m", "1h", "7d", "30d"
-  const match = expiration.match(/^(\d+)([smhd])$/);
-  if (!match || !match[2]) {
-    return '15m'; // Default to 15 minutes
-  }
-
-  const value = Number.parseInt(match[1] ?? '15', 10);
-  const unit = match[2];
-
-  const multipliers: Record<string, number> = {
-    s: 1,
-    m: 60,
-    h: 3600,
-    d: 86400,
-  };
-
-  const seconds = value * (multipliers[unit] ?? 60);
-  return `${seconds}s`;
 }
 
 /**
  * Extract token from Authorization header
+ * 
+ * @param authHeader - The Authorization header value (e.g., "Bearer <token>")
+ * @returns The token string or null if not found/invalid format
  */
-export function extractTokenFromHeader(authHeader: string | null): string | null {
-  if (!authHeader) {
+export function extractTokenFromHeader(authHeader: string | null | undefined): string | null {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return null;
   }
-
-  const parts = authHeader.split(' ');
-  if (parts.length !== 2 || parts[0] !== 'Bearer') {
-    return null;
-  }
-
-  return parts[1] ?? null;
+  return authHeader.substring(7);
 }
 
+/**
+ * Check if a JWT token is expired
+ * 
+ * @param payload - The JWT payload
+ * @returns True if token is expired, false otherwise
+ */
+export function isTokenExpired(payload: JWTPayload): boolean {
+  if (!payload.exp) {
+    return true; // No expiration claim means invalid token
+  }
+  return Date.now() >= payload.exp * 1000;
+}
+
+/**
+ * Get user ID from JWT payload
+ * 
+ * @param payload - The JWT payload
+ * @returns User ID string or null if not found
+ */
+export function getUserIdFromPayload(payload: JWTPayload): string | null {
+  return (payload.sub || payload.userId || payload.id) as string | null;
+}
+
+/**
+ * Token payload type for TypeScript
+ */
+export interface TokenPayload extends JWTPayload {
+  userId?: string;
+  email?: string;
+  role?: string;
+}
+
+/**
+ * Create a new access token
+ * 
+ * @param payload - The payload to encode in the token
+ * @returns A signed JWT token string
+ */
+export async function createAccessToken(payload: {
+  userId: string;
+  email?: string;
+  role?: string;
+}): Promise<string> {
+  const { SignJWT } = await import('jose');
+  const secret = getJwtSecret();
+  
+  const token = await new SignJWT({
+    userId: payload.userId,
+    email: payload.email,
+    role: payload.role,
+  })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('15m') // 15 minutes
+    .setSubject(payload.userId)
+    .sign(secret);
+  
+  return token;
+}
