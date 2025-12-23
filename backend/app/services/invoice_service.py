@@ -90,7 +90,7 @@ class InvoiceService:
             if stripe_payment_intent_id:
                 invoice.stripe_payment_intent_id = stripe_payment_intent_id
             if metadata:
-                invoice.metadata = json.dumps(metadata)
+                invoice.invoice_metadata = json.dumps(metadata)
             
             await self.db.commit()
             # Refresh non nécessaire, l'objet est déjà modifié en mémoire

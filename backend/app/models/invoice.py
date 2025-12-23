@@ -57,8 +57,8 @@ class Invoice(Base):
     invoice_pdf_url = Column(String(500), nullable=True)
     hosted_invoice_url = Column(String(500), nullable=True)
     
-    # Metadata
-    metadata = Column(Text, nullable=True)  # JSON string
+    # Metadata (renamed from 'metadata' to avoid SQLAlchemy reserved name conflict)
+    invoice_metadata = Column("metadata", Text, nullable=True)  # JSON string
     
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(
