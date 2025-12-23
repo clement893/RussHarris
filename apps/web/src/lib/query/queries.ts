@@ -12,7 +12,6 @@ import {
   teamsAPI, 
   invitationsAPI,
 } from '@/lib/api';
-import type { AxiosResponse } from 'axios';
 
 // Query Keys Factory
 export const queryKeys = {
