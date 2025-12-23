@@ -62,6 +62,23 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
+    # Request logging middleware (before CORS to log all requests)
+    @app.middleware("http")
+    async def log_requests_middleware(request: Request, call_next):
+        from app.core.logging import logger
+        import time
+        start_time = time.time()
+        logger.info(f"Incoming request: {request.method} {request.url.path} from {request.client.host if request.client else 'unknown'}")
+        try:
+            response = await call_next(request)
+            process_time = time.time() - start_time
+            logger.info(f"Request completed: {request.method} {request.url.path} - {response.status_code} ({process_time:.4f}s)")
+            return response
+        except Exception as e:
+            process_time = time.time() - start_time
+            logger.error(f"Request failed: {request.method} {request.url.path} - {str(e)} ({process_time:.4f}s)", exc_info=True)
+            raise
+
     # CORS Middleware - MUST be added first to handle preflight requests
     # Ensure CORS_ORIGINS is a list
     from app.core.logging import logger
