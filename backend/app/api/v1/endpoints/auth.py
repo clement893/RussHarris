@@ -115,7 +115,7 @@ async def get_current_user(
 
     # Get user from database
     result = await db.execute(
-        User.__table__.select().where(User.email == token_data.username)
+        select(User).where(User.email == token_data.username)
     )
     user = result.scalar_one_or_none()
     if user is None:
