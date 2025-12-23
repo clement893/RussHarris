@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
 import { emailAPI } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import { Button, Card, Input, Textarea, Alert, Badge, Loading, Tabs, TabList, Tab, TabPanels, TabPanel } from '@/components/ui';
 import type { EmailResponse, EmailHealthResponse } from '@/lib/email/client';
 
 interface ApiErrorResponse {
@@ -12,7 +14,7 @@ interface ApiErrorResponse {
   message?: string;
 }
 
-export default function EmailTestPage() {
+function EmailTestContent() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
   const [toEmail, setToEmail] = useState('');
@@ -24,56 +26,34 @@ export default function EmailTestPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [healthStatus, setHealthStatus] = useState<EmailHealthResponse | null>(null);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-
-  useEffect(() => {
-    // Check if user is authenticated
-    if (!isAuthenticated()) {
-      router.push('/auth/login');
-    } else {
-      setIsCheckingAuth(false);
-    }
-  }, [isAuthenticated, router]);
+  const [isCheckingHealth, setIsCheckingHealth] = useState(false);
 
   const checkHealth = async () => {
-    try {
-      // Check if token exists
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-      if (!token) {
-        setError('You are not authenticated. Please log in.');
-        router.push('/auth/login');
-        return;
-      }
+    setIsCheckingHealth(true);
+    setError('');
 
+    try {
       const res = await emailAPI.health();
       setHealthStatus(res.data);
-      setError('');
     } catch (err) {
       const axiosError = err as AxiosError<ApiErrorResponse>;
       const errorMessage = axiosError.response?.data?.detail || 'Failed to check health';
       setError(errorMessage);
       setHealthStatus(null);
       
-      // If authentication error, redirect to login
       if (axiosError.response?.status === 401) {
         setTimeout(() => {
           router.push('/auth/login');
         }, 2000);
       }
+    } finally {
+      setIsCheckingHealth(false);
     }
   };
 
   const sendTestEmail = async () => {
     if (!toEmail.trim()) {
       setError('Please enter an email address');
-      return;
-    }
-
-    // Check if token exists
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    if (!token) {
-      setError('You are not authenticated. Please log in.');
-      router.push('/auth/login');
       return;
     }
 
@@ -89,7 +69,6 @@ export default function EmailTestPage() {
       const errorMessage = axiosError.response?.data?.detail || 'Failed to send email';
       setError(errorMessage);
       
-      // If authentication error, redirect to login
       if (axiosError.response?.status === 401) {
         setTimeout(() => {
           router.push('/auth/login');
@@ -106,14 +85,6 @@ export default function EmailTestPage() {
       return;
     }
 
-    // Check if token exists
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    if (!token) {
-      setError('You are not authenticated. Please log in.');
-      router.push('/auth/login');
-      return;
-    }
-
     setIsLoading(true);
     setError('');
     setResponse(null);
@@ -126,7 +97,6 @@ export default function EmailTestPage() {
       const errorMessage = axiosError.response?.data?.detail || 'Failed to send email';
       setError(errorMessage);
       
-      // If authentication error, redirect to login
       if (axiosError.response?.status === 401) {
         setTimeout(() => {
           router.push('/auth/login');
@@ -140,14 +110,6 @@ export default function EmailTestPage() {
   const sendCustomEmail = async () => {
     if (!toEmail.trim() || !subject.trim() || !htmlContent.trim()) {
       setError('Please fill in all required fields');
-      return;
-    }
-
-    // Check if token exists
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    if (!token) {
-      setError('You are not authenticated. Please log in.');
-      router.push('/auth/login');
       return;
     }
 
@@ -168,7 +130,6 @@ export default function EmailTestPage() {
       const errorMessage = axiosError.response?.data?.detail || 'Failed to send email';
       setError(errorMessage);
       
-      // If authentication error, redirect to login
       if (axiosError.response?.status === 401) {
         setTimeout(() => {
           router.push('/auth/login');
@@ -189,178 +150,135 @@ export default function EmailTestPage() {
     }
   };
 
-  if (isCheckingAuth) {
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-              <p className="mt-4 text-gray-600">Checking authentication...</p>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Email Test Interface (SendGrid)</h1>
-          
+    <main className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <Card title="Email Test Interface (SendGrid)">
           {/* Health Check */}
-          <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">SendGrid Health Check</h2>
-              <button
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">SendGrid Health Check</h2>
+              <Button
+                variant="primary"
                 onClick={checkHealth}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                loading={isCheckingHealth}
+                size="sm"
               >
                 Check Status
-              </button>
+              </Button>
             </div>
             {healthStatus && (
-              <div className="mt-2 text-sm space-y-1">
-                <p><strong>Configured:</strong> {healthStatus.configured ? '✅ Yes' : '❌ No'}</p>
-                <p><strong>From Email:</strong> {healthStatus.from_email || 'N/A'}</p>
-                <p><strong>From Name:</strong> {healthStatus.from_name || 'N/A'}</p>
-                <p><strong>Status:</strong> {healthStatus.status || 'N/A'}</p>
+              <div className="mt-2 text-sm space-y-2">
+                <div className="flex items-center gap-2">
+                  <strong className="text-gray-700 dark:text-gray-300">Configured:</strong>
+                  <Badge variant={healthStatus.configured ? 'success' : 'error'}>
+                    {healthStatus.configured ? '✅ Yes' : '❌ No'}
+                  </Badge>
+                </div>
+                <p className="text-gray-700 dark:text-gray-300">
+                  <strong>From Email:</strong> {healthStatus.from_email || 'N/A'}
+                </p>
+                <p className="text-gray-700 dark:text-gray-300">
+                  <strong>From Name:</strong> {healthStatus.from_name || 'N/A'}
+                </p>
+                <p className="text-gray-700 dark:text-gray-300">
+                  <strong>Status:</strong> {healthStatus.status || 'N/A'}
+                </p>
               </div>
             )}
           </div>
 
           {/* Email Type Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Email Type</label>
-            <div className="flex gap-4">
-              <button
-                onClick={() => setEmailType('test')}
-                className={`px-4 py-2 rounded-lg transition ${
-                  emailType === 'test'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                Test Email
-              </button>
-              <button
-                onClick={() => setEmailType('welcome')}
-                className={`px-4 py-2 rounded-lg transition ${
-                  emailType === 'welcome'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                Welcome Email
-              </button>
-              <button
-                onClick={() => setEmailType('custom')}
-                className={`px-4 py-2 rounded-lg transition ${
-                  emailType === 'custom'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                Custom Email
-              </button>
-            </div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Email Type</label>
+            <Tabs defaultTab={emailType} onChange={(value) => setEmailType(value as 'test' | 'welcome' | 'custom')}>
+              <TabList>
+                <Tab value="test">Test Email</Tab>
+                <Tab value="welcome">Welcome Email</Tab>
+                <Tab value="custom">Custom Email</Tab>
+              </TabList>
+            </Tabs>
           </div>
 
           {/* Email Form */}
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                To Email <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                value={toEmail}
-                onChange={(e) => setToEmail(e.target.value)}
-                placeholder="recipient@example.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-              />
-            </div>
+            <Input
+              type="email"
+              label="To Email"
+              value={toEmail}
+              onChange={(e) => setToEmail(e.target.value)}
+              placeholder="recipient@example.com"
+              required
+              fullWidth
+            />
 
             {emailType === 'custom' && (
               <>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Subject <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    placeholder="Email subject"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    HTML Content <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    value={htmlContent}
-                    onChange={(e) => setHtmlContent(e.target.value)}
-                    placeholder="<h1>Hello!</h1><p>This is a test email.</p>"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none font-mono text-sm"
-                    rows={6}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Text Content (optional)
-                  </label>
-                  <textarea
-                    value={textContent}
-                    onChange={(e) => setTextContent(e.target.value)}
-                    placeholder="Plain text version of the email"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                    rows={4}
-                  />
-                </div>
+                <Input
+                  type="text"
+                  label="Subject"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  placeholder="Email subject"
+                  required
+                  fullWidth
+                />
+                <Textarea
+                  label="HTML Content"
+                  value={htmlContent}
+                  onChange={(e) => setHtmlContent(e.target.value)}
+                  placeholder="<h1>Hello!</h1><p>This is a test email.</p>"
+                  required
+                  rows={6}
+                  className="font-mono text-sm"
+                  fullWidth
+                />
+                <Textarea
+                  label="Text Content (optional)"
+                  value={textContent}
+                  onChange={(e) => setTextContent(e.target.value)}
+                  placeholder="Plain text version of the email"
+                  rows={4}
+                  fullWidth
+                />
               </>
             )}
 
             {emailType === 'test' && (
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <p className="text-sm text-gray-700">
-                  This will send a test email to verify SendGrid configuration.
-                </p>
-              </div>
+              <Alert variant="info" title="Test Email">
+                This will send a test email to verify SendGrid configuration.
+              </Alert>
             )}
 
             {emailType === 'welcome' && (
-              <div className="p-4 bg-green-50 rounded-lg">
-                <p className="text-sm text-gray-700">
-                  This will send a welcome email template to the recipient.
-                </p>
-              </div>
+              <Alert variant="success" title="Welcome Email">
+                This will send a welcome email template to the recipient.
+              </Alert>
             )}
 
-            <button
+            <Button
               onClick={handleSend}
               disabled={isLoading}
-              className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              loading={isLoading}
+              variant="primary"
+              fullWidth
+              size="lg"
             >
               {isLoading ? 'Sending...' : `Send ${emailType === 'test' ? 'Test' : emailType === 'welcome' ? 'Welcome' : 'Custom'} Email`}
-            </button>
+            </Button>
           </div>
 
           {/* Error Display */}
           {error && (
-            <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            <Alert variant="error" title="Error" className="mt-4">
               {error}
-            </div>
+            </Alert>
           )}
 
           {/* Response Display */}
           {response && (
-            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <h3 className="font-semibold mb-2 text-green-900">Email Sent Successfully!</h3>
-              <div className="text-sm space-y-1">
+            <Alert variant="success" title="Email Sent Successfully!" className="mt-6">
+              <div className="text-sm space-y-1 mt-2">
                 <p><strong>Status:</strong> {response.status}</p>
                 {response.status_code && (
                   <p><strong>Status Code:</strong> {response.status_code}</p>
@@ -370,16 +288,15 @@ export default function EmailTestPage() {
                 )}
                 <p><strong>To:</strong> {response.to}</p>
               </div>
-            </div>
+            </Alert>
           )}
-        </div>
+        </Card>
 
         {/* Instructions */}
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-bold mb-4">How to Test</h2>
-          <div className="space-y-3 text-sm text-gray-700">
+        <Card title="How to Test">
+          <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
             <div>
-              <h3 className="font-semibold mb-1">1. Health Check</h3>
+              <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">1. Health Check</h3>
               <p>Click "Check Status" to verify SendGrid configuration. You should see:</p>
               <ul className="list-disc list-inside ml-4 mt-1">
                 <li>Configured: ✅ Yes</li>
@@ -388,28 +305,32 @@ export default function EmailTestPage() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-1">2. Test Email</h3>
+              <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">2. Test Email</h3>
               <p>Select "Test Email" and enter your email address. This sends a simple test email.</p>
             </div>
             <div>
-              <h3 className="font-semibold mb-1">3. Welcome Email</h3>
+              <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">3. Welcome Email</h3>
               <p>Select "Welcome Email" to send a formatted welcome email template.</p>
             </div>
             <div>
-              <h3 className="font-semibold mb-1">4. Custom Email</h3>
+              <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">4. Custom Email</h3>
               <p>Select "Custom Email" to send a fully customized email with HTML content.</p>
             </div>
-            <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
-              <p className="font-semibold text-yellow-800">⚠️ Important:</p>
-              <p className="text-yellow-700">
-                Make sure SendGrid API key is configured in Railway environment variables.
-                The email address "hello@nukleo.digital" must be verified in SendGrid.
-              </p>
-            </div>
+            <Alert variant="warning" title="⚠️ Important" className="mt-4">
+              Make sure SendGrid API key is configured in Railway environment variables.
+              The email address "hello@nukleo.digital" must be verified in SendGrid.
+            </Alert>
           </div>
-        </div>
+        </Card>
       </div>
     </main>
   );
 }
 
+export default function EmailTestPage() {
+  return (
+    <ProtectedRoute>
+      <EmailTestContent />
+    </ProtectedRoute>
+  );
+}
