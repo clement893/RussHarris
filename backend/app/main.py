@@ -66,9 +66,19 @@ def create_app() -> FastAPI:
     app.add_middleware(CacheHeadersMiddleware, default_max_age=300)
 
     # CORS Middleware - Restricted for security
+    # Ensure CORS_ORIGINS is a list
+    from app.core.logging import logger
+    cors_origins = settings.CORS_ORIGINS
+    if isinstance(cors_origins, str):
+        cors_origins = [cors_origins]
+    elif not isinstance(cors_origins, list):
+        cors_origins = ["https://modele-nextjs-fullstack-production-1e92.up.railway.app"]
+    
+    logger.info(f"CORS Origins configured: {cors_origins}")
+    
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.CORS_ORIGINS,
+        allow_origins=cors_origins,
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
         allow_headers=["Content-Type", "Authorization", "X-Requested-With", "Accept"],

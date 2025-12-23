@@ -82,10 +82,22 @@ class Settings(BaseSettings):
     @classmethod
     def ensure_cors_origins_list(cls, v):
         """Ensure CORS_ORIGINS is always a list"""
+        import os
         if isinstance(v, str):
-            return [v]
+            # If it's still a string after parsing, convert to list
+            if v.strip():
+                return [v.strip()]
+            # Empty string - use default based on environment
+            env = os.getenv("ENVIRONMENT", "development")
+            if env == "production":
+                return ["https://modele-nextjs-fullstack-production-1e92.up.railway.app"]
+            return ["http://localhost:3000", "http://localhost:3001"]
         if isinstance(v, list):
             return v
+        # Fallback
+        env = os.getenv("ENVIRONMENT", "development")
+        if env == "production":
+            return ["https://modele-nextjs-fullstack-production-1e92.up.railway.app"]
         return ["http://localhost:3000", "http://localhost:3001"]
 
     # Database
