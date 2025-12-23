@@ -189,12 +189,14 @@ async def get_current_user_info(
 
 @router.get("/google")
 async def get_google_auth_url(
+    request: Request,
     redirect: str = Query(None, description="Frontend redirect URL after authentication")
 ):
     """
     Get Google OAuth authorization URL
     
     Args:
+        request: FastAPI request object
         redirect: Optional frontend URL to redirect to after authentication
     
     Returns:
@@ -206,12 +208,12 @@ async def get_google_auth_url(
             detail="Google OAuth is not configured"
         )
     
-    # Build redirect URI - use the configured one or default to backend callback
-    # Include the frontend redirect URL as a state parameter
+    # Build redirect URI - use the configured one or construct from request
     callback_uri = settings.GOOGLE_REDIRECT_URI
     if not callback_uri:
         # Construct callback URL from request
-        callback_uri = f"{settings.API_V1_STR}/auth/google/callback"
+        base_url = str(request.base_url).rstrip("/")
+        callback_uri = f"{base_url}{settings.API_V1_STR}/auth/google/callback"
     
     # Google OAuth 2.0 authorization endpoint
     base_url = "https://accounts.google.com/o/oauth2/v2/auth"
@@ -236,6 +238,7 @@ async def get_google_auth_url(
 
 @router.get("/google/callback")
 async def google_oauth_callback(
+    request: Request,
     code: str = Query(..., description="Authorization code from Google"),
     state: str = Query(None, description="State parameter (frontend redirect URL)"),
     db: Annotated[AsyncSession, Depends(get_db)] = None,
@@ -244,6 +247,7 @@ async def google_oauth_callback(
     Handle Google OAuth callback
     
     Args:
+        request: FastAPI request object
         code: Authorization code from Google
         state: Optional state parameter (frontend redirect URL)
         db: Database session
@@ -257,11 +261,12 @@ async def google_oauth_callback(
             detail="Google OAuth is not configured"
         )
     
-    # Build redirect URI
+    # Build redirect URI - must match the one used in /google endpoint
     redirect_uri = settings.GOOGLE_REDIRECT_URI
     if not redirect_uri:
-        # Construct callback URL from request
-        redirect_uri = f"{settings.API_V1_STR}/auth/google/callback"
+        # Construct callback URL from request (must match the one in /google)
+        base_url = str(request.base_url).rstrip("/")
+        redirect_uri = f"{base_url}{settings.API_V1_STR}/auth/google/callback"
     
     try:
         # Exchange authorization code for tokens
