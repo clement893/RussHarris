@@ -147,3 +147,6 @@ export interface StatusChange {
 export * from './api';
 
 export * from './generated';
+
+// Theme types
+export * from './theme';
