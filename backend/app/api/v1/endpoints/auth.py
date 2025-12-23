@@ -258,7 +258,7 @@ async def google_oauth_callback(
     request: Request,
     code: Annotated[str, Query(description="Authorization code from Google")],
     state: Annotated[str | None, Query(description="State parameter (frontend redirect URL)")] = None,
-    db: Annotated[AsyncSession, Depends(get_db)] = Depends(get_db),
+    db: Annotated[AsyncSession, Depends(get_db)],
 ):
     """
     Handle Google OAuth callback
