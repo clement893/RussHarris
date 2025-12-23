@@ -11,12 +11,13 @@ import { defaultLocale, type Locale } from './config';
  * Get translations (placeholder for next-intl integration)
  * 
  * @param key - Translation key
- * @param locale - Locale to use
+ * @param _locale - Locale to use (currently unused, placeholder for next-intl)
  * @returns Translated string
  */
-export function t(key: string, locale: Locale = defaultLocale): string {
+export function t(key: string, _locale: Locale = defaultLocale): string {
   // Placeholder - will be replaced with next-intl when fully integrated
   // For now, returns the key
+  // _locale parameter is prefixed with _ to indicate it's intentionally unused
   return key;
 }
 
