@@ -6,7 +6,6 @@
 
 'use client';
 
-import { useEffect } from 'react';
 import { useThemeManager } from '@/components/theme/hooks';
 
 /**
