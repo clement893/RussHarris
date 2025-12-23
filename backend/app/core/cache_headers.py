@@ -38,10 +38,13 @@ class CacheHeadersMiddleware(BaseHTTPMiddleware):
             response.headers["Expires"] = "0"
             return response
         
+        # Get path from request URL (works with both Request and _CachedRequest)
+        path = request.url.path if hasattr(request, 'url') else getattr(request, 'path', '/')
+        
         # Skip ETag generation for responses without body attribute (e.g., StreamingResponse, RedirectResponse)
         if not hasattr(response, 'body'):
             # Still add cache headers but skip ETag
-            max_age = self._get_cache_max_age(request.path)
+            max_age = self._get_cache_max_age(path)
             response.headers["Cache-Control"] = f"public, max-age={max_age}, must-revalidate"
             response.headers["Vary"] = "Accept, Accept-Encoding"
             expires = datetime.now(timezone.utc) + timedelta(seconds=max_age)
@@ -64,7 +67,7 @@ class CacheHeadersMiddleware(BaseHTTPMiddleware):
             pass
         
         # Determine cache max-age based on endpoint
-        max_age = self._get_cache_max_age(request.path)
+        max_age = self._get_cache_max_age(path)
         
         # Add cache headers
         response.headers["Cache-Control"] = f"public, max-age={max_age}, must-revalidate"
