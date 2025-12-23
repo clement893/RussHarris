@@ -79,9 +79,36 @@ function CallbackContent() {
       if (user) {
         console.log('[Auth Callback] Logging in user', { userId: user.id, email: user.email });
         logger.info('Logging in user', { userId: user.id, email: user.email });
-        login(user, accessToken, refreshToken ?? undefined);
+        
+        // Ensure user object has the correct structure for the store
+        const userForStore = {
+          id: String(user.id),
+          email: user.email,
+          name: user.first_name && user.last_name 
+            ? `${user.first_name} ${user.last_name}` 
+            : user.first_name || user.last_name || user.email,
+          is_active: user.is_active ?? true,
+          is_verified: false, // Default value, update if available
+          is_admin: false, // Default value, update if available
+          created_at: user.created_at,
+          updated_at: user.updated_at,
+        };
+        
+        await login(userForStore, accessToken, refreshToken ?? undefined);
+        
+        // Verify login was successful
+        const storedToken = TokenStorage.getToken();
+        console.log('[Auth Callback] Login verification:', {
+          tokenStored: !!storedToken,
+          tokenMatches: storedToken === accessToken
+        });
+        
         console.log('[Auth Callback] Redirecting to dashboard');
         logger.info('Redirecting to dashboard');
+        
+        // Small delay to ensure store is updated
+        await new Promise(resolve => setTimeout(resolve, 200));
+        
         router.push('/dashboard');
       } else {
         throw new Error('No user data received');

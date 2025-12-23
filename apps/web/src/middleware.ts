@@ -66,34 +66,10 @@ export async function middleware(request: NextRequest) {
     );
   }
 
-  // Page routes - check httpOnly cookie
-  const tokenCookie = request.cookies.get('auth-token');
-  
-  if (tokenCookie) {
-    const payload = await verifyToken(tokenCookie.value);
-    
-    if (payload) {
-      // Check if token is expired
-      if (payload.exp && Date.now() >= (payload.exp as number) * 1000) {
-        // Token expired, redirect to login
-        const loginUrl = new URL('/auth/login', request.url);
-        loginUrl.searchParams.set('redirect', pathname);
-        loginUrl.searchParams.set('error', 'session_expired');
-        return NextResponse.redirect(loginUrl);
-      }
-      
-      // Token is valid, allow access
-      // Add user info to headers for Server Components to use
-      const response = NextResponse.next();
-      response.headers.set('x-user-id', payload.sub || '');
-      return response;
-    }
-  }
-
-  // No valid token found, redirect to login
-  const loginUrl = new URL('/auth/login', request.url);
-  loginUrl.searchParams.set('redirect', pathname);
-  return NextResponse.redirect(loginUrl);
+  // Page routes - allow access and let client-side components handle authentication
+  // The middleware cannot access sessionStorage, so we let the client handle auth checks
+  // Client components will check the auth store and redirect if needed
+  return NextResponse.next();
 }
 
 // Configure the routes on which the middleware applies
