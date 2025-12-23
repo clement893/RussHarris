@@ -4,8 +4,11 @@ Authentication Endpoints
 
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
+from urllib.parse import urlencode
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+import httpx
+from fastapi import APIRouter, Depends, HTTPException, Request, Query, status
+from fastapi.responses import RedirectResponse
 from starlette.requests import Request
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -15,6 +18,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
 from app.core.database import get_db
 from app.core.rate_limit import rate_limit_decorator
+from app.core.logging import logger
 from app.models.user import User
 from app.schemas.auth import Token, TokenData, UserCreate, UserResponse
 
@@ -184,16 +188,18 @@ async def get_current_user_info(
 
 
 @router.get("/google")
-async def get_google_auth_url():
+async def get_google_auth_url(
+    redirect: str = Query(None, description="Frontend redirect URL after authentication")
+):
     """
     Get Google OAuth authorization URL
+    
+    Args:
+        redirect: Optional frontend URL to redirect to after authentication
     
     Returns:
         Authorization URL for Google OAuth
     """
-    from urllib.parse import urlencode
-    from app.core.config import settings
-    
     if not settings.GOOGLE_CLIENT_ID:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -201,21 +207,178 @@ async def get_google_auth_url():
         )
     
     # Build redirect URI - use the configured one or default to backend callback
-    redirect_uri = settings.GOOGLE_REDIRECT_URI or f"{settings.API_V1_STR}/auth/google/callback"
+    # Include the frontend redirect URL as a state parameter
+    callback_uri = settings.GOOGLE_REDIRECT_URI
+    if not callback_uri:
+        # Construct callback URL from request
+        callback_uri = f"{settings.API_V1_STR}/auth/google/callback"
     
     # Google OAuth 2.0 authorization endpoint
     base_url = "https://accounts.google.com/o/oauth2/v2/auth"
     
     params = {
         "client_id": settings.GOOGLE_CLIENT_ID,
-        "redirect_uri": redirect_uri,
+        "redirect_uri": callback_uri,
         "response_type": "code",
         "scope": "openid email profile",
         "access_type": "offline",
         "prompt": "consent",
     }
     
+    # Add state parameter if frontend redirect URL is provided
+    if redirect:
+        params["state"] = redirect
+    
     auth_url = f"{base_url}?{urlencode(params)}"
     
     return {"auth_url": auth_url}
+
+
+@router.get("/google/callback")
+async def google_oauth_callback(
+    code: str = Query(..., description="Authorization code from Google"),
+    state: str = Query(None, description="State parameter (frontend redirect URL)"),
+    db: Annotated[AsyncSession, Depends(get_db)] = None,
+):
+    """
+    Handle Google OAuth callback
+    
+    Args:
+        code: Authorization code from Google
+        state: Optional state parameter (frontend redirect URL)
+        db: Database session
+    
+    Returns:
+        Redirect to frontend with token
+    """
+    if not settings.GOOGLE_CLIENT_ID or not settings.GOOGLE_CLIENT_SECRET:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Google OAuth is not configured"
+        )
+    
+    # Build redirect URI
+    redirect_uri = settings.GOOGLE_REDIRECT_URI
+    if not redirect_uri:
+        # Construct callback URL from request
+        redirect_uri = f"{settings.API_V1_STR}/auth/google/callback"
+    
+    try:
+        # Exchange authorization code for tokens
+        async with httpx.AsyncClient() as client:
+            token_response = await client.post(
+                "https://oauth2.googleapis.com/token",
+                data={
+                    "code": code,
+                    "client_id": settings.GOOGLE_CLIENT_ID,
+                    "client_secret": settings.GOOGLE_CLIENT_SECRET,
+                    "redirect_uri": redirect_uri,
+                    "grant_type": "authorization_code",
+                },
+            )
+            
+            if token_response.status_code != 200:
+                logger.error(f"Google token exchange failed: {token_response.text}")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Failed to exchange authorization code"
+                )
+            
+            token_data = token_response.json()
+            access_token = token_data.get("access_token")
+            
+            if not access_token:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="No access token received from Google"
+                )
+            
+            # Get user info from Google
+            userinfo_response = await client.get(
+                "https://www.googleapis.com/oauth2/v2/userinfo",
+                headers={"Authorization": f"Bearer {access_token}"},
+            )
+            
+            if userinfo_response.status_code != 200:
+                logger.error(f"Google userinfo failed: {userinfo_response.text}")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Failed to get user information from Google"
+                )
+            
+            google_user = userinfo_response.json()
+            email = google_user.get("email")
+            name = google_user.get("name", "")
+            picture = google_user.get("picture")
+            
+            if not email:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Email not provided by Google"
+                )
+            
+            # Split name into first_name and last_name
+            name_parts = name.split(" ", 1) if name else ["", ""]
+            first_name = name_parts[0] if len(name_parts) > 0 else ""
+            last_name = name_parts[1] if len(name_parts) > 1 else ""
+            
+            # Check if user exists
+            result = await db.execute(
+                User.__table__.select().where(User.email == email)
+            )
+            user = result.scalar_one_or_none()
+            
+            # Create or update user
+            if user:
+                # Update existing user
+                user.first_name = first_name or user.first_name
+                user.last_name = last_name or user.last_name
+                # Mark as active if not already
+                if not user.is_active:
+                    user.is_active = True
+            else:
+                # Create new user
+                # Generate a random password since Google OAuth users don't have passwords
+                import secrets
+                random_password = secrets.token_urlsafe(32)
+                hashed_password = get_password_hash(random_password)
+                
+                user = User(
+                    email=email,
+                    hashed_password=hashed_password,
+                    first_name=first_name,
+                    last_name=last_name,
+                    is_active=True,
+                )
+                db.add(user)
+            
+            await db.commit()
+            await db.refresh(user)
+            
+            # Create JWT token (use email as subject, consistent with login endpoint)
+            access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+            jwt_token = create_access_token(
+                data={"sub": user.email, "type": "access"},
+                expires_delta=access_token_expires,
+            )
+            
+            # Determine frontend redirect URL
+            frontend_url = state or "https://modele-nextjs-fullstack-production-1e92.up.railway.app"
+            
+            # Remove trailing slash and add token as query parameter
+            frontend_url = frontend_url.rstrip("/")
+            redirect_url = f"{frontend_url}/auth/callback?token={jwt_token}&type=google"
+            
+            logger.info(f"Google OAuth successful for user {email}, redirecting to {frontend_url}")
+            
+            return RedirectResponse(url=redirect_url)
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Google OAuth callback error: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Authentication failed: {str(e)}"
+        )
 
