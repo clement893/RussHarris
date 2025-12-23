@@ -1,9 +1,10 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { clsx } from 'clsx';
+import { ButtonVariant, Size } from './types';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: ButtonVariant;
+  size?: Size;
   loading?: boolean;
   children: ReactNode;
 }

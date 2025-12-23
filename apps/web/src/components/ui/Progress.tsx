@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 interface ProgressProps {
   value: number; // 0-100
   max?: number;
-  size?: 'sm' | 'md' | 'lg';
+  size?: Size;
   variant?: 'default' | 'success' | 'warning' | 'error';
   showLabel?: boolean;
   label?: string;

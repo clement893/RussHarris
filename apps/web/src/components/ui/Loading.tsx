@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 
 interface LoadingProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: Size;
   className?: string;
   fullScreen?: boolean;
   text?: string;
