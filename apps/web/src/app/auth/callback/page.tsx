@@ -33,14 +33,17 @@ function CallbackContent() {
     }
 
     try {
-      // Store tokens securely using TokenStorage
-      TokenStorage.setToken(accessToken);
+      // Store tokens securely using TokenStorage (await to ensure it's stored before API calls)
+      await TokenStorage.setToken(accessToken);
       logger.info('Token stored successfully');
       
       if (refreshToken) {
-        TokenStorage.setRefreshToken(refreshToken);
+        await TokenStorage.setRefreshToken(refreshToken);
         logger.info('Refresh token stored successfully');
       }
+
+      // Small delay to ensure token is available in sessionStorage
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       // Fetch user info using API client
       logger.info('Fetching user info from API...');
