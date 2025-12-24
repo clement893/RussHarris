@@ -3,7 +3,7 @@ Two-Factor Authentication Endpoints
 """
 
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -38,6 +38,7 @@ class TwoFactorDisableRequest(BaseModel):
 @router.post("/setup", response_model=TwoFactorSetupResponse)
 @rate_limit_decorator("5/minute")
 async def setup_two_factor(
+    request: Request,
     current_user: Annotated[User, Depends(get_current_user)],
     db: Annotated[AsyncSession, Depends(get_db)],
 ):
@@ -113,6 +114,7 @@ async def verify_two_factor_setup(
 @router.post("/disable")
 @rate_limit_decorator("5/minute")
 async def disable_two_factor(
+    http_request: Request,
     request: TwoFactorDisableRequest,
     current_user: Annotated[User, Depends(get_current_user)],
     db: Annotated[AsyncSession, Depends(get_db)],
@@ -134,6 +136,7 @@ async def disable_two_factor(
 @router.post("/verify-login")
 @rate_limit_decorator("10/minute")
 async def verify_two_factor_login(
+    http_request: Request,
     request: TwoFactorVerifyRequest,
     current_user: Annotated[User, Depends(get_current_user)],
 ):
