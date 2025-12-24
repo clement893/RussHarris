@@ -1,8 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { useAuthStore } from '@/lib/store';
-import { getThemePreference, updateThemePreference } from '@/lib/api/userSettings';
+import { getActiveTheme } from '@/lib/api/theme';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -19,29 +18,20 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('system');
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
-  const { isAuthenticated, token } = useAuthStore();
 
   useEffect(() => {
     setMounted(true);
     
-    // Load theme from database if user is authenticated
-    const loadThemeFromDB = async () => {
-      if (isAuthenticated() && token) {
-        try {
-          const response = await getThemePreference(token);
-          if (response.theme) {
-            setThemeState(response.theme as Theme);
-          }
-        } catch (error) {
-          console.error('Failed to load theme from database:', error);
-          // Fallback to localStorage if DB fails
-          const savedTheme = localStorage.getItem('theme') as Theme | null;
-          if (savedTheme) {
-            setThemeState(savedTheme);
-          }
-        }
-      } else {
-        // Fallback to localStorage if not authenticated
+    // Load global theme from database (public endpoint)
+    const loadGlobalTheme = async () => {
+      try {
+        const response = await getActiveTheme();
+        // Extract mode from config, default to 'system' if not present
+        const mode = (response.config?.mode as Theme) || 'system';
+        setThemeState(mode);
+      } catch (error) {
+        console.error('Failed to load global theme from database:', error);
+        // Fallback to localStorage if DB fails
         const savedTheme = localStorage.getItem('theme') as Theme | null;
         if (savedTheme) {
           setThemeState(savedTheme);
@@ -49,8 +39,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    loadThemeFromDB();
-  }, [isAuthenticated, token]);
+    loadGlobalTheme();
+    
+    // Poll for theme changes every 30 seconds
+    const interval = setInterval(loadGlobalTheme, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (!mounted) return;
@@ -72,24 +66,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     root.classList.remove('light', 'dark');
     root.classList.add(resolved);
 
-    // Sauvegarder dans la base de données si authentifié, sinon localStorage
-    const saveTheme = async () => {
-      if (isAuthenticated() && token) {
-        try {
-          await updateThemePreference(theme, token);
-        } catch (error) {
-          console.error('Failed to save theme to database:', error);
-          // Fallback to localStorage if DB fails
-          localStorage.setItem('theme', theme);
-        }
-      } else {
-        // Fallback to localStorage if not authenticated
-        localStorage.setItem('theme', theme);
-      }
-    };
-
-    saveTheme();
-  }, [theme, mounted, isAuthenticated, token]);
+    // Note: Theme is now global and managed by superadmins only
+    // Users cannot change it, so we don't save to DB here
+    // Only save to localStorage as fallback
+    localStorage.setItem('theme', theme);
+  }, [theme, mounted]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -110,15 +91,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme, mounted]);
 
   const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
+    // Note: Regular users cannot change the global theme
+    // This function is kept for compatibility but does nothing for non-admins
+    // Superadmins will use the admin interface to change the theme
+    console.warn('Theme changes are restricted to superadmins. Use the admin panel to change the global theme.');
   };
 
   const toggleTheme = () => {
-    setThemeState((current) => {
-      if (current === 'light') return 'dark';
-      if (current === 'dark') return 'system';
-      return 'light';
-    });
+    // Note: Regular users cannot toggle the global theme
+    console.warn('Theme changes are restricted to superadmins. Use the admin panel to change the global theme.');
   };
 
   if (!mounted) {

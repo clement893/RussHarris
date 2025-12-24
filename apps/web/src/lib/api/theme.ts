@@ -191,3 +191,30 @@ export async function deleteTheme(
   }
 }
 
+/**
+ * Update the mode (light/dark/system) of the currently active theme.
+ * Requires authentication and superadmin role.
+ * This affects all users globally.
+ */
+export async function updateActiveThemeMode(
+  mode: 'light' | 'dark' | 'system',
+  token?: string
+): Promise<ThemeConfigResponse> {
+  const authToken = token || getAuthToken();
+  const response = await fetch(`${API_URL}/api/v1/themes/active/mode`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+    body: JSON.stringify({ mode }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: response.statusText }));
+    throw new Error(error.detail || `Failed to update theme mode: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+

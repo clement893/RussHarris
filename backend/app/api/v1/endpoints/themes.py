@@ -2,9 +2,11 @@
 API endpoints for theme management.
 """
 from typing import List
+from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from pydantic import BaseModel, Field
 from app.schemas.theme import (
     ThemeCreate,
     ThemeUpdate,
@@ -19,24 +21,51 @@ from app.dependencies import get_current_user, require_superadmin
 router = APIRouter()
 
 
+class ThemeModeUpdate(BaseModel):
+    """Schema for updating theme mode (light/dark/system)"""
+    mode: str = Field(..., description="Theme mode: 'light', 'dark', or 'system'")
+    
+    def __init__(self, **data):
+        super().__init__(**data)
+        if self.mode not in ['light', 'dark', 'system']:
+            raise ValueError("Mode must be 'light', 'dark', or 'system'")
+
+
 @router.get("/active", response_model=ThemeConfigResponse, tags=["themes"])
 async def get_active_theme(db: AsyncSession = Depends(get_db)):
     """
     Get the currently active theme configuration.
     Public endpoint - no authentication required.
+    Returns the global theme that applies to all users.
     """
     result = await db.execute(select(Theme).where(Theme.is_active == True))
     theme = result.scalar_one_or_none()
     if not theme:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No active theme found"
+        # Return default theme if no active theme exists
+        default_config = {
+            "mode": "system",  # Default mode: light, dark, or system
+            "primary": "#3b82f6",
+            "secondary": "#8b5cf6",
+            "danger": "#ef4444",
+            "warning": "#f59e0b",
+            "info": "#06b6d4",
+        }
+        return ThemeConfigResponse(
+            name="default",
+            display_name="Default Theme",
+            config=default_config,
+            updated_at=datetime.now()
         )
+    
+    # Ensure config has a mode field
+    config = theme.config or {}
+    if "mode" not in config:
+        config["mode"] = "system"
     
     return ThemeConfigResponse(
         name=theme.name,
         display_name=theme.display_name,
-        config=theme.config,
+        config=config,
         updated_at=theme.updated_at
     )
 
@@ -200,6 +229,43 @@ async def activate_theme(
     await db.commit()
     await db.refresh(theme)
     return ThemeResponse.model_validate(theme)
+
+
+@router.put("/active/mode", response_model=ThemeConfigResponse, tags=["themes"])
+async def update_active_theme_mode(
+    mode_update: ThemeModeUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_user = Depends(get_current_user),
+    _: None = Depends(require_superadmin)
+):
+    """
+    Update the mode (light/dark/system) of the currently active theme.
+    Requires superadmin authentication.
+    This affects all users globally.
+    """
+    result = await db.execute(select(Theme).where(Theme.is_active == True))
+    theme = result.scalar_one_or_none()
+    
+    if not theme:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No active theme found. Please activate a theme first."
+        )
+    
+    # Update the mode in config
+    config = theme.config or {}
+    config["mode"] = mode_update.mode
+    theme.config = config
+    
+    await db.commit()
+    await db.refresh(theme)
+    
+    return ThemeConfigResponse(
+        name=theme.name,
+        display_name=theme.display_name,
+        config=config,
+        updated_at=theme.updated_at
+    )
 
 
 @router.delete("/{theme_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["themes"])
