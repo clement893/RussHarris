@@ -34,10 +34,21 @@ const nextConfig = {
 
   // Headers for security
   async headers() {
-    // Use NEXT_PUBLIC_API_URL environment variable, fallback to localhost for development
-    // In production, NEXT_PUBLIC_API_URL must be set via environment variables
-    const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').trim();
+    // Use the same logic as getApiUrl() in theme.ts to determine API URL
     const isProduction = process.env.NODE_ENV === 'production';
+    const defaultUrl = isProduction 
+      ? 'https://modelebackend-production-0590.up.railway.app'
+      : 'http://localhost:8000';
+    
+    let apiUrl = (process.env.NEXT_PUBLIC_API_URL || defaultUrl).trim();
+    
+    // If URL doesn't start with http:// or https://, add https://
+    if (!apiUrl.startsWith('http://') && !apiUrl.startsWith('https://')) {
+      apiUrl = `https://${apiUrl}`;
+    }
+    
+    // Remove trailing slash
+    apiUrl = apiUrl.replace(/\/$/, '');
     
     // Content Security Policy
     // ⚠️ SECURITY NOTE: CSP is relaxed in development (unsafe-inline/unsafe-eval)
