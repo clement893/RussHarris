@@ -1,9 +1,9 @@
-'use client';
+﻿'use client';
 
 import { InputHTMLAttributes, useCallback, useRef, useState } from 'react';
 import { clsx } from 'clsx';
 
-export interface RangeProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange'> {
+export interface RangeProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'defaultValue'>|export interface RangeProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'defaultValue'>|export interface RangeProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'value' | 'onChange' | 'defaultValue'> {
   value?: [number, number];
   defaultValue?: [number, number];
   min?: number;
