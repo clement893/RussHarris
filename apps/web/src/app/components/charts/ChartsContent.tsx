@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Chart, AdvancedCharts, Card, Button } from '@/components/ui';
-import type { ChartDataPoint, ScatterDataPoint, RadarDataPoint } from '@/components/ui';
+import type { ChartDataPoint } from '@/components/ui';
 import { PageHeader, PageContainer, Section, PageNavigation } from '@/components/layout';
 
 const lineChartData: ChartDataPoint[] = [
