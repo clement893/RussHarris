@@ -5,8 +5,9 @@
 
 import type { HealthStatus, ServiceHealth } from './types';
 import { logger } from '../logger';
+import { getApiUrl } from '../api';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = getApiUrl().replace(/\/$/, '');
 
 async function checkService(
   name: string,

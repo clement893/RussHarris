@@ -9,7 +9,9 @@ import type {
   ThemeConfigResponse,
 } from '@modele/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { getApiUrl } from '../api';
+
+const API_URL = getApiUrl().replace(/\/$/, '');
 
 // Helper to get auth token
 import { TokenStorage } from '@/lib/auth/tokenStorage';

@@ -7,11 +7,12 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { handleApiError } from '@/lib/errors';
 import { logger } from '@/lib/logger';
 import type { ApiResponse } from '@modele/types';
+import { getApiUrl } from '../api';
 
 class ApiClient {
   private client: AxiosInstance;
 
-  constructor(baseURL: string = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:8000') {
+  constructor(baseURL: string = getApiUrl().replace(/\/$/, '')) {
     this.client = axios.create({
       baseURL,
       timeout: 30000,

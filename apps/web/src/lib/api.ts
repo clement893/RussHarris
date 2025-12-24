@@ -26,7 +26,7 @@ import { logger } from '@/lib/logger';
  * Note: In Next.js, NEXT_PUBLIC_* vars are embedded at build time
  * Make sure NEXT_PUBLIC_API_URL is set before building for production
  */
-const getApiUrl = () => {
+export const getApiUrl = () => {
   // Use NEXT_PUBLIC_API_URL environment variable, fallback to localhost for development
   // In production, NEXT_PUBLIC_API_URL must be set via environment variables
   const defaultUrl = 'http://localhost:8000';
