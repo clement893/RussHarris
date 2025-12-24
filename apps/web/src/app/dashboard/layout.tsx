@@ -1,9 +1,11 @@
-import InternalLayout from '@/components/layout/InternalLayout';
+// Force dynamic rendering for all dashboard pages
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <InternalLayout>{children}</InternalLayout>;
+  return <>{children}</>;
 }
