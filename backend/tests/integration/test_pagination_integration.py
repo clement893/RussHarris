@@ -37,10 +37,16 @@ class TestPaginationIntegration:
     ):
         """Test paginating query with data"""
         # Create test user
-        from app.api.v1.endpoints.auth import get_password_hash
+        import bcrypt
+        password_bytes = test_user_data["password"].encode('utf-8')
+        if len(password_bytes) > 72:
+            password_bytes = password_bytes[:72]
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password_bytes, salt).decode('utf-8')
+        
         user = User(
             email=test_user_data["email"],
-            hashed_password=get_password_hash(test_user_data["password"]),
+            hashed_password=hashed_password,
             first_name=test_user_data["first_name"],
             last_name=test_user_data["last_name"],
             is_active=True,
