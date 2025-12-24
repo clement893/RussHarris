@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import { clsx } from 'clsx';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import { Chart, AdvancedCharts } from '@/components/ui';
+import { Chart } from '@/components/ui';
 import type { ChartDataPoint } from '@/components/ui';
 import { TrendingUp, TrendingDown, Users, DollarSign, ShoppingCart, Eye, Calendar, Download } from 'lucide-react';
 
