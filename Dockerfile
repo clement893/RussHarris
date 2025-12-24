@@ -39,9 +39,9 @@ COPY --from=deps /app/packages/types/package.json ./packages/types/package.json
 RUN pnpm install --offline --no-frozen-lockfile || pnpm install --no-frozen-lockfile
 COPY . .
 
-# Pass NEXT_PUBLIC_* environment variables to build stage
-# Railway automatically provides these as build args, but we need to explicitly accept them
-# and convert them to ENV so Next.js can access them during build
+# Railway passes environment variables, but they need to be available during build
+# We use ARG to accept them and ENV to make them available to Next.js
+# Railway automatically passes all environment variables, but we need to explicitly accept them
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_DEFAULT_API_URL
 ARG NEXT_PUBLIC_APP_URL
@@ -51,15 +51,27 @@ ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
 
 # Convert ARG to ENV so Next.js can access them during build
 # Next.js only reads NEXT_PUBLIC_* variables from ENV, not ARG
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-ENV NEXT_PUBLIC_DEFAULT_API_URL=${NEXT_PUBLIC_DEFAULT_API_URL}
-ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
-ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
-ENV NEXT_PUBLIC_SENTRY_DSN=${NEXT_PUBLIC_SENTRY_DSN}
-ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+# Use ${VAR:-} syntax to allow empty values (Railway might not pass all vars)
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-}
+ENV NEXT_PUBLIC_DEFAULT_API_URL=${NEXT_PUBLIC_DEFAULT_API_URL:-}
+ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-}
+ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-}
+ENV NEXT_PUBLIC_SENTRY_DSN=${NEXT_PUBLIC_SENTRY_DSN:-}
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID:-}
 
 ENV PATH="/app/node_modules/.bin:$PATH"
-RUN pnpm build
+
+# Prepare build environment: create .env.local from environment variables
+# This ensures Next.js can read NEXT_PUBLIC_* variables during build
+RUN cd apps/web && node scripts/prepare-build-env.js
+
+# Debug: Print environment variables (without sensitive values)
+RUN echo "Build-time environment variables:" && \
+    env | grep "^NEXT_PUBLIC_" | sed 's/=.*/=***/' || echo "No NEXT_PUBLIC_* variables found"
+
+# Build Next.js application
+# Next.js will read variables from .env.local or ENV
+RUN cd apps/web && pnpm build
 
 # Production image
 FROM base AS runner
