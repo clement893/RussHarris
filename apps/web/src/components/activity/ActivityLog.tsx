@@ -11,7 +11,7 @@ import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import DataTable from '@/components/ui/DataTable';
 import type { Column } from '@/components/ui/DataTable';
-import { Filter, User, Calendar, Search } from 'lucide-react';
+import { Filter, User, Search } from 'lucide-react';
 import Avatar from '@/components/ui/Avatar';
 
 export interface ActivityLogEntry {
