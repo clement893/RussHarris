@@ -37,3 +37,5 @@ openai>=1.0.0
 sendgrid>=6.10.0
 
 # Note: CORS is handled by FastAPI's CORSMiddleware (no separate package needed)
+
+python-magic>=0.4.27

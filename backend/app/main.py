@@ -28,6 +28,7 @@ from app.core.rate_limit import setup_rate_limiting
 from app.core.compression import CompressionMiddleware
 from app.core.cache_headers import CacheHeadersMiddleware
 from app.core.security_headers import SecurityHeadersMiddleware
+from app.core.csrf import CSRFProtectionMiddleware
 from app.api.v1.router import api_router
 from app.api import email as email_router
 from app.api.webhooks import stripe as stripe_webhook_router

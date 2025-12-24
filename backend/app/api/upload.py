@@ -1,4 +1,4 @@
-"""File upload endpoints."""
+﻿"""File upload endpoints."""
 
 import os
 import re
@@ -36,6 +36,80 @@ def sanitize_filename(filename: str) -> str:
     # Limit length
     filename = filename[:255]
     return filename
+
+
+
+def validate_file_content(file: UploadFile) -> None:
+    """
+    Validate file content using magic bytes (file signature).
+    
+    This provides an additional layer of security by checking the actual
+    file content, not just the extension or MIME type declared by the client.
+    
+    Args:
+        file: FastAPI UploadFile object
+        
+    Raises:
+        HTTPException: If file content doesn't match declared type
+    """
+    try:
+        # Try to import python-magic (optional dependency)
+        try:
+            import magic
+            has_magic = True
+        except ImportError:
+            # If python-magic is not available, skip content validation
+            # but log a warning
+            from app.core.logging import logger
+            logger.warning("python-magic not installed, skipping file content validation")
+            has_magic = False
+        
+        if not has_magic:
+            return
+        
+        # Read file content
+        file_content = file.file.read()
+        file.file.seek(0)  # Reset file pointer
+        
+        # Check magic bytes
+        mime_type = magic.from_buffer(file_content, mime=True)
+        
+        # Map extensions to expected MIME types
+        file_ext = os.path.splitext(file.filename or "")[1].lower()
+        expected_mime_types = {
+            '.jpg': ['image/jpeg'],
+            '.jpeg': ['image/jpeg'],
+            '.png': ['image/png'],
+            '.gif': ['image/gif'],
+            '.pdf': ['application/pdf'],
+            '.doc': ['application/msword'],
+            '.docx': ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+            '.txt': ['text/plain'],
+            '.csv': ['text/csv', 'text/plain'],
+        }
+        
+        # Verify MIME type matches extension
+        if file_ext in expected_mime_types:
+            if mime_type not in expected_mime_types[file_ext]:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"File content ({mime_type}) doesn't match extension ({file_ext})"
+                )
+        
+        # Verify MIME type is allowed
+        if mime_type not in ALLOWED_MIME_TYPES:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"File MIME type not allowed: {mime_type}"
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        # If magic bytes check fails, log but don't block (fallback to basic validation)
+        from app.core.logging import logger
+        logger.warning(f"File content validation error: {e}")
+        # Continue with basic validation
 
 
 def validate_file(file: UploadFile) -> None:
@@ -81,6 +155,7 @@ async def upload_file(
     """Upload a file to S3 with security validations."""
     # Validate file
     validate_file(file)
+    validate_file_content(file)
     
     # Read file content to check size
     file_content = await file.read()
