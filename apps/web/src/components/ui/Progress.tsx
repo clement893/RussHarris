@@ -28,11 +28,12 @@ export default function Progress({
     lg: 'h-4',
   };
 
-  const variants = {
+  const variants: Record<ColorVariant, string> = {
     default: 'bg-blue-600',
     success: 'bg-green-600',
     warning: 'bg-yellow-600',
     error: 'bg-red-600',
+    info: 'bg-blue-600',
   };
 
   return (
