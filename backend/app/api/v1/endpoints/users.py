@@ -4,7 +4,8 @@ Example implementation of optimized endpoints
 """
 
 from typing import Annotated, Optional
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, Query
+from starlette.requests import Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_, or_
 
