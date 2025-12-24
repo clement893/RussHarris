@@ -11,7 +11,7 @@ import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import DataTable from '@/components/ui/DataTable';
 import type { Column } from '@/components/ui/DataTable';
-import { Shield, Eye, Filter, Calendar } from 'lucide-react';
+import { Shield, Filter, Calendar } from 'lucide-react';
 import Avatar from '@/components/ui/Avatar';
 import Modal from '@/components/ui/Modal';
 
