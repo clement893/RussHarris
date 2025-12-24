@@ -34,15 +34,13 @@ const getApiUrl = () => {
   // Get and trim the URL to remove any whitespace
   let url = (process.env.NEXT_PUBLIC_API_URL || defaultUrl).trim();
   
-  // Log to help debug (only in browser, not SSR, development only)
-  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-    logger.debug('API Client configuration', {
-      nodeEnv: process.env.NODE_ENV,
-      apiUrlRaw: process.env.NEXT_PUBLIC_API_URL,
-      apiUrlTrimmed: url,
-      defaultUrl,
-      finalApiUrl: url
-    });
+  // Log to help debug (only in browser, not SSR)
+  if (typeof window !== 'undefined') {
+    console.log('[API Client] NODE_ENV:', process.env.NODE_ENV);
+    console.log('[API Client] NEXT_PUBLIC_API_URL (raw):', process.env.NEXT_PUBLIC_API_URL);
+    console.log('[API Client] NEXT_PUBLIC_API_URL (trimmed):', url);
+    console.log('[API Client] Default URL:', defaultUrl);
+    console.log('[API Client] Final API URL:', url);
   }
   
   // If URL doesn't start with http:// or https://, add https://
@@ -76,17 +74,14 @@ apiClient.interceptors.request.use(
       const token = TokenStorage.getToken();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
-        // Debug log to verify token is being sent (development only)
-        if (config.url?.includes('/auth/me') && process.env.NODE_ENV === 'development') {
-          logger.debug('Sending request to /auth/me', { 
-            hasToken: true,
-            tokenPreview: token.substring(0, 20) + '...'
-          });
+        // Debug log to verify token is being sent
+        if (config.url?.includes('/auth/me')) {
+          console.log('[API Client] Sending request to /auth/me with token:', token.substring(0, 20) + '...');
         }
       } else {
-        // Debug log if no token found (development only)
-        if (config.url?.includes('/auth/me') && process.env.NODE_ENV === 'development') {
-          logger.warn('No token found when requesting /auth/me');
+        // Debug log if no token found
+        if (config.url?.includes('/auth/me')) {
+          console.warn('[API Client] No token found when requesting /auth/me');
         }
       }
     }
@@ -209,6 +204,24 @@ export const usersAPI = {
   },
   getUsers: () => {
     return apiClient.get('/users');
+  },
+  createUser: (data: {
+    email: string;
+    first_name?: string;
+    last_name?: string;
+    password: string;
+    is_active?: boolean;
+  }) => {
+    return apiClient.post('/users', data);
+  },
+  updateUser: (userId: string, data: {
+    email?: string;
+    first_name?: string;
+    last_name?: string;
+    password?: string;
+    is_active?: boolean;
+  }) => {
+    return apiClient.put(`/users/${userId}`, data);
   },
   deleteUser: (userId: string) => {
     return apiClient.delete(`/users/${userId}`);
@@ -351,24 +364,6 @@ export const invitationsAPI = {
   },
   accept: (invitationId: string, token: string) => {
     return apiClient.post(`/v1/invitations/${invitationId}/accept`, { token });
-  },
-};
-
-export const projectsAPI = {
-  list: (params?: { skip?: number; limit?: number; status?: 'active' | 'archived' | 'completed' }) => {
-    return apiClient.get('/v1/projects', { params });
-  },
-  get: (projectId: number) => {
-    return apiClient.get(`/v1/projects/${projectId}`);
-  },
-  create: (data: { name: string; description?: string; status?: 'active' | 'archived' | 'completed' }) => {
-    return apiClient.post('/v1/projects', data);
-  },
-  update: (projectId: number, data: { name?: string; description?: string; status?: 'active' | 'archived' | 'completed' }) => {
-    return apiClient.put(`/v1/projects/${projectId}`, data);
-  },
-  delete: (projectId: number) => {
-    return apiClient.delete(`/v1/projects/${projectId}`);
   },
 };
 

@@ -98,13 +98,23 @@ function UsersContent() {
     try {
       setLoading(true);
       setError(null);
-      // TODO: Implement user creation endpoint in backend
-      // For now, show a message that this feature requires backend implementation
-      setError('La crÃ©ation d\'utilisateurs nÃ©cessite l\'implÃ©mentation de l\'endpoint backend. Veuillez utiliser l\'API directement.');
-      // await usersAPI.create({ ... });
-      // await loadUsers();
-      // setShowCreateModal(false);
-      // resetForm();
+      
+      // Parse name into first_name and last_name
+      const nameParts = formData.name.trim().split(' ');
+      const first_name = nameParts[0] || null;
+      const last_name = nameParts.slice(1).join(' ') || null;
+      
+      await usersAPI.createUser({
+        email: formData.email.trim(),
+        first_name,
+        last_name,
+        password: formData.password,
+        is_active: true,
+      });
+      
+      await loadUsers();
+      setShowCreateModal(false);
+      resetForm();
     } catch (err) {
       const appError = handleApiError(err);
       setError(appError.message || 'Erreur lors de la crÃ©ation de l\'utilisateur');
@@ -122,20 +132,33 @@ function UsersContent() {
     try {
       setLoading(true);
       setError(null);
-      // TODO: Implement user update endpoint in backend
-      // For now, show a message that this feature requires backend implementation
-      setError('La modification d\'utilisateurs nÃ©cessite l\'implÃ©mentation de l\'endpoint backend. Veuillez utiliser l\'API directement.');
+      
       // Parse name into first_name and last_name
-      // const nameParts = formData.name.split(' ');
-      // await usersAPI.update(selectedUser.id, {
-      //   email: formData.email,
-      //   first_name: nameParts[0] || null,
-      //   last_name: nameParts.slice(1).join(' ') || null,
-      // });
-      // await loadUsers();
-      // setShowEditModal(false);
-      // setSelectedUser(null);
-      // resetForm();
+      const nameParts = formData.name.trim().split(' ');
+      const first_name = nameParts[0] || null;
+      const last_name = nameParts.slice(1).join(' ') || null;
+      
+      const updateData: {
+        email: string;
+        first_name: string | null;
+        last_name: string | null;
+        password?: string;
+      } = {
+        email: formData.email.trim(),
+        first_name,
+        last_name,
+      };
+      
+      // Only include password if it's provided
+      if (formData.password.trim()) {
+        updateData.password = formData.password;
+      }
+      
+      await usersAPI.updateUser(String(selectedUser.id), updateData);
+      await loadUsers();
+      setShowEditModal(false);
+      setSelectedUser(null);
+      resetForm();
     } catch (err) {
       const appError = handleApiError(err);
       setError(appError.message || 'Erreur lors de la modification de l\'utilisateur');
@@ -163,15 +186,16 @@ function UsersContent() {
     }
   };
 
-  const handleToggleActive = async (_user: User) => {
+  const handleToggleActive = async (user: User) => {
     try {
       setLoading(true);
       setError(null);
-      // TODO: Implement user update endpoint in backend to toggle is_active
-      // For now, show a message that this feature requires backend implementation
-      setError('La modification du statut nÃ©cessite l\'implÃ©mentation de l\'endpoint backend. Veuillez utiliser l\'API directement.');
-      // await usersAPI.update(user.id, { is_active: !user.is_active });
-      // await loadUsers();
+      
+      await usersAPI.updateUser(String(user.id), { 
+        is_active: !user.is_active 
+      });
+      
+      await loadUsers();
     } catch (err) {
       const appError = handleApiError(err);
       setError(appError.message || 'Erreur lors de la modification du statut');
