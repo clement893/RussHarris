@@ -233,6 +233,30 @@ export async function activateTheme(
 }
 
 /**
+ * Update the active theme mode (light/dark/system).
+ * Requires authentication and superadmin role.
+ */
+export async function updateActiveThemeMode(
+  mode: 'light' | 'dark' | 'system',
+  token?: string
+): Promise<void> {
+  const authToken = token || getAuthToken();
+  const response = await fetch(`${API_URL}/api/v1/themes/active/mode`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+    body: JSON.stringify({ mode }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: response.statusText }));
+    throw new Error(error.detail || `Failed to update theme mode: ${response.statusText}`);
+  }
+}
+
+/**
  * Delete a theme.
  * Requires authentication and superadmin role.
  * Cannot delete the active theme.
