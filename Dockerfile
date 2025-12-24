@@ -38,6 +38,26 @@ COPY --from=deps /app/packages/types/package.json ./packages/types/package.json
 # Reinstall to recreate symlinks for binaries (offline mode to use cached packages)
 RUN pnpm install --offline --no-frozen-lockfile || pnpm install --no-frozen-lockfile
 COPY . .
+
+# Pass NEXT_PUBLIC_* environment variables to build stage
+# Railway automatically provides these as build args, but we need to explicitly accept them
+# and convert them to ENV so Next.js can access them during build
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_DEFAULT_API_URL
+ARG NEXT_PUBLIC_APP_URL
+ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+ARG NEXT_PUBLIC_SENTRY_DSN
+ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
+# Convert ARG to ENV so Next.js can access them during build
+# Next.js only reads NEXT_PUBLIC_* variables from ENV, not ARG
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NEXT_PUBLIC_DEFAULT_API_URL=${NEXT_PUBLIC_DEFAULT_API_URL}
+ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
+ENV NEXT_PUBLIC_SENTRY_DSN=${NEXT_PUBLIC_SENTRY_DSN}
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+
 ENV PATH="/app/node_modules/.bin:$PATH"
 RUN pnpm build
 
