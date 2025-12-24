@@ -67,7 +67,8 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
           setIsSuperAdmin(true);
         }
       } catch (err) {
-        logger.error('Failed to check superadmin status', err);
+        const error = err instanceof Error ? err : new Error('Failed to check superadmin status');
+        logger.error('Failed to check superadmin status', error);
         // On error, fallback to is_admin check
         if (!user?.is_admin) {
           router.replace('/dashboard?error=unauthorized_superadmin');
