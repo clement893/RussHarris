@@ -14,7 +14,7 @@ import Select from '@/components/ui/Select';
 import type { SelectOption } from '@/components/ui/Select';
 import Checkbox from '@/components/ui/Checkbox';
 import Badge from '@/components/ui/Badge';
-import { Save, FileText, BarChart3, Calendar } from 'lucide-react';
+import { Save, FileText, Calendar } from 'lucide-react';
 
 export interface ReportField {
   id: string;
