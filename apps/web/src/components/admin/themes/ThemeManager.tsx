@@ -19,7 +19,6 @@ interface ThemeManagerProps {
 
 export function ThemeManager({ authToken }: ThemeManagerProps) {
   const [themes, setThemes] = useState<Theme[]>([]);
-  const [activeThemeId, setActiveThemeId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingTheme, setEditingTheme] = useState<Theme | null>(null);
@@ -35,7 +34,6 @@ export function ThemeManager({ authToken }: ThemeManagerProps) {
       setError(null);
       const response = await listThemes(authToken);
       setThemes(response.themes);
-      setActiveThemeId(response.active_theme_id || null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load themes');
     } finally {
