@@ -34,24 +34,37 @@ import { logger } from '@/lib/logger';
 export const getApiUrl = () => {
   const isProduction = process.env.NODE_ENV === 'production';
   
-  // Priority order: explicit API URL > default API URL > localhost (dev only)
+  // Priority order: explicit API URL > default API URL > smart fallback > localhost (dev only)
   let url = process.env.NEXT_PUBLIC_API_URL 
-    || process.env.NEXT_PUBLIC_DEFAULT_API_URL 
-    || (isProduction ? undefined : 'http://localhost:8000');
+    || process.env.NEXT_PUBLIC_DEFAULT_API_URL;
   
-  // In production, NEXT_PUBLIC_API_URL should be set
-  if (isProduction && !url) {
-    console.error(
-      '[API Client] ERROR: NEXT_PUBLIC_API_URL is not set in production. ' +
-      'Please set NEXT_PUBLIC_API_URL or NEXT_PUBLIC_DEFAULT_API_URL environment variable.'
-    );
-    // Fallback to localhost in production (should not happen, but prevents crashes)
-    url = 'http://localhost:8000';
+  // Smart fallback for production: try to detect backend URL from frontend URL
+  if (!url && isProduction && typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    // If running on Railway, try to infer backend URL
+    if (hostname.includes('railway.app')) {
+      // Try common Railway backend URL pattern
+      // This is a fallback - NEXT_PUBLIC_API_URL should be set properly
+      url = 'https://modelebackend-production-0590.up.railway.app';
+      console.warn(
+        '[API Client] NEXT_PUBLIC_API_URL not set at build time. ' +
+        'Using fallback URL. Please set NEXT_PUBLIC_API_URL in Railway environment variables before building.'
+      );
+    }
   }
   
   // Default to localhost for development if nothing is set
   if (!url) {
-    url = 'http://localhost:8000';
+    url = isProduction ? undefined : 'http://localhost:8000';
+  }
+  
+  // Final fallback to prevent crashes (should not happen in production if configured correctly)
+  if (!url) {
+    console.error(
+      '[API Client] ERROR: NEXT_PUBLIC_API_URL is not set in production. ' +
+      'Please set NEXT_PUBLIC_API_URL in Railway environment variables and rebuild.'
+    );
+    url = 'http://localhost:8000'; // Last resort fallback
   }
   
   url = url.trim();
@@ -59,7 +72,7 @@ export const getApiUrl = () => {
   // Log to help debug (only in browser, not SSR)
   if (typeof window !== 'undefined') {
     console.log('[API Client] NODE_ENV:', process.env.NODE_ENV);
-    console.log('[API Client] NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL || '(not set)');
+    console.log('[API Client] NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL || '(not set at build time)');
     console.log('[API Client] NEXT_PUBLIC_DEFAULT_API_URL:', process.env.NEXT_PUBLIC_DEFAULT_API_URL || '(not set)');
     console.log('[API Client] Final API URL:', url);
   }
