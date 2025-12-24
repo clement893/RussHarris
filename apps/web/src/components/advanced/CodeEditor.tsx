@@ -60,7 +60,7 @@ export default function CodeEditor({
       setTimeout(() => setCopied(false), 2000);
       logger.info('Code copied to clipboard');
     } catch (error) {
-      logger.error('Failed to copy code', error);
+      logger.error('Failed to copy code', error instanceof Error ? error : new Error(String(error)));
     }
   };
 
