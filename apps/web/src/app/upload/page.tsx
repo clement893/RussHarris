@@ -13,10 +13,12 @@ import Alert from '@/components/ui/Alert';
 import Badge from '@/components/ui/Badge';
 import { Upload, CheckCircle, XCircle, File, Image, FileText } from 'lucide-react';
 import { logger } from '@/lib/logger';
+import { validateFile, generateUniqueFileName, MAX_FILE_SIZE, ALLOWED_MIME_TYPES } from '@/lib/utils/fileValidation';
 
 interface UploadedFile {
   id: string;
   name: string;
+  originalName?: string; // Original file name before sanitization
   size: number;
   type: string;
   url?: string;
@@ -33,8 +35,31 @@ function UploadContent() {
 
   const handleFileSelect = (files: File[]) => {
     logger.debug('Files selected', { count: files.length, names: files.map(f => f.name) });
-    setSelectedFiles(files);
-    setError(null);
+    
+    // Validate files client-side before upload
+    const validFiles: File[] = [];
+    const validationErrors: string[] = [];
+    
+    files.forEach((file) => {
+      const validation = validateFile(file, {
+        allowedTypes: ALLOWED_MIME_TYPES.all,
+        maxSize: MAX_FILE_SIZE,
+        requireExtensionMatch: true,
+      });
+      
+      if (validation.valid) {
+        validFiles.push(file);
+      } else {
+        validationErrors.push(`${file.name}: ${validation.error}`);
+      }
+    });
+    
+    if (validationErrors.length > 0) {
+      setError(`Certains fichiers ne sont pas valides:\n${validationErrors.join('\n')}`);
+    }
+    
+    setSelectedFiles(validFiles);
+    setError(validationErrors.length > 0 ? validationErrors.join('; ') : null);
     setSuccess(null);
   };
 
@@ -53,9 +78,45 @@ function UploadContent() {
     try {
       logger.info('Starting upload', { fileCount: selectedFiles.length });
       
+      // Validate files server-side before upload
+      const validationPromises = selectedFiles.map(async (file) => {
+        try {
+          const response = await fetch('/api/upload/validate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: file.name,
+              size: file.size,
+              type: file.type,
+            }),
+          });
+          
+          const data = await response.json();
+          return { file, valid: data.valid, sanitizedName: data.sanitizedName, error: data.error };
+        } catch (err) {
+          logger.error('Validation request failed', err instanceof Error ? err : new Error(String(err)));
+          return { file, valid: false, error: 'Validation request failed' };
+        }
+      });
+      
+      const validationResults = await Promise.all(validationPromises);
+      const validFiles = validationResults.filter(r => r.valid);
+      const invalidFiles = validationResults.filter(r => !r.valid);
+      
+      if (invalidFiles.length > 0) {
+        const errors = invalidFiles.map(r => `${r.file.name}: ${r.error || 'Invalid file'}`);
+        setError(`Certains fichiers n'ont pas passé la validation serveur:\n${errors.join('\n')}`);
+      }
+      
+      if (validFiles.length === 0) {
+        setUploading(false);
+        return;
+      }
+      
       // Simulate S3 upload - Replace with actual API call
-      const uploadPromises = selectedFiles.map(async (file, index) => {
-        logger.debug('Uploading file', { index: index + 1, total: selectedFiles.length, fileName: file.name });
+      const uploadPromises = validFiles.map(async ({ file, sanitizedName }, index) => {
+        const safeFileName = sanitizedName || generateUniqueFileName(file.name);
+        logger.debug('Uploading file', { index: index + 1, total: validFiles.length, fileName: file.name, safeFileName });
         
         // Simulate upload delay
         await new Promise((resolve) => setTimeout(resolve, 1000 + Math.random() * 2000));
@@ -65,15 +126,16 @@ function UploadContent() {
 
         const result = {
           id: `file-${Date.now()}-${Math.random().toString(36).substring(7)}`,
-          name: file.name,
+          name: safeFileName, // Use sanitized name
+          originalName: file.name, // Keep original for display
           size: file.size,
           type: file.type,
-          url: success ? `https://s3.example.com/uploads/${file.name}` : undefined,
+          url: success ? `https://s3.example.com/uploads/${safeFileName}` : undefined,
           uploadedAt: new Date().toISOString(),
           status: success ? ('success' as const) : ('error' as const),
         };
         
-        logger.debug('File upload result', { fileName: file.name, success });
+        logger.debug('File upload result', { fileName: file.name, safeFileName, success });
         return result;
       });
 

@@ -12,6 +12,7 @@ const nextConfig = {
       'zod',
       'clsx',
     ],
+    instrumentationHook: true, // Enable instrumentation hook for environment validation
   },
 
   // Image optimization
@@ -101,19 +102,19 @@ const nextConfig = {
     // Use the same logic as getApiUrl() to determine API URL
     const isProduction = process.env.NODE_ENV === 'production';
     
-    // Priority order: explicit API URL > default API URL > fallback for production
+    // Priority order: explicit API URL > default API URL
     let apiUrl = process.env.NEXT_PUBLIC_API_URL 
       || process.env.NEXT_PUBLIC_DEFAULT_API_URL;
     
-    // Smart fallback for production: use Railway backend URL if available
-    // This ensures CSP includes the backend URL even if NEXT_PUBLIC_API_URL wasn't set at build time
-    if (!apiUrl && isProduction) {
-      apiUrl = 'https://modelebackend-production-0590.up.railway.app';
-    }
-    
     // Default to localhost for development if nothing is set
     if (!apiUrl) {
-      apiUrl = 'http://localhost:8000';
+      if (isProduction) {
+        // In production, fail fast if API URL is not configured
+        console.error('ERROR: NEXT_PUBLIC_API_URL is required in production but not set. Please set NEXT_PUBLIC_API_URL environment variable and rebuild.');
+        apiUrl = 'http://localhost:8000'; // Fallback to prevent build failure, but will error at runtime
+      } else {
+        apiUrl = 'http://localhost:8000';
+      }
     }
     
     apiUrl = apiUrl.trim();
@@ -131,11 +132,9 @@ const nextConfig = {
     // This is acceptable for dev but should be tightened in production using nonces
     // See: https://nextjs.org/docs/advanced-features/security-headers
     // Include both localhost (for dev) and the configured API URL in connect-src
-    // Also include production backend URL as fallback for CSP
-    const productionBackendUrl = 'https://modelebackend-production-0590.up.railway.app';
     const connectSrcUrls = isProduction 
-      ? [`'self'`, apiUrl, productionBackendUrl, 'https://*.sentry.io', 'wss://*.sentry.io']
-      : [`'self'`, apiUrl, 'http://localhost:8000', productionBackendUrl, 'https://*.sentry.io', 'wss://*.sentry.io'];
+      ? [`'self'`, apiUrl, 'https://*.sentry.io', 'wss://*.sentry.io']
+      : [`'self'`, apiUrl, 'http://localhost:8000', 'https://*.sentry.io', 'wss://*.sentry.io'];
     
     const cspDirectives = [
       "default-src 'self'",

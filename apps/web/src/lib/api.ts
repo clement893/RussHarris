@@ -38,27 +38,14 @@ export const getApiUrl = () => {
   let url = process.env.NEXT_PUBLIC_API_URL 
     || process.env.NEXT_PUBLIC_DEFAULT_API_URL;
   
-  // Smart fallback for production: try to detect backend URL from frontend URL
-  if (!url && isProduction && typeof window !== 'undefined') {
-    const hostname = window.location.hostname;
-    // If running on Railway, try to infer backend URL
-    if (hostname.includes('railway.app')) {
-      // Try common Railway backend URL pattern
-      // This is a fallback - NEXT_PUBLIC_API_URL should be set properly
-      url = 'https://modelebackend-production-0590.up.railway.app';
-      logger.warn('NEXT_PUBLIC_API_URL not set at build time. Using fallback URL. Please set NEXT_PUBLIC_API_URL in Railway environment variables before building.');
-    }
-  }
-  
   // Default to localhost for development if nothing is set
   if (!url) {
-    url = isProduction ? undefined : 'http://localhost:8000';
-  }
-  
-  // Final fallback to prevent crashes (should not happen in production if configured correctly)
-  if (!url) {
-    logger.error('NEXT_PUBLIC_API_URL is not set in production. Please set NEXT_PUBLIC_API_URL in Railway environment variables and rebuild.');
-    url = 'http://localhost:8000'; // Last resort fallback
+    if (isProduction) {
+      // In production, fail fast if API URL is not configured
+      logger.error('NEXT_PUBLIC_API_URL is required in production but not set. Please set NEXT_PUBLIC_API_URL environment variable and rebuild.');
+      throw new Error('NEXT_PUBLIC_API_URL is not configured. Please set NEXT_PUBLIC_API_URL environment variable.');
+    }
+    url = 'http://localhost:8000';
   }
   
   url = url.trim();
@@ -97,11 +84,35 @@ const apiClient = axios.create({
 
 /**
  * Request interceptor: Automatically adds JWT token to Authorization header
+ * and applies rate limiting
  * Only runs in browser environment (not SSR)
  */
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (typeof window !== 'undefined' && config.headers) {
+      // Apply rate limiting
+      if (config.url) {
+        const fullUrl = config.baseURL ? `${config.baseURL}${config.url}` : config.url;
+        const rateLimitKey = getRateLimitKey(fullUrl);
+        const rateLimitConfig = getRateLimitConfig(fullUrl);
+        
+        if (!rateLimiter.isAllowed(rateLimitKey, rateLimitConfig.maxRequests, rateLimitConfig.windowMs)) {
+          const remaining = rateLimiter.getRemaining(rateLimitKey, rateLimitConfig.maxRequests);
+          const resetTime = rateLimiter.getResetTime(rateLimitKey);
+          
+          logger.warn('Rate limit exceeded', {
+            endpoint: config.url,
+            remaining,
+            resetTimeMs: resetTime,
+          });
+          
+          const error = new Error('Rate limit exceeded. Please try again later.');
+          (error as any).status = 429;
+          (error as any).isRateLimitError = true;
+          return Promise.reject(error);
+        }
+      }
+      
       const token = TokenStorage.getToken();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
