@@ -51,29 +51,30 @@ export default function ActivityFeed({
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (autoRefresh && onLoadMore) {
-      intervalRef.current = setInterval(async () => {
-        try {
-          const newActivities = await onLoadMore();
-          if (newActivities.length > 0) {
-            setActivities((prev) => {
-              const existingIds = new Set(prev.map((a) => a.id));
-              const unique = newActivities.filter((a) => !existingIds.has(a.id));
-              return [...unique, ...prev].slice(0, 50); // Keep last 50
-            });
-          }
-        } catch (error) {
-          console.error('Failed to refresh activities', error);
-        }
-      }, refreshInterval);
-
-      return () => {
-        if (intervalRef.current) {
-          clearInterval(intervalRef.current);
-        }
-      };
+    if (!autoRefresh || !onLoadMore) {
+      return;
     }
-    return undefined;
+
+    intervalRef.current = setInterval(async () => {
+      try {
+        const newActivities = await onLoadMore();
+        if (newActivities.length > 0) {
+          setActivities((prev) => {
+            const existingIds = new Set(prev.map((a) => a.id));
+            const unique = newActivities.filter((a) => !existingIds.has(a.id));
+            return [...unique, ...prev].slice(0, 50); // Keep last 50
+          });
+        }
+      } catch (error) {
+        console.error('Failed to refresh activities', error);
+      }
+    }, refreshInterval);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, [autoRefresh, refreshInterval, onLoadMore]);
 
   const handleLoadMore = async () => {
