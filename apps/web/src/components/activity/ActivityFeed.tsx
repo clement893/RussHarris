@@ -9,7 +9,6 @@ import { useState, useEffect, useRef } from 'react';
 import { clsx } from 'clsx';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
-import Avatar from '@/components/ui/Avatar';
 import { Activity, RefreshCw, Bell } from 'lucide-react';
 import Timeline from '@/components/ui/Timeline';
 import type { TimelineItem } from '@/components/ui/Timeline';
@@ -110,18 +109,7 @@ export default function ActivityFeed({
 
   const timelineItems: TimelineItem[] = activities.map((activity) => ({
     id: activity.id,
-    title: (
-      <div className="flex items-center gap-2">
-        <Avatar
-          src={activity.user.avatar}
-          name={activity.user.name}
-          size="sm"
-        />
-        <span className="font-medium">{activity.user.name}</span>
-        <span className="text-gray-600 dark:text-gray-400">{activity.action}</span>
-        <span className="font-medium">{activity.resource}</span>
-      </div>
-    ),
+    title: `${activity.user.name} ${activity.action} ${activity.resource}`,
     description: activity.resourceId ? `ID: ${activity.resourceId}` : undefined,
     timestamp: new Date(activity.timestamp).toLocaleString(),
     status: 'completed' as const,
