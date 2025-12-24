@@ -21,6 +21,10 @@ interface SidebarProps {
   className?: string;
   collapsed?: boolean;
   onToggleCollapse?: () => void;
+  user?: {
+    name?: string;
+    email?: string;
+  } | null;
 }
 
 export default function Sidebar({
@@ -29,6 +33,7 @@ export default function Sidebar({
   className,
   collapsed = false,
   onToggleCollapse,
+  user,
 }: SidebarProps) {
   const pathname = usePathname();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -131,6 +136,30 @@ export default function Sidebar({
         </div>
       )}
       <nav className="p-4 space-y-1 flex-1 overflow-y-auto">{items.map((item) => renderItem(item))}</nav>
+      {user && (
+        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+          <div className={clsx(
+            'flex items-center gap-3',
+            collapsed && 'justify-center'
+          )}>
+            <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center flex-shrink-0">
+              <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
+                {user.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
+              </span>
+            </div>
+            {!collapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                  {user.name || 'Utilisateur'}
+                </p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                  {user.email}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </aside>
   );
 }

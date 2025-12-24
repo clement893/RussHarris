@@ -11,6 +11,7 @@ import { useAuthStore } from '@/lib/store';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Sidebar from '@/components/ui/Sidebar';
 import Button from '@/components/ui/Button';
+import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
 import { 
   LayoutDashboard, 
   FolderKanban, 
@@ -29,7 +30,7 @@ function DashboardLayoutContent({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { logout } = useAuthStore();
+  const { logout, user } = useAuthStore();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -62,7 +63,7 @@ function DashboardLayoutContent({
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-900 dark:to-gray-900">
       {/* Mobile Header */}
       <header className="lg:hidden bg-white dark:bg-gray-800 shadow border-b border-gray-200 dark:border-gray-700">
         <div className="px-4 py-3 flex items-center justify-between">
@@ -73,6 +74,7 @@ function DashboardLayoutContent({
             {pathname === '/dashboard/settings' && 'Paramètres'}
           </h1>
           <div className="flex items-center gap-2">
+            <ThemeToggleWithIcon />
             <Button
               variant="ghost"
               size="sm"
@@ -108,6 +110,7 @@ function DashboardLayoutContent({
           items={sidebarItems}
           currentPath={pathname}
           className="h-full"
+          user={user}
         />
       </aside>
 
@@ -121,6 +124,7 @@ function DashboardLayoutContent({
             collapsed={sidebarCollapsed}
             onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
             className="h-screen sticky top-0"
+            user={user}
           />
         </aside>
 
@@ -135,10 +139,13 @@ function DashboardLayoutContent({
                 {pathname === '/dashboard/users' && 'Utilisateurs'}
                 {pathname === '/dashboard/settings' && 'Paramètres'}
               </h1>
-              <Button variant="danger" onClick={handleLogout}>
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
-              </Button>
+              <div className="flex items-center gap-3">
+                <ThemeToggleWithIcon />
+                <Button variant="danger" onClick={handleLogout}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
             </div>
           </header>
 

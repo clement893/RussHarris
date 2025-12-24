@@ -83,7 +83,7 @@ function DashboardContent() {
             {/* AI Test */}
             <Link
               href="/ai/test"
-              className="group p-6 border-2 border-info-200 dark:border-info-800 bg-gradient-to-br from-info-100 to-info-200 dark:from-info-900/40 dark:to-info-800/40 rounded-lg hover:border-info-400 dark:hover:border-info-600 hover:shadow-lg transition-all duration-200"
+              className="group p-6 border-2 border-info-200 dark:border-info-800 bg-gradient-to-br from-info-100 to-info-200 dark:from-info-900/60 dark:to-info-800/60 rounded-lg hover:border-info-400 dark:hover:border-info-600 hover:shadow-lg transition-all duration-200"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-info-600 dark:bg-info-500 rounded-lg flex items-center justify-center">
@@ -104,7 +104,7 @@ function DashboardContent() {
             {/* Email Test */}
             <Link
               href="/email/test"
-              className="group p-6 border-2 border-secondary-200 dark:border-secondary-800 bg-gradient-to-br from-secondary-100 to-secondary-200 dark:from-secondary-900/40 dark:to-secondary-800/40 rounded-lg hover:border-secondary-400 dark:hover:border-secondary-600 hover:shadow-lg transition-all duration-200"
+              className="group p-6 border-2 border-secondary-200 dark:border-secondary-800 bg-gradient-to-br from-secondary-100 to-secondary-200 dark:from-secondary-900/60 dark:to-secondary-800/60 rounded-lg hover:border-secondary-400 dark:hover:border-secondary-600 hover:shadow-lg transition-all duration-200"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-secondary-600 dark:bg-secondary-500 rounded-lg flex items-center justify-center">
@@ -125,7 +125,7 @@ function DashboardContent() {
             {/* S3 Test */}
             <Link
               href="/upload"
-              className="group p-6 border-2 border-primary-200 dark:border-primary-800 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/40 dark:to-primary-800/40 rounded-lg hover:border-primary-400 dark:hover:border-primary-600 hover:shadow-lg transition-all duration-200"
+              className="group p-6 border-2 border-primary-200 dark:border-primary-800 bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/60 dark:to-primary-800/60 rounded-lg hover:border-primary-400 dark:hover:border-primary-600 hover:shadow-lg transition-all duration-200"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-primary-600 dark:bg-primary-500 rounded-lg flex items-center justify-center">
