@@ -106,17 +106,21 @@ export default function CodeEditor({
               variant="outline"
               size="sm"
               onClick={handleCopy}
-              icon={copied ? <Save className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             >
-              {copied ? 'Copied!' : 'Copy'}
+              <span className="flex items-center gap-2">
+                {copied ? <Save className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                {copied ? 'Copied!' : 'Copy'}
+              </span>
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={handleDownload}
-              icon={<Download className="w-4 h-4" />}
             >
-              Download
+              <span className="flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Download
+              </span>
             </Button>
             {onSave && !readOnly && (
               <Button
