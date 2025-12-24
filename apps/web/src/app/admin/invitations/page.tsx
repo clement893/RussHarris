@@ -338,18 +338,17 @@ export default function InvitationsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Rôle *
-                  </label>
                   <Select
+                    label="Rôle *"
                     value={newInvitationRole}
                     onChange={(e) => setNewInvitationRole(e.target.value)}
                     fullWidth
-                  >
-                    <option value="user">Utilisateur</option>
-                    <option value="manager">Manager</option>
-                    <option value="admin">Administrateur</option>
-                  </Select>
+                    options={[
+                      { value: 'user', label: 'Utilisateur' },
+                      { value: 'manager', label: 'Manager' },
+                      { value: 'admin', label: 'Administrateur' },
+                    ]}
+                  />
                 </div>
                 <div className="flex gap-3 justify-end">
                   <Button variant="outline" onClick={() => {
