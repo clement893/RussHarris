@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { clsx } from 'clsx';
 import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, SkipBack, SkipForward } from 'lucide-react';
-import { Button } from './Button';
+import Button from './Button';
 
 export interface VideoPlayerProps {
   src: string;

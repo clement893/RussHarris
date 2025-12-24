@@ -41,14 +41,19 @@ export default function InvitationsPage() {
   const [newInvitationEmail, setNewInvitationEmail] = useState('');
   const [newInvitationRole, setNewInvitationRole] = useState('user');
   const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'accepted' | 'expired' | 'cancelled'>('all');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // ProtectedSuperAdminRoute handles authentication and superadmin check
     // Just load invitations if authenticated
-    if (isAuthenticated() && user) {
+    if (mounted && isAuthenticated() && user) {
       loadInvitations();
     }
-  }, [isAuthenticated, user]);
+  }, [mounted, isAuthenticated, user]);
 
   const loadInvitations = async () => {
     try {

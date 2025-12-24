@@ -30,6 +30,10 @@ from app.core.compression import CompressionMiddleware
 from app.core.cache_headers import CacheHeadersMiddleware
 from app.core.csrf import CSRFMiddleware
 from app.core.request_limits import RequestSizeLimitMiddleware
+from app.core.cors import setup_cors
+from app.core.api_versioning import setup_api_versioning
+from app.core.ip_whitelist import setup_ip_whitelist
+from app.core.request_signing import RequestSigningMiddleware
 from app.api.v1.router import api_router
 from app.api import email as email_router
 from app.api.webhooks import stripe as stripe_webhook_router
@@ -85,28 +89,8 @@ def create_app() -> FastAPI:
             raise
 
     # CORS Middleware - MUST be added first to handle preflight requests
-    # Ensure CORS_ORIGINS is a list
-    from app.core.logging import logger
-    cors_origins = settings.CORS_ORIGINS
-    if isinstance(cors_origins, str):
-        cors_origins = [cors_origins]
-    elif not isinstance(cors_origins, list):
-        # Fallback to FRONTEND_URL or localhost if CORS_ORIGINS is not properly configured
-        import os
-        frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
-        cors_origins = [frontend_url]
-        logger.warning(f"CORS_ORIGINS not properly configured, using FRONTEND_URL: {frontend_url}")
-    
-    logger.info(f"CORS Origins configured: {cors_origins}")
-    
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=cors_origins,
-        allow_credentials=True,
-        allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-        allow_headers=["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin", "X-Bootstrap-Key"],
-        expose_headers=["X-Process-Time", "X-Timestamp", "X-Response-Time"],
-    )
+    # Using enhanced CORS configuration with tightened security
+    setup_cors(app)
 
     # Compression Middleware (after CORS)
     app.add_middleware(CompressionMiddleware)
@@ -122,9 +106,26 @@ def create_app() -> FastAPI:
         file_upload_limit=50 * 1024 * 1024,  # 50 MB for file uploads
     )
 
+    # API Versioning Middleware (after CORS, before other middleware)
+    setup_api_versioning(app, default_version="v1", supported_versions=["v1"])
+
+    # IP Whitelist Middleware (before CSRF, for admin endpoints)
+    setup_ip_whitelist(app, admin_paths=["/api/v1/admin"])
+
+    # Request Signing Middleware (optional, for enhanced API security)
+    import os
+    if os.getenv("ENABLE_REQUEST_SIGNING", "").lower() == "true":
+        app.add_middleware(
+            RequestSigningMiddleware,
+            secret_key=settings.SECRET_KEY,
+            header_name="X-Signature",
+            timestamp_header="X-Timestamp",
+            max_age=300,  # 5 minutes
+        )
+        logger.info("Request signing enabled")
+
     # CSRF Protection Middleware (after CORS, before routes)
     # Skip CSRF for webhooks and public endpoints
-    import os
     if not os.getenv("DISABLE_CSRF", "").lower() == "true":
         app.add_middleware(
             CSRFMiddleware,
