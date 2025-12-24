@@ -252,9 +252,11 @@ export default function ReportBuilder({
             onClick={handleSave}
             loading={loading}
             disabled={!config.name.trim() || selectedFields.length === 0}
-            icon={<Save className="w-4 h-4" />}
           >
-            Save Report
+            <span className="flex items-center gap-2">
+              <Save className="w-4 h-4" />
+              Save Report
+            </span>
           </Button>
         </div>
       </div>
