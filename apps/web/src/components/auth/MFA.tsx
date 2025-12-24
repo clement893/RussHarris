@@ -8,7 +8,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { clsx } from 'clsx';
 import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
 import Card from '@/components/ui/Card';
 import Alert from '@/components/ui/Alert';
 import Loading from '@/components/ui/Loading';
