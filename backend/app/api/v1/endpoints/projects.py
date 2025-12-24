@@ -4,7 +4,7 @@ Project Management Endpoints
 
 from typing import Annotated, List
 
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_
 
@@ -23,6 +23,7 @@ router = APIRouter()
 @rate_limit_decorator("200/hour")
 @cached(expire=300, key_prefix="projects")
 async def get_projects(
+    request: Request,
     db: Annotated[AsyncSession, Depends(get_db)],
     current_user: User = Depends(get_current_user),
     skip: int = Query(0, ge=0, description="Number of records to skip"),
@@ -96,6 +97,7 @@ async def get_project(
 @rate_limit_decorator("30/hour")
 @invalidate_cache_pattern("projects:*")
 async def create_project(
+    request: Request,
     project_data: ProjectCreate,
     db: Annotated[AsyncSession, Depends(get_db)],
     current_user: User = Depends(get_current_user),
@@ -130,6 +132,7 @@ async def create_project(
 @invalidate_cache_pattern("projects:*")
 @invalidate_cache_pattern("project:*")
 async def update_project(
+    request: Request,
     project_id: int,
     project_data: ProjectUpdate,
     db: Annotated[AsyncSession, Depends(get_db)],
@@ -179,6 +182,7 @@ async def update_project(
 @invalidate_cache_pattern("projects:*")
 @invalidate_cache_pattern("project:*")
 async def delete_project(
+    request: Request,
     project_id: int,
     db: Annotated[AsyncSession, Depends(get_db)],
     current_user: User = Depends(get_current_user),
