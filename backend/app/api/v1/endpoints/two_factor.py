@@ -79,6 +79,7 @@ async def setup_two_factor(
 @router.post("/verify")
 @rate_limit_decorator("10/minute")
 async def verify_two_factor_setup(
+    http_request: Request,
     request: TwoFactorVerifyRequest,
     current_user: Annotated[User, Depends(get_current_user)],
     db: Annotated[AsyncSession, Depends(get_db)],
