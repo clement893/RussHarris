@@ -37,10 +37,15 @@ const nextConfig = {
     // Use the same logic as getApiUrl() to determine API URL
     const isProduction = process.env.NODE_ENV === 'production';
     
-    // Priority order: explicit API URL > default API URL > localhost (dev only)
+    // Priority order: explicit API URL > default API URL > fallback for production
     let apiUrl = process.env.NEXT_PUBLIC_API_URL 
-      || process.env.NEXT_PUBLIC_DEFAULT_API_URL 
-      || (isProduction ? undefined : 'http://localhost:8000');
+      || process.env.NEXT_PUBLIC_DEFAULT_API_URL;
+    
+    // Smart fallback for production: use Railway backend URL if available
+    // This ensures CSP includes the backend URL even if NEXT_PUBLIC_API_URL wasn't set at build time
+    if (!apiUrl && isProduction) {
+      apiUrl = 'https://modelebackend-production-0590.up.railway.app';
+    }
     
     // Default to localhost for development if nothing is set
     if (!apiUrl) {
@@ -62,9 +67,11 @@ const nextConfig = {
     // This is acceptable for dev but should be tightened in production using nonces
     // See: https://nextjs.org/docs/advanced-features/security-headers
     // Include both localhost (for dev) and the configured API URL in connect-src
+    // Also include production backend URL as fallback for CSP
+    const productionBackendUrl = 'https://modelebackend-production-0590.up.railway.app';
     const connectSrcUrls = isProduction 
-      ? [`'self'`, apiUrl, 'https://*.sentry.io', 'wss://*.sentry.io']
-      : [`'self'`, apiUrl, 'http://localhost:8000', 'https://*.sentry.io', 'wss://*.sentry.io'];
+      ? [`'self'`, apiUrl, productionBackendUrl, 'https://*.sentry.io', 'wss://*.sentry.io']
+      : [`'self'`, apiUrl, 'http://localhost:8000', productionBackendUrl, 'https://*.sentry.io', 'wss://*.sentry.io'];
     
     const cspDirectives = [
       "default-src 'self'",
