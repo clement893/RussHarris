@@ -46,10 +46,7 @@ export const getApiUrl = () => {
       // Try common Railway backend URL pattern
       // This is a fallback - NEXT_PUBLIC_API_URL should be set properly
       url = 'https://modelebackend-production-0590.up.railway.app';
-      console.warn(
-        '[API Client] NEXT_PUBLIC_API_URL not set at build time. ' +
-        'Using fallback URL. Please set NEXT_PUBLIC_API_URL in Railway environment variables before building.'
-      );
+      logger.warn('NEXT_PUBLIC_API_URL not set at build time. Using fallback URL. Please set NEXT_PUBLIC_API_URL in Railway environment variables before building.');
     }
   }
   
@@ -60,21 +57,20 @@ export const getApiUrl = () => {
   
   // Final fallback to prevent crashes (should not happen in production if configured correctly)
   if (!url) {
-    console.error(
-      '[API Client] ERROR: NEXT_PUBLIC_API_URL is not set in production. ' +
-      'Please set NEXT_PUBLIC_API_URL in Railway environment variables and rebuild.'
-    );
+    logger.error('NEXT_PUBLIC_API_URL is not set in production. Please set NEXT_PUBLIC_API_URL in Railway environment variables and rebuild.');
     url = 'http://localhost:8000'; // Last resort fallback
   }
   
   url = url.trim();
   
   // Log to help debug (only in browser, not SSR)
-  if (typeof window !== 'undefined') {
-    console.log('[API Client] NODE_ENV:', process.env.NODE_ENV);
-    console.log('[API Client] NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL || '(not set at build time)');
-    console.log('[API Client] NEXT_PUBLIC_DEFAULT_API_URL:', process.env.NEXT_PUBLIC_DEFAULT_API_URL || '(not set)');
-    console.log('[API Client] Final API URL:', url);
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    logger.debug('API Client Configuration', {
+      NODE_ENV: process.env.NODE_ENV,
+      NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || '(not set at build time)',
+      NEXT_PUBLIC_DEFAULT_API_URL: process.env.NEXT_PUBLIC_DEFAULT_API_URL || '(not set)',
+      finalApiUrl: url,
+    });
   }
   
   // If URL doesn't start with http:// or https://, add https://
@@ -109,14 +105,14 @@ apiClient.interceptors.request.use(
       const token = TokenStorage.getToken();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
-        // Debug log to verify token is being sent
-        if (config.url?.includes('/auth/me')) {
-          console.log('[API Client] Sending request to /auth/me with token:', token.substring(0, 20) + '...');
+        // Debug log to verify token is being sent (development only)
+        if (process.env.NODE_ENV === 'development' && config.url?.includes('/auth/me')) {
+          logger.debug('Sending request to /auth/me', { tokenPrefix: token.substring(0, 20) + '...' });
         }
       } else {
-        // Debug log if no token found
-        if (config.url?.includes('/auth/me')) {
-          console.warn('[API Client] No token found when requesting /auth/me');
+        // Debug log if no token found (development only)
+        if (process.env.NODE_ENV === 'development' && config.url?.includes('/auth/me')) {
+          logger.warn('No token found when requesting /auth/me');
         }
       }
     }

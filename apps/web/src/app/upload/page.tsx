@@ -84,7 +84,7 @@ function UploadContent() {
       setSelectedFiles([]);
       setSuccess(`${results.filter((r) => r.status === 'success').length} fichier(s) uploadé(s) avec succès`);
     } catch (err) {
-      console.error('Upload error:', err);
+      logger.error('Upload error', err instanceof Error ? err : new Error(String(err)));
       setError(err instanceof Error ? err.message : 'Erreur lors de l\'upload des fichiers');
     } finally {
       setUploading(false);
