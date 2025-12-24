@@ -116,12 +116,14 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     
     // Apply fonts
     if (config.font_family) {
-      root.style.setProperty('--font-family', `${config.font_family}, sans-serif`);
-      root.style.setProperty('--font-family-heading', `${config.font_family}, sans-serif`);
-      root.style.setProperty('--font-family-subheading', `${config.font_family}, sans-serif`);
-      // Apply to body
+      const fontFamily = config.font_family.trim();
+      root.style.setProperty('--font-family', `${fontFamily}, sans-serif`);
+      root.style.setProperty('--font-family-heading', `${fontFamily}, sans-serif`);
+      root.style.setProperty('--font-family-subheading', `${fontFamily}, sans-serif`);
+      // Apply to body and html
       if (typeof document !== 'undefined') {
         document.body.style.fontFamily = `var(--font-family), sans-serif`;
+        root.style.fontFamily = `var(--font-family), sans-serif`;
       }
     }
     
