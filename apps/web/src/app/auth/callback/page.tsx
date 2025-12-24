@@ -24,7 +24,7 @@ function CallbackContent() {
   const handleAuthCallback = useCallback(async () => {
     // Support both formats: token (from Google OAuth callback) and access_token/refresh_token
     const accessToken = searchParams.get('token') || searchParams.get('access_token');
-    const refreshToken = searchParams.get('refresh_token');
+    const refreshToken = searchParams.get('refresh_token') ?? undefined;
 
     logger.info('Auth callback started', { 
       hasToken: !!accessToken, 
@@ -42,7 +42,7 @@ function CallbackContent() {
     try {
       // Store tokens securely using TokenStorage (await to ensure it's stored before API calls)
       logger.debug('Storing token...');
-      await TokenStorage.setToken(accessToken, refreshToken || undefined);
+      await TokenStorage.setToken(accessToken, refreshToken);
       logger.info('Tokens stored successfully');
 
       // Small delay to ensure token is available in sessionStorage
