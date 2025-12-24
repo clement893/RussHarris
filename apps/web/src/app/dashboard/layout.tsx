@@ -65,7 +65,12 @@ export default function DashboardLayout({
       {/* Mobile Header */}
       <header className="lg:hidden bg-white dark:bg-gray-800 shadow border-b border-gray-200 dark:border-gray-700">
         <div className="px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+            {pathname === '/dashboard' && 'Dashboard'}
+            {pathname === '/dashboard/projects' && 'Projets'}
+            {pathname === '/dashboard/users' && 'Utilisateurs'}
+            {pathname === '/dashboard/settings' && 'Paramètres'}
+          </h1>
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
