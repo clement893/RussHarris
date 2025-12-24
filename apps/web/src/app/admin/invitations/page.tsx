@@ -1,5 +1,11 @@
 'use client';
 
+// Force dynamic rendering to avoid static generation
+// Note: For Client Components, dynamic is handled via useSearchParams or other dynamic hooks
+// But we still export these for Next.js to recognize this as a dynamic route
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/lib/store';
 import { getErrorMessage, getErrorDetail } from '@/lib/error-utils';
@@ -13,10 +19,6 @@ import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
 import Loading from '@/components/ui/Loading';
 import Modal from '@/components/ui/Modal';
-
-// Force dynamic rendering to avoid static generation
-export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
 
 interface Invitation {
   id: string;
@@ -143,6 +145,11 @@ export default function InvitationsPage() {
       setLoading(false);
     }
   };
+
+  // Don't render until mounted (prevents SSR issues)
+  if (!mounted) {
+    return null;
+  }
 
   const filteredInvitations = filterStatus === 'all'
     ? invitations
