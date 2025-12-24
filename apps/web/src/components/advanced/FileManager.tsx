@@ -126,7 +126,7 @@ export default function FileManager({
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
               File Manager
             </h3>
-            <Badge variant="default" size="sm">
+            <Badge variant="default">
               {files.length} items
             </Badge>
           </div>
