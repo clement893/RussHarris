@@ -3,26 +3,34 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   
-  // Bundle analyzer configuration
-  ...(process.env.ANALYZE === 'true' && {
-    webpack: (config, { isServer }) => {
-      if (!isServer) {
-        const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-        config.plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: process.env.BUNDLE_ANALYZE === 'server' ? 'server' : 'static',
-            openAnalyzer: true,
-            reportFilename: `../.next/bundle-analyzer-${isServer ? 'server' : 'client'}.html`,
-          })
-        );
-      }
-      return config;
-    },
-  }),
-
   // Experimental features
   experimental: {
     optimizePackageImports: ['lucide-react'],
+  },
+
+  // Webpack configuration
+  webpack: (config, { isServer }) => {
+    // Handle missing CSS files during build
+    if (!isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'default-stylesheet.css': require.resolve('./src/lib/empty-css.js'),
+      };
+    }
+
+    // Bundle analyzer configuration
+    if (process.env.ANALYZE === 'true' && !isServer) {
+      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: process.env.BUNDLE_ANALYZE === 'server' ? 'server' : 'static',
+          openAnalyzer: true,
+          reportFilename: `../.next/bundle-analyzer-${isServer ? 'server' : 'client'}.html`,
+        })
+      );
+    }
+
+    return config;
   },
 
   // Image optimization
