@@ -301,8 +301,8 @@ function SettingsContent() {
                 </div>
                 <Switch
                   checked={notifications.emailNotifications}
-                  onCheckedChange={(checked) => {
-                    setNotifications({ ...notifications, emailNotifications: checked });
+                  onChange={(e) => {
+                    setNotifications({ ...notifications, emailNotifications: e.target.checked });
                     handleNotificationsUpdate();
                   }}
                 />
@@ -319,8 +319,8 @@ function SettingsContent() {
                 </div>
                 <Switch
                   checked={notifications.pushNotifications}
-                  onCheckedChange={(checked) => {
-                    setNotifications({ ...notifications, pushNotifications: checked });
+                  onChange={(e) => {
+                    setNotifications({ ...notifications, pushNotifications: e.target.checked });
                     handleNotificationsUpdate();
                   }}
                 />
@@ -337,8 +337,8 @@ function SettingsContent() {
                 </div>
                 <Switch
                   checked={notifications.marketingEmails}
-                  onCheckedChange={(checked) => {
-                    setNotifications({ ...notifications, marketingEmails: checked });
+                  onChange={(e) => {
+                    setNotifications({ ...notifications, marketingEmails: e.target.checked });
                     handleNotificationsUpdate();
                   }}
                 />
@@ -355,8 +355,8 @@ function SettingsContent() {
                 </div>
                 <Switch
                   checked={notifications.securityAlerts}
-                  onCheckedChange={(checked) => {
-                    setNotifications({ ...notifications, securityAlerts: checked });
+                  onChange={(e) => {
+                    setNotifications({ ...notifications, securityAlerts: e.target.checked });
                     handleNotificationsUpdate();
                   }}
                 />
@@ -414,8 +414,8 @@ function SettingsContent() {
                 </div>
                 <Switch
                   checked={privacy.showEmail}
-                  onCheckedChange={(checked) => {
-                    setPrivacy({ ...privacy, showEmail: checked });
+                  onChange={(e) => {
+                    setPrivacy({ ...privacy, showEmail: e.target.checked });
                     handlePrivacyUpdate();
                   }}
                 />
@@ -432,8 +432,8 @@ function SettingsContent() {
                 </div>
                 <Switch
                   checked={privacy.showActivity}
-                  onCheckedChange={(checked) => {
-                    setPrivacy({ ...privacy, showActivity: checked });
+                  onChange={(e) => {
+                    setPrivacy({ ...privacy, showActivity: e.target.checked });
                     handlePrivacyUpdate();
                   }}
                 />
