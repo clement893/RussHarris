@@ -99,7 +99,7 @@ export default function FileUploadWithPreview({
           {files.map((file, index) => (
             <div
               key={index}
-              className="relative group border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800"
+              className="relative group border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-800"
             >
               {previews[file.name] ? (
                 <div className="aspect-square relative">
@@ -122,10 +122,10 @@ export default function FileUploadWithPreview({
               ) : (
                 <div className="aspect-square flex flex-col items-center justify-center p-4">
                   <div className="text-4xl mb-2">{getFileIcon(file)}</div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 text-center truncate w-full px-2">
+                  <p className="text-xs text-gray-700 dark:text-gray-300 text-center truncate w-full px-2">
                     {file.name}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                     {(file.size / 1024).toFixed(2)} KB
                   </p>
                   <Button
