@@ -86,12 +86,18 @@ export default function InvoiceViewer({
         )}
         <div className="flex items-center gap-2">
           {onDownload && (
-            <Button variant="outline" onClick={onDownload} icon={<Download className="w-4 h-4" />}>
-              Download PDF
+            <Button variant="outline" onClick={onDownload}>
+              <span className="flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Download PDF
+              </span>
             </Button>
           )}
-          <Button variant="primary" onClick={handlePrint} icon={<Printer className="w-4 h-4" />}>
-            Print
+          <Button variant="primary" onClick={handlePrint}>
+            <span className="flex items-center gap-2">
+              <Printer className="w-4 h-4" />
+              Print
+            </span>
           </Button>
         </div>
       </div>
