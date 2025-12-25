@@ -62,9 +62,10 @@ interface TableRowProps {
   children: ReactNode;
   className?: string;
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
-export function TableRow({ children, className, onClick }: TableRowProps) {
+export function TableRow({ children, className, onClick, style }: TableRowProps) {
   return (
     <tr
       className={clsx(
@@ -72,6 +73,7 @@ export function TableRow({ children, className, onClick }: TableRowProps) {
         className
       )}
       onClick={onClick}
+      style={style}
     >
       {children}
     </tr>
