@@ -101,11 +101,11 @@ RUN chmod +x ./apps/web/scripts/start.sh
 
 # Create entrypoint script for Railway compatibility (before USER switch)
 # Railway may try to run pnpm start, so we ensure the entrypoint handles it
+# Note: WORKDIR is already set to /app, so no need to cd
 RUN echo '#!/bin/sh' > /entrypoint.sh && \
     echo 'set -e' >> /entrypoint.sh && \
-    echo 'cd /app' >> /entrypoint.sh && \
-    echo 'if [ -f server.js ]; then' >> /entrypoint.sh && \
-    echo '  exec node server.js "$@"' >> /entrypoint.sh && \
+    echo 'if [ -f /app/server.js ]; then' >> /entrypoint.sh && \
+    echo '  exec node /app/server.js "$@"' >> /entrypoint.sh && \
     echo 'else' >> /entrypoint.sh && \
     echo '  echo "Error: server.js not found in /app"' >> /entrypoint.sh && \
     echo '  ls -la /app' >> /entrypoint.sh && \
