@@ -70,16 +70,16 @@ export default function TriggerManager({
     if (!confirm('Are you sure you want to delete this trigger?')) return;
     try {
       await onDelete?.(id);
-    } catch (error) {
-      logger.error('Failed to delete trigger', error);
+    } catch (error: unknown) {
+      logger.error('Failed to delete trigger', error instanceof Error ? error : new Error(String(error)));
     }
   };
 
   const handleToggle = async (id: string, enabled: boolean) => {
     try {
       await onToggle?.(id, enabled);
-    } catch (error) {
-      logger.error('Failed to toggle trigger', error);
+    } catch (error: unknown) {
+      logger.error('Failed to toggle trigger', error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -96,7 +96,8 @@ export default function TriggerManager({
               Manage workflow triggers and events
             </p>
           </div>
-          <Button variant="primary" icon={<Plus className="w-4 h-4" />}>
+          <Button variant="primary">
+            <Plus className="w-4 h-4 mr-2" />
             Create Trigger
           </Button>
         </div>

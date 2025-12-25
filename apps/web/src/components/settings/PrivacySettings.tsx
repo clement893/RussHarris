@@ -209,7 +209,8 @@ export default function PrivacySettings({
                   Download a copy of all your data
                 </div>
               </div>
-              <Button variant="outline" onClick={onExportData} icon={<Download className="w-4 h-4" />}>
+              <Button variant="outline" onClick={onExportData}>
+                <Download className="w-4 h-4 mr-2" />
                 Export Data
               </Button>
             </div>

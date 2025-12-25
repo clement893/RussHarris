@@ -74,8 +74,8 @@ export default function WebhooksSettings({
       await onCreate?.(formData);
       setShowCreateModal(false);
       setFormData({ name: '', url: '', events: [] });
-    } catch (error) {
-      logger.error('Failed to create webhook', error);
+    } catch (error: unknown) {
+      logger.error('Failed to create webhook', error instanceof Error ? error : new Error(String(error)));
     } finally {
       setLoading(false);
     }
@@ -85,16 +85,16 @@ export default function WebhooksSettings({
     if (!confirm('Are you sure you want to delete this webhook?')) return;
     try {
       await onDelete?.(id);
-    } catch (error) {
-      logger.error('Failed to delete webhook', error);
+    } catch (error: unknown) {
+      logger.error('Failed to delete webhook', error instanceof Error ? error : new Error(String(error)));
     }
   };
 
   const handleToggle = async (id: string, active: boolean) => {
     try {
       await onToggle?.(id, active);
-    } catch (error) {
-      logger.error('Failed to toggle webhook', error);
+    } catch (error: unknown) {
+      logger.error('Failed to toggle webhook', error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -172,7 +172,7 @@ export default function WebhooksSettings({
                     </div>
                     <div className="flex items-center gap-2 flex-wrap">
                       {webhook.events.map((event) => (
-                        <Badge key={event} variant="info" size="sm">
+                        <Badge key={event} variant="info" className="text-xs px-2 py-0.5">
                           {event}
                         </Badge>
                       ))}

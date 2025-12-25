@@ -232,7 +232,7 @@ export default function WorkflowBuilder({
                       <span className="font-medium text-gray-900 dark:text-gray-100">
                         {node.label}
                       </span>
-                      <Badge variant="default" size="sm">
+                      <Badge variant="default" className="text-xs px-2 py-0.5">
                         {node.type}
                       </Badge>
                     </div>

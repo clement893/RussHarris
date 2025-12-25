@@ -108,8 +108,8 @@ export default function AutomationRules({
         trigger: { event: '', conditions: [] },
         actions: [],
       });
-    } catch (error) {
-      logger.error('Failed to create rule', error);
+    } catch (error: unknown) {
+      logger.error('Failed to create rule', error instanceof Error ? error : new Error(String(error)));
     } finally {
       setLoading(false);
     }
@@ -119,16 +119,16 @@ export default function AutomationRules({
     if (!confirm('Are you sure you want to delete this automation rule?')) return;
     try {
       await onDelete?.(id);
-    } catch (error) {
-      logger.error('Failed to delete rule', error);
+    } catch (error: unknown) {
+      logger.error('Failed to delete rule', error instanceof Error ? error : new Error(String(error)));
     }
   };
 
   const handleToggle = async (id: string, enabled: boolean) => {
     try {
       await onToggle?.(id, enabled);
-    } catch (error) {
-      logger.error('Failed to toggle rule', error);
+    } catch (error: unknown) {
+      logger.error('Failed to toggle rule', error instanceof Error ? error : new Error(String(error)));
     }
   };
 
