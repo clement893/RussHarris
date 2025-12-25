@@ -37,7 +37,7 @@ export default function DocsPage() {
       title: 'Guides',
       description: 'Guides et tutoriels',
       links: [
-        { title: 'Gestion des donateurs', href: '#guides-donateurs' },
+        { title: 'Gestion des utilisateurs', href: '#guides-utilisateurs' },
         { title: 'Création de campagnes', href: '#guides-campagnes' },
         { title: 'Rapports', href: '#guides-rapports' },
       ],

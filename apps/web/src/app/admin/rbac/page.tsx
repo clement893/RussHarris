@@ -67,8 +67,8 @@ export default function RBACPage() {
       setRoles([
         { id: '1', name: 'Super Admin', permissions: ['*'], description: 'Accès complet à toutes les fonctionnalités' },
         { id: '2', name: 'Admin', permissions: ['users.read', 'users.write', 'organizations.read', 'organizations.write'], description: 'Gestion des utilisateurs et organisations' },
-        { id: '3', name: 'Manager', permissions: ['donateurs.read', 'donateurs.write', 'campagnes.read'], description: 'Gestion des donateurs et campagnes' },
-        { id: '4', name: 'User', permissions: ['donateurs.read'], description: 'Accès en lecture seule' },
+        { id: '3', name: 'Manager', permissions: ['projects.read', 'projects.write', 'teams.read'], description: 'Gestion des projets et équipes' },
+        { id: '4', name: 'User', permissions: ['projects.read'], description: 'Accès en lecture seule' },
       ]);
     } catch (err: unknown) {
       setError(getErrorDetail(err) || getErrorMessage(err, 'Error loading permissions'));
@@ -89,10 +89,10 @@ export default function RBACPage() {
         { id: 'users.write', name: 'Modifier utilisateurs', category: 'Users', description: 'Créer et modifier des utilisateurs' },
         { id: 'organizations.read', name: 'Lire organisations', category: 'Organizations', description: 'Voir les organisations' },
         { id: 'organizations.write', name: 'Modifier organisations', category: 'Organizations', description: 'Créer et modifier des organisations' },
-        { id: 'donateurs.read', name: 'Lire donateurs', category: 'Donateurs', description: 'Voir la liste des donateurs' },
-        { id: 'donateurs.write', name: 'Modifier donateurs', category: 'Donateurs', description: 'Créer et modifier des donateurs' },
-        { id: 'campagnes.read', name: 'Lire campagnes', category: 'Campagnes', description: 'Voir les campagnes' },
-        { id: 'campagnes.write', name: 'Modifier campagnes', category: 'Campagnes', description: 'Créer et modifier des campagnes' },
+        { id: 'projects.read', name: 'Lire projets', category: 'Projects', description: 'Voir la liste des projets' },
+        { id: 'projects.write', name: 'Modifier projets', category: 'Projects', description: 'Créer et modifier des projets' },
+        { id: 'teams.read', name: 'Lire équipes', category: 'Teams', description: 'Voir les équipes' },
+        { id: 'teams.write', name: 'Modifier équipes', category: 'Teams', description: 'Créer et modifier des équipes' },
       ]);
     } catch (err: unknown) {
       const { logger } = require('@/lib/logger');

@@ -32,8 +32,8 @@ export default function PricingPage() {
       period: billingPeriod,
       description: 'Parfait pour les petites organisations',
       features: [
-        'Jusqu\'à 100 donateurs',
-        '1 campagne active',
+        'Jusqu\'à 100 utilisateurs',
+        '1 projet actif',
         'Support email',
         'Rapports de base',
         'API limitée',
@@ -47,8 +47,8 @@ export default function PricingPage() {
       period: billingPeriod,
       description: 'Pour les organisations en croissance',
       features: [
-        'Jusqu\'à 1,000 donateurs',
-        'Campagnes illimitées',
+        'Jusqu\'à 1,000 utilisateurs',
+        'Projets illimités',
         'Support prioritaire',
         'Rapports avancés',
         'API complète',
@@ -65,7 +65,7 @@ export default function PricingPage() {
       period: billingPeriod,
       description: 'Pour les grandes organisations',
       features: [
-        'Donateurs illimités',
+        'Utilisateurs illimités',
         'Toutes les fonctionnalités',
         'Support dédié 24/7',
         'Rapports personnalisés',

@@ -154,7 +154,7 @@ export default function ExampleOnboardingPage() {
                       <div className="font-semibold">{role}</div>
                       <div className="text-sm mt-1 opacity-80">
                         {role === 'Manager' && 'Gérer les équipes et les campagnes'}
-                        {role === 'Fundraiser' && 'Collecter des fonds et gérer les donateurs'}
+                        {role === 'Fundraiser' && 'Gérer les projets et les ressources'}
                         {role === 'Administrator' && 'Administrer la plateforme'}
                         {role === 'Analyst' && 'Analyser les données et générer des rapports'}
                       </div>

@@ -17,7 +17,7 @@ export default function ExampleDashboardPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <StatsCard
-          title="Total Donateurs"
+          title="Total Utilisateurs"
           value="1,234"
           change={{ value: 12, type: 'increase', period: 'ce mois' }}
         />
@@ -107,7 +107,7 @@ export default function ExampleDashboardPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
               <span className="text-2xl mb-2">➕</span>
-              <span>Nouveau Donateur</span>
+              <span>Nouveau Projet</span>
             </Button>
             <Button variant="outline" className="h-20 flex flex-col items-center justify-center">
               <span className="text-2xl mb-2">📊</span>
