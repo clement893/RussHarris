@@ -2,7 +2,7 @@
  * Performance Monitoring Dashboard Page
  */
 
-import PerformanceDashboard from '@/components/monitoring/PerformanceDashboard';
+import SystemPerformanceDashboard from '@/components/monitoring/SystemPerformanceDashboard';
 
 export const metadata = {
   title: 'Performance Dashboard | Monitoring',
@@ -12,7 +12,7 @@ export const metadata = {
 export default function PerformancePage() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <PerformanceDashboard />
+      <SystemPerformanceDashboard />
     </div>
   );
 }

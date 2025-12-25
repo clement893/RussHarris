@@ -12,7 +12,7 @@ import Container from '@/components/ui/Container';
 import Loading from '@/components/ui/Loading';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import SubscriptionCard from '@/components/subscriptions/SubscriptionCard';
-import PaymentHistory from '@/components/subscriptions/PaymentHistory';
+import { PaymentHistory, type Payment } from '@/components/billing';
 
 // Note: Client Components are already dynamic by nature.
 // Route segment config (export const dynamic) only works in Server Components.
@@ -30,15 +30,6 @@ interface Subscription {
   amount: number;
   currency: string;
   billing_period: 'month' | 'year';
-}
-
-interface Payment extends Record<string, unknown> {
-  id: string;
-  amount: number;
-  currency: string;
-  status: 'paid' | 'pending' | 'failed';
-  date: string;
-  invoice_url?: string;
 }
 
 function SubscriptionsContent() {
@@ -107,13 +98,17 @@ function SubscriptionsContent() {
         status: string;
         created_at: string;
         invoice_url?: string;
-      }) => ({
+        description?: string;
+        payment_method?: string;
+      }): Payment => ({
         id: String(payment.id),
         amount: payment.amount / 100, // Convert from cents
         currency: payment.currency.toUpperCase(),
-        status: payment.status.toLowerCase() as 'paid' | 'pending' | 'failed',
+        status: (payment.status.toLowerCase() === 'paid' ? 'completed' : payment.status.toLowerCase()) as 'completed' | 'pending' | 'failed' | 'refunded',
         date: payment.created_at,
-        invoice_url: payment.invoice_url,
+        description: payment.description || 'Subscription payment',
+        paymentMethod: payment.payment_method || 'Card',
+        transactionId: payment.invoice_url,
       })));
     } else if (!paymentsLoading && !paymentsData) {
       setPayments([]);

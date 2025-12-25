@@ -36,7 +36,8 @@ export type { TabListProps, TabProps, TabPanelsProps, TabPanelProps } from './Ta
 export type { Tab as TabType } from './Tabs';
 export { default as Accordion } from './Accordion';
 export type { AccordionItem } from './Accordion';
-export { default as Sidebar } from './Sidebar';
+// Sidebar - Use from @/components/layout instead
+// export { default as Sidebar } from './Sidebar';
 export { default as Divider } from './Divider';
 export { default as Breadcrumb } from './Breadcrumb';
 export type { BreadcrumbItem } from './Breadcrumb';
@@ -143,8 +144,8 @@ export type { MultiSelectProps, MultiSelectOption } from './MultiSelect';
 export { default as RichTextEditor } from './RichTextEditor';
 export type { RichTextEditorProps } from './RichTextEditor';
 
-// Error Boundary
-export { default as ErrorBoundary, withErrorBoundary } from './ErrorBoundary';
+// Error Boundary - Use from @/components/errors instead
+// export { default as ErrorBoundary, withErrorBoundary } from './ErrorBoundary';
 
 // Design Tokens
 export * as tokens from './tokens';
