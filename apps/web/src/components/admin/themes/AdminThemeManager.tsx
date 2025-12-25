@@ -17,7 +17,7 @@ interface ThemeManagerProps {
   authToken: string;
 }
 
-export function ThemeManager({ authToken }: ThemeManagerProps) {
+export function AdminThemeManager({ authToken }: ThemeManagerProps) {
   const [themes, setThemes] = useState<Theme[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -1,6 +1,6 @@
 'use client';
 
-import { ThemeManager } from '@/components/admin/themes/ThemeManager';
+import { AdminThemeManager } from '@/components/admin/themes/AdminThemeManager';
 import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
 import Container from '@/components/ui/Container';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
@@ -24,7 +24,7 @@ export default function AdminThemesPage() {
   return (
     <ProtectedSuperAdminRoute>
       <Container className="py-8">
-        <ThemeManager authToken={token} />
+        <AdminThemeManager authToken={token} />
       </Container>
     </ProtectedSuperAdminRoute>
   );

@@ -12,7 +12,7 @@ import Container from '@/components/ui/Container';
 import Loading from '@/components/ui/Loading';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import SubscriptionCard from '@/components/subscriptions/SubscriptionCard';
-import PaymentHistory from '@/components/subscriptions/PaymentHistory';
+import { PaymentHistory } from '@/components/billing';
 
 // Note: Client Components are already dynamic by nature.
 // Route segment config (export const dynamic) only works in Server Components.

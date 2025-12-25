@@ -3,7 +3,7 @@
 import { PageHeader, PageContainer, Section } from '@/components/layout';
 import OfflineSupport from '@/components/performance/OfflineSupport';
 import OptimisticUpdates from '@/components/performance/OptimisticUpdates';
-import PerformanceDashboard from '@/components/performance/PerformanceDashboard';
+import OptimizationDashboard from '@/components/performance/OptimizationDashboard';
 import ErrorReporting from '@/components/errors/ErrorReporting';
 import { logger } from '@/lib/logger';
 
@@ -21,8 +21,8 @@ export default function PerformanceComponentsContent() {
       />
 
       <div className="space-y-8 mt-8">
-        <Section title="Performance Monitoring Dashboard">
-          <PerformanceDashboard />
+        <Section title="Performance Optimization Dashboard">
+          <OptimizationDashboard />
         </Section>
 
         <Section title="Offline Support">

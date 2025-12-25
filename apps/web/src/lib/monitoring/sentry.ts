@@ -126,7 +126,7 @@ export function trackPerformanceMetric(
   name: string,
   value: number,
   unit: 'millisecond' | 'second' | 'byte' | 'element' = 'millisecond',
-  tags?: Record<string, string>
+  _tags?: Record<string, string>
 ) {
   // Tags are not supported in MetricOptions, so we only pass unit
   // If tags are needed, they should be set on the scope before calling this function
