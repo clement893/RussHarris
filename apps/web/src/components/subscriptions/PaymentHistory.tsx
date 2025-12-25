@@ -30,7 +30,7 @@ export default function PaymentHistory({ payments }: PaymentHistoryProps) {
       key: 'amount',
       label: 'Amount',
       sortable: true,
-      render: (value, row) => (
+      render: (value, _row) => (
         <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
           {value}€
         </span>
@@ -53,7 +53,7 @@ export default function PaymentHistory({ payments }: PaymentHistoryProps) {
       key: 'invoice_url',
       label: 'Actions',
       sortable: false,
-      render: (value, row) => (
+      render: (value, _row) => (
         <div>
           {value && (
             <a
