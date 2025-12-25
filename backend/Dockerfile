@@ -50,9 +50,10 @@ USER appuser
 
 EXPOSE 8000
 
-# Health check
+# Health check - uses PORT env var or defaults to 8000
+# Note: HEALTHCHECK runs inside container, so it uses the same PORT as the app
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/health')" || exit 1
+    CMD sh -c 'PORT=${PORT:-8000}; python -c "import requests; requests.get(f\"http://localhost:{PORT}/health\")"' || exit 1
 
 ENTRYPOINT ["/entrypoint.sh"]
 
