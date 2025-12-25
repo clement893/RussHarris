@@ -158,8 +158,6 @@ export default function IntegrationConfig({
                   helperText={field.helperText}
                   error={errors[field.id]}
                   required={field.required}
-                  leftIcon={getFieldIcon(field.type)}
-                  sensitive={field.sensitive}
                 />
               </div>
             ))}
