@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { clsx } from 'clsx';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -102,7 +102,7 @@ export default function PaymentHistory({
     );
   };
 
-  const columns = useMemo<Column<Payment>[]>(() => [
+  const columns: Column<Payment>[] = [
     {
       key: 'date',
       label: 'Date',
@@ -176,7 +176,7 @@ export default function PaymentHistory({
         </div>
       ),
     },
-  ], [getStatusBadge, onDownloadReceipt]);
+  ];
 
   const totalAmount = filteredPayments
     .filter((p) => p.status === 'completed')
