@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useRouter } from '@/i18n/routing';
+import Link from '@/i18n/routing';
 import { AxiosError } from 'axios';
 import { authAPI } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
@@ -31,7 +31,7 @@ export default function LoginPage() {
       const { access_token, user } = response.data;
 
       login(user, access_token);
-      router.push('/dashboard');
+      router.push('/dashboard'); // Will automatically use current locale
     } catch (err) {
       const axiosError = err as AxiosError<ApiErrorResponse>;
       const message = axiosError.response?.data?.detail || 'Login failed';
