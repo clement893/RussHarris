@@ -119,5 +119,41 @@ def setup_cors(app: FastAPI) -> None:
         max_age=3600,  # Cache preflight requests for 1 hour
     )
     
+    # Add a middleware to ensure CORS headers are always present
+    # This is a safety net in case CORSMiddleware doesn't add headers for some routes
+    @app.middleware("http")
+    async def add_cors_headers_middleware(request: Request, call_next):
+        """Ensure CORS headers are always present"""
+        from fastapi.responses import Response
+        
+        # Get origin from request
+        origin = request.headers.get("Origin", "")
+        
+        # Process the request
+        response = await call_next(request)
+        
+        # If response doesn't have CORS headers, add them
+        if "Access-Control-Allow-Origin" not in response.headers:
+            # Validate origin
+            if origin and cors_origins and validate_origin(origin, cors_origins):
+                response.headers["Access-Control-Allow-Origin"] = origin
+            elif "*" in cors_origins:
+                response.headers["Access-Control-Allow-Origin"] = "*"
+            elif cors_origins:
+                response.headers["Access-Control-Allow-Origin"] = cors_origins[0]
+            elif not is_production:
+                # Development fallback
+                response.headers["Access-Control-Allow-Origin"] = origin or "*"
+            
+            # Add other CORS headers if not present
+            if "Access-Control-Allow-Credentials" not in response.headers:
+                response.headers["Access-Control-Allow-Credentials"] = "true"
+            if "Access-Control-Allow-Methods" not in response.headers:
+                response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+            if "Access-Control-Allow-Headers" not in response.headers:
+                response.headers["Access-Control-Allow-Headers"] = ", ".join(allowed_headers)
+        
+        return response
+    
     logger.info("✅ CORS middleware configured with tightened security")
 
