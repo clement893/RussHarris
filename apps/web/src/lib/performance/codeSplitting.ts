@@ -3,7 +3,7 @@
  * Provides utilities for dynamic imports and lazy loading
  */
 
-import { ComponentType, Suspense } from 'react';
+import React, { ComponentType, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 
 type ComponentProps = Record<string, unknown>;
