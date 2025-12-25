@@ -11,7 +11,7 @@ import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Badge from '@/components/ui/Badge';
-import { Save, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { Save, X, CheckCircle, AlertCircle, Key } from 'lucide-react';
 import Avatar from '@/components/ui/Avatar';
 
 export interface IntegrationConfigField {
