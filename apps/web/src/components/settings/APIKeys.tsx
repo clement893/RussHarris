@@ -45,7 +45,7 @@ export default function APIKeys({
   apiKeys = [],
   onCreate,
   onDelete,
-  onRevoke,
+  onRevoke: _onRevoke,
   className,
 }: APIKeysProps) {
   const [showCreateModal, setShowCreateModal] = useState(false);
