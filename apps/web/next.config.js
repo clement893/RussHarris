@@ -8,6 +8,9 @@ const nextConfig = {
   output: 'standalone',
   // Ensure proper path resolution in standalone mode
   distDir: '.next',
+  // Base path configuration for monorepo
+  // This ensures Next.js can resolve paths correctly in standalone mode
+  basePath: '',
   
   // Performance budgets
   // These limits help prevent bundle size regressions
