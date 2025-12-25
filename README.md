@@ -374,6 +374,12 @@ docker run -p 3000:3000 your-app
 - **[Deployment Guides](./docs/DEPLOYMENT_GUIDES.md)** - Comprehensive guides for Railway, Vercel, Docker, and more
 - **[Troubleshooting Guide](./docs/TROUBLESHOOTING.md)** - Common issues, solutions, and debugging tips
 
+### Database Documentation
+
+- **[Database Migrations](./docs/DATABASE_MIGRATIONS.md)** - Complete migration process and rollback strategies
+- **[Seed Data Guide](./docs/SEED_DATA.md)** - Seed data documentation and examples
+- **[Database Guide](./docs/DATABASE_GUIDE.md)** - Quick reference for database operations
+
 ### Additional Documentation
 
 - **[Component Documentation](./docs/COMPONENTS.md)** - Complete UI component library reference
