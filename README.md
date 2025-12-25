@@ -368,6 +368,12 @@ docker run -p 3000:3000 your-app
 - **[Deployment Guide](./DEPLOYMENT.md)** - Production deployment instructions
 - **[Contributing](./CONTRIBUTING.md)** - How to contribute to the template
 
+### Architecture & Design
+
+- **[Architecture Documentation](./docs/ARCHITECTURE.md)** - System architecture, diagrams, and design decisions
+- **[Deployment Guides](./docs/DEPLOYMENT_GUIDES.md)** - Comprehensive guides for Railway, Vercel, Docker, and more
+- **[Troubleshooting Guide](./docs/TROUBLESHOOTING.md)** - Common issues, solutions, and debugging tips
+
 ### Additional Documentation
 
 - **[Component Documentation](./docs/COMPONENTS.md)** - Complete UI component library reference
@@ -376,7 +382,6 @@ docker run -p 3000:3000 your-app
 - **[Stripe Setup](./docs/STRIPE_SETUP.md)** - Payment integration guide
 - **[SendGrid Setup](./docs/SENDGRID_SETUP.md)** - Email service configuration
 - **[Security Guide](./docs/SECURITY.md)** - Security best practices
-- **[Troubleshooting](./docs/TROUBLESHOOTING.md)** - Common issues and solutions
 
 ### Component Documentation
 
