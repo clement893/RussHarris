@@ -80,8 +80,11 @@ export default function UsageMeter({
           <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
             {label}
           </h3>
-          <Badge variant={statusConfig.variant} icon={statusConfig.icon}>
-            {Math.round(percentage)}%
+          <Badge variant={statusConfig.variant}>
+            <span className="flex items-center gap-1">
+              {statusConfig.icon}
+              {Math.round(percentage)}%
+            </span>
           </Badge>
         </div>
 
