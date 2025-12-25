@@ -147,7 +147,10 @@ export default function Mentions({
       setSelectedIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length);
     } else if (e.key === 'Enter' || e.key === 'Tab') {
       e.preventDefault();
-      handleSelectUser(suggestions[selectedIndex]);
+      const selectedUser = suggestions[selectedIndex];
+      if (selectedUser) {
+        handleSelectUser(selectedUser);
+      }
     } else if (e.key === 'Escape') {
       setShowSuggestions(false);
     }
