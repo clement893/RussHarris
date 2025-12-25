@@ -216,9 +216,11 @@ export default function IntegrationConfig({
             variant="primary"
             onClick={handleSave}
             loading={loading}
-            icon={<Save className="w-4 h-4" />}
           >
-            Save Configuration
+            <span className="flex items-center gap-2">
+              <Save className="w-4 h-4" />
+              Save Configuration
+            </span>
           </Button>
         </div>
       </div>
