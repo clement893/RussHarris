@@ -110,10 +110,14 @@ EXPOSE 3000
 ENV PORT=${PORT:-3000}
 ENV HOSTNAME="0.0.0.0"
 
+# Set working directory to where server.js is located
+# This ensures Next.js can find static files and other resources correctly
+WORKDIR /app/apps/web
+
 # Use ENTRYPOINT to prevent Railway from overriding the command
 # This ensures Railway executes node directly without shell parsing
 # Use exec form to avoid shell interpretation
-# Note: In standalone mode with monorepo, server.js is at /app/apps/web/server.js
+# Run server.js from the apps/web directory
 ENTRYPOINT ["/usr/bin/env", "node"]
-CMD ["/app/apps/web/server.js"]
+CMD ["server.js"]
 
