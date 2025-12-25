@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
-import Card from '@/components/ui/Card';
+import { Button, Input, Card } from '@/components/ui';
 import { apiClient } from '@/lib/api/client';
 import { Loader2, Send, Bot, User } from 'lucide-react';
 
