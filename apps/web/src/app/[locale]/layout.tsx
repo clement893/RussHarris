@@ -14,7 +14,10 @@ import AppProviders from '@/components/providers/AppProviders';
 import { App } from '../app';
 import { WebVitalsReporter } from '@/components/performance/WebVitalsReporter';
 import { PerformanceScripts } from '@/components/performance/PerformanceScripts';
+import { ResourceHints } from '@/lib/performance/resourceHints';
 import { ErrorBoundary } from '@/components/errors/ErrorBoundary';
+import { SchemaMarkup } from '@/components/seo';
+import { GoogleAnalytics } from '@/components/marketing/GoogleAnalytics';
 import RTLProvider from '@/components/i18n/RTLProvider';
 import type { Locale } from '@/i18n/routing';
 
@@ -64,6 +67,11 @@ export default async function LocaleLayout({
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_DEFAULT_API_URL || 'http://localhost:8000';
   const apiHost = apiUrl.replace(/^https?:\/\//, '').split('/')[0];
 
+  // Generate default Open Graph metadata
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const appName = process.env.NEXT_PUBLIC_APP_NAME || 'MODELE-NEXTJS-FULLSTACK';
+  const appDescription = process.env.NEXT_PUBLIC_APP_DESCRIPTION || 'Full-stack template with Next.js 16 frontend and FastAPI backend';
+
   return (
     <html lang={locale} className={inter.variable}>
       <head>
@@ -76,11 +84,46 @@ export default async function LocaleLayout({
         )}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Open Graph tags */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={appName} />
+        <meta property="og:locale" content={locale === 'fr' ? 'fr_FR' : locale === 'ar' ? 'ar_SA' : locale === 'he' ? 'he_IL' : 'en_US'} />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
       </head>
       <body className={inter.className}>
+        <SchemaMarkup
+          type="organization"
+          data={{
+            name: appName,
+            url: baseUrl,
+            description: appDescription,
+          }}
+        />
+        <SchemaMarkup
+          type="website"
+          data={{
+            name: appName,
+            url: baseUrl,
+            description: appDescription,
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: {
+                '@type': 'EntryPoint',
+                urlTemplate: `${baseUrl}/search?q={search_term_string}`,
+              },
+            },
+          }}
+        />
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        )}
         <NextIntlClientProvider messages={messages}>
           <RTLProvider>
             <PerformanceScripts />
+            <ResourceHints />
             <ErrorBoundary>
               <AppProviders>
                 <App>
