@@ -129,7 +129,7 @@ export default function PaymentHistory({
       key: 'amount',
       label: 'Amount',
       sortable: true,
-      render: (value, payment) => (
+      render: (_value, payment) => (
         <span className={clsx(
           'font-semibold',
           payment.status === 'refunded' 
