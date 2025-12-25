@@ -88,7 +88,7 @@ export default function UserSettings({
 
     try {
       await onAvatarChange?.(file);
-    } catch (error) {
+    } catch (_error) {
       setErrors({ avatar: 'Failed to upload avatar' });
     }
   };
@@ -98,7 +98,7 @@ export default function UserSettings({
     setLoading(true);
     try {
       await onSave?.(formData);
-    } catch (error) {
+    } catch (_error) {
       setErrors({ submit: 'Failed to save settings. Please try again.' });
     } finally {
       setLoading(false);

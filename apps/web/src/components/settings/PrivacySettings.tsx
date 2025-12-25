@@ -68,7 +68,7 @@ export default function PrivacySettings({
     setLoading(true);
     try {
       await onSave?.(formData);
-    } catch (error) {
+    } catch (_error) {
       setErrors({ submit: 'Failed to save settings. Please try again.' });
     } finally {
       setLoading(false);
@@ -79,7 +79,7 @@ export default function PrivacySettings({
     try {
       await onDeleteAccount?.();
       setShowDeleteModal(false);
-    } catch (error) {
+    } catch (_error) {
       setErrors({ delete: 'Failed to delete account. Please try again.' });
     }
   };

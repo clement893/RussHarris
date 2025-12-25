@@ -109,7 +109,7 @@ export default function PaymentMethodForm({
     setLoading(true);
     try {
       await onSubmit?.(formData);
-    } catch (error) {
+    } catch (_error) {
       setErrors({ submit: 'Failed to save payment method. Please try again.' });
     } finally {
       setLoading(false);

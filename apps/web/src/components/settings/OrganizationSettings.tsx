@@ -129,7 +129,7 @@ export default function OrganizationSettings({
     setLoading(true);
     try {
       await onSave?.(formData);
-    } catch (error) {
+    } catch (_error) {
       setErrors({ submit: 'Failed to save settings. Please try again.' });
     } finally {
       setLoading(false);

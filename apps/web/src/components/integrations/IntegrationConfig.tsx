@@ -83,7 +83,7 @@ export default function IntegrationConfig({
     try {
       const result = await onTest?.();
       setTestResult(result ? 'success' : 'error');
-    } catch (error) {
+    } catch (_error) {
       setTestResult('error');
     }
   };
@@ -94,7 +94,7 @@ export default function IntegrationConfig({
     setLoading(true);
     try {
       await onSave?.(formData);
-    } catch (error) {
+    } catch (_error) {
       setErrors({ submit: 'Failed to save configuration. Please try again.' });
     } finally {
       setLoading(false);

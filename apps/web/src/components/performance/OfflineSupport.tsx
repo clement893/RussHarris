@@ -21,7 +21,7 @@ export interface OfflineSupportProps {
 interface SyncItem {
   id: string;
   action: string;
-  data: any;
+  data: unknown;
   timestamp: number;
   status: 'pending' | 'syncing' | 'synced' | 'failed';
 }
@@ -97,7 +97,7 @@ export default function OfflineSupport({
           localStorage.setItem('offline_sync_queue', JSON.stringify(updated));
           return updated;
         });
-      } catch (error) {
+      } catch (_error) {
         // Update status to failed
         setSyncQueue(prev => {
           const updated: SyncItem[] = prev.map(i => 
