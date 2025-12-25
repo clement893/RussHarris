@@ -174,7 +174,7 @@ export default function Comments({
                 {formatTimestamp(comment.timestamp)}
               </span>
               {comment.edited && (
-                <Badge variant="default" size="sm">
+                <Badge variant="default">
                   Edited
                 </Badge>
               )}
