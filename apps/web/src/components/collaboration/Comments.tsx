@@ -11,7 +11,7 @@ import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Avatar from '@/components/ui/Avatar';
 import Badge from '@/components/ui/Badge';
-import { Send, Reply, MoreVertical, Heart, ThumbsUp, Flag } from 'lucide-react';
+import { Send, Reply, MoreVertical, Heart, ThumbsUp } from 'lucide-react';
 import { logger } from '@/lib/logger';
 import Dropdown from '@/components/ui/Dropdown';
 import type { DropdownItem } from '@/components/ui/Dropdown';
