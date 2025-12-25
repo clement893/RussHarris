@@ -8,6 +8,7 @@ import type {
   ThemeListResponse,
   ThemeConfigResponse,
 } from '@modele/types';
+import { logger } from '@/lib/logger';
 
 /**
  * Get API URL with production fallback
@@ -27,10 +28,12 @@ const getApiUrl = () => {
     if (hostname.includes('railway.app')) {
       // This fallback should not be used - NEXT_PUBLIC_API_URL must be set
       // If we reach here, it means NEXT_PUBLIC_API_URL was not configured
-      console.error(
-        '[Theme API] CRITICAL: NEXT_PUBLIC_API_URL is not set at build time. ' +
-        'Please set NEXT_PUBLIC_API_URL in Railway environment variables before building. ' +
-        'Application may not work correctly without this variable.'
+      logger.error(
+        'CRITICAL: NEXT_PUBLIC_API_URL is not set at build time',
+        new Error('NEXT_PUBLIC_API_URL not configured'),
+        {
+          message: 'Please set NEXT_PUBLIC_API_URL in Railway environment variables before building. Application may not work correctly without this variable.',
+        }
       );
       // Do not use hardcoded fallback - fail safely
       url = undefined;
@@ -44,9 +47,12 @@ const getApiUrl = () => {
   
   // Final fallback to prevent crashes (should not happen in production if configured correctly)
   if (!url) {
-    console.error(
-      '[Theme API] ERROR: NEXT_PUBLIC_API_URL is not set in production. ' +
-      'Please set NEXT_PUBLIC_API_URL in Railway environment variables and rebuild.'
+    logger.error(
+      'ERROR: NEXT_PUBLIC_API_URL is not set in production',
+      new Error('NEXT_PUBLIC_API_URL not configured'),
+      {
+        message: 'Please set NEXT_PUBLIC_API_URL in Railway environment variables and rebuild.',
+      }
     );
     url = 'http://localhost:8000'; // Last resort fallback
   }
@@ -113,7 +119,7 @@ export async function getActiveTheme(): Promise<ThemeConfigResponse> {
 
     if (!response.ok) {
       // If backend returns an error, use default theme
-      console.warn(`Backend returned ${response.status}. Using default theme.`);
+      logger.warn(`Backend returned ${response.status}. Using default theme.`);
       return DEFAULT_THEME_CONFIG;
     }
 
@@ -122,11 +128,11 @@ export async function getActiveTheme(): Promise<ThemeConfigResponse> {
     // Handle network errors, timeouts, and connection refused
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
-        console.warn('Theme fetch timeout. Using default theme. Make sure the backend is running on', API_URL);
+        logger.warn(`Theme fetch timeout. Using default theme. Make sure the backend is running on ${API_URL}`);
       } else if (error.message.includes('fetch') || error.message.includes('Failed to fetch') || error.message.includes('ERR_CONNECTION_REFUSED')) {
-        console.warn('Backend not available. Using default theme. Make sure the backend is running on', API_URL);
+        logger.warn(`Backend not available. Using default theme. Make sure the backend is running on ${API_URL}`);
       } else {
-        console.warn('Failed to fetch theme:', error.message, '- Using default theme.');
+        logger.warn(`Failed to fetch theme: ${error.message} - Using default theme.`);
       }
     }
     // Return default theme instead of throwing

@@ -12,6 +12,8 @@
  * - Session management
  */
 
+import { logger } from '@/lib/logger';
+
 const TOKEN_API_ENDPOINT = '/api/auth/token';
 
 export interface TokenResponse {
@@ -61,7 +63,7 @@ export class SecureCookieStorage {
         throw new Error('Failed to set tokens');
       }
     } catch (error) {
-      console.error('[SecureCookieStorage] Failed to set tokens:', error);
+      logger.error('Failed to set tokens', error instanceof Error ? error : new Error(String(error)));
       throw error;
     }
   }
@@ -92,7 +94,7 @@ export class SecureCookieStorage {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('[SecureCookieStorage] Failed to rotate tokens:', error);
+      logger.error('Failed to rotate tokens', error instanceof Error ? error : new Error(String(error)));
       throw error;
     }
   }
@@ -117,7 +119,7 @@ export class SecureCookieStorage {
 
       return await response.json();
     } catch (error) {
-      console.error('[SecureCookieStorage] Failed to get session:', error);
+      logger.error('Failed to get session', error instanceof Error ? error : new Error(String(error)));
       return null;
     }
   }
@@ -149,7 +151,7 @@ export class SecureCookieStorage {
         credentials: 'include',
       });
     } catch (error) {
-      console.error('[SecureCookieStorage] Failed to remove tokens:', error);
+      logger.error('Failed to remove tokens', error instanceof Error ? error : new Error(String(error)));
       // Continue even if API call fails
     }
   }
@@ -174,7 +176,7 @@ export class SecureCookieStorage {
 
       return await response.json();
     } catch (error) {
-      console.error('[SecureCookieStorage] Failed to refresh token:', error);
+      logger.error('Failed to refresh token', error instanceof Error ? error : new Error(String(error)));
       throw error;
     }
   }

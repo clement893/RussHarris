@@ -5,6 +5,8 @@
  * Uses double-submit cookie pattern for stateless CSRF protection
  */
 
+import { logger } from '@/lib/logger';
+
 /**
  * Get CSRF token from cookie
  * CSRF token is set by the server in a cookie
@@ -45,7 +47,7 @@ export async function fetchCsrfToken(): Promise<string | null> {
     const data = await response.json();
     return data.csrfToken || null;
   } catch (error) {
-    console.error('[CSRF] Failed to fetch CSRF token:', error);
+    logger.error('Failed to fetch CSRF token', error instanceof Error ? error : new Error(String(error)));
     return null;
   }
 }

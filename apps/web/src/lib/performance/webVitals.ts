@@ -4,6 +4,7 @@
  */
 
 import { onCLS, onFID, onFCP, onLCP, onTTFB, onINP, Metric } from 'web-vitals';
+import { logger } from '@/lib/logger';
 
 export interface WebVitalsReport {
   name: string;
@@ -58,7 +59,7 @@ function sendToAnalytics(metric: Metric) {
       .catch(() => {
         // Sentry not available or not configured - silently fail
         if (process.env.NODE_ENV === 'development') {
-          console.debug('[Web Vitals] Sentry not configured');
+          logger.debug('Sentry not configured for Web Vitals');
         }
       });
   }
@@ -76,15 +77,18 @@ function sendToAnalytics(metric: Metric) {
       keepalive: true, // Keep request alive even after page unload
     }).catch((error) => {
       // Silently fail - don't break the app if analytics fails
-      if (process.env.NODE_ENV === 'development') {
-        console.error('[Web Vitals] Failed to send:', error);
-      }
+      logger.error('Failed to send Web Vitals to analytics', error instanceof Error ? error : new Error(String(error)));
     });
   }
 
-  // Also log to console in development
+  // Log metric in development
   if (process.env.NODE_ENV === 'development') {
-    console.log('[Web Vitals]', metric.name, metric.value, metric.rating);
+    logger.debug('Web Vitals metric', {
+      name: metric.name,
+      value: metric.value,
+      rating: metric.rating,
+      delta: metric.delta,
+    });
   }
 }
 
@@ -98,6 +102,8 @@ export function reportWebVitals() {
 
   // Core Web Vitals
   onCLS(sendToAnalytics); // Cumulative Layout Shift
+  // Note: onFID is deprecated but kept for backward compatibility
+  // INP (Interaction to Next Paint) is the recommended replacement
   onFID(sendToAnalytics); // First Input Delay (deprecated, use INP)
   onFCP(sendToAnalytics); // First Contentful Paint
   onLCP(sendToAnalytics); // Largest Contentful Paint
