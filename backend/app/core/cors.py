@@ -132,15 +132,27 @@ def setup_cors(app: FastAPI) -> None:
         
         # Determine allowed origin
         def get_allowed_origin():
+            # In production, be more permissive if origin matches Railway domain pattern
             if origin and cors_origins and validate_origin(origin, cors_origins):
                 return origin
             elif "*" in cors_origins:
                 return "*"
             elif cors_origins:
+                # Check if origin matches any Railway domain pattern
+                if origin and (".up.railway.app" in origin or ".railway.app" in origin):
+                    # Allow Railway domains if any Railway domain is in allowed origins
+                    for allowed in cors_origins:
+                        if ".railway.app" in allowed or ".up.railway.app" in allowed:
+                            logger.info(f"CORS: Allowing Railway origin {origin} (matched pattern {allowed})")
+                            return origin
                 return cors_origins[0]
             elif not is_production:
                 return origin or "*"
             else:
+                # In production, allow Railway domains even if not explicitly configured
+                if origin and (".up.railway.app" in origin or ".railway.app" in origin):
+                    logger.info(f"CORS: Allowing Railway origin {origin} (production fallback)")
+                    return origin
                 logger.warning(f"CORS: Origin {origin} not in allowed list {cors_origins}")
                 return None
         
@@ -166,7 +178,7 @@ def setup_cors(app: FastAPI) -> None:
             logger.error(f"Error in request {request.method} {request.url.path}: {e}", exc_info=True)
             error_response = JSONResponse(
                 status_code=500,
-                content={"detail": "Internal server error"}
+                content={"detail": f"Internal server error: {str(e)}"}
             )
             # Always add CORS headers to error response
             return add_cors_to_response(error_response)
