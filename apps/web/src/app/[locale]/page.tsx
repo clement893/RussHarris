@@ -8,7 +8,7 @@
 
 import Link from 'next/link';
 import { Button, Card, Container, StatsCard } from '@/components/ui';
-import { Hero, Features, TechStack, Stats, CTA } from '@/components/sections';
+import { Hero, TechStack, Stats, CTA } from '@/components/sections';
 import { 
   CheckCircle, 
   Zap, 
