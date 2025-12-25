@@ -77,7 +77,7 @@ export default function WebhookManager({
       setShowCreateModal(false);
       setFormData({ name: '', url: '', events: [] });
     } catch (error) {
-      logger.error('Failed to create webhook', error);
+      logger.error('Failed to create webhook', error instanceof Error ? error : undefined);
     } finally {
       setLoading(false);
     }
@@ -88,7 +88,7 @@ export default function WebhookManager({
     try {
       await onDelete?.(id);
     } catch (error) {
-      logger.error('Failed to delete webhook', error);
+      logger.error('Failed to delete webhook', error instanceof Error ? error : undefined);
     }
   };
 
@@ -96,7 +96,7 @@ export default function WebhookManager({
     try {
       await onToggle?.(id, active);
     } catch (error) {
-      logger.error('Failed to toggle webhook', error);
+      logger.error('Failed to toggle webhook', error instanceof Error ? error : undefined);
     }
   };
 
