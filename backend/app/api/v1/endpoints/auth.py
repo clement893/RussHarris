@@ -391,6 +391,8 @@ async def get_google_auth_url(
     """
     try:
         logger.info(f"Google OAuth request received, redirect: {redirect}")
+        logger.info(f"Request headers: {dict(request.headers)}")
+        logger.info(f"Request URL: {request.url}")
         
         if not settings.GOOGLE_CLIENT_ID:
             logger.warning("Google OAuth not configured: GOOGLE_CLIENT_ID missing")
@@ -441,12 +443,17 @@ async def get_google_auth_url(
         auth_url = f"{google_auth_base_url}?{urlencode(params)}"
         
         logger.info(f"Generated Google OAuth URL (length: {len(auth_url)})")
+        logger.info(f"Returning response with auth_url")
         
-        return {"auth_url": auth_url}
-    except HTTPException:
+        response_data = {"auth_url": auth_url}
+        logger.info(f"Response data prepared: {response_data}")
+        
+        return response_data
+    except HTTPException as e:
+        logger.error(f"HTTPException in get_google_auth_url: {e.status_code} - {e.detail}")
         raise
     except Exception as e:
-        logger.error(f"Error generating Google OAuth URL: {e}", exc_info=True)
+        logger.error(f"Unexpected error generating Google OAuth URL: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to generate Google OAuth URL: {str(e)}"
