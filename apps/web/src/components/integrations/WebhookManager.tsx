@@ -122,9 +122,11 @@ export default function WebhookManager({
           <Button
             variant="primary"
             onClick={() => setShowCreateModal(true)}
-            icon={<Plus className="w-4 h-4" />}
           >
-            Create Webhook
+            <span className="flex items-center gap-2">
+              <Plus className="w-4 h-4" />
+              Create Webhook
+            </span>
           </Button>
         </div>
 
