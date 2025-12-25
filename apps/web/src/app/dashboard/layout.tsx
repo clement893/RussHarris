@@ -15,12 +15,9 @@ import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
 import { 
   LayoutDashboard, 
   FolderKanban, 
-  Users, 
-  Settings, 
   LogOut,
   Menu,
   X,
-  Palette,
   Shield,
   Home
 } from 'lucide-react';
@@ -42,6 +39,9 @@ function DashboardLayoutContent({
     router.push('/');
   };
 
+  // Check if user is admin or superadmin
+  const isAdmin = user?.is_admin;
+
   const sidebarItems = [
     {
       label: 'Dashboard',
@@ -54,25 +54,20 @@ function DashboardLayoutContent({
       icon: <FolderKanban className="w-5 h-5" />,
     },
     {
-      label: 'Utilisateurs',
-      href: '/dashboard/users',
-      icon: <Users className="w-5 h-5" />,
-    },
-    {
-      label: 'Thème',
-      href: '/dashboard/theme',
-      icon: <Palette className="w-5 h-5" />,
-    },
-    {
       label: 'Super Admin',
       href: '/dashboard/become-superadmin',
       icon: <Shield className="w-5 h-5" />,
     },
-    {
-      label: 'Paramètres',
-      href: '/dashboard/settings',
-      icon: <Settings className="w-5 h-5" />,
-    },
+    // Admin link - only visible to admins and superadmins
+    ...(isAdmin
+      ? [
+          {
+            label: 'Administration',
+            href: '/admin',
+            icon: <Shield className="w-5 h-5" />,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -83,10 +78,7 @@ function DashboardLayoutContent({
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">
             {pathname === '/dashboard' && 'Dashboard'}
             {pathname === '/dashboard/projects' && 'Projets'}
-            {pathname === '/dashboard/users' && 'Utilisateurs'}
-            {pathname === '/dashboard/theme' && 'Thème'}
             {pathname === '/dashboard/become-superadmin' && 'Super Admin'}
-            {pathname === '/dashboard/settings' && 'Paramètres'}
           </h1>
           <div className="flex items-center gap-2">
             <Button
@@ -160,10 +152,7 @@ function DashboardLayoutContent({
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 {pathname === '/dashboard' && 'Dashboard'}
                 {pathname === '/dashboard/projects' && 'Projets'}
-                {pathname === '/dashboard/users' && 'Utilisateurs'}
-                {pathname === '/dashboard/theme' && 'Thème'}
                 {pathname === '/dashboard/become-superadmin' && 'Super Admin'}
-                {pathname === '/dashboard/settings' && 'Paramètres'}
               </h1>
               <div className="flex items-center gap-3">
                 <Button

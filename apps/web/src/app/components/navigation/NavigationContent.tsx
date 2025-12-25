@@ -48,8 +48,8 @@ export default function NavigationContent() {
               <Breadcrumb
                 items={[
                   { label: 'Dashboard', href: '/dashboard' },
-                  { label: 'ParamÃ¨tres', href: '/dashboard/settings' },
-                  { label: 'Profil' },
+                  { label: 'Administration', href: '/admin' },
+                  { label: 'Paramètres', href: '/admin/settings' },
                 ]}
                 showHome={false}
               />
