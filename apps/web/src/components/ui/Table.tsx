@@ -39,9 +39,10 @@ interface TableBodyProps {
   className?: string;
   striped?: boolean;
   hover?: boolean;
+  style?: React.CSSProperties;
 }
 
-export function TableBody({ children, className, striped = false, hover = false }: TableBodyProps) {
+export function TableBody({ children, className, striped = false, hover = false, style }: TableBodyProps) {
   return (
     <tbody
       className={clsx(
@@ -50,6 +51,7 @@ export function TableBody({ children, className, striped = false, hover = false 
         hover && '[&>tr:hover]:bg-gray-50 dark:[&>tr:hover]:bg-gray-800',
         className
       )}
+      style={style}
     >
       {children}
     </tbody>
