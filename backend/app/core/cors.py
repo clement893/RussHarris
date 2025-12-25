@@ -103,47 +103,21 @@ def setup_cors(app: FastAPI) -> None:
         "X-RateLimit-Reset",
     ]
     
+    # Use CORSMiddleware - it handles OPTIONS requests automatically
+    # If cors_origins is empty, use wildcard for development (not recommended for production)
+    if not cors_origins and not is_production:
+        logger.warning("⚠️ No CORS origins configured, using wildcard (development only)")
+        cors_origins = ["*"]
+    
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=cors_origins,
+        allow_origins=cors_origins if cors_origins else ["*"],  # Fallback to wildcard if empty
         allow_credentials=True,  # Required for cookies
         allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
         allow_headers=allowed_headers,
         expose_headers=exposed_headers,
         max_age=3600,  # Cache preflight requests for 1 hour
     )
-    
-    # Add explicit OPTIONS handler for all routes to ensure preflight requests are handled
-    @app.options("/{full_path:path}")
-    async def options_handler(request: Request):
-        """Explicit OPTIONS handler for CORS preflight requests"""
-        from fastapi.responses import Response
-        
-        # Get origin from request
-        origin = request.headers.get("Origin", "")
-        
-        # Validate origin against allowed origins
-        if origin and validate_origin(origin, cors_origins):
-            allow_origin = origin
-        elif "*" in cors_origins:
-            allow_origin = "*"
-        elif cors_origins:
-            # Use first allowed origin as fallback
-            allow_origin = cors_origins[0]
-        else:
-            # No CORS configured, deny
-            return Response(status_code=403)
-        
-        return Response(
-            status_code=200,
-            headers={
-                "Access-Control-Allow-Origin": allow_origin,
-                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-                "Access-Control-Allow-Headers": ", ".join(allowed_headers),
-                "Access-Control-Allow-Credentials": "true",
-                "Access-Control-Max-Age": "3600",
-            }
-        )
     
     logger.info("✅ CORS middleware configured with tightened security")
 
