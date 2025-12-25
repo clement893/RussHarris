@@ -1,6 +1,29 @@
 /**
  * Multi-Factor Authentication (MFA) Component
- * Supports TOTP (Time-based One-Time Password) authentication
+ * 
+ * Supports TOTP (Time-based One-Time Password) authentication.
+ * Handles both setup (QR code display) and verification flows.
+ * 
+ * @example
+ * ```tsx
+ * // Verification flow
+ * <MFA
+ *   onVerify={async (code) => {
+ *     await verifyMFA(code);
+ *   }}
+ *   onCancel={() => router.back()}
+ * />
+ * 
+ * // Setup flow
+ * <MFA
+ *   qrCodeUrl={qrCodeUrl}
+ *   secret={secret}
+ *   email={user.email}
+ *   onVerify={async (code) => {
+ *     await setupMFA(code);
+ *   }}
+ * />
+ * ```
  */
 
 'use client';
@@ -13,11 +36,17 @@ import Alert from '@/components/ui/Alert';
 import Loading from '@/components/ui/Loading';
 
 export interface MFAProps {
+  /** Verify callback - called when user submits 6-digit code */
   onVerify: (code: string) => Promise<void>;
+  /** Cancel callback */
   onCancel?: () => void;
+  /** QR code URL for MFA setup */
   qrCodeUrl?: string;
+  /** Secret key for manual entry */
   secret?: string;
+  /** User email for display */
   email?: string;
+  /** Additional CSS classes */
   className?: string;
 }
 

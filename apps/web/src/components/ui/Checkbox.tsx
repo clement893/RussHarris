@@ -1,10 +1,32 @@
 import { InputHTMLAttributes, forwardRef } from 'react';
 import { clsx } from 'clsx';
 
+/**
+ * Checkbox Component
+ * 
+ * Checkbox input component with label, error handling, and indeterminate state support.
+ * Fully accessible with proper ARIA attributes.
+ * 
+ * @example
+ * ```tsx
+ * // Basic checkbox
+ * <Checkbox label="Accept terms" checked={accepted} onChange={handleChange} />
+ * 
+ * // With error
+ * <Checkbox label="Subscribe" error="This field is required" />
+ * 
+ * // Indeterminate state
+ * <Checkbox label="Select all" indeterminate={isIndeterminate} />
+ * ```
+ */
 interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  /** Checkbox label text */
   label?: string;
+  /** Error message to display */
   error?: string;
+  /** Make checkbox full width */
   fullWidth?: boolean;
+  /** Show indeterminate state (partially checked) */
   indeterminate?: boolean;
 }
 

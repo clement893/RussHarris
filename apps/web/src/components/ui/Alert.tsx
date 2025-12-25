@@ -1,6 +1,24 @@
 /**
  * Alert Component
- * Alert/notification component for ERP applications
+ * 
+ * Alert/notification component for displaying messages to users.
+ * Supports multiple variants (info, success, warning, error) and can be dismissible.
+ * 
+ * @example
+ * ```tsx
+ * // Basic alert
+ * <Alert variant="success">Operation completed successfully</Alert>
+ * 
+ * // Alert with title
+ * <Alert variant="error" title="Error" onClose={handleClose}>
+ *   Something went wrong
+ * </Alert>
+ * 
+ * // Dismissible alert
+ * <Alert variant="info" dismissible onClose={handleDismiss}>
+ *   New feature available
+ * </Alert>
+ * ```
  */
 
 'use client';
@@ -10,8 +28,11 @@ import { clsx } from 'clsx';
 import { AlertVariant, BaseComponentProps, ClosableProps, IconProps } from './types';
 
 export interface AlertProps extends BaseComponentProps, ClosableProps, IconProps {
+  /** Alert variant style */
   variant?: AlertVariant;
+  /** Alert title */
   title?: string;
+  /** Alert content */
   children: ReactNode;
 }
 

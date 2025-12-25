@@ -6,16 +6,33 @@ import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { logger } from '@/lib/logger';
 
+/**
+ * Protected Route Component
+ * 
+ * Prevents unauthorized access to routes requiring authentication.
+ * Automatically redirects to login if user is not authenticated.
+ * Prevents flash of unauthenticated content during auth check.
+ * 
+ * @example
+ * ```tsx
+ * // Basic protection
+ * <ProtectedRoute>
+ *   <Dashboard />
+ * </ProtectedRoute>
+ * 
+ * // Admin-only route
+ * <ProtectedRoute requireAdmin>
+ *   <AdminPanel />
+ * </ProtectedRoute>
+ * ```
+ */
 interface ProtectedRouteProps {
+  /** Child components to protect */
   children: ReactNode;
+  /** Require admin privileges */
   requireAdmin?: boolean;
 }
 
-/**
- * Protected Route Component
- * Prevents unauthorized access to routes requiring authentication
- * Prevents flash of unauthenticated content
- */
 export default function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps) {
   const router = useRouter();
   const pathname = usePathname();
