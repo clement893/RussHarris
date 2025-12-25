@@ -133,14 +133,16 @@ interface TableCellProps {
   className?: string;
   colSpan?: number;
   onClick?: (e: React.MouseEvent<HTMLTableCellElement>) => void;
+  style?: React.CSSProperties;
 }
 
-export function TableCell({ children, className, colSpan, onClick }: TableCellProps) {
+export function TableCell({ children, className, colSpan, onClick, style }: TableCellProps) {
   return (
     <td
       colSpan={colSpan}
       onClick={onClick}
       className={clsx('px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100', className)}
+      style={style}
     >
       {children}
     </td>
