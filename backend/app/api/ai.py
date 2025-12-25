@@ -1,14 +1,15 @@
-"""AI endpoints using OpenAI."""
+"""AI endpoints using OpenAI and Anthropic (Claude)."""
 
-from typing import Optional, List
+import os
+from typing import Optional, List, Literal
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
 
 from app.dependencies import get_current_user
 from app.models import User
-from app.services.openai_service import OpenAIService
+from app.services.ai_service import AIService, AIProvider
 
-router = APIRouter(prefix="/api/ai", tags=["ai"])
+router = APIRouter(prefix="/api/v1/ai", tags=["ai"])
 
 
 class ChatMessage(BaseModel):
@@ -20,14 +21,17 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     """Chat completion request schema."""
     messages: List[ChatMessage] = Field(..., min_items=1)
+    provider: Optional[Literal["openai", "anthropic", "auto"]] = Field(default="auto", description="AI provider to use")
     model: Optional[str] = None
     temperature: Optional[float] = Field(None, ge=0.0, le=2.0)
     max_tokens: Optional[int] = Field(None, ge=1, le=4000)
+    system_prompt: Optional[str] = None
 
 
 class SimpleChatRequest(BaseModel):
     """Simple chat request schema."""
     message: str = Field(..., min_length=1)
+    provider: Optional[Literal["openai", "anthropic", "auto"]] = Field(default="auto", description="AI provider to use")
     system_prompt: Optional[str] = None
     model: Optional[str] = None
 
@@ -36,6 +40,7 @@ class ChatResponse(BaseModel):
     """Chat completion response schema."""
     content: str
     model: str
+    provider: str
     usage: dict
     finish_reason: str
 
@@ -45,15 +50,17 @@ async def chat_completion(
     request: ChatRequest,
     current_user: User = Depends(get_current_user),
 ):
-    """Create a chat completion."""
-    if not OpenAIService.is_configured():
+    """Create a chat completion using OpenAI or Anthropic (Claude)."""
+    if not AIService.is_configured():
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="OpenAI is not configured. Please contact the administrator.",
+            detail="No AI provider is configured. Please set OPENAI_API_KEY or ANTHROPIC_API_KEY.",
         )
     
     try:
-        service = OpenAIService()
+        # Resolve provider
+        provider = AIProvider(request.provider) if request.provider != "auto" else AIProvider.AUTO
+        service = AIService(provider=provider)
         
         # Convert Pydantic models to dicts
         messages = [{"role": msg.role, "content": msg.content} for msg in request.messages]
@@ -63,6 +70,7 @@ async def chat_completion(
             model=request.model,
             temperature=request.temperature,
             max_tokens=request.max_tokens,
+            system_prompt=request.system_prompt,
         )
         
         return ChatResponse(**response)
@@ -75,7 +83,7 @@ async def chat_completion(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"OpenAI error: {str(e)}",
+            detail=f"AI service error: {str(e)}",
         )
 
 
@@ -84,22 +92,28 @@ async def simple_chat(
     request: SimpleChatRequest,
     current_user: User = Depends(get_current_user),
 ):
-    """Simple chat completion."""
-    if not OpenAIService.is_configured():
+    """Simple chat completion using OpenAI or Anthropic (Claude)."""
+    if not AIService.is_configured():
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="OpenAI is not configured. Please contact the administrator.",
+            detail="No AI provider is configured. Please set OPENAI_API_KEY or ANTHROPIC_API_KEY.",
         )
     
     try:
-        service = OpenAIService()
+        # Resolve provider
+        provider = AIProvider(request.provider) if request.provider != "auto" else AIProvider.AUTO
+        service = AIService(provider=provider)
+        
         response = await service.simple_chat(
             user_message=request.message,
             system_prompt=request.system_prompt,
             model=request.model,
         )
         
-        return {"response": response}
+        return {
+            "response": response,
+            "provider": service.provider.value,
+        }
         
     except ValueError as e:
         raise HTTPException(
@@ -109,7 +123,7 @@ async def simple_chat(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"OpenAI error: {str(e)}",
+            detail=f"AI service error: {str(e)}",
         )
 
 
@@ -117,31 +131,57 @@ async def simple_chat(
 async def ai_health_check(
     current_user: User = Depends(get_current_user),
 ):
-    """Check OpenAI configuration and connectivity."""
+    """Check AI provider configuration and connectivity."""
     result = {
         "configured": False,
-        "model": None,
-        "available": False,
+        "available_providers": AIService.get_available_providers(),
+        "providers": {},
     }
     
-    if not OpenAIService.is_configured():
-        result["error"] = "OpenAI is not configured. Missing OPENAI_API_KEY."
-        return result
+    # Check OpenAI
+    if AIService.is_configured(AIProvider.OPENAI):
+        try:
+            service = AIService(provider=AIProvider.OPENAI)
+            test_response = await service.simple_chat(
+                user_message="Say 'OK' if you can hear me.",
+            )
+            result["providers"]["openai"] = {
+                "configured": True,
+                "available": True,
+                "model": service.model,
+                "test_response": test_response[:50],
+            }
+            result["configured"] = True
+        except Exception as e:
+            result["providers"]["openai"] = {
+                "configured": True,
+                "available": False,
+                "error": str(e),
+            }
     
-    result["configured"] = True
-    result["model"] = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    # Check Anthropic
+    if AIService.is_configured(AIProvider.ANTHROPIC):
+        try:
+            service = AIService(provider=AIProvider.ANTHROPIC)
+            test_response = await service.simple_chat(
+                user_message="Say 'OK' if you can hear me.",
+            )
+            result["providers"]["anthropic"] = {
+                "configured": True,
+                "available": True,
+                "model": service.model,
+                "test_response": test_response[:50],
+            }
+            result["configured"] = True
+        except Exception as e:
+            result["providers"]["anthropic"] = {
+                "configured": True,
+                "available": False,
+                "error": str(e),
+            }
     
-    try:
-        service = OpenAIService()
-        # Test with a simple request
-        test_response = await service.simple_chat(
-            user_message="Say 'OK' if you can hear me.",
-            model="gpt-4o-mini",
-        )
-        result["available"] = True
-        result["test_response"] = test_response[:50]  # First 50 chars
-    except Exception as e:
-        result["error"] = str(e)
+    if not result["configured"]:
+        result["error"] = "No AI provider is configured. Set OPENAI_API_KEY or ANTHROPIC_API_KEY."
     
     return result
 

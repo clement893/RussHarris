@@ -265,6 +265,49 @@ class Settings(BaseSettings):
         description="Google OAuth redirect URI",
     )
 
+    # AI Provider Configuration
+    OPENAI_API_KEY: str = Field(
+        default="",
+        description="OpenAI API key",
+    )
+    OPENAI_MODEL: str = Field(
+        default="gpt-4o-mini",
+        description="OpenAI model to use",
+    )
+    OPENAI_MAX_TOKENS: int = Field(
+        default=1000,
+        ge=1,
+        le=4000,
+        description="Maximum tokens for OpenAI responses",
+    )
+    OPENAI_TEMPERATURE: float = Field(
+        default=0.7,
+        ge=0.0,
+        le=2.0,
+        description="Temperature for OpenAI responses",
+    )
+    
+    ANTHROPIC_API_KEY: str = Field(
+        default="",
+        description="Anthropic (Claude) API key",
+    )
+    ANTHROPIC_MODEL: str = Field(
+        default="claude-3-haiku-20240307",
+        description="Anthropic model to use",
+    )
+    ANTHROPIC_MAX_TOKENS: int = Field(
+        default=1024,
+        ge=1,
+        le=4096,
+        description="Maximum tokens for Anthropic responses",
+    )
+    ANTHROPIC_TEMPERATURE: float = Field(
+        default=0.7,
+        ge=0.0,
+        le=1.0,
+        description="Temperature for Anthropic responses",
+    )
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

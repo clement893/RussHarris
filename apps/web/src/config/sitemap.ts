@@ -172,6 +172,14 @@ export const sitePages: Record<string, SitemapPage[]> = {
   ],
   'Outils': [
     { 
+      path: '/ai/chat', 
+      title: 'AI Chat', 
+      description: 'Chat avec OpenAI GPT ou Anthropic Claude',
+      priority: 0.8,
+      changefreq: 'weekly',
+      requiresAuth: true, // Protected page
+    },
+    { 
       path: '/ai/test', 
       title: 'Test IA', 
       description: 'Page de test pour l\'IA',

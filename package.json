@@ -55,6 +55,7 @@
                     "workspace:check":  "pnpm list --depth=0 -r",
                     "workspace:verify":  "node scripts/check-workspace.js",
                     "audit:security":  "node scripts/audit-security.js",
+                    "audit:security:full":  "node scripts/audit-security-comprehensive.js",
                     "audit:performance":  "node scripts/audit-performance.js",
                     "audit:all":  "npm run audit:security \u0026\u0026 npm run audit:performance",
                     "validate:env":  "node scripts/validate-env.js",

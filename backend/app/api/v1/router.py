@@ -3,6 +3,7 @@ API v1 router registration.
 """
 from fastapi import APIRouter
 from app.api.v1.endpoints import themes, projects, websocket, admin, auth, two_factor, api_keys, users, health, db_health
+from app.api import ai as ai_router
 
 api_router = APIRouter()
 
@@ -73,4 +74,10 @@ api_router.include_router(
     db_health.router,
     prefix="/db-health",
     tags=["database-health"]
+)
+
+# Register AI endpoints
+api_router.include_router(
+    ai_router.router,
+    tags=["ai"]
 )
