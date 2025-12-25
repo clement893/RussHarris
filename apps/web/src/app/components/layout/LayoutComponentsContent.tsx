@@ -13,7 +13,7 @@ import LoadingState from '@/components/layout/LoadingState';
 import ErrorState from '@/components/layout/ErrorState';
 import ExampleCard from '@/components/layout/ExampleCard';
 import PageNavigation from '@/components/layout/PageNavigation';
-import { Card, Button } from '@/components/ui';
+import { Card } from '@/components/ui';
 import { useState } from 'react';
 
 export default function LayoutComponentsContent() {
