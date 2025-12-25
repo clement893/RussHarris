@@ -11,6 +11,7 @@ import { ErrorBoundary } from '@/components/errors';
 import { ErrorDisplay } from '@/components/errors';
 import ErrorReporting from '@/components/errors/ErrorReporting';
 import { ApiError } from '@/components/errors';
+import { ErrorCode } from '@/lib/errors';
 import { Button, Card } from '@/components/ui';
 
 // Component that throws an error for testing ErrorBoundary
@@ -73,7 +74,7 @@ export default function ErrorComponentsContent() {
         <Section title="Error Display">
           <ErrorDisplay
             error={new Error('Failed to load user data')}
-            code="FETCH_ERROR"
+            code={ErrorCode.NETWORK_ERROR}
             statusCode={404}
             details={{
               endpoint: '/api/users/123',
@@ -126,7 +127,7 @@ export default function ErrorComponentsContent() {
               <h4 className="font-semibold mb-2">404 Not Found</h4>
               <ErrorDisplay
                 error={new Error('Resource not found')}
-                code="NOT_FOUND"
+                code={ErrorCode.NOT_FOUND}
                 statusCode={404}
                 onRetry={() => logger.info('Retry 404')}
               />
@@ -136,7 +137,7 @@ export default function ErrorComponentsContent() {
               <h4 className="font-semibold mb-2">500 Server Error</h4>
               <ErrorDisplay
                 error={new Error('Internal server error')}
-                code="SERVER_ERROR"
+                code={ErrorCode.INTERNAL_SERVER_ERROR}
                 statusCode={500}
                 onRetry={() => logger.info('Retry 500')}
               />
@@ -146,7 +147,7 @@ export default function ErrorComponentsContent() {
               <h4 className="font-semibold mb-2">403 Forbidden</h4>
               <ErrorDisplay
                 error={new Error('You do not have permission to access this resource')}
-                code="FORBIDDEN"
+                code={ErrorCode.FORBIDDEN}
                 statusCode={403}
                 onRetry={() => logger.info('Retry 403')}
               />
@@ -156,7 +157,7 @@ export default function ErrorComponentsContent() {
               <h4 className="font-semibold mb-2">Network Error</h4>
               <ErrorDisplay
                 error={new Error('Network request failed')}
-                code="NETWORK_ERROR"
+                code={ErrorCode.NETWORK_ERROR}
                 statusCode={0}
                 details={{
                   reason: 'Connection timeout',
