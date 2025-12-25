@@ -13,7 +13,7 @@ import Input from '@/components/ui/Input';
 import Badge from '@/components/ui/Badge';
 import Switch from '@/components/ui/Switch';
 import Modal from '@/components/ui/Modal';
-import { Plus, Webhook, Trash2, Edit, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Plus, Webhook, Trash2, Edit, CheckCircle, AlertCircle } from 'lucide-react';
 import { logger } from '@/lib/logger';
 
 export interface Webhook {
