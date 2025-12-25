@@ -244,14 +244,12 @@ export default function BillingSettings({
               options={currencyOptions}
               value={formData.currency}
               onChange={(e) => handleChange('currency', e.target.value)}
-              leftIcon={<CreditCard className="w-5 h-5" />}
             />
             <Select
               label="Language"
               options={languageOptions}
               value={formData.language}
               onChange={(e) => handleChange('language', e.target.value)}
-              leftIcon={<Globe className="w-5 h-5" />}
             />
           </div>
         </Card>
