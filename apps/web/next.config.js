@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
+  // Ensure proper path resolution in standalone mode
+  distDir: '.next',
   
   // Performance budgets
   // These limits help prevent bundle size regressions
