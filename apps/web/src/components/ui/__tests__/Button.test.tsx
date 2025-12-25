@@ -1,3 +1,15 @@
+/**
+ * Button Component Tests
+ * 
+ * Comprehensive test suite for the Button component covering:
+ * - Rendering with different variants and sizes
+ * - Loading state behavior
+ * - Disabled state
+ * - Click handlers
+ * - Accessibility features
+ * - Full width option
+ */
+
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
@@ -5,11 +17,11 @@ import Button from '../Button';
 
 expect.extend(toHaveNoViolations);
 
-describe('Button', () => {
+describe('Button Component', () => {
   describe('Rendering', () => {
-    it('renders children correctly', () => {
+    it('renders button with children', () => {
       render(<Button>Click me</Button>);
-      expect(screen.getByText('Click me')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument();
     });
 
     it('renders with default variant (primary)', () => {
@@ -18,131 +30,164 @@ describe('Button', () => {
       expect(button).toHaveClass('bg-primary-600');
     });
 
-    it('renders with different variants', () => {
-      const { rerender, container } = render(<Button variant="secondary">Test</Button>);
-      expect(container.querySelector('button')).toHaveClass('bg-secondary-600');
-
-      rerender(<Button variant="outline">Test</Button>);
-      expect(container.querySelector('button')).toHaveClass('border-primary-600');
-
-      rerender(<Button variant="ghost">Test</Button>);
-      expect(container.querySelector('button')).toHaveClass('text-gray-700');
-
-      rerender(<Button variant="danger">Test</Button>);
-      expect(container.querySelector('button')).toHaveClass('bg-danger-600');
+    it('renders with secondary variant', () => {
+      const { container } = render(<Button variant="secondary">Test</Button>);
+      const button = container.querySelector('button');
+      expect(button).toHaveClass('bg-secondary-600');
     });
 
-    it('renders with different sizes', () => {
-      const { rerender, container } = render(<Button size="sm">Test</Button>);
-      expect(container.querySelector('button')).toHaveClass('text-sm');
-
-      rerender(<Button size="md">Test</Button>);
-      expect(container.querySelector('button')).toHaveClass('text-base');
-
-      rerender(<Button size="lg">Test</Button>);
-      expect(container.querySelector('button')).toHaveClass('text-lg');
+    it('renders with outline variant', () => {
+      const { container } = render(<Button variant="outline">Test</Button>);
+      const button = container.querySelector('button');
+      expect(button).toHaveClass('border-2', 'border-primary-600');
     });
 
-    it('renders with fullWidth prop', () => {
-      const { container } = render(<Button fullWidth>Test</Button>);
-      expect(container.querySelector('button')).toHaveClass('w-full');
+    it('renders with ghost variant', () => {
+      const { container } = render(<Button variant="ghost">Test</Button>);
+      const button = container.querySelector('button');
+      expect(button).toHaveClass('text-gray-700');
     });
 
-    it('applies custom className', () => {
-      const { container } = render(<Button className="custom-class">Test</Button>);
-      expect(container.querySelector('button')).toHaveClass('custom-class');
+    it('renders with danger variant', () => {
+      const { container } = render(<Button variant="danger">Test</Button>);
+      const button = container.querySelector('button');
+      expect(button).toHaveClass('bg-danger-600');
+    });
+  });
+
+  describe('Sizes', () => {
+    it('renders with small size', () => {
+      const { container } = render(<Button size="sm">Test</Button>);
+      const button = container.querySelector('button');
+      expect(button).toHaveClass('px-4', 'py-2', 'text-sm');
+    });
+
+    it('renders with medium size (default)', () => {
+      const { container } = render(<Button size="md">Test</Button>);
+      const button = container.querySelector('button');
+      expect(button).toHaveClass('px-6', 'py-3', 'text-base');
+    });
+
+    it('renders with large size', () => {
+      const { container } = render(<Button size="lg">Test</Button>);
+      const button = container.querySelector('button');
+      expect(button).toHaveClass('px-8', 'py-4', 'text-lg');
     });
   });
 
   describe('Loading State', () => {
     it('shows loading spinner when loading is true', () => {
-      const { container } = render(<Button loading>Test</Button>);
-      const spinner = container.querySelector('svg.animate-spin');
+      render(<Button loading>Loading</Button>);
+      const spinner = document.querySelector('.animate-spin');
       expect(spinner).toBeInTheDocument();
     });
 
     it('disables button when loading', () => {
-      render(<Button loading>Test</Button>);
-      const button = screen.getByText('Test').closest('button');
+      render(<Button loading>Loading</Button>);
+      const button = screen.getByRole('button');
       expect(button).toBeDisabled();
     });
 
-    it('shows children alongside spinner when loading', () => {
-      render(<Button loading>Click me</Button>);
-      expect(screen.getByText('Click me')).toBeInTheDocument();
+    it('displays children text alongside spinner', () => {
+      render(<Button loading>Processing...</Button>);
+      expect(screen.getByText('Processing...')).toBeInTheDocument();
     });
   });
 
   describe('Disabled State', () => {
     it('disables button when disabled prop is true', () => {
-      render(<Button disabled>Test</Button>);
-      const button = screen.getByText('Test').closest('button');
+      render(<Button disabled>Disabled</Button>);
+      const button = screen.getByRole('button');
       expect(button).toBeDisabled();
     });
 
     it('does not call onClick when disabled', () => {
       const handleClick = vi.fn();
-      render(
-        <Button disabled onClick={handleClick}>
-          Test
-        </Button>
-      );
-      fireEvent.click(screen.getByText('Test'));
+      render(<Button disabled onClick={handleClick}>Disabled</Button>);
+      const button = screen.getByRole('button');
+      fireEvent.click(button);
       expect(handleClick).not.toHaveBeenCalled();
     });
   });
 
-  describe('Interactions', () => {
+  describe('Click Handlers', () => {
     it('calls onClick when clicked', () => {
       const handleClick = vi.fn();
       render(<Button onClick={handleClick}>Click me</Button>);
-      fireEvent.click(screen.getByText('Click me'));
+      const button = screen.getByRole('button');
+      fireEvent.click(button);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
-    it('handles multiple clicks', () => {
+    it('does not call onClick when loading', () => {
       const handleClick = vi.fn();
-      render(<Button onClick={handleClick}>Click me</Button>);
-      fireEvent.click(screen.getByText('Click me'));
-      fireEvent.click(screen.getByText('Click me'));
-      expect(handleClick).toHaveBeenCalledTimes(2);
+      render(<Button loading onClick={handleClick}>Loading</Button>);
+      const button = screen.getByRole('button');
+      fireEvent.click(button);
+      expect(handleClick).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Full Width', () => {
+    it('applies full width class when fullWidth is true', () => {
+      const { container } = render(<Button fullWidth>Full Width</Button>);
+      const button = container.querySelector('button');
+      expect(button).toHaveClass('w-full');
+    });
+
+    it('does not apply full width class when fullWidth is false', () => {
+      const { container } = render(<Button>Normal</Button>);
+      const button = container.querySelector('button');
+      expect(button).not.toHaveClass('w-full');
+    });
+  });
+
+  describe('Custom ClassName', () => {
+    it('merges custom className with default classes', () => {
+      const { container } = render(<Button className="custom-class">Test</Button>);
+      const button = container.querySelector('button');
+      expect(button).toHaveClass('custom-class');
+      expect(button).toHaveClass('font-medium'); // Default class
     });
   });
 
   describe('Accessibility', () => {
     it('has no accessibility violations', async () => {
-      const { container } = render(<Button>Test</Button>);
+      const { container } = render(<Button>Accessible Button</Button>);
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
 
-    it('forwards aria attributes', () => {
-      render(
-        <Button aria-label="Close dialog" aria-pressed="false">
-          X
-        </Button>
-      );
-      const button = screen.getByLabelText('Close dialog');
-      expect(button).toHaveAttribute('aria-pressed', 'false');
+    it('supports aria-label', () => {
+      render(<Button aria-label="Submit form">Submit</Button>);
+      const button = screen.getByRole('button', { name: 'Submit form' });
+      expect(button).toBeInTheDocument();
     });
 
-    it('forwards data attributes', () => {
-      const { container } = render(<Button data-testid="custom-button">Test</Button>);
-      expect(container.querySelector('[data-testid="custom-button"]')).toBeInTheDocument();
+    it('supports aria-disabled when disabled', () => {
+      render(<Button disabled aria-label="Disabled button">Disabled</Button>);
+      const button = screen.getByRole('button');
+      expect(button).toHaveAttribute('aria-disabled', 'true');
     });
   });
 
   describe('HTML Attributes', () => {
-    it('forwards HTML button attributes', () => {
+    it('passes through standard HTML button attributes', () => {
       render(
         <Button type="submit" form="test-form" name="submit-btn">
           Submit
         </Button>
       );
-      const button = screen.getByText('Submit').closest('button');
+      const button = screen.getByRole('button');
       expect(button).toHaveAttribute('type', 'submit');
       expect(button).toHaveAttribute('form', 'test-form');
       expect(button).toHaveAttribute('name', 'submit-btn');
+    });
+
+    it('supports data attributes', () => {
+      render(<Button data-testid="custom-button">Test</Button>);
+      const button = screen.getByTestId('custom-button');
+      expect(button).toBeInTheDocument();
     });
   });
 });

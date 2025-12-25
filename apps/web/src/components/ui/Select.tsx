@@ -1,11 +1,13 @@
 /**
  * Select Component
  * 
- * Dropdown select component with label, error handling, and helper text.
- * Supports options array and placeholder text.
+ * Dropdown select component with label, error handling, helper text, and accessibility support.
+ * Supports options array, placeholder text, disabled state, and full width layout.
  * 
+ * @component
  * @example
  * ```tsx
+ * // Basic select
  * <Select
  *   label="Country"
  *   options={[
@@ -15,6 +17,62 @@
  *   placeholder="Select a country"
  * />
  * ```
+ * 
+ * @example
+ * ```tsx
+ * // Select with error state
+ * <Select
+ *   label="Country"
+ *   options={countryOptions}
+ *   error="Please select a country"
+ *   required
+ * />
+ * ```
+ * 
+ * @example
+ * ```tsx
+ * // Controlled select with onChange
+ * const [value, setValue] = useState('');
+ * 
+ * <Select
+ *   label="Country"
+ *   options={countryOptions}
+ *   value={value}
+ *   onChange={(e) => setValue(e.target.value)}
+ *   helperText="Select your country of residence"
+ * />
+ * ```
+ * 
+ * @example
+ * ```tsx
+ * // Select with disabled options
+ * <Select
+ *   label="Plan"
+ *   options={[
+ *     { label: 'Free', value: 'free' },
+ *     { label: 'Pro', value: 'pro' },
+ *     { label: 'Enterprise', value: 'enterprise', disabled: true },
+ *   ]}
+ * />
+ * ```
+ * 
+ * @param {SelectProps} props - Component props
+ * @param {SelectOption[]} props.options - Array of select options (required)
+ * @param {string} [props.label] - Select label text
+ * @param {string} [props.error] - Error message to display below select
+ * @param {string} [props.helperText] - Helper text displayed below select (hidden when error is present)
+ * @param {string} [props.placeholder] - Placeholder text for select
+ * @param {boolean} [props.fullWidth=false] - Make select full width
+ * @param {boolean} [props.required] - Mark select as required (adds asterisk to label)
+ * @param {boolean} [props.disabled] - Disable select
+ * @param {string} [props.value] - Controlled value
+ * @param {(e: ChangeEvent<HTMLSelectElement>) => void} [props.onChange] - Change handler
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {string} [props.id] - Select element ID (auto-generated if not provided)
+ * 
+ * @returns {JSX.Element} Select component
+ * 
+ * @see {@link SelectOption} SelectOption interface for option structure
  */
 
 'use client';

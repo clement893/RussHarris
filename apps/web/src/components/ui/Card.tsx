@@ -2,21 +2,28 @@
  * Card Component
  * 
  * Versatile card component for displaying content with optional header, footer, and actions.
- * Supports hover effects and click handlers.
+ * Supports hover effects, click handlers, and dark mode.
  * 
+ * @component
  * @example
  * ```tsx
  * // Basic card
  * <Card>
  *   <p>Card content</p>
  * </Card>
+ * ```
  * 
- * // Card with title
+ * @example
+ * ```tsx
+ * // Card with title and subtitle
  * <Card title="Card Title" subtitle="Subtitle">
  *   <p>Card content</p>
  * </Card>
+ * ```
  * 
- * // Card with actions
+ * @example
+ * ```tsx
+ * // Card with actions in footer
  * <Card 
  *   title="Card Title"
  *   footer={<Button>Action</Button>}
@@ -24,6 +31,49 @@
  *   <p>Card content</p>
  * </Card>
  * ```
+ * 
+ * @example
+ * ```tsx
+ * // Clickable card with hover effect
+ * <Card 
+ *   title="Clickable Card"
+ *   hover
+ *   onClick={() => console.log('Card clicked')}
+ * >
+ *   <p>Click me!</p>
+ * </Card>
+ * ```
+ * 
+ * @example
+ * ```tsx
+ * // Card with custom header
+ * <Card 
+ *   header={
+ *     <div className="flex items-center justify-between">
+ *       <h3>Custom Header</h3>
+ *       <Badge>New</Badge>
+ *     </div>
+ *   }
+ * >
+ *   <p>Content with custom header</p>
+ * </Card>
+ * ```
+ * 
+ * @param {CardProps} props - Component props
+ * @param {ReactNode} props.children - Card content (required)
+ * @param {string} [props.title] - Card title displayed in header
+ * @param {string} [props.subtitle] - Card subtitle displayed below title
+ * @param {ReactNode} [props.header] - Custom header content (overrides title/subtitle)
+ * @param {ReactNode} [props.footer] - Footer content (buttons, actions, etc.)
+ * @param {ReactNode} [props.actions] - Alias for footer prop
+ * @param {boolean} [props.hover=false] - Enable hover shadow effect
+ * @param {() => void} [props.onClick] - Click handler (makes card clickable)
+ * @param {boolean} [props.padding=true] - Add padding to card content
+ * @param {string} [props.className] - Additional CSS classes
+ * 
+ * @returns {JSX.Element} Card component
+ * 
+ * @see {@link https://tailwindcss.com/docs/box-shadow} Tailwind shadow utilities
  */
 
 'use client';

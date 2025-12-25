@@ -60,6 +60,70 @@ async def create_recommended_indexes(session: AsyncSession) -> dict:
             "columns": ["status"],
             "description": "Index for filtering by status",
         },
+        {
+            "name": "idx_projects_user_status",
+            "table": "projects",
+            "columns": ["user_id", "status"],
+            "description": "Composite index for user's projects filtered by status",
+        },
+    ]
+    
+    # Indexes for subscriptions table (if exists)
+    subscription_indexes = [
+        {
+            "name": "idx_subscriptions_user_status",
+            "table": "subscriptions",
+            "columns": ["user_id", "status"],
+            "description": "Composite index for user subscriptions filtered by status",
+        },
+        {
+            "name": "idx_subscriptions_status_expires",
+            "table": "subscriptions",
+            "columns": ["status", "current_period_end"],
+            "description": "Index for finding expiring subscriptions",
+        },
+    ]
+    
+    # Indexes for teams table (if exists)
+    team_indexes = [
+        {
+            "name": "idx_teams_owner_created",
+            "table": "teams",
+            "columns": ["owner_id", "created_at DESC"],
+            "description": "Composite index for owner's teams sorted by date",
+        },
+    ]
+    
+    # Indexes for team_members table (if exists)
+    team_member_indexes = [
+        {
+            "name": "idx_team_members_user_team",
+            "table": "team_members",
+            "columns": ["user_id", "team_id"],
+            "description": "Composite index for user-team membership lookup",
+        },
+        {
+            "name": "idx_team_members_team_role",
+            "table": "team_members",
+            "columns": ["team_id", "role"],
+            "description": "Composite index for team members filtered by role",
+        },
+    ]
+    
+    # Indexes for invoices table (if exists)
+    invoice_indexes = [
+        {
+            "name": "idx_invoices_user_created",
+            "table": "invoices",
+            "columns": ["user_id", "created_at DESC"],
+            "description": "Composite index for user invoices sorted by date",
+        },
+        {
+            "name": "idx_invoices_status",
+            "table": "invoices",
+            "columns": ["status"],
+            "description": "Index for filtering invoices by status",
+        },
     ]
     
     all_indexes = user_indexes + project_indexes

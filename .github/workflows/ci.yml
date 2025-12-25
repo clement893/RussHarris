@@ -41,6 +41,14 @@ jobs:
       - name: Check formatting
         run: pnpm format:check
 
+      - name: Run security audit
+        run: pnpm audit:security
+        continue-on-error: true
+
+      - name: Check bundle size
+        run: pnpm check:bundle-size
+        continue-on-error: true
+
   test-frontend:
     name: Test Frontend
     runs-on: ubuntu-latest

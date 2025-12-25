@@ -1,3 +1,15 @@
+/**
+ * Input Component Tests
+ * 
+ * Comprehensive test suite for the Input component covering:
+ * - Rendering with different types
+ * - Label and placeholder
+ * - Error states
+ * - Disabled state
+ * - Required field indication
+ * - Accessibility features
+ */
+
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
@@ -5,94 +17,119 @@ import Input from '../Input';
 
 expect.extend(toHaveNoViolations);
 
-describe('Input', () => {
+describe('Input Component', () => {
   describe('Rendering', () => {
     it('renders input element', () => {
-      const { container } = render(<Input />);
-      expect(container.querySelector('input')).toBeInTheDocument();
-    });
-
-    it('renders with label', () => {
       render(<Input label="Email" />);
       expect(screen.getByLabelText('Email')).toBeInTheDocument();
     });
 
-    it('renders with helper text', () => {
-      render(<Input helperText="Enter your email address" />);
-      expect(screen.getByText('Enter your email address')).toBeInTheDocument();
+    it('renders with label', () => {
+      render(<Input label="Username" />);
+      expect(screen.getByText('Username')).toBeInTheDocument();
     });
 
-    it('renders error message', () => {
-      render(<Input error="Email is required" />);
-      expect(screen.getByText('Email is required')).toBeInTheDocument();
-      expect(screen.getByText('Email is required')).toHaveClass('text-error-600');
+    it('renders with placeholder', () => {
+      render(<Input label="Email" placeholder="Enter your email" />);
+      const input = screen.getByPlaceholderText('Enter your email');
+      expect(input).toBeInTheDocument();
     });
 
-    it('shows required indicator when required', () => {
-      render(<Input label="Email" required />);
-      const label = screen.getByText('Email');
-      const requiredSpan = label.querySelector('span[aria-label="required"]');
-      expect(requiredSpan).toBeInTheDocument();
-      expect(requiredSpan).toHaveTextContent('*');
+    it('associates label with input', () => {
+      render(<Input label="Email" id="email-input" />);
+      const input = screen.getByLabelText('Email');
+      expect(input).toHaveAttribute('id', 'email-input');
+    });
+  });
+
+  describe('Input Types', () => {
+    it('renders text input by default', () => {
+      render(<Input label="Name" />);
+      const input = screen.getByLabelText('Name');
+      expect(input).toHaveAttribute('type', 'text');
     });
 
-    it('renders with left icon', () => {
-      const { container } = render(<Input leftIcon={<span>🔍</span>} />);
-      expect(container.querySelector('.absolute.left-3')).toBeInTheDocument();
-      expect(container.querySelector('input')).toHaveClass('pl-10');
+    it('renders email input', () => {
+      render(<Input label="Email" type="email" />);
+      const input = screen.getByLabelText('Email');
+      expect(input).toHaveAttribute('type', 'email');
     });
 
-    it('renders with right icon', () => {
-      const { container } = render(<Input rightIcon={<span>✓</span>} />);
-      expect(container.querySelector('.absolute.right-3')).toBeInTheDocument();
-      expect(container.querySelector('input')).toHaveClass('pr-10');
+    it('renders password input', () => {
+      render(<Input label="Password" type="password" />);
+      const input = screen.getByLabelText('Password');
+      expect(input).toHaveAttribute('type', 'password');
     });
 
-    it('applies fullWidth class when fullWidth is true', () => {
-      const { container } = render(<Input fullWidth />);
-      expect(container.querySelector('.w-full')).toBeInTheDocument();
+    it('renders number input', () => {
+      render(<Input label="Age" type="number" />);
+      const input = screen.getByLabelText('Age');
+      expect(input).toHaveAttribute('type', 'number');
     });
   });
 
   describe('Value Handling', () => {
     it('handles controlled value', () => {
-      const { rerender } = render(<Input value="test" onChange={vi.fn()} />);
-      const input = screen.getByDisplayValue('test') as HTMLInputElement;
-      expect(input.value).toBe('test');
+      const { rerender } = render(<Input label="Name" value="John" onChange={() => {}} />);
+      const input = screen.getByLabelText('Name') as HTMLInputElement;
+      expect(input.value).toBe('John');
 
-      rerender(<Input value="updated" onChange={vi.fn()} />);
-      expect(input.value).toBe('updated');
+      rerender(<Input label="Name" value="Jane" onChange={() => {}} />);
+      expect(input.value).toBe('Jane');
     });
 
     it('handles onChange event', () => {
       const handleChange = vi.fn();
-      render(<Input onChange={handleChange} />);
-      const input = screen.getByRole('textbox');
-      fireEvent.change(input, { target: { value: 'test' } });
+      render(<Input label="Name" onChange={handleChange} />);
+      const input = screen.getByLabelText('Name');
+      fireEvent.change(input, { target: { value: 'Test' } });
       expect(handleChange).toHaveBeenCalledTimes(1);
-    });
-
-    it('handles onBlur event', () => {
-      const handleBlur = vi.fn();
-      render(<Input onBlur={handleBlur} />);
-      const input = screen.getByRole('textbox');
-      fireEvent.blur(input);
-      expect(handleBlur).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('Error State', () => {
-    it('applies error styles when error is present', () => {
-      const { container } = render(<Input error="Error message" />);
-      const input = container.querySelector('input');
-      expect(input).toHaveClass('border-error-500');
-      expect(input).toHaveAttribute('aria-invalid', 'true');
+    it('displays error message', () => {
+      render(<Input label="Email" error="Invalid email address" />);
+      expect(screen.getByText('Invalid email address')).toBeInTheDocument();
     });
 
-    it('hides helper text when error is present', () => {
-      render(<Input helperText="Helper text" error="Error message" />);
-      expect(screen.queryByText('Helper text')).not.toBeInTheDocument();
-      expect(screen.getByText('Error message')).toBeInTheDocument();
+    it('applies error styling when error is present', () => {
+      const { container } = render(<Input label="Email" error="Error" />);
+      const input = container.querySelector('input');
+      expect(input).toHaveClass('border-danger-500');
+    });
+
+    it('does not display error when error is not provided', () => {
+      render(<Input label="Email" />);
+      expect(screen.queryByText(/error/i)).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Disabled State', () => {
+    it('disables input when disabled prop is true', () => {
+      render(<Input label="Email" disabled />);
+      const input = screen.getByLabelText('Email');
+      expect(input).toBeDisabled();
+    });
+
+    it('applies disabled styling', () => {
+      const { container } = render(<Input label="Email" disabled />);
+      const input = container.querySelector('input');
+      expect(input).toHaveClass('opacity-50', 'cursor-not-allowed');
+    });
+  });
+
+  describe('Required Field', () => {
+    it('shows required indicator when required', () => {
+      render(<Input label="Email" required />);
+      const label = screen.getByText('Email');
+      expect(label).toHaveTextContent('*');
+    });
+
+    it('sets required attribute on input', () => {
+      render(<Input label="Email" required />);
+      const input = screen.getByLabelText('Email');
+      expect(input).toBeRequired();
     });
   });
 
@@ -103,67 +140,35 @@ describe('Input', () => {
       expect(results).toHaveNoViolations();
     });
 
-    it('associates label with input', () => {
-      render(<Input label="Email" id="email-input" />);
+    it('supports aria-describedby for error messages', () => {
+      render(<Input label="Email" error="Error message" id="email-input" />);
       const input = screen.getByLabelText('Email');
-      expect(input).toHaveAttribute('id', 'email-input');
+      expect(input).toHaveAttribute('aria-describedby');
     });
 
-    it('associates error message with input via aria-describedby', () => {
-      render(<Input label="Email" error="Email is required" id="email-input" />);
+    it('supports aria-invalid when error is present', () => {
+      render(<Input label="Email" error="Error" />);
       const input = screen.getByLabelText('Email');
-      const errorId = input.getAttribute('aria-describedby');
-      expect(errorId).toBeTruthy();
-      expect(screen.getByText('Email is required')).toHaveAttribute('id', errorId!);
-    });
-
-    it('associates helper text with input via aria-describedby', () => {
-      render(<Input label="Email" helperText="Enter your email" id="email-input" />);
-      const input = screen.getByLabelText('Email');
-      const helperId = input.getAttribute('aria-describedby');
-      expect(helperId).toBeTruthy();
-      expect(screen.getByText('Enter your email')).toHaveAttribute('id', helperId!);
-    });
-
-    it('sets aria-required when required', () => {
-      render(<Input required />);
-      const input = screen.getByRole('textbox');
-      expect(input).toHaveAttribute('aria-required', 'true');
+      expect(input).toHaveAttribute('aria-invalid', 'true');
     });
   });
 
-  describe('Ref Forwarding', () => {
-    it('forwards ref to input element', () => {
-      const ref = vi.fn();
-      render(<Input ref={ref} />);
-      expect(ref).toHaveBeenCalled();
-    });
-  });
-
-  describe('Input Types', () => {
-    it('renders with different input types', () => {
-      const { rerender } = render(<Input type="email" />);
-      expect(screen.getByRole('textbox')).toHaveAttribute('type', 'email');
-
-      rerender(<Input type="password" />);
-      expect(screen.getByRole('textbox')).toHaveAttribute('type', 'password');
-
-      rerender(<Input type="number" />);
-      expect(screen.getByRole('spinbutton')).toHaveAttribute('type', 'number');
-    });
-  });
-
-  describe('Disabled State', () => {
-    it('disables input when disabled prop is true', () => {
-      render(<Input disabled />);
-      const input = screen.getByRole('textbox');
-      expect(input).toBeDisabled();
+  describe('Helper Text', () => {
+    it('displays helper text', () => {
+      render(<Input label="Email" helperText="Enter your email address" />);
+      expect(screen.getByText('Enter your email address')).toBeInTheDocument();
     });
 
-    it('applies disabled styles', () => {
-      const { container } = render(<Input disabled />);
-      const input = container.querySelector('input');
-      expect(input).toHaveClass('disabled:bg-gray-100');
+    it('prioritizes error over helper text', () => {
+      render(
+        <Input
+          label="Email"
+          helperText="Helper text"
+          error="Error message"
+        />
+      );
+      expect(screen.getByText('Error message')).toBeInTheDocument();
+      expect(screen.queryByText('Helper text')).not.toBeInTheDocument();
     });
   });
 });

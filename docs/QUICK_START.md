@@ -79,6 +79,194 @@ Accédez à :
 
 ---
 
+## 💡 Exemples d'Utilisation
+
+### Créer une Page avec Composants
+
+```tsx
+// apps/web/src/app/examples/page.tsx
+import { Button, Card, Input, DataTable } from '@/components/ui';
+
+export default function ExamplesPage() {
+  return (
+    <div className="container mx-auto p-6">
+      <Card>
+        <h1 className="text-2xl font-bold mb-4">Exemples de Composants</h1>
+        
+        {/* Formulaire */}
+        <form className="space-y-4">
+          <Input 
+            label="Email" 
+            type="email" 
+            placeholder="votre@email.com"
+            required
+          />
+          <Input 
+            label="Mot de passe" 
+            type="password"
+            helperText="Minimum 8 caractères"
+          />
+          <Button type="submit" variant="primary">
+            Se connecter
+          </Button>
+        </form>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Utiliser les Composants de Billing
+
+```tsx
+// apps/web/src/app/billing/page.tsx
+import { BillingDashboard, InvoiceList } from '@/components/billing';
+
+export default function BillingPage() {
+  return (
+    <div>
+      <BillingDashboard />
+      <InvoiceList />
+    </div>
+  );
+}
+```
+
+### Créer une API Route
+
+```python
+# backend/app/api/v1/endpoints/my_feature.py
+from fastapi import APIRouter, Depends
+from app.core.rate_limit import rate_limit_decorator
+from app.core.database import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
+
+router = APIRouter()
+
+@router.get("/my-endpoint")
+@rate_limit_decorator("100/hour")
+async def my_endpoint(db: AsyncSession = Depends(get_db)):
+    """Mon endpoint personnalisé"""
+    return {"message": "Hello World"}
+```
+
+### Utiliser l'Authentification
+
+```tsx
+// apps/web/src/app/dashboard/page.tsx
+'use client';
+
+import { useAuth } from '@/hooks/useAuth';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+
+export default function DashboardPage() {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) return <div>Chargement...</div>;
+
+  return (
+    <ProtectedRoute>
+      <div>
+        <h1>Bienvenue, {user?.email}!</h1>
+      </div>
+    </ProtectedRoute>
+  );
+}
+```
+
+### Intégrer Stripe
+
+```tsx
+// apps/web/src/app/subscribe/page.tsx
+'use client';
+
+import { useState } from 'react';
+import { Button } from '@/components/ui';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+
+export default function SubscribePage() {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = async () => {
+    setLoading(true);
+    const stripe = await stripePromise;
+    
+    const response = await fetch('/api/v1/billing/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ planId: 'premium' }),
+    });
+    
+    const { sessionId } = await response.json();
+    await stripe?.redirectToCheckout({ sessionId });
+  };
+
+  return (
+    <Button onClick={handleSubscribe} loading={loading}>
+      S'abonner
+    </Button>
+  );
+}
+```
+
+### Utiliser les Composants d'Analytics
+
+```tsx
+// apps/web/src/app/analytics/page.tsx
+import { AnalyticsDashboard, Chart } from '@/components/analytics';
+
+export default function AnalyticsPage() {
+  const data = [
+    { date: '2025-01-01', value: 100 },
+    { date: '2025-01-02', value: 150 },
+    { date: '2025-01-03', value: 200 },
+  ];
+
+  return (
+    <div>
+      <AnalyticsDashboard />
+      <Chart 
+        data={data}
+        type="line"
+        title="Évolution des ventes"
+      />
+    </div>
+  );
+}
+```
+
+### Gérer les Erreurs
+
+```tsx
+// apps/web/src/app/error.tsx
+'use client';
+
+import { ErrorBoundary } from '@/components/errors/ErrorBoundary';
+import { ErrorDisplay } from '@/components/errors/ErrorDisplay';
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
+  return (
+    <ErrorBoundary>
+      <ErrorDisplay
+        error={error}
+        onRetry={reset}
+        title="Une erreur est survenue"
+      />
+    </ErrorBoundary>
+  );
+}
+```
+
+---
+
 ## 🆘 Problèmes ?
 
 ### "pnpm: command not found"
