@@ -1,7 +1,7 @@
 """Add database indexes for query optimization
 
 Revision ID: 007_add_indexes
-Revises: 006_add_donateurs_tables
+Revises: 003
 Create Date: 2025-12-21
 
 """
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '007_add_indexes'
-down_revision = '006_add_donateurs_tables'
+down_revision = '003'
 branch_labels = None
 depends_on = None
 
