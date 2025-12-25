@@ -99,15 +99,6 @@ COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder /app/apps/web/scripts/start.sh ./apps/web/scripts/start.sh
 RUN chmod +x ./apps/web/scripts/start.sh
 
-# Create entrypoint script for Railway compatibility (before USER switch)
-# Railway may try to run pnpm start, so we ensure the entrypoint handles it
-# Note: In standalone mode, server.js is always in /app
-RUN echo '#!/bin/sh' > /entrypoint.sh && \
-    echo 'set -e' >> /entrypoint.sh && \
-    echo 'exec node /app/server.js "$@"' >> /entrypoint.sh && \
-    chmod +x /entrypoint.sh && \
-    chown nextjs:nodejs /entrypoint.sh
-
 USER nextjs
 
 # Railway provides PORT via environment variable, default to 3000 for local development
