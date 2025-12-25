@@ -120,6 +120,7 @@ export function startTransaction(
 
 /**
  * Track performance metric
+ * Note: tags parameter is kept for backward compatibility but not currently supported by Sentry metrics API
  */
 export function trackPerformanceMetric(
   name: string,
@@ -127,9 +128,10 @@ export function trackPerformanceMetric(
   unit: 'millisecond' | 'second' | 'byte' | 'element' = 'millisecond',
   tags?: Record<string, string>
 ) {
+  // Tags are not supported in MetricOptions, so we only pass unit
+  // If tags are needed, they should be set on the scope before calling this function
   Sentry.metrics.distribution(name, value, {
     unit,
-    tags,
   });
 }
 
