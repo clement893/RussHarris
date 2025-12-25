@@ -107,9 +107,11 @@ export default function ReportViewer({
                 variant="ghost"
                 size="sm"
                 onClick={onRefresh}
-                icon={<RefreshCw className="w-4 h-4" />}
               >
-                Refresh
+                <span className="flex items-center gap-2">
+                  <RefreshCw className="w-4 h-4" />
+                  Refresh
+                </span>
               </Button>
             )}
             {onShare && (
@@ -117,9 +119,11 @@ export default function ReportViewer({
                 variant="ghost"
                 size="sm"
                 onClick={onShare}
-                icon={<Share2 className="w-4 h-4" />}
               >
-                Share
+                <span className="flex items-center gap-2">
+                  <Share2 className="w-4 h-4" />
+                  Share
+                </span>
               </Button>
             )}
             {onExport && (
@@ -143,9 +147,11 @@ export default function ReportViewer({
                   size="sm"
                   onClick={handleExport}
                   loading={loading}
-                  icon={<Download className="w-4 h-4" />}
                 >
-                  Export
+                  <span className="flex items-center gap-2">
+                    <Download className="w-4 h-4" />
+                    Export
+                  </span>
                 </Button>
               </div>
             )}
