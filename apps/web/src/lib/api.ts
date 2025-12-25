@@ -90,29 +90,6 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (typeof window !== 'undefined' && config.headers) {
-      // Apply rate limiting
-      if (config.url) {
-        const fullUrl = config.baseURL ? `${config.baseURL}${config.url}` : config.url;
-        const rateLimitKey = getRateLimitKey(fullUrl);
-        const rateLimitConfig = getRateLimitConfig(fullUrl);
-        
-        if (!rateLimiter.isAllowed(rateLimitKey, rateLimitConfig.maxRequests, rateLimitConfig.windowMs)) {
-          const remaining = rateLimiter.getRemaining(rateLimitKey, rateLimitConfig.maxRequests);
-          const resetTime = rateLimiter.getResetTime(rateLimitKey);
-          
-          logger.warn('Rate limit exceeded', {
-            endpoint: config.url,
-            remaining,
-            resetTimeMs: resetTime,
-          });
-          
-          const error = new Error('Rate limit exceeded. Please try again later.');
-          (error as any).status = 429;
-          (error as any).isRateLimitError = true;
-          return Promise.reject(error);
-        }
-      }
-      
       const token = TokenStorage.getToken();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
