@@ -12,7 +12,7 @@ import Button from '@/components/ui/Button';
 import Switch from '@/components/ui/Switch';
 import Select from '@/components/ui/Select';
 import type { SelectOption } from '@/components/ui/Select';
-import { Save, Bell, Mail, Smartphone, Inbox } from 'lucide-react';
+import { Save, Mail, Smartphone, Inbox } from 'lucide-react';
 
 export interface NotificationSettingsProps {
   settings?: {
