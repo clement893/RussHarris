@@ -63,21 +63,42 @@ async def list_users(
     if filters:
         query = query.where(and_(*filters))
     
+    # Create base query for counting (without eager loading)
+    count_query = select(User)
+    if filters:
+        count_query = count_query.where(and_(*filters))
+    
     # Optimize query with eager loading (prevent N+1 queries)
     # Note: roles relationship may not exist, so we skip if it doesn't
     try:
         query = QueryOptimizer.add_eager_loading(query, ["roles"], strategy="selectin")
-    except AttributeError:
-        # roles relationship doesn't exist, skip eager loading
+    except (AttributeError, Exception) as e:
+        # roles relationship doesn't exist or other error, skip eager loading
+        logger.warning(f"Could not add eager loading for roles: {e}")
         pass
     
     # Order by created_at (uses index)
     query = query.order_by(User.created_at.desc())
     
-    # Paginate query
-    result = await paginate_query(db, query, pagination)
-    
-    return result
+    # Paginate query with separate count query to avoid issues with eager loading
+    try:
+        result = await paginate_query(db, query, pagination, count_query=count_query)
+        return result
+    except Exception as e:
+        logger.error(f"Error paginating users query: {e}", exc_info=True)
+        # Try without eager loading as fallback
+        try:
+            query_fallback = select(User).order_by(User.created_at.desc())
+            if filters:
+                query_fallback = query_fallback.where(and_(*filters))
+            result = await paginate_query(db, query_fallback, pagination, count_query=count_query)
+            return result
+        except Exception as fallback_error:
+            logger.error(f"Error in fallback query: {fallback_error}", exc_info=True)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to retrieve users"
+            )
 
 
 @router.get("/{user_id}", response_model=UserResponse)
