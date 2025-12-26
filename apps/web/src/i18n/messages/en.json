@@ -153,6 +153,22 @@
       "success": {
         "saved": "Notification settings saved successfully"
       }
+    },
+    "team": {
+      "title": "Team Settings",
+      "description": "Manage your team members and permissions",
+      "breadcrumbs": {
+        "dashboard": "Dashboard",
+        "settings": "Settings",
+        "team": "Team"
+      },
+      "errors": {
+        "loadFailed": "Failed to load team settings. Please try again.",
+        "saveFailed": "Failed to save team settings. Please try again."
+      },
+      "success": {
+        "saved": "Team settings saved successfully"
+      }
     }
   }
 }
