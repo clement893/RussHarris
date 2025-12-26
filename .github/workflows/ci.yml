@@ -60,6 +60,9 @@ jobs:
       - name: Audit accessibility
         run: pnpm audit:accessibility
         continue-on-error: true
+
+      - name: Analyze code complexity
+        run: pnpm analyze:complexity
         continue-on-error: true
 
   test-frontend:
