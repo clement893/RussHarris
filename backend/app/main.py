@@ -45,11 +45,25 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     from app.core.logging import logger
     import os
     
-    # Startup
-    await init_db()
-    await init_cache()
-    # Ensure required columns exist (auto-migration)
-    await ensure_theme_preference_column()
+    # Startup - make database initialization resilient
+    try:
+        await init_db()
+        logger.info("Database initialized successfully")
+    except Exception as e:
+        logger.error(f"Database initialization failed: {e}. App will continue but database features may be unavailable.")
+        logger.warning("The app will start, but database operations will fail until connection is established.")
+    
+    try:
+        await init_cache()
+        logger.info("Cache initialized successfully")
+    except Exception as e:
+        logger.warning(f"Cache initialization failed: {e}. App will continue without cache.")
+    
+    # Ensure required columns exist (auto-migration) - only if DB is available
+    try:
+        await ensure_theme_preference_column()
+    except Exception as e:
+        logger.warning(f"Theme preference column migration skipped: {e}")
     
     # Create recommended indexes (non-blocking, runs concurrently)
     try:
@@ -67,14 +81,22 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             await analyze_tables(session)
     except Exception as e:
         logger.warning(f"Index creation/analysis skipped: {e}")
+    
     logger.info(f"CORS Origins configured: {settings.CORS_ORIGINS}")
     logger.info(f"ENVIRONMENT: {os.getenv('ENVIRONMENT', 'NOT SET')}")
     logger.info(f"RAILWAY_ENVIRONMENT: {os.getenv('RAILWAY_ENVIRONMENT', 'NOT SET')}")
     logger.info(f"RAILWAY_SERVICE_NAME: {os.getenv('RAILWAY_SERVICE_NAME', 'NOT SET')}")
+    logger.info("Application startup complete")
     yield
     # Shutdown
-    await close_cache()
-    await close_db()
+    try:
+        await close_cache()
+    except Exception as e:
+        logger.warning(f"Cache shutdown error: {e}")
+    try:
+        await close_db()
+    except Exception as e:
+        logger.warning(f"Database shutdown error: {e}")
 
 
 def create_app() -> FastAPI:
