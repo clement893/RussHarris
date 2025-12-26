@@ -54,12 +54,12 @@ function GoogleAuthTestContent() {
         },
       });
 
-      if (response.auth_url) {
+      if (response.data?.auth_url) {
         setStatus({
           configured: true,
-          auth_url: response.auth_url,
+          auth_url: response.data.auth_url,
         });
-        setAuthUrl(response.auth_url);
+        setAuthUrl(response.data.auth_url);
       } else {
         setStatus({
           configured: false,
