@@ -101,7 +101,7 @@ export default function AdminOrganizationsContent() {
         name: newTeamName.trim(),
         slug: slug,
         description: newTeamDescription.trim() || undefined,
-      });
+      } as Parameters<typeof teamsAPI.create>[0]);
       await loadTeams();
       setShowCreateModal(false);
       setNewTeamName('');
