@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { Card, Button, Input, Select, Modal, Alert, Badge } from '@/components/ui';
 import { DragDropList } from '@/components/ui';
 import type { DragDropListItem } from '@/components/ui';
-import { Plus, Save, Trash2, Settings, GripVertical } from 'lucide-react';
+import { Plus, Save, Trash2, Settings } from 'lucide-react';
 
 export interface FormFieldConfig {
   id: string;
@@ -360,14 +360,16 @@ export default function CMSFormBuilder({
                 Options (one per line)
               </label>
               <textarea
-                value={newField.options?.map((o) => `${o.label}:${o.value}`).join('\n') || ''}
+                value={newField.options?.map((o) => `${o?.label || ''}:${o?.value || ''}`).join('\n') || ''}
                 onChange={(e) => {
                   const options = e.target.value
                     .split('\n')
                     .filter((line) => line.trim())
                     .map((line) => {
                       const [label, value] = line.split(':');
-                      return { label: label.trim(), value: (value || label).trim() };
+                      const trimmedLabel = label?.trim() || '';
+                      const trimmedValue = value?.trim() || trimmedLabel;
+                      return { label: trimmedLabel, value: trimmedValue };
                     });
                   setNewField({ ...newField, options });
                 }}
