@@ -168,9 +168,13 @@ async def list_themes(
         # Ignore errors - migration should handle this, but we try anyway
         await db.rollback()
     
-    # First, get TemplateTheme (ID 32) - it should always exist
-    template_result = await db.execute(select(Theme).where(Theme.id == 32))
-    template_theme = template_result.scalar_one_or_none()
+    # Ensure TemplateTheme (ID 32) exists - create it if it doesn't
+    try:
+        template_theme = await ensure_default_theme(db, created_by=current_user.id)
+    except Exception:
+        # If ensure_default_theme fails, try to get existing TemplateTheme
+        template_result = await db.execute(select(Theme).where(Theme.id == 32))
+        template_theme = template_result.scalar_one_or_none()
     
     # Get all other themes (excluding ID 32 and "default" theme to avoid duplicates) with pagination
     # Filter out TemplateTheme (ID 32) and any theme with name="default", id=0, or display_name="Default Theme"
