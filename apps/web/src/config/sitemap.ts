@@ -444,6 +444,56 @@ export const sitePages: Record<string, SitemapPage[]> = {
       requiresAuth: false, // Page publique
     },
   ],
+  'Onboarding': [
+    {
+      path: '/onboarding',
+      title: 'Onboarding',
+      description: 'Configuration initiale du compte',
+      priority: 0.8,
+      changefreq: 'monthly',
+      requiresAuth: true,
+    },
+    {
+      path: '/onboarding/welcome',
+      title: 'Onboarding Welcome',
+      description: 'Écran de bienvenue',
+      priority: 0.7,
+      changefreq: 'monthly',
+      requiresAuth: true,
+    },
+    {
+      path: '/onboarding/profile',
+      title: 'Onboarding Profile',
+      description: 'Configuration du profil',
+      priority: 0.7,
+      changefreq: 'monthly',
+      requiresAuth: true,
+    },
+    {
+      path: '/onboarding/preferences',
+      title: 'Onboarding Preferences',
+      description: 'Configuration des préférences',
+      priority: 0.7,
+      changefreq: 'monthly',
+      requiresAuth: true,
+    },
+    {
+      path: '/onboarding/team',
+      title: 'Onboarding Team',
+      description: 'Configuration de l\'équipe',
+      priority: 0.7,
+      changefreq: 'monthly',
+      requiresAuth: true,
+    },
+    {
+      path: '/onboarding/complete',
+      title: 'Onboarding Complete',
+      description: 'Onboarding terminé',
+      priority: 0.7,
+      changefreq: 'monthly',
+      requiresAuth: true,
+    },
+  ],
   'Outils': [
     { 
       path: '/ai/chat', 
