@@ -138,10 +138,10 @@ export default function SecuritySettingsPage() {
                         scopes,
                       };
                     }} 
-                    onDelete={async (id: string) => {
+                    onDelete={async (_id: string) => {
                       // TODO: Implement API key deletion
                     }} 
-                    onRevoke={async (id: string) => {
+                    onRevoke={async (_id: string) => {
                       // TODO: Implement API key revocation
                     }} 
                   />
