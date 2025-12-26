@@ -34,12 +34,12 @@
 // Example: Lazy load heavy components
 // Uncomment and adjust the paths when you have the actual components:
 // export const DataTablePage = routeSplit(
-//   () => import('@/app/components/data/page'),
+//   () => import('@/app/[locale]/components/data/page'),
 //   'data'
 // );
 
 // export const ChartsPage = routeSplit(
-//   () => import('@/app/components/charts/page'),
+//   () => import('@/app/[locale]/components/charts/page'),
 //   'charts'
 // );
 
@@ -53,10 +53,10 @@
 //       import('@/app/admin/AdminPanel');
 //       break;
 //     case 'data':
-//       import('@/app/components/data/page');
+//       import('@/app/[locale]/components/data/page');
 //       break;
 //     case 'charts':
-//       import('@/app/components/charts/page');
+//       import('@/app/[locale]/components/charts/page');
 //       break;
 //   }
 // }
