@@ -28,6 +28,9 @@ export function FontInstaller({ onFontSelect, currentFont }: FontInstallerProps)
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFont, setSelectedFont] = useState<string | null>(currentFont || null);
   const [showUpload, setShowUpload] = useState(false);
+  const [uploadingFont, setUploadingFont] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadedFontUrl, setUploadedFontUrl] = useState<string | null>(null);
 
   // Popular Google Fonts - Static list to avoid CSP issues
   // Users can still search and select fonts, and the font URL will be generated
@@ -96,6 +99,23 @@ export function FontInstaller({ onFontSelect, currentFont }: FontInstallerProps)
     link.href = fontUrl;
     link.setAttribute('data-font', fontFamily);
     document.head.appendChild(link);
+  };
+
+  // Helper function to determine font format from filename
+  const getFontFormat = (filename: string): string => {
+    const ext = filename.toLowerCase().split('.').pop();
+    switch (ext) {
+      case 'woff':
+        return 'woff';
+      case 'woff2':
+        return 'woff2';
+      case 'ttf':
+        return 'truetype';
+      case 'otf':
+        return 'opentype';
+      default:
+        return 'woff2'; // Default to woff2
+    }
   };
 
   return (
