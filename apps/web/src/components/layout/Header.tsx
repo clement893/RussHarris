@@ -7,7 +7,6 @@ import Button from '../ui/Button';
 import { ThemeToggleWithIcon } from '../ui/ThemeToggle';
 import LanguageSwitcher from '../i18n/LanguageSwitcher';
 import { Menu, X } from 'lucide-react';
-import { clsx } from 'clsx';
 
 export default function Header() {
   const { isAuthenticated, user, logout } = useAuthStore();
