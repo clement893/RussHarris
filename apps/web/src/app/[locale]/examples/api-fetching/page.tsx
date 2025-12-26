@@ -57,7 +57,7 @@ export default function ExampleAPIFetchingPage() {
 
   const handleRetryFetch = async () => {
     try {
-      const result = await retryFetch(async () => {
+      await retryFetch(async () => {
         const response = await fetch('https://jsonplaceholder.typicode.com/posts');
         if (!response.ok) throw new Error('Network error');
         return response.json();
