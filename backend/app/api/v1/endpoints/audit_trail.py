@@ -9,7 +9,7 @@ from datetime import datetime
 
 from app.models.user import User
 from app.core.security_audit import SecurityAuditLog
-from app.dependencies import get_current_user
+from app.dependencies import get_current_user, is_superadmin
 from app.core.database import get_db
 from sqlalchemy import select, and_, or_, desc
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,11 +30,18 @@ class AuditLogResponse(BaseModel):
     request_method: Optional[str]
     request_path: Optional[str]
     description: str
+    message: str  # Alias for description to match frontend
     event_metadata: Optional[dict]
     success: str
 
     class Config:
         from_attributes = True
+    
+    def __init__(self, **data):
+        # Map description to message if message is not provided
+        if 'message' not in data and 'description' in data:
+            data['message'] = data['description']
+        super().__init__(**data)
 
 
 @router.get("/audit-trail", response_model=List[AuditLogResponse], tags=["audit-trail"])
@@ -49,18 +56,29 @@ async def get_audit_trail(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Get audit trail logs"""
-    # TODO: Check if user is admin or has permission to view audit logs
+    """Get audit trail logs
+    
+    Superadmins can see all logs. Regular users can only see their own logs.
+    """
+    # Check if user is superadmin
+    user_is_superadmin = await is_superadmin(current_user, db)
     
     query = select(SecurityAuditLog)
     
-    # Filter by user (if not admin, only show own logs)
-    # TODO: Implement admin check
+    # Filter by user
     if user_id:
+        # If filtering by specific user_id
         query = query.where(SecurityAuditLog.user_id == user_id)
-    else:
-        # For now, users can only see their own logs
+        # Non-superadmins can only filter their own logs
+        if not user_is_superadmin and user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You can only view your own audit logs"
+            )
+    elif not user_is_superadmin:
+        # Non-superadmins can only see their own logs
         query = query.where(SecurityAuditLog.user_id == current_user.id)
+    # If superadmin and no user_id filter, show all logs
     
     if event_type:
         query = query.where(SecurityAuditLog.event_type == event_type)
@@ -81,7 +99,15 @@ async def get_audit_trail(
     )
     
     logs = result.scalars().all()
-    return [AuditLogResponse.model_validate(log) for log in logs]
+    # Convert to response with message field mapped from description
+    return [
+        AuditLogResponse.model_validate({
+            **log.__dict__,
+            'timestamp': log.timestamp.isoformat() if log.timestamp else "",
+            'message': log.description,  # Map description to message for frontend
+        })
+        for log in logs
+    ]
 
 
 @router.get("/audit-trail/stats", tags=["audit-trail"])
