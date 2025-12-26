@@ -403,11 +403,10 @@ docker run -p 3000:3000 your-app
 
 ### Database Documentation
 
-- **[Quick Database Guide](./QUICK_DATABASE_GUIDE.md)** ⭐ **START HERE** - How tables are created/updated (for template users)
+- **[Quick Database Guide](./QUICK_DATABASE_GUIDE.md)** ⭐ **START HERE** - Quick reference for creating/updating tables
 - **[Database Template Guide](./docs/DATABASE_TEMPLATE_GUIDE.md)** - Complete step-by-step guide with examples
 - **[Database Migrations](./docs/DATABASE_MIGRATIONS.md)** - Complete migration process and rollback strategies
 - **[Seed Data Guide](./docs/SEED_DATA.md)** - Seed data documentation and examples
-- **[Database Guide](./docs/DATABASE_GUIDE.md)** - Quick reference for database operations
 
 ### Component & Development Documentation
 
