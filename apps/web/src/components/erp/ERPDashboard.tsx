@@ -8,6 +8,7 @@
 
 'use client';
 
+import { memo } from 'react';
 import { ERPDashboardStats } from '@/lib/api/erp-portal';
 import { Card, StatsCard } from '@/components/ui';
 import { useApi } from '@/hooks/useApi';
@@ -145,5 +146,5 @@ export const ERPDashboard = memo(function ERPDashboard() {
       )}
     </div>
   );
-}
+});
 
