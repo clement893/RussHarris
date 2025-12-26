@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { BlogPost } from '@/components/blog';
@@ -23,13 +23,7 @@ export default function BlogPostPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (slug) {
-      loadPost(slug);
-    }
-  }, [slug]);
-
-  const loadPost = async (_postSlug: string) => {
+  const loadPost = useCallback(async (postSlug: string) => {
     try {
       setIsLoading(true);
       setError(null);
@@ -46,7 +40,13 @@ export default function BlogPostPage() {
       setError(t('errors.loadFailed') || 'Failed to load blog post. Please try again.');
       setIsLoading(false);
     }
-  };
+  }, [t]);
+
+  useEffect(() => {
+    if (slug) {
+      loadPost(slug);
+    }
+  }, [slug, loadPost]);
 
   if (isLoading) {
     return (
