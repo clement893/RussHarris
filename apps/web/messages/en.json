@@ -127,6 +127,22 @@
         "loadFailed": "Failed to load notification settings. Please try again.",
         "updateFailed": "Failed to update notification settings. Please try again."
       }
+    },
+    "activity": {
+      "title": "Activity Log",
+      "description": "View your account activity history",
+      "breadcrumbs": {
+        "dashboard": "Dashboard",
+        "profile": "Profile",
+        "activity": "Activity"
+      },
+      "section": {
+        "title": "Recent Activity"
+      },
+      "empty": "No activity found",
+      "errors": {
+        "loadFailed": "Failed to load activity log. Please try again."
+      }
     }
   }
 }

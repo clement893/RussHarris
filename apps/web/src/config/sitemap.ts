@@ -103,6 +103,14 @@ export const sitePages: Record<string, SitemapPage[]> = {
       changefreq: 'monthly',
       requiresAuth: true,
     },
+    { 
+      path: '/profile/activity', 
+      title: 'Profile Activity', 
+      description: 'Historique des activités du compte',
+      priority: 0.7,
+      changefreq: 'weekly',
+      requiresAuth: true,
+    },
   ],
   'Abonnements': [
     { 
