@@ -142,7 +142,7 @@ apiClient.interceptors.response.use(
             refresh_token: refreshToken,
           }).then(async response => {
             // Response format: { access_token: string, token_type: string }
-            const { access_token, token_type } = response.data;
+            const { access_token } = response.data;
             await TokenStorage.setToken(access_token, refreshToken); // Keep same refresh token
             return access_token;
           }).catch(async refreshError => {
