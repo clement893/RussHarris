@@ -91,6 +91,7 @@ def setup_cors(app: FastAPI) -> None:
         "X-Signature",  # For request signing
         "X-Timestamp",  # For request signing
         "X-CSRF-Token",  # For CSRF protection
+        "X-Bootstrap-Key",  # For bootstrap superadmin endpoint
     ]
     
     # Exposed headers - minimal set
@@ -170,6 +171,18 @@ def setup_cors(app: FastAPI) -> None:
                 resp.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, PATCH, OPTIONS"
                 resp.headers["Access-Control-Allow-Headers"] = ", ".join(allowed_headers)
             return resp
+        
+        # Handle OPTIONS preflight requests explicitly
+        if request.method == "OPTIONS":
+            from starlette.responses import Response
+            response = Response()
+            if allowed_origin:
+                response.headers["Access-Control-Allow-Origin"] = allowed_origin
+                response.headers["Access-Control-Allow-Credentials"] = "true"
+                response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+                response.headers["Access-Control-Allow-Headers"] = ", ".join(allowed_headers)
+                response.headers["Access-Control-Max-Age"] = "3600"
+            return response
         
         # Process the request
         try:
