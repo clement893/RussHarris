@@ -40,6 +40,70 @@ export default function ExamplesPage() {
       icon: '⚙️',
       color: 'purple',
     },
+    {
+      id: 'auth',
+      title: 'Exemple Authentification',
+      description: 'Formulaires de connexion, inscription et réinitialisation de mot de passe',
+      href: '/examples/auth',
+      icon: '🔐',
+      color: 'red',
+    },
+    {
+      id: 'crud',
+      title: 'Exemple CRUD Complet',
+      description: 'Gestion complète CRUD avec modals, validation et gestion d\'états',
+      href: '/examples/crud',
+      icon: '📝',
+      color: 'orange',
+    },
+    {
+      id: 'api-fetching',
+      title: 'Exemple API / Data Fetching',
+      description: 'Récupération de données avec retry, cache et optimistic updates',
+      href: '/examples/api-fetching',
+      icon: '🔄',
+      color: 'cyan',
+    },
+    {
+      id: 'data-table',
+      title: 'Exemple Tableau de Données',
+      description: 'Tableau avancé avec tri, filtres, export et actions batch',
+      href: '/examples/data-table',
+      icon: '📋',
+      color: 'indigo',
+    },
+    {
+      id: 'file-upload',
+      title: 'Exemple Upload de Fichiers',
+      description: 'Upload avec preview, barre de progression et validation',
+      href: '/examples/file-upload',
+      icon: '📤',
+      color: 'pink',
+    },
+    {
+      id: 'toast',
+      title: 'Exemple Notifications / Toast',
+      description: 'Système de notifications toast avec différents types et durées',
+      href: '/examples/toast',
+      icon: '🔔',
+      color: 'yellow',
+    },
+    {
+      id: 'search',
+      title: 'Exemple Recherche Avancée',
+      description: 'Barre de recherche avec autocomplete, filtres et résultats temps réel',
+      href: '/examples/search',
+      icon: '🔍',
+      color: 'teal',
+    },
+    {
+      id: 'modal',
+      title: 'Exemple Modal / Dialog',
+      description: 'Modals simples, confirmations et formulaires dans modals',
+      href: '/examples/modal',
+      icon: '💬',
+      color: 'gray',
+    },
   ];
 
   return (
@@ -51,7 +115,7 @@ export default function ExamplesPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
         {examples.map((example) => (
           <Link key={example.id} href={example.href}>
             <Card className="h-full hover:shadow-xl transition-shadow cursor-pointer">
