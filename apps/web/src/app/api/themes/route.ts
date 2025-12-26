@@ -4,7 +4,6 @@
  */
 import { NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
-import type { ThemeConfigResponse } from '@modele/types';
 
 /**
  * Get API URL with production fallback
