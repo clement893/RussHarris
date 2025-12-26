@@ -353,6 +353,15 @@ class ClientService:
         ticket_result = await self.db.execute(ticket_query)
         ticket_stats = ticket_result.first()
         
+        # Log slow query if threshold exceeded
+        execution_time = time.time() - start_time
+        if execution_time > SLOW_QUERY_THRESHOLD:
+            await log_slow_query_async(
+                select(Invoice).where(Invoice.user_id == user_id),
+                execution_time,
+                SLOW_QUERY_THRESHOLD
+            )
+        
         return {
             "total_invoices": invoice_stats.total or 0,
             "pending_invoices": 0,  # Will be calculated from status

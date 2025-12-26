@@ -236,6 +236,12 @@ class Settings(BaseSettings):
         le=300,
         description="Query execution timeout (seconds)",
     )
+    SLOW_QUERY_THRESHOLD: float = Field(
+        default=1.0,
+        ge=0.1,
+        le=10.0,
+        description="Threshold in seconds to log slow queries",
+    )
 
     # Multi-Tenancy Configuration
     TENANCY_MODE: str = Field(

@@ -8,6 +8,7 @@
 
 'use client';
 
+import { memo } from 'react';
 import { ClientDashboardStats } from '@/lib/api/client-portal';
 import { Card, StatsCard } from '@/components/ui';
 import { useApi } from '@/hooks/useApi';
@@ -27,7 +28,7 @@ import { useApi } from '@/hooks/useApi';
  * <ClientDashboard />
  * ```
  */
-export function ClientDashboard() {
+export const ClientDashboard = memo(function ClientDashboard() {
   const { data: stats, isLoading, error } = useApi<ClientDashboardStats>({
     url: '/v1/client/dashboard/stats',
   });

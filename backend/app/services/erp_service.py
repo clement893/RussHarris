@@ -249,6 +249,11 @@ class ERPService:
         Returns:
             Dictionary with dashboard statistics
         """
+        import time
+        from app.core.slow_query_logger import log_slow_query_async, SLOW_QUERY_THRESHOLD
+        
+        start_time = time.time()
+        
         # Get invoice stats
         from app.models.invoice import InvoiceStatus
         invoice_query = select(
@@ -292,6 +297,15 @@ class ERPService:
         project_query = apply_tenant_scope(project_query, Project)
         project_result = await self.db.execute(project_query)
         project_stats = project_result.first()
+        
+        # Log slow query if threshold exceeded
+        execution_time = time.time() - start_time
+        if execution_time > SLOW_QUERY_THRESHOLD:
+            await log_slow_query_async(
+                invoice_query,
+                execution_time,
+                SLOW_QUERY_THRESHOLD
+            )
         
         return {
             "total_invoices": invoice_stats.total or 0,

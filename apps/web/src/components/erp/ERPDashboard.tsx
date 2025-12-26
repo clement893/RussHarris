@@ -28,7 +28,7 @@ import { useApi } from '@/hooks/useApi';
  * <ERPDashboard />
  * ```
  */
-export function ERPDashboard() {
+export const ERPDashboard = memo(function ERPDashboard() {
   const { data: stats, isLoading, error } = useApi<ERPDashboardStats>({
     url: '/v1/erp/dashboard/stats',
   });
