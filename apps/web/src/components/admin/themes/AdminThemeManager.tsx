@@ -33,9 +33,39 @@ export function AdminThemeManager({ authToken }: ThemeManagerProps) {
       setIsLoading(true);
       setError(null);
       const response = await listThemes(authToken);
-      setThemes(response.themes);
+      // Ensure we have themes - if empty, the backend should create a default one
+      if (response.themes && response.themes.length > 0) {
+        setThemes(response.themes);
+      } else {
+        // If no themes returned, try to reload after a short delay
+        // The backend should have created a default theme
+        setTimeout(async () => {
+          try {
+            const retryResponse = await listThemes(authToken);
+            if (retryResponse.themes && retryResponse.themes.length > 0) {
+              setThemes(retryResponse.themes);
+            } else {
+              setError('No themes found. Please create a theme.');
+            }
+          } catch (retryErr) {
+            setError('Failed to load themes. Please refresh the page.');
+          }
+        }, 1000);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load themes');
+      // Try to reload themes once more
+      setTimeout(async () => {
+        try {
+          const retryResponse = await listThemes(authToken);
+          if (retryResponse.themes && retryResponse.themes.length > 0) {
+            setThemes(retryResponse.themes);
+            setError(null);
+          }
+        } catch {
+          // Ignore retry errors
+        }
+      }, 2000);
     } finally {
       setIsLoading(false);
     }
