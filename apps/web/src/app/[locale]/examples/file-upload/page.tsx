@@ -221,7 +221,8 @@ export default function ExampleFileUploadPage() {
                           <X className="w-4 h-4" />
                         </Button>
                       </div>
-                    ))}
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
@@ -302,7 +303,8 @@ export default function ExampleFileUploadPage() {
                           <X className="w-4 h-4" />
                         </Button>
                       </div>
-                    ))}
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
