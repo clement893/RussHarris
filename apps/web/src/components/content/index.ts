@@ -12,3 +12,6 @@ export type { Page, PagesManagerProps } from './PagesManager';
 export { default as PostsManager } from './PostsManager';
 export type { BlogPost, PostsManagerProps } from './PostsManager';
 
+export { default as MediaLibrary } from './MediaLibrary';
+export type { MediaItem, ViewMode, MediaLibraryProps } from './MediaLibrary';
+
