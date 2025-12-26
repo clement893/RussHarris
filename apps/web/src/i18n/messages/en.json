@@ -137,6 +137,22 @@
       "success": {
         "saved": "Organization settings saved successfully"
       }
+    },
+    "notifications": {
+      "title": "Notification Settings",
+      "description": "Manage your notification preferences",
+      "breadcrumbs": {
+        "dashboard": "Dashboard",
+        "settings": "Settings",
+        "notifications": "Notifications"
+      },
+      "errors": {
+        "loadFailed": "Failed to load notification settings. Please try again.",
+        "saveFailed": "Failed to save notification settings. Please try again."
+      },
+      "success": {
+        "saved": "Notification settings saved successfully"
+      }
     }
   }
 }

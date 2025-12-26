@@ -137,6 +137,22 @@
       "success": {
         "saved": "Paramètres de l'organisation enregistrés avec succès"
       }
+    },
+    "notifications": {
+      "title": "Paramètres de notifications",
+      "description": "Gérez vos préférences de notifications",
+      "breadcrumbs": {
+        "dashboard": "Tableau de bord",
+        "settings": "Paramètres",
+        "notifications": "Notifications"
+      },
+      "errors": {
+        "loadFailed": "Échec du chargement des paramètres de notifications. Veuillez réessayer.",
+        "saveFailed": "Échec de l'enregistrement des paramètres de notifications. Veuillez réessayer."
+      },
+      "success": {
+        "saved": "Paramètres de notifications enregistrés avec succès"
+      }
     }
   }
 }
