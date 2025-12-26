@@ -14,6 +14,7 @@ from app.models.webhook_event import WebhookEvent
 from app.models.api_key import APIKey
 from app.models.tag import Tag, Category, EntityTag
 from app.models.comment import Comment, CommentReaction
+from app.models.favorite import Favorite
 from app.core.security_audit import SecurityAuditLog
 
 __all__ = [
@@ -39,6 +40,7 @@ __all__ = [
     "EntityTag",
     "Comment",
     "CommentReaction",
+    "Favorite",
     "SecurityAuditLog",
 ]
 

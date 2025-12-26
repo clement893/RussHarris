@@ -2,7 +2,7 @@
 API v1 router registration.
 """
 from fastapi import APIRouter
-from app.api.v1.endpoints import themes, projects, websocket, admin, auth, two_factor, api_keys, users, health, db_health, newsletter, exports, imports, search, tags, activities, comments
+from app.api.v1.endpoints import themes, projects, websocket, admin, auth, two_factor, api_keys, users, health, db_health, newsletter, exports, imports, search, tags, activities, comments, favorites
 from app.api import ai as ai_router
 
 api_router = APIRouter()
@@ -129,4 +129,11 @@ api_router.include_router(
     comments.router,
     prefix="/comments",
     tags=["comments"]
+)
+
+# Register favorites endpoints
+api_router.include_router(
+    favorites.router,
+    prefix="/favorites",
+    tags=["favorites"]
 )
