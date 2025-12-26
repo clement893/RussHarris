@@ -1,0 +1,187 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { FileText, Plus, Trash2, Copy } from 'lucide-react';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import { apiClient } from '@/lib/api/client';
+import { useToast } from '@/components/ui';
+
+interface Template {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+  category?: string;
+  entity_type: string;
+  usage_count: number;
+  is_public: boolean;
+  created_at: string;
+}
+
+interface TemplateManagerProps {
+  entityType?: string;
+  category?: string;
+  className?: string;
+  onSelect?: (template: Template) => void;
+}
+
+export function TemplateManager({
+  entityType,
+  category,
+  className = '',
+  onSelect,
+}: TemplateManagerProps) {
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    fetchTemplates();
+  }, [entityType, category]);
+
+  const fetchTemplates = async () => {
+    setIsLoading(true);
+    try {
+      const response = await apiClient.get<Template[]>('/api/v1/templates/templates', {
+        params: {
+          entity_type: entityType,
+          category,
+          limit: 50,
+        },
+      });
+      if (response.data) {
+        setTemplates(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch templates:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDuplicate = async (template: Template) => {
+    try {
+      await apiClient.post(`/api/v1/templates/templates/${template.id}/duplicate`);
+      showToast({
+        message: 'Template duplicated successfully',
+        type: 'success',
+      });
+      fetchTemplates();
+    } catch (error: any) {
+      showToast({
+        message: error.response?.data?.detail || 'Failed to duplicate template',
+        type: 'error',
+      });
+    }
+  };
+
+  const handleDelete = async (templateId: number) => {
+    if (!confirm('Are you sure you want to delete this template?')) return;
+
+    try {
+      await apiClient.delete(`/api/v1/templates/templates/${templateId}`);
+      setTemplates(templates.filter((t) => t.id !== templateId));
+      showToast({
+        message: 'Template deleted successfully',
+        type: 'success',
+      });
+    } catch (error: any) {
+      showToast({
+        message: error.response?.data?.detail || 'Failed to delete template',
+        type: 'error',
+      });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <Card className={className}>
+        <div className="text-center py-8 text-gray-500">Loading templates...</div>
+      </Card>
+    );
+  }
+
+  return (
+    <div className={className}>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold">Templates</h3>
+        <Button variant="primary" size="sm">
+          <Plus className="h-4 w-4 mr-2" />
+          New Template
+        </Button>
+      </div>
+
+      {templates.length === 0 ? (
+        <Card>
+          <div className="text-center py-8 text-gray-500">
+            <FileText className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+            <p>No templates found</p>
+          </div>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {templates.map((template) => (
+            <Card
+              key={template.id}
+              className="p-4 hover:shadow-lg transition-shadow cursor-pointer"
+              onClick={() => onSelect?.(template)}
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-primary-500" />
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                    {template.name}
+                  </h4>
+                </div>
+                {template.is_public && (
+                  <span className="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">
+                    Public
+                  </span>
+                )}
+              </div>
+              
+              {template.description && (
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
+                  {template.description}
+                </p>
+              )}
+              
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center gap-4 text-xs text-gray-500">
+                  {template.category && (
+                    <span className="capitalize">{template.category}</span>
+                  )}
+                  <span>Used {template.usage_count} times</span>
+                </div>
+                <div className="flex gap-1">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDuplicate(template);
+                    }}
+                    className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                    title="Duplicate"
+                  >
+                    <Copy className="h-3 w-3" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(template.id);
+                    }}
+                    className="p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                    title="Delete"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </button>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
