@@ -10,8 +10,7 @@ from app.models.form import Form, FormSubmission
 from app.models.user import User
 
 
-@pytest.mark.asyncio
-async def test_create_form(client: AsyncClient, test_user: User, auth_headers: dict):
+def test_create_form(client: TestClient, test_user: User, db: AsyncSession):
     """Test creating a new form"""
     form_data = {
         "name": "Test Form",
@@ -28,10 +27,13 @@ async def test_create_form(client: AsyncClient, test_user: User, auth_headers: d
         "submit_button_text": "Submit",
     }
     
-    response = await client.post(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.post(
         "/api/v1/forms",
         json=form_data,
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 201
@@ -41,7 +43,7 @@ async def test_create_form(client: AsyncClient, test_user: User, auth_headers: d
 
 
 @pytest.mark.asyncio
-async def test_get_form(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_get_form(client: TestClient, test_user: User, db: AsyncSession):
     """Test getting a form by ID"""
     # Create a test form
     form = Form(
@@ -55,9 +57,12 @@ async def test_get_form(client: AsyncClient, test_user: User, auth_headers: dict
     await db.commit()
     await db.refresh(form)
     
-    response = await client.get(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.get(
         f"/api/v1/forms/{form.id}",
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
@@ -67,7 +72,7 @@ async def test_get_form(client: AsyncClient, test_user: User, auth_headers: dict
 
 
 @pytest.mark.asyncio
-async def test_list_forms(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_list_forms(client: TestClient, test_user: User, db: AsyncSession):
     """Test listing forms"""
     # Create test forms
     for i in range(3):
@@ -79,9 +84,12 @@ async def test_list_forms(client: AsyncClient, test_user: User, auth_headers: di
         db.add(form)
     await db.commit()
     
-    response = await client.get(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.get(
         "/api/v1/forms",
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
@@ -90,7 +98,7 @@ async def test_list_forms(client: AsyncClient, test_user: User, auth_headers: di
 
 
 @pytest.mark.asyncio
-async def test_submit_form(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_submit_form(client: TestClient, test_user: User, db: AsyncSession):
     """Test submitting a form"""
     # Create a test form
     form = Form(
@@ -107,10 +115,13 @@ async def test_submit_form(client: AsyncClient, test_user: User, auth_headers: d
         "data": {"name": "John Doe"},
     }
     
-    response = await client.post(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.post(
         f"/api/v1/forms/{form.id}/submissions",
         json=submission_data,
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 201
@@ -120,7 +131,7 @@ async def test_submit_form(client: AsyncClient, test_user: User, auth_headers: d
 
 
 @pytest.mark.asyncio
-async def test_get_form_submissions(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_get_form_submissions(client: TestClient, test_user: User, db: AsyncSession):
     """Test getting form submissions"""
     # Create a test form
     form = Form(
@@ -142,9 +153,12 @@ async def test_get_form_submissions(client: AsyncClient, test_user: User, auth_h
         db.add(submission)
     await db.commit()
     
-    response = await client.get(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.get(
         f"/api/v1/forms/{form.id}/submissions",
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200

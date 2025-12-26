@@ -3,16 +3,19 @@ Tests for SEO API endpoints
 """
 
 import pytest
-from httpx import AsyncClient
+from fastapi.testclient import TestClient
 from app.models.user import User
+from app.core.auth import create_access_token
 
 
-@pytest.mark.asyncio
-async def test_get_seo_settings(client: AsyncClient, test_user: User, auth_headers: dict):
+def test_get_seo_settings(client: TestClient, test_user: User, db: AsyncSession):
     """Test getting SEO settings"""
-    response = await client.get(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.get(
         "/api/v1/seo/settings",
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
@@ -20,8 +23,7 @@ async def test_get_seo_settings(client: AsyncClient, test_user: User, auth_heade
     assert "settings" in data
 
 
-@pytest.mark.asyncio
-async def test_update_seo_settings(client: AsyncClient, test_user: User, auth_headers: dict):
+def test_update_seo_settings(client: TestClient, test_user: User, db: AsyncSession):
     """Test updating SEO settings"""
     settings_data = {
         "title": "Test Site",
@@ -32,10 +34,13 @@ async def test_update_seo_settings(client: AsyncClient, test_user: User, auth_he
         "og_description": "Test OG Description",
     }
     
-    response = await client.put(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.put(
         "/api/v1/seo/settings",
         json=settings_data,
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
@@ -43,9 +48,9 @@ async def test_update_seo_settings(client: AsyncClient, test_user: User, auth_he
     assert "settings" in data
     
     # Verify settings were saved
-    get_response = await client.get(
+    get_response = client.get(
         "/api/v1/seo/settings",
-        headers=auth_headers
+        headers=headers
     )
     assert get_response.status_code == 200
     saved_settings = get_response.json()["settings"]

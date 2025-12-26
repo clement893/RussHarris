@@ -3,15 +3,15 @@ Tests for Support Tickets API endpoints
 """
 
 import pytest
-from httpx import AsyncClient
+from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.support_ticket import SupportTicket, TicketMessage
 from app.models.user import User
+from app.core.auth import create_access_token
 
 
-@pytest.mark.asyncio
-async def test_create_ticket(client: AsyncClient, test_user: User, auth_headers: dict):
+def test_create_ticket(client: TestClient, test_user: User, db: AsyncSession):
     """Test creating a new support ticket"""
     ticket_data = {
         "subject": "Test Ticket",
@@ -20,10 +20,13 @@ async def test_create_ticket(client: AsyncClient, test_user: User, auth_headers:
         "message": "This is a test ticket message",
     }
     
-    response = await client.post(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.post(
         "/api/v1/support/tickets",
         json=ticket_data,
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 201
@@ -34,7 +37,7 @@ async def test_create_ticket(client: AsyncClient, test_user: User, auth_headers:
 
 
 @pytest.mark.asyncio
-async def test_get_ticket(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_get_ticket(client: TestClient, test_user: User, db: AsyncSession):
     """Test getting a ticket by ID"""
     # Create a test ticket
     ticket = SupportTicket(
@@ -48,9 +51,12 @@ async def test_get_ticket(client: AsyncClient, test_user: User, auth_headers: di
     await db.commit()
     await db.refresh(ticket)
     
-    response = await client.get(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.get(
         f"/api/v1/support/tickets/{ticket.id}",
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
@@ -60,7 +66,7 @@ async def test_get_ticket(client: AsyncClient, test_user: User, auth_headers: di
 
 
 @pytest.mark.asyncio
-async def test_list_tickets(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_list_tickets(client: TestClient, test_user: User, db: AsyncSession):
     """Test listing tickets"""
     # Create test tickets
     for i in range(3):
@@ -74,9 +80,12 @@ async def test_list_tickets(client: AsyncClient, test_user: User, auth_headers: 
         db.add(ticket)
     await db.commit()
     
-    response = await client.get(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.get(
         "/api/v1/support/tickets",
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
@@ -85,7 +94,7 @@ async def test_list_tickets(client: AsyncClient, test_user: User, auth_headers: 
 
 
 @pytest.mark.asyncio
-async def test_add_ticket_message(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_add_ticket_message(client: TestClient, test_user: User, db: AsyncSession):
     """Test adding a message to a ticket"""
     # Create a test ticket
     ticket = SupportTicket(
@@ -103,10 +112,13 @@ async def test_add_ticket_message(client: AsyncClient, test_user: User, auth_hea
         "message": "This is a test reply",
     }
     
-    response = await client.post(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.post(
         f"/api/v1/support/tickets/{ticket.id}/messages",
         json=message_data,
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 201
@@ -116,7 +128,7 @@ async def test_add_ticket_message(client: AsyncClient, test_user: User, auth_hea
 
 
 @pytest.mark.asyncio
-async def test_get_ticket_messages(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_get_ticket_messages(client: TestClient, test_user: User, db: AsyncSession):
     """Test getting messages for a ticket"""
     # Create a test ticket
     ticket = SupportTicket(
@@ -141,9 +153,12 @@ async def test_get_ticket_messages(client: AsyncClient, test_user: User, auth_he
         db.add(message)
     await db.commit()
     
-    response = await client.get(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.get(
         f"/api/v1/support/tickets/{ticket.id}/messages",
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
@@ -152,7 +167,7 @@ async def test_get_ticket_messages(client: AsyncClient, test_user: User, auth_he
 
 
 @pytest.mark.asyncio
-async def test_update_ticket(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_update_ticket(client: TestClient, test_user: User, db: AsyncSession):
     """Test updating a ticket"""
     # Create a test ticket
     ticket = SupportTicket(
@@ -171,10 +186,13 @@ async def test_update_ticket(client: AsyncClient, test_user: User, auth_headers:
         "priority": "high",
     }
     
-    response = await client.put(
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.put(
         f"/api/v1/support/tickets/{ticket.id}",
         json=update_data,
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
