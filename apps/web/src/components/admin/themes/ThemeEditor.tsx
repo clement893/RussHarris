@@ -15,6 +15,7 @@ import Card from '@/components/ui/Card';
 import Tabs, { TabList, Tab, TabPanels, TabPanel } from '@/components/ui/Tabs';
 import type { Theme, ThemeCreate, ThemeUpdate } from '@modele/types';
 import { Palette, Type, Layout, Eye, Save, X } from 'lucide-react';
+import { FontInstaller } from './FontInstaller';
 
 // Font options with preview
 const FONT_OPTIONS = [

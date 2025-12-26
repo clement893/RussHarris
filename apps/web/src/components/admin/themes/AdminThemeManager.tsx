@@ -15,7 +15,7 @@ import type { Theme, ThemeCreate, ThemeUpdate } from '@modele/types';
 import { ThemeEditor } from './ThemeEditor';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import { Plus, Edit, Trash2, CheckCircle2, Power, Eye } from 'lucide-react';
+import { Plus, Edit, Trash2, CheckCircle2, Power } from 'lucide-react';
 
 export interface ThemeManagerProps {
   authToken: string;
