@@ -9,3 +9,6 @@ export type { ContentStats, ContentDashboardProps } from './ContentDashboard';
 export { default as PagesManager } from './PagesManager';
 export type { Page, PagesManagerProps } from './PagesManager';
 
+export { default as PostsManager } from './PostsManager';
+export type { BlogPost, PostsManagerProps } from './PostsManager';
+
