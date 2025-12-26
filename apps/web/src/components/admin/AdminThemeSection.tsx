@@ -287,15 +287,6 @@ function AdminThemeSectionContent() {
           </div>
         )}
 
-        {/* Link to full theme management */}
-        <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <Button
-            variant="secondary"
-            onClick={() => window.location.href = '/admin/themes'}
-          >
-            Gérer tous les thèmes
-          </Button>
-        </div>
       </div>
     </Card>
   );

@@ -158,10 +158,7 @@ function MyComponent() {
                   dans le dashboard.
                 </p>
                 <p className="text-sm">
-                  Les administrateurs peuvent gérer les thèmes de la plateforme via la page{' '}
-                  <a href="/admin/themes" className="text-primary-600 dark:text-primary-400 underline font-semibold">
-                    Administration des Thèmes
-                  </a>.
+                  Les administrateurs peuvent gérer les thèmes de la plateforme via le dashboard d'administration.
                 </p>
               </div>
             </div>
