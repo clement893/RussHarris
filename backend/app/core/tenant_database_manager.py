@@ -11,6 +11,7 @@ This module handles:
 from typing import Optional, Dict
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy import text
+from sqlalchemy.exc import OperationalError, ProgrammingError, SQLAlchemyError
 import os
 
 from app.core.tenancy import TenancyConfig
@@ -137,8 +138,17 @@ class TenantDatabaseManager:
             
             return True
             
+        except OperationalError as e:
+            logger.error(f"Database operational error creating tenant database {db_name}: {e}", exc_info=True)
+            raise ValueError(f"Failed to connect to database: {str(e)}") from e
+        except ProgrammingError as e:
+            logger.error(f"Database programming error creating tenant database {db_name}: {e}", exc_info=True)
+            raise ValueError(f"Database SQL error: {str(e)}") from e
+        except SQLAlchemyError as e:
+            logger.error(f"SQLAlchemy error creating tenant database {db_name}: {e}", exc_info=True)
+            raise
         except Exception as e:
-            logger.error(f"Failed to create tenant database {db_name}: {e}", exc_info=True)
+            logger.error(f"Unexpected error creating tenant database {db_name}: {e}", exc_info=True)
             raise
     
     @classmethod
@@ -167,8 +177,14 @@ class TenantDatabaseManager:
             command.upgrade(alembic_cfg, "head")
             logger.info(f"Ran migrations on tenant database: {cls.get_tenant_db_name(tenant_id)}")
             
+        except OperationalError as e:
+            logger.error(f"Database operational error running migrations on tenant database: {e}", exc_info=True)
+            raise ValueError(f"Failed to connect to database for migrations: {str(e)}") from e
+        except ProgrammingError as e:
+            logger.error(f"Database programming error running migrations on tenant database: {e}", exc_info=True)
+            raise ValueError(f"Migration SQL error: {str(e)}") from e
         except Exception as e:
-            logger.error(f"Failed to run migrations on tenant database: {e}", exc_info=True)
+            logger.error(f"Unexpected error running migrations on tenant database: {e}", exc_info=True)
             raise
     
     @classmethod
@@ -323,7 +339,16 @@ class TenantDatabaseManager:
             await admin_engine.dispose()
             return True
             
+        except OperationalError as e:
+            logger.error(f"Database operational error deleting tenant database {db_name}: {e}", exc_info=True)
+            raise ValueError(f"Failed to connect to database: {str(e)}") from e
+        except ProgrammingError as e:
+            logger.error(f"Database programming error deleting tenant database {db_name}: {e}", exc_info=True)
+            raise ValueError(f"Database SQL error: {str(e)}") from e
+        except SQLAlchemyError as e:
+            logger.error(f"SQLAlchemy error deleting tenant database {db_name}: {e}", exc_info=True)
+            raise
         except Exception as e:
-            logger.error(f"Failed to delete tenant database {db_name}: {e}", exc_info=True)
+            logger.error(f"Unexpected error deleting tenant database {db_name}: {e}", exc_info=True)
             raise
 

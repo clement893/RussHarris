@@ -52,8 +52,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     
     try:
         from app.core.logging import logger
-    except Exception as e:
+    except (ImportError, AttributeError) as e:
         print(f"WARNING: Failed to initialize logger: {e}", file=sys.stderr)
+        logger = None
+    except Exception as e:
+        # Keep generic Exception as last resort for logger initialization
+        print(f"WARNING: Unexpected error initializing logger: {e}", file=sys.stderr)
         logger = None
     
     # Startup - make database initialization resilient
@@ -62,10 +66,17 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         if logger:
             logger.info("Database initialized successfully")
         print("✓ Database initialized", file=sys.stderr)
-    except Exception as e:
-        error_msg = f"Database initialization failed: {e}. App will continue but database features may be unavailable."
+    except (ConnectionError, TimeoutError) as e:
+        error_msg = f"Database connection failed: {e}. App will continue but database features may be unavailable."
         if logger:
             logger.error(error_msg)
+            logger.warning("The app will start, but database operations will fail until connection is established.")
+        print(f"⚠ {error_msg}", file=sys.stderr)
+    except Exception as e:
+        # Keep generic Exception for unexpected database errors
+        error_msg = f"Database initialization failed: {e}. App will continue but database features may be unavailable."
+        if logger:
+            logger.error(error_msg, exc_info=True)
             logger.warning("The app will start, but database operations will fail until connection is established.")
         print(f"⚠ {error_msg}", file=sys.stderr)
     
@@ -74,18 +85,28 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         if logger:
             logger.info("Cache initialized successfully")
         print("✓ Cache initialized", file=sys.stderr)
-    except Exception as e:
-        warning_msg = f"Cache initialization failed: {e}. App will continue without cache."
+    except (ConnectionError, TimeoutError) as e:
+        warning_msg = f"Cache connection failed: {e}. App will continue without cache."
         if logger:
             logger.warning(warning_msg)
+        print(f"⚠ {warning_msg}", file=sys.stderr)
+    except Exception as e:
+        # Keep generic Exception for unexpected cache errors
+        warning_msg = f"Cache initialization failed: {e}. App will continue without cache."
+        if logger:
+            logger.warning(warning_msg, exc_info=True)
         print(f"⚠ {warning_msg}", file=sys.stderr)
     
     # Ensure required columns exist (auto-migration) - only if DB is available
     try:
         await ensure_theme_preference_column()
-    except Exception as e:
+    except (ConnectionError, TimeoutError) as e:
         if logger:
-            logger.warning(f"Theme preference column migration skipped: {e}")
+            logger.warning(f"Theme preference column migration skipped (connection error): {e}")
+    except Exception as e:
+        # Keep generic Exception for migration errors
+        if logger:
+            logger.warning(f"Theme preference column migration skipped: {e}", exc_info=True)
     
     # Ensure default theme exists - only if DB is available
     try:
