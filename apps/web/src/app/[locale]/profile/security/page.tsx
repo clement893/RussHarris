@@ -29,7 +29,7 @@ interface UserData {
 export default function ProfileSecurityPage() {
   const router = useRouter();
   const t = useTranslations('profile.security');
-  const { user: authUser, isAuthenticated } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   const [user, setUser] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

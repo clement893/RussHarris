@@ -36,7 +36,7 @@ interface UserData {
 export default function ProfileSettingsPage() {
   const router = useRouter();
   const t = useTranslations('profile.settings');
-  const { user: authUser, isAuthenticated } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   const [user, setUser] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -176,13 +176,13 @@ export default function ProfileSettingsPage() {
                   <UserSettings
                     user={{
                       id: String(user.id),
-                      name: user.name || user.email.split('@')[0],
-                      email: user.email,
-                      phone: user.phone,
-                      avatar: user.avatar,
-                      bio: user.bio,
-                      location: user.location,
-                      website: user.website,
+                      name: user.name || (user.email ? user.email.split('@')[0] : ''),
+                      email: user.email || '',
+                      phone: user.phone || undefined,
+                      avatar: user.avatar || undefined,
+                      bio: user.bio || undefined,
+                      location: user.location || undefined,
+                      website: user.website || undefined,
                     }}
                     onSave={handleUserSettingsSave}
                   />

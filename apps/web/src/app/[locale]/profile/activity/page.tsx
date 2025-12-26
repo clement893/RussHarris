@@ -69,10 +69,8 @@ export default function ProfileActivityPage() {
           entity_type: activity.entity_type || 'system',
           entity_id: String(activity.entity_id || activity.id),
           user_id: String(activity.user_id || authUser?.id || ''),
-          user_name: authUser?.first_name && authUser?.last_name 
-            ? `${authUser.first_name} ${authUser.last_name}` 
-            : authUser?.email?.split('@')[0],
-          user_email: authUser?.email,
+          user_name: authUser?.name || authUser?.email?.split('@')[0] || 'User',
+          user_email: authUser?.email || '',
           timestamp: activity.timestamp,
           metadata: activity.event_metadata || activity.metadata,
         }));
