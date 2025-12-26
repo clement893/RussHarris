@@ -11,8 +11,7 @@ import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { BlogListing } from '@/components/blog';
 import { PageHeader, PageContainer } from '@/components/layout';
-import { Alert, Badge, Avatar } from '@/components/ui';
-import { User } from 'lucide-react';
+import { Alert } from '@/components/ui';
 import { logger } from '@/lib/logger';
 import type { BlogPost } from '@/components/content';
 
@@ -64,14 +63,7 @@ export default function BlogAuthorArchivePage() {
   return (
     <PageContainer>
       <PageHeader
-        title={
-          <div className="flex items-center gap-3">
-            <Avatar className="w-8 h-8">
-              <User className="w-5 h-5" />
-            </Avatar>
-            <span>{t('title') || 'Author'}: {authorName}</span>
-          </div>
-        }
+        title={`${t('title') || 'Author'}: ${authorName}`}
         description={t('description', { author: authorName }) || `Blog posts by ${authorName}`}
         breadcrumbs={[
           { label: t('breadcrumbs.home') || 'Home', href: '/' },

@@ -11,8 +11,7 @@ import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { BlogListing } from '@/components/blog';
 import { PageHeader, PageContainer } from '@/components/layout';
-import { Alert, Badge } from '@/components/ui';
-import { Calendar } from 'lucide-react';
+import { Alert } from '@/components/ui';
 import { logger } from '@/lib/logger';
 import type { BlogPost } from '@/components/content';
 
@@ -63,15 +62,7 @@ export default function BlogYearArchivePage() {
   return (
     <PageContainer>
       <PageHeader
-        title={
-          <div className="flex items-center gap-3">
-            <Calendar className="w-6 h-6 text-gray-400" />
-            <span>{t('title') || 'Archive'}:</span>
-            <Badge variant="default" className="text-lg">
-              {year}
-            </Badge>
-          </div>
-        }
+        title={`${t('title') || 'Archive'}: ${year}`}
         description={t('description', { year }) || `Blog posts from ${year}`}
         breadcrumbs={[
           { label: t('breadcrumbs.home') || 'Home', href: '/' },

@@ -11,7 +11,7 @@ import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { BlogListing } from '@/components/blog';
 import { PageHeader, PageContainer } from '@/components/layout';
-import { Alert, Badge } from '@/components/ui';
+import { Alert } from '@/components/ui';
 import { logger } from '@/lib/logger';
 import type { BlogPost } from '@/components/content';
 
@@ -63,14 +63,7 @@ export default function BlogTagArchivePage() {
   return (
     <PageContainer>
       <PageHeader
-        title={
-          <div className="flex items-center gap-3">
-            <span>{t('title') || 'Tag'}:</span>
-            <Badge variant="default" className="text-lg">
-              #{tagName}
-            </Badge>
-          </div>
-        }
+        title={`${t('title') || 'Tag'}: #${tagName}`}
         description={t('description', { tag: tagName }) || `Blog posts tagged with: ${tagName}`}
         breadcrumbs={[
           { label: t('breadcrumbs.home') || 'Home', href: '/' },

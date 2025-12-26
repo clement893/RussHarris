@@ -11,7 +11,7 @@ import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { BlogListing } from '@/components/blog';
 import { PageHeader, PageContainer } from '@/components/layout';
-import { Alert, Badge } from '@/components/ui';
+import { Alert } from '@/components/ui';
 import { logger } from '@/lib/logger';
 import type { BlogPost } from '@/components/content';
 
@@ -63,14 +63,7 @@ export default function BlogCategoryArchivePage() {
   return (
     <PageContainer>
       <PageHeader
-        title={
-          <div className="flex items-center gap-3">
-            <span>{t('title') || 'Category'}:</span>
-            <Badge variant="default" className="text-lg">
-              {categoryName}
-            </Badge>
-          </div>
-        }
+        title={`${t('title') || 'Category'}: ${categoryName}`}
         description={t('description', { category: categoryName }) || `Blog posts in category: ${categoryName}`}
         breadcrumbs={[
           { label: t('breadcrumbs.home') || 'Home', href: '/' },
