@@ -870,20 +870,38 @@ export function ThemeEditor({ theme, onSubmit, onCancel, isLoading = false }: Th
                           Succès
                         </button>
                       </div>
-                      <div className="p-4 rounded-lg" style={{ backgroundColor: getConfigValue('colors.muted', '#f3f4f6') }}>
-                        <p style={{ color: getConfigValue('colors.mutedForeground', '#6b7280') }}>
-                          Zone avec fond atténué
-                        </p>
-                      </div>
-                      <a
-                        href="#"
-                        className="underline"
-                        style={{ color: getConfigValue('typography.textLink', config.primary) }}
-                      >
-                        Exemple de lien
-                      </a>
-                    </div>
+                  <div className="p-4 rounded-lg" style={{ backgroundColor: getConfigValue('colors.muted', '#f3f4f6') }}>
+                    <p style={{ color: getConfigValue('colors.mutedForeground', '#6b7280') }}>
+                      Zone avec fond atténué
+                    </p>
                   </div>
+                  
+                  {/* Glassmorphism Preview */}
+                  {getConfigValue('effects.glassmorphism.enabled', 'false') === 'true' && (
+                    <div
+                      className="p-4 rounded-lg border relative overflow-hidden"
+                      style={{
+                        background: `rgba(255, 255, 255, ${getConfigValue('effects.glassmorphism.opacity', '0.1')})`,
+                        backdropFilter: `blur(${getConfigValue('effects.glassmorphism.blur', '10px')}) saturate(${getConfigValue('effects.glassmorphism.saturation', '180%')})`,
+                        borderColor: `rgba(255, 255, 255, ${getConfigValue('effects.glassmorphism.borderOpacity', '0.2')})`,
+                      }}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 -z-10" />
+                      <p className="text-sm">
+                        Exemple avec effet glassmorphism
+                      </p>
+                    </div>
+                  )}
+                  
+                  <a
+                    href="#"
+                    className="underline"
+                    style={{ color: getConfigValue('typography.textLink', config.primary) }}
+                  >
+                    Exemple de lien
+                  </a>
+                </div>
+              </div>
                 </div>
               </TabPanel>
             </TabPanels>
