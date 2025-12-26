@@ -25,7 +25,6 @@ interface Team {
 }
 
 export default function AdminOrganizationsContent() {
-  const { token } = useAuthStore();
   const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
