@@ -183,6 +183,33 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
       root.style.setProperty('--border-radius', config.border_radius);
     }
     
+    // Apply CSS effects (glassmorphism, shadows, gradients)
+    const effects = (config as any).effects;
+    if (effects) {
+      // Glassmorphism
+      if (effects.glassmorphism?.enabled) {
+        const blur = effects.glassmorphism.blur || '10px';
+        const saturation = effects.glassmorphism.saturation || '180%';
+        root.style.setProperty('--glassmorphism-backdrop', `blur(${blur}) saturate(${saturation})`);
+        root.style.setProperty('--glassmorphism-opacity', String(effects.glassmorphism.opacity || 0.1));
+        root.style.setProperty('--glassmorphism-border-opacity', String(effects.glassmorphism.borderOpacity || 0.2));
+      }
+      
+      // Custom shadows
+      if (effects.shadows) {
+        if (effects.shadows.sm) root.style.setProperty('--shadow-sm', effects.shadows.sm);
+        if (effects.shadows.md) root.style.setProperty('--shadow-md', effects.shadows.md);
+        if (effects.shadows.lg) root.style.setProperty('--shadow-lg', effects.shadows.lg);
+        if (effects.shadows.xl) root.style.setProperty('--shadow-xl', effects.shadows.xl);
+      }
+      
+      // Gradients
+      if (effects.gradients?.enabled) {
+        root.style.setProperty('--gradient-direction', effects.gradients.direction || 'to-br');
+        root.style.setProperty('--gradient-intensity', String(effects.gradients.intensity || 0.3));
+      }
+    }
+    
     // Update status colors to use theme colors
     root.style.setProperty('--color-status-todo', `var(--color-primary-500)`);
     root.style.setProperty('--color-status-in-progress', `var(--color-warning-500)`);
