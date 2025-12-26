@@ -1,6 +1,7 @@
 /**
  * Admin API client for administrative operations.
  */
+import { apiClient } from '../api';
 import { getApiUrl } from '../api';
 
 const API_URL = getApiUrl().replace(/\/$/, '');
@@ -103,131 +104,38 @@ export async function makeSuperAdmin(
 /**
  * Check if a user has superadmin role.
  * Requires authentication and superadmin role.
+ * Uses apiClient to benefit from automatic token refresh.
  */
 export async function checkSuperAdminStatus(
   email: string,
   token?: string
 ): Promise<{ is_superadmin: boolean }> {
   try {
-    let authToken = token || getAuthToken();
-    
-    const makeRequest = async (tokenToUse: string) => {
-      const response = await fetch(`${API_URL}/api/v1/admin/check-superadmin/${encodeURIComponent(email)}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${tokenToUse}`,
-        },
-        signal: (() => {
-          const controller = new AbortController();
-          setTimeout(() => controller.abort(), 10000); // 10 second timeout
-          return controller.signal;
-        })(),
-      });
-      return response;
-    };
-
-    let response = await makeRequest(authToken);
-
-    // If 401, try to refresh token and retry
-    if (response.status === 401) {
-      const { TokenStorage } = await import('@/lib/auth/tokenStorage');
-      const refreshToken = TokenStorage.getRefreshToken();
-      
-      // Try to refresh using the expired token itself
-      // The backend refresh endpoint can refresh expired tokens if user still exists
+    // Use apiClient which handles token refresh automatically
+    // If a token is provided, temporarily set it in storage for this request
+    if (token && token !== TokenStorage.getToken()) {
+      const originalToken = TokenStorage.getToken();
+      await TokenStorage.setToken(token); // Set token for this request
       try {
-        // Try to refresh the token using the expired token
-        const refreshResponse = await fetch(`${API_URL}/api/v1/auth/refresh`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ token: authToken }),
-        });
-
-        if (refreshResponse.ok) {
-          const refreshData = await refreshResponse.json();
-          // Backend returns access_token in Token schema
-          const newToken = refreshData.access_token;
-          
-          if (!newToken) {
-            throw new Error('No access token in refresh response');
-          }
-          
-          // Update token storage
-          await TokenStorage.setToken(newToken, refreshToken || undefined);
-          
-          // Update Zustand store if available
-          try {
-            const { useAuthStore } = await import('@/lib/store');
-            // Update token in store
-            useAuthStore.setState({ token: newToken });
-            if (refreshToken && useAuthStore.getState().setRefreshToken) {
-              await useAuthStore.getState().setRefreshToken(refreshToken);
-            }
-          } catch (storeError) {
-            // Store update failed, but continue with token refresh
-            console.warn('Failed to update auth store after token refresh:', storeError);
-          }
-          
-          // Retry the original request with new token
-          authToken = newToken;
-          response = await makeRequest(authToken);
-        } else {
-          // Refresh failed, try with refresh token if available
-          if (refreshToken) {
-            const refreshTokenResponse = await fetch(`${API_URL}/api/v1/auth/refresh`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ refresh_token: refreshToken }),
-            });
-            
-            if (refreshTokenResponse.ok) {
-              const refreshData = await refreshTokenResponse.json();
-              // Backend returns access_token in Token schema
-              const newToken = refreshData.access_token;
-              
-              if (!newToken) {
-                throw new Error('No access token in refresh response');
-              }
-              
-              await TokenStorage.setToken(newToken, refreshToken);
-              try {
-                const { useAuthStore } = await import('@/lib/store');
-                useAuthStore.setState({ token: newToken });
-              } catch (storeError) {
-                console.warn('Failed to update auth store:', storeError);
-              }
-              
-              authToken = newToken;
-              response = await makeRequest(authToken);
-            } else {
-              throw new Error('Token expired and refresh failed. Please log in again.');
-            }
-          } else {
-            throw new Error('Token expired. Please log in again.');
-          }
+        const response = await apiClient.get(`/v1/admin/check-superadmin/${encodeURIComponent(email)}`);
+        return response.data;
+      } finally {
+        // Restore original token if it was different
+        if (originalToken) {
+          await TokenStorage.setToken(originalToken);
         }
-      } catch (refreshError) {
-        // Refresh failed, throw error
-        throw new Error('Token expired and refresh failed. Please log in again.');
       }
     }
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({ detail: response.statusText }));
-      throw new Error(error.detail || `Failed to check superadmin status: ${response.statusText}`);
-    }
-
-    return response.json();
-  } catch (error) {
+    
+    // Use apiClient which automatically handles token refresh on 401
+    const response = await apiClient.get(`/v1/admin/check-superadmin/${encodeURIComponent(email)}`);
+    return response.data;
+  } catch (error: any) {
     // Handle network errors
     if (error instanceof Error && (error.name === 'AbortError' || error.message.includes('Failed to fetch'))) {
       throw new Error(`Le backend n'est pas accessible. Assurez-vous que le serveur backend est démarré sur ${API_URL}`);
     }
+    // Re-throw API errors (they're already formatted by apiClient)
     throw error;
   }
 }

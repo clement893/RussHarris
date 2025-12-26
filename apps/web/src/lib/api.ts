@@ -418,5 +418,6 @@ export default apiClient;
 
 // Named export for easier imports
 export const api = apiClient;
+export { apiClient };
 
 

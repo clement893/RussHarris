@@ -16,6 +16,7 @@ from app.models.tag import Tag, Category, EntityTag
 from app.models.comment import Comment, CommentReaction
 from app.models.favorite import Favorite
 from app.models.template import Template, TemplateVariable
+from app.models.version import Version
 from app.core.security_audit import SecurityAuditLog
 
 __all__ = [
@@ -44,6 +45,7 @@ __all__ = [
     "Favorite",
     "Template",
     "TemplateVariable",
+    "Version",
     "SecurityAuditLog",
 ]
 
