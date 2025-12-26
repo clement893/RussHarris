@@ -20,7 +20,7 @@
  *   invoice_number: 'INV-001',
  *   invoice_date: '2025-01-27',
  *   amount: 99.99,
- *   currency: 'EUR'
+ *   currency: 'USD'
  * });
  * ```
  */

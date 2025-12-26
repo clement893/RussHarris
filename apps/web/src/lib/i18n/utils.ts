@@ -18,7 +18,7 @@ export function formatDate(date: Date | string, locale: string = 'fr'): string {
 
 export function formatCurrency(
   amount: number,
-  currency: string = 'EUR',
+  currency: string = 'USD',
   locale: string = 'fr'
 ): string {
   return new Intl.NumberFormat(locale, {
