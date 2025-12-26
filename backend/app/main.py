@@ -87,7 +87,25 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         if logger:
             logger.warning(f"Theme preference column migration skipped: {e}")
     
-    # Create recommended indexes (non-blocking, runs concurrently)
+    # Log environment info
+    if logger:
+        logger.info(f"CORS Origins configured: {settings.CORS_ORIGINS}")
+        logger.info(f"ENVIRONMENT: {os.getenv('ENVIRONMENT', 'NOT SET')}")
+        logger.info(f"RAILWAY_ENVIRONMENT: {os.getenv('RAILWAY_ENVIRONMENT', 'NOT SET')}")
+        logger.info(f"RAILWAY_SERVICE_NAME: {os.getenv('RAILWAY_SERVICE_NAME', 'NOT SET')}")
+    
+    print("=" * 50, file=sys.stderr)
+    print("✓ FastAPI Application Ready - Starting server", file=sys.stderr)
+    print(f"  Environment: {os.getenv('ENVIRONMENT', 'development')}", file=sys.stderr)
+    print(f"  Port: {os.getenv('PORT', '8000')}", file=sys.stderr)
+    print("=" * 50, file=sys.stderr)
+    
+    # Yield immediately to allow the app to start serving requests
+    # Background tasks can continue after the app is ready
+    yield
+    
+    # Create recommended indexes (non-blocking, runs after app starts)
+    # This runs in the background after the app has started serving requests
     try:
         from app.core.database_indexes import create_recommended_indexes, analyze_tables
         from app.core.database import AsyncSessionLocal
@@ -103,24 +121,14 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             
             # Analyze tables to update statistics
             await analyze_tables(session)
+            if logger:
+                logger.info("Index creation/analysis completed")
     except Exception as e:
         if logger:
             logger.warning(f"Index creation/analysis skipped: {e}")
     
     if logger:
-        logger.info(f"CORS Origins configured: {settings.CORS_ORIGINS}")
-        logger.info(f"ENVIRONMENT: {os.getenv('ENVIRONMENT', 'NOT SET')}")
-        logger.info(f"RAILWAY_ENVIRONMENT: {os.getenv('RAILWAY_ENVIRONMENT', 'NOT SET')}")
-        logger.info(f"RAILWAY_SERVICE_NAME: {os.getenv('RAILWAY_SERVICE_NAME', 'NOT SET')}")
         logger.info("Application startup complete")
-    
-    print("=" * 50, file=sys.stderr)
-    print("✓ FastAPI Application Started Successfully", file=sys.stderr)
-    print(f"  Environment: {os.getenv('ENVIRONMENT', 'development')}", file=sys.stderr)
-    print(f"  Port: {os.getenv('PORT', '8000')}", file=sys.stderr)
-    print("=" * 50, file=sys.stderr)
-    
-    yield
     
     # Shutdown
     print("Shutting down application...", file=sys.stderr)

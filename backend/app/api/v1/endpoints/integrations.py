@@ -5,7 +5,7 @@ Manage third-party integrations for users
 
 from typing import List, Optional, Dict, Any
 from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from pydantic import BaseModel, Field
@@ -58,6 +58,7 @@ class IntegrationResponse(BaseModel):
 @router.get("/", response_model=List[IntegrationResponse], tags=["integrations"])
 @rate_limit_decorator("30/minute")
 async def list_integrations(
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -75,6 +76,7 @@ async def list_integrations(
 @rate_limit_decorator("30/minute")
 async def get_integration(
     integration_id: int,
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -99,6 +101,7 @@ async def get_integration(
 @rate_limit_decorator("10/minute")
 async def create_integration(
     integration_data: IntegrationCreate,
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -140,6 +143,7 @@ async def create_integration(
 async def update_integration(
     integration_id: int,
     integration_data: IntegrationUpdate,
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -179,6 +183,7 @@ async def update_integration(
 @rate_limit_decorator("20/minute")
 async def toggle_integration(
     integration_id: int,
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -207,6 +212,7 @@ async def toggle_integration(
 @rate_limit_decorator("10/minute")
 async def delete_integration(
     integration_id: int,
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
