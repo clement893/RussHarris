@@ -11,7 +11,7 @@ export function usePreferences() {
   const fetchPreferences = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await apiClient.get<Record<string, any>>('/api/v1/users/preferences');
+      const response = await apiClient.get<Record<string, any>>('/v1/users/preferences');
       if (response.data) {
         setPreferences(response.data);
       }
@@ -38,7 +38,7 @@ export function usePreferences() {
 
   const setPreference = useCallback(async (key: string, value: unknown) => {
     try {
-      await apiClient.put(`/api/v1/users/preferences/${key}`, { value });
+      await apiClient.put(`/v1/users/preferences/${key}`, { value });
       setPreferences((prev) => ({ ...prev, [key]: value }));
       return true;
     } catch (error) {
@@ -51,7 +51,7 @@ export function usePreferences() {
 
   const setPreferencesBatch = useCallback(async (prefs: Record<string, any>) => {
     try {
-      await apiClient.put('/api/v1/users/preferences', prefs);
+      await apiClient.put('/v1/users/preferences', prefs);
       setPreferences((prev) => ({ ...prev, ...prefs }));
       return true;
     } catch (error) {

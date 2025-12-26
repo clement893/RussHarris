@@ -27,7 +27,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
   const fetchPreferences = async () => {
     setIsLoading(true);
     try {
-      const response = await apiClient.get<Record<string, any>>('/api/v1/users/preferences');
+      const response = await apiClient.get<Record<string, any>>('/v1/users/preferences');
       if (response.data) {
         setPreferences(response.data);
         setEditedPreferences(response.data);
@@ -49,7 +49,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await apiClient.put('/api/v1/users/preferences', editedPreferences);
+      await apiClient.put('/v1/users/preferences', editedPreferences);
       setPreferences(editedPreferences);
       showToast({
         message: 'Preferences saved successfully',
