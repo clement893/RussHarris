@@ -12,6 +12,7 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Sidebar from '@/components/ui/Sidebar';
 import Button from '@/components/ui/Button';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
+import DashboardFooter from '@/components/layout/DashboardFooter';
 import { 
   LayoutDashboard, 
   FolderKanban, 
@@ -206,6 +207,9 @@ function DashboardLayoutContent({
           <main className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 xl:px-8 2xl:px-10 py-4 sm:py-6 2xl:py-8">
             {children}
           </main>
+
+          {/* Dashboard Footer */}
+          <DashboardFooter />
         </div>
       </div>
     </div>
