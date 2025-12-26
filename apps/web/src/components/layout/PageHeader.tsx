@@ -25,15 +25,15 @@ export default function PageHeader({
   return (
     <Container className="py-8">
       {breadcrumbs && <Breadcrumbs items={breadcrumbs} className="mb-6" />}
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{title}</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">{title}</h1>
             {badge && badge}
           </div>
           {description && <p className="text-gray-600 dark:text-gray-400">{description}</p>}
         </div>
-        {actions && <div className="flex gap-2">{actions}</div>}
+        {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
       </div>
     </Container>
   );
