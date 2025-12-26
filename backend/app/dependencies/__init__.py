@@ -97,6 +97,29 @@ async def get_optional_user(
         return None
 
 
+async def is_superadmin(
+    user: User,
+    db: AsyncSession,
+) -> bool:
+    """
+    Check if a user has the superadmin role.
+    Returns True if user has superadmin role, False otherwise.
+    """
+    from app.models import Role, UserRole
+    
+    result = await db.execute(
+        select(UserRole)
+        .join(Role)
+        .where(
+            UserRole.user_id == user.id,
+            Role.slug == "superadmin",
+            Role.is_active == True
+        )
+    )
+    user_role = result.scalar_one_or_none()
+    return user_role is not None
+
+
 async def require_superadmin(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),

@@ -2,7 +2,7 @@
 API v1 router registration.
 """
 from fastapi import APIRouter
-from app.api.v1.endpoints import themes, projects, websocket, admin, auth, two_factor, api_keys, users, health, db_health, newsletter, exports, imports, search, tags, activities, comments, favorites, templates, versions, shares, feature_flags, user_preferences, announcements, feedback, onboarding, documentation, scheduled_tasks, backups, email_templates
+from app.api.v1.endpoints import themes, projects, websocket, admin, auth, two_factor, api_keys, users, health, db_health, newsletter, exports, imports, search, tags, activities, comments, favorites, templates, versions, shares, feature_flags, user_preferences, announcements, feedback, onboarding, documentation, scheduled_tasks, backups, email_templates, audit_trail
 from app.api import ai as ai_router
 
 api_router = APIRouter()
@@ -220,4 +220,11 @@ api_router.include_router(
     email_templates.router,
     prefix="/email-templates",
     tags=["email-templates"]
+)
+
+# Register audit trail endpoints
+api_router.include_router(
+    audit_trail.router,
+    prefix="/audit-trail",
+    tags=["audit-trail"]
 )
