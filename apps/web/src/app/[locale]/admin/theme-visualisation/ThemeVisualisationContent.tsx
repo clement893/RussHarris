@@ -410,26 +410,86 @@ export function ThemeVisualisationContent() {
                 </div>
                 {showJsonImport && (
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium">Importer depuis JSON</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Importer depuis JSON
+                      <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                        (Supporte les configurations complexes : glassmorphism, shadows, gradients, etc.)
+                      </span>
+                    </label>
                     <textarea
                       value={jsonInput}
                       onChange={(e) => setJsonInput(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 font-mono text-sm"
-                      rows={10}
-                      placeholder='{"primary_color": "#3b82f6", "secondary_color": "#8b5cf6", ...}'
+                      rows={15}
+                      placeholder={`{
+  "primary_color": "#3b82f6",
+  "secondary_color": "#8b5cf6",
+  "danger_color": "#ef4444",
+  "warning_color": "#f59e0b",
+  "info_color": "#06b6d4",
+  "success_color": "#10b981",
+  "font_family": "Inter, sans-serif",
+  "border_radius": "8px",
+  "typography": {
+    "fontFamily": "Inter, sans-serif",
+    "fontUrl": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+  },
+  "effects": {
+    "glassmorphism": {
+      "enabled": true,
+      "blur": "10px",
+      "opacity": 0.1,
+      "borderOpacity": 0.2,
+      "saturation": "180%"
+    },
+    "shadows": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
+    },
+    "gradients": {
+      "enabled": true,
+      "direction": "to bottom right",
+      "intensity": 0.3
+    }
+  }
+}`}
                     />
                     <div className="flex gap-2">
                       <Button
                         variant="primary"
                         onClick={() => {
                           try {
+                            if (!jsonInput.trim()) {
+                              setError('Le JSON ne peut pas être vide.');
+                              return;
+                            }
+                            
                             const parsed = JSON.parse(jsonInput);
-                            setEditedConfig(parsed as ThemeConfig);
-                            setSuccessMessage('Configuration JSON importée avec succès !');
-                            setTimeout(() => setSuccessMessage(null), 3000);
+                            
+                            // Validate that it's an object
+                            if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+                              setError('Le JSON doit être un objet valide.');
+                              return;
+                            }
+                            
+                            // Merge with existing config to preserve structure
+                            const mergedConfig = editedConfig 
+                              ? { ...editedConfig, ...parsed }
+                              : parsed;
+                            
+                            setEditedConfig(mergedConfig as ThemeConfig);
+                            setSuccessMessage('Configuration JSON importée avec succès ! Toutes les propriétés (y compris les effets complexes) ont été appliquées.');
+                            setTimeout(() => setSuccessMessage(null), 5000);
                             setError(null);
                           } catch (err) {
-                            setError('JSON invalide. Veuillez vérifier la syntaxe.');
+                            const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue';
+                            if (errorMessage.includes('JSON')) {
+                              setError(`JSON invalide : ${errorMessage}. Veuillez vérifier la syntaxe (virgules, guillemets, accolades).`);
+                            } else {
+                              setError(`Erreur lors de l'import : ${errorMessage}`);
+                            }
                           }
                         }}
                       >
@@ -447,6 +507,9 @@ export function ThemeVisualisationContent() {
                         Annuler
                       </Button>
                     </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      💡 Astuce : Vous pouvez importer des configurations complexes incluant glassmorphism, shadows, gradients et autres effets CSS personnalisés.
+                    </p>
                   </div>
                 )}
               </div>
