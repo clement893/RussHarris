@@ -88,21 +88,21 @@ export default function Header() {
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition px-2 py-2"
+                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition px-4 py-3 min-h-[44px] flex items-center"
               >
                 Accueil
               </Link>
               <Link
                 href="/components"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition px-2 py-2"
+                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition px-4 py-3 min-h-[44px] flex items-center"
               >
                 Composants
               </Link>
               <Link
                 href="/dashboard"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition px-2 py-2"
+                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition px-4 py-3 min-h-[44px] flex items-center"
               >
                 Dashboard
               </Link>
