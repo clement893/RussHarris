@@ -51,16 +51,6 @@ function DashboardLayoutContent({
       icon: <LayoutDashboard className="w-5 h-5" />,
     },
     {
-      label: 'Profile',
-      href: '/profile',
-      icon: <User className="w-5 h-5" />,
-    },
-    {
-      label: 'Settings',
-      href: '/settings',
-      icon: <Settings className="w-5 h-5" />,
-    },
-    {
       label: 'Projets',
       href: '/dashboard/projects',
       icon: <FolderKanban className="w-5 h-5" />,
