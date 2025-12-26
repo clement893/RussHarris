@@ -39,14 +39,22 @@ export function AdminThemeManager({ authToken }: ThemeManagerProps) {
       setError(null);
       const response = await listThemes(authToken);
       
-      // Debug: log the response
-      console.log('[AdminThemeManager] listThemes response:', {
+      // Debug: log the response (works in production)
+      console.log('[AdminThemeManager] listThemes response received:', {
         hasResponse: !!response,
+        responseType: typeof response,
         hasThemes: !!(response?.themes),
         themesCount: response?.themes?.length || 0,
         total: response?.total,
         activeThemeId: response?.active_theme_id,
-        themes: response?.themes?.map(t => ({ id: t.id, name: t.name, display_name: t.display_name, is_active: t.is_active })),
+        responseKeys: response && typeof response === 'object' ? Object.keys(response) : [],
+        themes: response?.themes?.map(t => ({ 
+          id: t.id, 
+          name: t.name, 
+          display_name: t.display_name, 
+          is_active: t.is_active,
+          description: t.description,
+        })),
       });
       
       // Ensure we have themes - if empty, the backend should create a default one

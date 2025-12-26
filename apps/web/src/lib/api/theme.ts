@@ -136,30 +136,59 @@ export async function listThemes(
     `/v1/themes?skip=${skip}&limit=${limit}`
   );
   
-  // Debug: log the response structure
-  if (process.env.NODE_ENV === 'development') {
-    logger.debug('listThemes response', {
-      responseType: typeof response,
-      hasData: response && typeof response === 'object' && 'data' in response,
-      hasThemes: response && typeof response === 'object' && 'themes' in response,
-      responseKeys: response && typeof response === 'object' ? Object.keys(response) : [],
-    });
-  }
+  // Debug: log the response structure (works in production too)
+  console.log('[listThemes] apiClient response:', {
+    responseType: typeof response,
+    hasData: response && typeof response === 'object' && 'data' in response,
+    hasThemes: response && typeof response === 'object' && 'themes' in response,
+    hasSuccess: response && typeof response === 'object' && 'success' in response,
+    responseKeys: response && typeof response === 'object' ? Object.keys(response) : [],
+    response: response,
+  });
   
-  const extracted = extractFastApiData<ThemeListResponse>(response);
+  // apiClient.get returns ApiResponse<T> which has a 'data' property
+  // Following the same pattern as settings.ts, we access response.data
+  // But FastAPI returns data directly, so we need to handle both cases
+  
+  let extracted: ThemeListResponse;
+  
+  // Check if response has 'data' property (ApiResponse wrapper)
+  if (response && typeof response === 'object' && 'data' in response) {
+    const apiResponse = response as { data?: ThemeListResponse; success?: boolean };
+    console.log('[listThemes] Found ApiResponse wrapper, extracting data:', {
+      hasData: !!apiResponse.data,
+      dataKeys: apiResponse.data && typeof apiResponse.data === 'object' ? Object.keys(apiResponse.data) : [],
+    });
+    if (apiResponse.data) {
+      extracted = apiResponse.data;
+    } else {
+      // If data is undefined, try response itself (FastAPI returns data directly)
+      console.log('[listThemes] response.data is undefined, using response directly');
+      extracted = response as ThemeListResponse;
+    }
+  } else if (response && typeof response === 'object' && 'themes' in response) {
+    // Response is already ThemeListResponse directly (FastAPI returns data directly)
+    console.log('[listThemes] Response is direct ThemeListResponse (no wrapper)');
+    extracted = response as ThemeListResponse;
+  } else {
+    // Fallback: try response as-is
+    console.log('[listThemes] Using response as-is (fallback)');
+    extracted = response as ThemeListResponse;
+  }
   
   // Debug: log the extracted data
-  if (process.env.NODE_ENV === 'development') {
-    logger.debug('listThemes extracted', {
-      hasThemes: extracted && typeof extracted === 'object' && 'themes' in extracted,
-      themesCount: extracted && typeof extracted === 'object' && 'themes' in extracted 
-        ? (extracted as ThemeListResponse).themes?.length || 0 
-        : 0,
-      total: extracted && typeof extracted === 'object' && 'total' in extracted
-        ? (extracted as ThemeListResponse).total
-        : undefined,
-    });
-  }
+  console.log('[listThemes] Extracted ThemeListResponse:', {
+    hasThemes: extracted && typeof extracted === 'object' && 'themes' in extracted,
+    themesCount: extracted?.themes?.length || 0,
+    total: extracted?.total,
+    activeThemeId: extracted?.active_theme_id,
+    themes: extracted?.themes?.map(t => ({ 
+      id: t.id, 
+      name: t.name, 
+      display_name: t.display_name, 
+      is_active: t.is_active 
+    })),
+  });
   
   return extracted;
 }
