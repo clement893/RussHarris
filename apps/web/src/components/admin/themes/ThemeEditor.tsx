@@ -269,164 +269,165 @@ export function ThemeEditor({ theme, onSubmit, onCancel, isLoading = false }: Th
             <TabPanels>
               <TabPanel value="colors">
                 <div className="space-y-6 mt-4">
-              {/* Mode */}
-              <div>
-                <label className="block text-sm font-medium mb-2">Mode du thème</label>
-                <Select
-                  options={MODE_OPTIONS}
-                  value={config.mode}
-                  onChange={(e) => updateConfig('mode', e.target.value)}
-                />
-              </div>
+                  {/* Mode */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Mode du thème</label>
+                    <Select
+                      options={MODE_OPTIONS}
+                      value={config.mode}
+                      onChange={(e) => updateConfig('mode', e.target.value)}
+                    />
+                  </div>
 
-              {/* Primary Colors */}
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Couleurs principales</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <ColorPicker
-                    label="Couleur principale"
-                    value={config.primary}
-                    onChange={(color) => updateConfig('primary', color)}
-                    fullWidth
-                  />
-                  <ColorPicker
-                    label="Couleur secondaire"
-                    value={config.secondary}
-                    onChange={(color) => updateConfig('secondary', color)}
-                    fullWidth
-                  />
-                  <ColorPicker
-                    label="Danger / Erreur"
-                    value={config.danger}
-                    onChange={(color) => updateConfig('danger', color)}
-                    fullWidth
-                  />
-                  <ColorPicker
-                    label="Avertissement"
-                    value={config.warning}
-                    onChange={(color) => updateConfig('warning', color)}
-                    fullWidth
-                  />
-                  <ColorPicker
-                    label="Information"
-                    value={config.info}
-                    onChange={(color) => updateConfig('info', color)}
-                    fullWidth
-                  />
-                  <ColorPicker
-                    label="Succès"
-                    value={config.success || '#10b981'}
-                    onChange={(color) => updateConfig('success', color)}
-                    fullWidth
-                  />
-                </div>
-              </div>
+                  {/* Primary Colors */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Couleurs principales</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <ColorPicker
+                        label="Couleur principale"
+                        value={config.primary}
+                        onChange={(color) => updateConfig('primary', color)}
+                        fullWidth
+                      />
+                      <ColorPicker
+                        label="Couleur secondaire"
+                        value={config.secondary}
+                        onChange={(color) => updateConfig('secondary', color)}
+                        fullWidth
+                      />
+                      <ColorPicker
+                        label="Danger / Erreur"
+                        value={config.danger}
+                        onChange={(color) => updateConfig('danger', color)}
+                        fullWidth
+                      />
+                      <ColorPicker
+                        label="Avertissement"
+                        value={config.warning}
+                        onChange={(color) => updateConfig('warning', color)}
+                        fullWidth
+                      />
+                      <ColorPicker
+                        label="Information"
+                        value={config.info}
+                        onChange={(color) => updateConfig('info', color)}
+                        fullWidth
+                      />
+                      <ColorPicker
+                        label="Succès"
+                        value={config.success || '#10b981'}
+                        onChange={(color) => updateConfig('success', color)}
+                        fullWidth
+                      />
+                    </div>
+                  </div>
 
-              {/* Background & Text Colors */}
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Couleurs de fond et texte</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <ColorPicker
-                    label="Fond principal"
-                    value={getConfigValue('colors.background', '#ffffff')}
-                    onChange={(color) => updateConfig('colors.background', color)}
-                    fullWidth
-                  />
-                  <ColorPicker
-                    label="Texte principal"
-                    value={getConfigValue('colors.foreground', '#000000')}
-                    onChange={(color) => updateConfig('colors.foreground', color)}
-                    fullWidth
-                  />
-                  <ColorPicker
-                    label="Fond atténué"
-                    value={getConfigValue('colors.muted', '#f3f4f6')}
-                    onChange={(color) => updateConfig('colors.muted', color)}
-                    fullWidth
-                  />
-                  <ColorPicker
-                    label="Texte atténué"
-                    value={getConfigValue('colors.mutedForeground', '#6b7280')}
-                    onChange={(color) => updateConfig('colors.mutedForeground', color)}
-                    fullWidth
-                  />
-                  <ColorPicker
-                    label="Bordure"
-                    value={getConfigValue('colors.border', '#e5e7eb')}
-                    onChange={(color) => updateConfig('colors.border', color)}
-                    fullWidth
-                  />
-                  <ColorPicker
-                    label="Accent"
-                    value={getConfigValue('colors.accent', config.primary)}
-                    onChange={(color) => updateConfig('colors.accent', color)}
-                    fullWidth
-                  />
+                  {/* Background & Text Colors */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Couleurs de fond et texte</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <ColorPicker
+                        label="Fond principal"
+                        value={getConfigValue('colors.background', '#ffffff')}
+                        onChange={(color) => updateConfig('colors.background', color)}
+                        fullWidth
+                      />
+                      <ColorPicker
+                        label="Texte principal"
+                        value={getConfigValue('colors.foreground', '#000000')}
+                        onChange={(color) => updateConfig('colors.foreground', color)}
+                        fullWidth
+                      />
+                      <ColorPicker
+                        label="Fond atténué"
+                        value={getConfigValue('colors.muted', '#f3f4f6')}
+                        onChange={(color) => updateConfig('colors.muted', color)}
+                        fullWidth
+                      />
+                      <ColorPicker
+                        label="Texte atténué"
+                        value={getConfigValue('colors.mutedForeground', '#6b7280')}
+                        onChange={(color) => updateConfig('colors.mutedForeground', color)}
+                        fullWidth
+                      />
+                      <ColorPicker
+                        label="Bordure"
+                        value={getConfigValue('colors.border', '#e5e7eb')}
+                        onChange={(color) => updateConfig('colors.border', color)}
+                        fullWidth
+                      />
+                      <ColorPicker
+                        label="Accent"
+                        value={getConfigValue('colors.accent', config.primary)}
+                        onChange={(color) => updateConfig('colors.accent', color)}
+                        fullWidth
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
               </TabPanel>
 
               <TabPanel value="typography">
                 <div className="space-y-6 mt-4">
-              {/* Font Families */}
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Polices</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Font Families */}
                   <div>
-                    <label className="block text-sm font-medium mb-2">Police principale</label>
-                    <Select
-                      options={FONT_OPTIONS}
-                      value={getConfigValue('typography.fontFamily', 'Inter, sans-serif')}
-                      onChange={(e) => updateConfig('typography.fontFamily', e.target.value)}
-                    />
-                    <div
-                      className="mt-2 p-3 border rounded-lg text-sm"
-                      style={{
-                        fontFamily: getConfigValue('typography.fontFamily', 'Inter, sans-serif'),
-                      }}
-                    >
-                      Aperçu de la police principale
+                    <h3 className="text-lg font-semibold mb-4">Polices</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Police principale</label>
+                        <Select
+                          options={FONT_OPTIONS}
+                          value={getConfigValue('typography.fontFamily', 'Inter, sans-serif')}
+                          onChange={(e) => updateConfig('typography.fontFamily', e.target.value)}
+                        />
+                        <div
+                          className="mt-2 p-3 border rounded-lg text-sm"
+                          style={{
+                            fontFamily: getConfigValue('typography.fontFamily', 'Inter, sans-serif'),
+                          }}
+                        >
+                          Aperçu de la police principale
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Police des titres</label>
+                        <Select
+                          options={FONT_OPTIONS}
+                          value={getConfigValue('typography.fontFamilyHeading', getConfigValue('typography.fontFamily', 'Inter, sans-serif'))}
+                          onChange={(e) => updateConfig('typography.fontFamilyHeading', e.target.value)}
+                        />
+                        <div
+                          className="mt-2 p-3 border rounded-lg text-sm font-semibold"
+                          style={{
+                            fontFamily: getConfigValue('typography.fontFamilyHeading', getConfigValue('typography.fontFamily', 'Inter, sans-serif')),
+                          }}
+                        >
+                          Aperçu des titres
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Police des sous-titres</label>
+                        <Select
+                          options={FONT_OPTIONS}
+                          value={getConfigValue('typography.fontFamilySubheading', getConfigValue('typography.fontFamily', 'Inter, sans-serif'))}
+                          onChange={(e) => updateConfig('typography.fontFamilySubheading', e.target.value)}
+                        />
+                        <div
+                          className="mt-2 p-3 border rounded-lg text-sm"
+                          style={{
+                            fontFamily: getConfigValue('typography.fontFamilySubheading', getConfigValue('typography.fontFamily', 'Inter, sans-serif')),
+                          }}
+                        >
+                          Aperçu des sous-titres
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Police des titres</label>
-                    <Select
-                      options={FONT_OPTIONS}
-                      value={getConfigValue('typography.fontFamilyHeading', getConfigValue('typography.fontFamily', 'Inter, sans-serif'))}
-                      onChange={(e) => updateConfig('typography.fontFamilyHeading', e.target.value)}
-                    />
-                    <div
-                      className="mt-2 p-3 border rounded-lg text-sm font-semibold"
-                      style={{
-                        fontFamily: getConfigValue('typography.fontFamilyHeading', getConfigValue('typography.fontFamily', 'Inter, sans-serif')),
-                      }}
-                    >
-                      Aperçu des titres
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Police des sous-titres</label>
-                    <Select
-                      options={FONT_OPTIONS}
-                      value={getConfigValue('typography.fontFamilySubheading', getConfigValue('typography.fontFamily', 'Inter, sans-serif'))}
-                      onChange={(e) => updateConfig('typography.fontFamilySubheading', e.target.value)}
-                    />
-                    <div
-                      className="mt-2 p-3 border rounded-lg text-sm"
-                      style={{
-                        fontFamily: getConfigValue('typography.fontFamilySubheading', getConfigValue('typography.fontFamily', 'Inter, sans-serif')),
-                      }}
-                    >
-                      Aperçu des sous-titres
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              {/* Text Colors */}
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Couleurs de texte</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* Text Colors */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Couleurs de texte</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <ColorPicker
                     label="Couleur des titres"
                     value={getConfigValue('typography.textHeading', '#111827')}
@@ -464,79 +465,79 @@ export function ThemeEditor({ theme, onSubmit, onCancel, isLoading = false }: Th
 
               <TabPanel value="advanced">
                 <div className="space-y-6 mt-4">
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Espacement</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Unité de base</label>
-                    <Input
-                      value={getConfigValue('spacing.unit', '8px')}
-                      onChange={(e) => updateConfig('spacing.unit', e.target.value)}
-                      placeholder="8px"
-                      helperText="Unité de base pour les espacements (ex: 8px, 0.5rem)"
-                    />
+                    <h3 className="text-lg font-semibold mb-4">Espacement</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Unité de base</label>
+                        <Input
+                          value={getConfigValue('spacing.unit', '8px')}
+                          onChange={(e) => updateConfig('spacing.unit', e.target.value)}
+                          placeholder="8px"
+                          helperText="Unité de base pour les espacements (ex: 8px, 0.5rem)"
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Rayons de bordure</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Petit</label>
-                    <Input
-                      value={getConfigValue('borderRadius.sm', '0.25rem')}
-                      onChange={(e) => updateConfig('borderRadius.sm', e.target.value)}
-                      placeholder="0.25rem"
-                    />
+                    <h3 className="text-lg font-semibold mb-4">Rayons de bordure</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Petit</label>
+                        <Input
+                          value={getConfigValue('borderRadius.sm', '0.25rem')}
+                          onChange={(e) => updateConfig('borderRadius.sm', e.target.value)}
+                          placeholder="0.25rem"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Moyen</label>
+                        <Input
+                          value={getConfigValue('borderRadius.md', '0.375rem')}
+                          onChange={(e) => updateConfig('borderRadius.md', e.target.value)}
+                          placeholder="0.375rem"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Grand</label>
+                        <Input
+                          value={getConfigValue('borderRadius.lg', '0.5rem')}
+                          onChange={(e) => updateConfig('borderRadius.lg', e.target.value)}
+                          placeholder="0.5rem"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Très grand</label>
+                        <Input
+                          value={getConfigValue('borderRadius.xl', '0.75rem')}
+                          onChange={(e) => updateConfig('borderRadius.xl', e.target.value)}
+                          placeholder="0.75rem"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Moyen</label>
-                    <Input
-                      value={getConfigValue('borderRadius.md', '0.375rem')}
-                      onChange={(e) => updateConfig('borderRadius.md', e.target.value)}
-                      placeholder="0.375rem"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Grand</label>
-                    <Input
-                      value={getConfigValue('borderRadius.lg', '0.5rem')}
-                      onChange={(e) => updateConfig('borderRadius.lg', e.target.value)}
-                      placeholder="0.5rem"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Très grand</label>
-                    <Input
-                      value={getConfigValue('borderRadius.xl', '0.75rem')}
-                      onChange={(e) => updateConfig('borderRadius.xl', e.target.value)}
-                      placeholder="0.75rem"
-                    />
-                  </div>
-                </div>
-              </div>
 
-              {/* JSON Editor (Advanced) */}
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Configuration JSON (Avancé)</h3>
-                <textarea
-                  value={JSON.stringify(config, null, 2)}
-                  onChange={(e) => {
-                    try {
-                      const parsed = JSON.parse(e.target.value);
-                      setConfig(parsed);
-                    } catch {
-                      // Invalid JSON, ignore
-                    }
-                  }}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 font-mono text-sm"
-                  rows={12}
-                />
-                <p className="text-xs text-gray-500 mt-2">
-                  Éditeur JSON avancé pour modifier directement la configuration complète
-                </p>
-              </div>
+                  {/* JSON Editor (Advanced) */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Configuration JSON (Avancé)</h3>
+                    <textarea
+                      value={JSON.stringify(config, null, 2)}
+                      onChange={(e) => {
+                        try {
+                          const parsed = JSON.parse(e.target.value);
+                          setConfig(parsed);
+                        } catch {
+                          // Invalid JSON, ignore
+                        }
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 font-mono text-sm"
+                      rows={12}
+                    />
+                    <p className="text-xs text-gray-500 mt-2">
+                      Éditeur JSON avancé pour modifier directement la configuration complète
+                    </p>
+                  </div>
                 </div>
               </TabPanel>
 
