@@ -4,7 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
-import { checkSuperAdminStatus } from '@/lib/api/admin';
+import { checkMySuperAdminStatus } from '@/lib/api/admin';
 import { logger } from '@/lib/logger';
 import { Card } from '@/components/ui';
 import { AlertCircle } from 'lucide-react';
@@ -53,7 +53,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
           }
           
           logger.debug('Checking superadmin status', { email: user.email, pathname });
-          const status = await checkSuperAdminStatus(user.email, authToken);
+          const status = await checkMySuperAdminStatus(authToken);
           
           logger.debug('Superadmin status check result', { 
             email: user.email, 
