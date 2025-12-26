@@ -43,28 +43,11 @@ export function FontInstaller({ onFontSelect, currentFont }: FontInstallerProps)
   ];
 
   useEffect(() => {
-    loadGoogleFonts();
+    // Use static list of popular fonts to avoid CSP issues
+    // This avoids needing to call Google Fonts API from the client
+    setGoogleFonts(popularFonts);
+    setIsLoading(false);
   }, []);
-
-  const loadGoogleFonts = async () => {
-    setIsLoading(true);
-    try {
-      // Try to fetch from Google Fonts API
-      const response = await fetch('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyDummyKey&sort=popularity');
-      if (response.ok) {
-        const data = await response.json();
-        setGoogleFonts(data.items?.slice(0, 50) || popularFonts);
-      } else {
-        // Fallback to popular fonts
-        setGoogleFonts(popularFonts);
-      }
-    } catch (error) {
-      // Use popular fonts as fallback
-      setGoogleFonts(popularFonts);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const filteredFonts = googleFonts.filter((font) =>
     font.family.toLowerCase().includes(searchQuery.toLowerCase())
