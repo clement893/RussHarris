@@ -82,14 +82,19 @@ export function ThemeVisualisationContent() {
 
     // Navigate to the nested path
     for (let i = 0; i < path.length - 1; i++) {
-      if (!current[path[i]]) {
-        current[path[i]] = {};
+      const key = path[i];
+      if (!key) continue; // Skip if key is undefined
+      if (!current[key]) {
+        current[key] = {};
       }
-      current = current[path[i]];
+      current = current[key];
     }
 
     // Set the final value
-    current[path[path.length - 1]] = value;
+    const lastKey = path[path.length - 1];
+    if (lastKey !== undefined) {
+      current[lastKey] = value;
+    }
     setEditedConfig(newConfig);
   };
 
@@ -224,6 +229,7 @@ export function ThemeVisualisationContent() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {(['primary', 'secondary', 'danger', 'warning', 'info', 'success'] as const).map((colorName) => {
                   const colorKey = `${colorName}_color` as keyof ThemeConfig;
+                  const colorKeyString = String(colorKey); // Convert to string for path array
                   const colorValue = config[colorKey] as string || '#3b82f6';
                   return (
                     <div key={colorName} className="space-y-2">
@@ -233,13 +239,13 @@ export function ThemeVisualisationContent() {
                       <div className="flex gap-2">
                         <ColorPicker
                           value={colorValue}
-                          onChange={(color) => updateConfigField([colorKey], color)}
+                          onChange={(color) => updateConfigField([colorKeyString], color)}
                           showInput={true}
                           fullWidth
                         />
                         <Input
                           value={colorValue}
-                          onChange={(e) => updateConfigField([colorKey], e.target.value)}
+                          onChange={(e) => updateConfigField([colorKeyString], e.target.value)}
                           className="w-32"
                           placeholder="#000000"
                         />
