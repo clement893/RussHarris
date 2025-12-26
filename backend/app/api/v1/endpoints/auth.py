@@ -136,7 +136,15 @@ async def get_current_user(
             raise credentials_exception
         logger.info(f"User found: {user.email}, id: {user.id}")
         return user
+    except (ConnectionError, TimeoutError) as e:
+        logger.error(f"Database connection error in get_current_user: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database service unavailable",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     except Exception as e:
+        # Keep generic Exception as last resort, but log with context
         logger.error(f"Database error in get_current_user: {e}", exc_info=True)
         raise credentials_exception
 
