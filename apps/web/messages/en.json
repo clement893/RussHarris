@@ -69,6 +69,27 @@
     "errors": {
       "loadFailed": "Failed to load profile. Please try again.",
       "updateFailed": "Failed to update profile. Please try again."
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Manage your account settings and preferences",
+      "breadcrumbs": {
+        "dashboard": "Dashboard",
+        "profile": "Profile",
+        "settings": "Settings"
+      },
+      "tabs": {
+        "account": "Account",
+        "preferences": "Preferences"
+      },
+      "sections": {
+        "account": "Account Information",
+        "preferences": "User Preferences"
+      },
+      "errors": {
+        "loadFailed": "Failed to load settings. Please try again.",
+        "updateFailed": "Failed to update settings. Please try again."
+      }
     }
   }
 }
