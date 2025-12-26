@@ -135,14 +135,14 @@ export function AIChat({
           <Bot className="h-5 w-5 text-primary-500" />
           <h3 className="font-semibold">AI Assistant</h3>
           {currentProvider !== 'auto' && (
-            <span className="text-xs text-gray-500 capitalize">({currentProvider})</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">({currentProvider})</span>
           )}
         </div>
         <div className="flex items-center gap-2">
           <select
             value={currentProvider}
             onChange={(e) => setCurrentProvider(e.target.value)}
-            className="text-xs px-2 py-1 border rounded"
+            className="text-xs px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             disabled={isLoading}
           >
             <option value="auto">Auto</option>
@@ -165,9 +165,9 @@ export function AIChat({
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && (
-          <div className="flex items-center justify-center h-full text-gray-500">
+          <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
             <div className="text-center">
-              <Bot className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+              <Bot className="h-12 w-12 mx-auto mb-4 text-gray-400 dark:text-gray-500" />
               <p>Start a conversation with AI</p>
               <p className="text-sm mt-2">Ask anything and get intelligent responses</p>
             </div>

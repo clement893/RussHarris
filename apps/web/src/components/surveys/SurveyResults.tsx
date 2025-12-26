@@ -397,7 +397,7 @@ export default function SurveyResults({
               <p className="text-sm text-gray-600 dark:text-gray-400">{t('total_responses') || 'Total Responses'}</p>
               <p className="text-2xl font-bold">{stats.totalResponses}</p>
             </div>
-            <Users className="h-8 w-8 text-blue-500" />
+            <Users className="h-8 w-8 text-blue-500 dark:text-blue-400" />
           </div>
         </Card>
 
@@ -407,7 +407,7 @@ export default function SurveyResults({
               <p className="text-sm text-gray-600 dark:text-gray-400">{t('filtered_responses') || 'Filtered Responses'}</p>
               <p className="text-2xl font-bold">{stats.filteredResponses}</p>
             </div>
-            <CheckCircle className="h-8 w-8 text-green-500" />
+            <CheckCircle className="h-8 w-8 text-green-500 dark:text-green-400" />
           </div>
         </Card>
 
@@ -417,7 +417,7 @@ export default function SurveyResults({
               <p className="text-sm text-gray-600 dark:text-gray-400">{t('completion_rate') || 'Completion Rate'}</p>
               <p className="text-2xl font-bold">{stats.completionRate}%</p>
             </div>
-            <TrendingUp className="h-8 w-8 text-purple-500" />
+            <TrendingUp className="h-8 w-8 text-purple-500 dark:text-purple-400" />
           </div>
         </Card>
 
@@ -427,7 +427,7 @@ export default function SurveyResults({
               <p className="text-sm text-gray-600 dark:text-gray-400">{t('questions') || 'Questions'}</p>
               <p className="text-2xl font-bold">{survey.questions.length}</p>
             </div>
-            <Calendar className="h-8 w-8 text-orange-500" />
+            <Calendar className="h-8 w-8 text-orange-500 dark:text-orange-400" />
           </div>
         </Card>
       </div>

@@ -162,7 +162,7 @@ export function TagInput({
             {tag.name}
             <button
               onClick={() => handleRemoveTag(tag.id)}
-              className="hover:text-red-500"
+              className="hover:text-red-500 dark:hover:text-red-400"
               type="button"
             >
               <X className="h-3 w-3" />
