@@ -175,34 +175,47 @@ async def send_test_email(
     current_user: User = Depends(get_current_user),
 ):
     """Send a test email to verify SendGrid configuration."""
-    email_service = EmailService()
-    
-    subject = "Test Email from NukleoHUB"
-    html_content = f"""
-    <html>
-    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-            <h1 style="color: #4F46E5;">Test Email</h1>
-            <p>This is a test email from NukleoHUB.</p>
-            <p>If you received this email, SendGrid is configured correctly!</p>
-            <p>Sent by: {current_user.name} ({current_user.email})</p>
-            <p>Best regards,<br>The NukleoHUB Team</p>
-        </div>
-    </body>
-    </html>
-    """
-    text_content = """
-    Test Email
-    
-    This is a test email from NukleoHUB.
-    
-    If you received this email, SendGrid is configured correctly!
-    
-    Best regards,
-    The NukleoHUB Team
-    """
+    from app.core.logging import logger
     
     try:
+        email_service = EmailService()
+        
+        # Get user info safely - User model has first_name, last_name, and email
+        user_first_name = getattr(current_user, 'first_name', None) or ''
+        user_last_name = getattr(current_user, 'last_name', None) or ''
+        user_email = getattr(current_user, 'email', 'unknown@example.com')
+        
+        # Build full name or use email if no name available
+        if user_first_name or user_last_name:
+            user_name = f"{user_first_name} {user_last_name}".strip()
+        else:
+            user_name = user_email.split('@')[0]  # Use email username as fallback
+        
+        subject = "Test Email from NukleoHUB"
+        html_content = f"""
+        <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h1 style="color: #4F46E5;">Test Email</h1>
+                <p>This is a test email from NukleoHUB.</p>
+                <p>If you received this email, SendGrid is configured correctly!</p>
+                <p>Sent by: {user_name} ({user_email})</p>
+                <p>Best regards,<br>The NukleoHUB Team</p>
+            </div>
+        </body>
+        </html>
+        """
+        text_content = """
+        Test Email
+        
+        This is a test email from NukleoHUB.
+        
+        If you received this email, SendGrid is configured correctly!
+        
+        Best regards,
+        The NukleoHUB Team
+        """
+        
         result = email_service.send_email(
             to_email=request_data.to_email,
             subject=subject,
@@ -211,9 +224,17 @@ async def send_test_email(
         )
         return EmailResponse(**result)
     except ValueError as e:
+        logger.error(f"Email validation error: {e}")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except RuntimeError as e:
+        logger.error(f"Email service error: {e}")
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
+    except Exception as e:
+        logger.error(f"Unexpected error sending test email: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to send test email: {str(e)}"
+        )
 
 
 @router.post("/welcome")

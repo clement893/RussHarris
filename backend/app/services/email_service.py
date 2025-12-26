@@ -91,14 +91,24 @@ class EmailService:
 
         try:
             response = self.client.send(message)
-            return {
-                "status": "sent",
-                "status_code": response.status_code,
-                "message_id": response.headers.get("X-Message-Id"),
-                "to": to_email,
-            }
+            
+            # Check if response is successful (2xx status codes)
+            if response.status_code >= 200 and response.status_code < 300:
+                return {
+                    "status": "sent",
+                    "status_code": response.status_code,
+                    "message_id": response.headers.get("X-Message-Id"),
+                    "to": to_email,
+                }
+            else:
+                # SendGrid returned an error status code
+                error_body = getattr(response, 'body', 'Unknown error')
+                raise RuntimeError(f"SendGrid API returned status {response.status_code}: {error_body}")
         except SendGridException as e:
-            raise RuntimeError(f"Failed to send email via SendGrid: {e}")
+            raise RuntimeError(f"Failed to send email via SendGrid: {str(e)}")
+        except Exception as e:
+            # Catch any other unexpected exceptions
+            raise RuntimeError(f"Unexpected error sending email: {str(e)}")
 
     def send_welcome_email(self, to_email: str, name: str, login_url: Optional[str] = None) -> Dict[str, Any]:
         """Send a welcome email to a new user."""
