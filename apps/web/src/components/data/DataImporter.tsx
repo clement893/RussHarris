@@ -2,10 +2,9 @@
 
 import { useState, useRef } from 'react';
 import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
-import { Upload, FileCheck, AlertCircle, CheckCircle } from 'lucide-react';
+import { Upload, AlertCircle, CheckCircle } from 'lucide-react';
 import { apiClient } from '@/lib/api/client';
-import { useToast } from '@/hooks/useToast';
+import { useToast } from '@/components/ui';
 
 interface DataImporterProps {
   onImportComplete?: (result: {
@@ -32,19 +31,17 @@ export function DataImporter({
     errors: Array<{ row: number; data: unknown; error: string }>;
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
+  const { showToast } = useToast();
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     // Validate file type
-    const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
     if (!acceptedFormats.some(format => file.name.toLowerCase().endsWith(format.toLowerCase()))) {
-      toast({
-        title: 'Invalid File Format',
-        description: `Please select a file with one of these formats: ${acceptedFormats.join(', ')}`,
-        variant: 'destructive',
+      showToast({
+        message: `Please select a file with one of these formats: ${acceptedFormats.join(', ')}`,
+        type: 'error',
       });
       return;
     }
@@ -71,6 +68,10 @@ export function DataImporter({
         },
       });
 
+      if (!response.data) {
+        throw new Error('No data received from import');
+      }
+
       setImportResult({
         total_rows: response.data.total_rows,
         valid_rows: response.data.valid_rows,
@@ -79,25 +80,23 @@ export function DataImporter({
       });
 
       if (response.data.invalid_rows > 0) {
-        toast({
-          title: 'Import Completed with Errors',
-          description: `${response.data.valid_rows} rows imported successfully, ${response.data.invalid_rows} rows had errors.`,
-          variant: 'destructive',
+        showToast({
+          message: `${response.data.valid_rows} rows imported successfully, ${response.data.invalid_rows} rows had errors.`,
+          type: 'warning',
         });
       } else {
-        toast({
-          title: 'Import Successful',
-          description: `Successfully imported ${response.data.valid_rows} rows.`,
+        showToast({
+          message: `Successfully imported ${response.data.valid_rows} rows.`,
+          type: 'success',
         });
       }
 
       onImportComplete?.(response.data);
     } catch (error: any) {
       console.error('Import error:', error);
-      toast({
-        title: 'Import Failed',
-        description: error.response?.data?.detail || 'Failed to import data.',
-        variant: 'destructive',
+      showToast({
+        message: error.response?.data?.detail || 'Failed to import data.',
+        type: 'error',
       });
     } finally {
       setIsImporting(false);
@@ -119,12 +118,11 @@ export function DataImporter({
           className="hidden"
           id="file-import"
         />
-        <label htmlFor="file-import">
+        <label htmlFor="file-import" className="cursor-pointer">
           <Button
-            as="span"
             variant="outline"
             disabled={isImporting}
-            className="cursor-pointer"
+            onClick={() => fileInputRef.current?.click()}
           >
             <Upload className="h-4 w-4 mr-2" />
             {isImporting ? 'Importing...' : 'Import Data'}

@@ -80,7 +80,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
             }
           } catch (err) {
             // If superadmin check fails, fallback to is_admin check
-            logger.warn('Failed to check superadmin status, using is_admin fallback', err);
+            logger.warn('Failed to check superadmin status, using is_admin fallback', { error: String(err) });
           }
         }
         

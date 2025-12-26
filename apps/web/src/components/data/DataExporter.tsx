@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Button from '@/components/ui/Button';
 import { FileSpreadsheet, FileText, FileJson, FileType } from 'lucide-react';
-import { apiClient } from '@/lib/api/client';
+import { useToast } from '@/components/ui';
 
 interface DataExporterProps {
   data: Record<string, unknown>[];
@@ -21,14 +21,13 @@ export function DataExporter({
   className = '',
 }: DataExporterProps) {
   const [isExporting, setIsExporting] = useState(false);
-  const { toast } = useToast();
+  const { showToast } = useToast();
 
   const handleExport = async (format: 'csv' | 'excel' | 'json' | 'pdf') => {
     if (!data || data.length === 0) {
-      toast({
-        title: 'No Data',
-        description: 'There is no data to export.',
-        variant: 'destructive',
+      showToast({
+        message: 'There is no data to export.',
+        type: 'error',
       });
       return;
     }
@@ -36,8 +35,10 @@ export function DataExporter({
     setIsExporting(true);
 
     try {
-      const response = await apiClient.post(
-        '/api/v1/exports/export',
+      // Use axios directly for blob response
+      const axios = (await import('axios')).default;
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/exports/export`,
         {
           format,
           data,
@@ -47,11 +48,14 @@ export function DataExporter({
         },
         {
           responseType: 'blob',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+          },
         }
       );
 
       // Create download link
-      const blob = new Blob([response.data], {
+      const blob = new Blob([response.data as BlobPart], {
         type: response.headers['content-type'] || 'application/octet-stream',
       });
       const url = window.URL.createObjectURL(blob);
@@ -77,16 +81,15 @@ export function DataExporter({
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
-      toast({
-        title: 'Export Successful',
-        description: `Data exported as ${format.toUpperCase()} successfully.`,
+      showToast({
+        message: `Data exported as ${format.toUpperCase()} successfully.`,
+        type: 'success',
       });
     } catch (error: any) {
       console.error('Export error:', error);
-      toast({
-        title: 'Export Failed',
-        description: error.response?.data?.detail || 'Failed to export data.',
-        variant: 'destructive',
+      showToast({
+        message: error.response?.data?.detail || 'Failed to export data.',
+        type: 'error',
       });
     } finally {
       setIsExporting(false);
