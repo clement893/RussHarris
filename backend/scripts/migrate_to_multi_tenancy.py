@@ -26,7 +26,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.core.config import settings
-from app.core.tenancy import TenancyConfig
+from app.core.tenancy import TenancyConfig, TenancyMode
 from app.core.logging import logger
 from app.models.team import Team, TeamMember
 from app.models.user import User

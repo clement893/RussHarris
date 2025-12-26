@@ -235,7 +235,9 @@ async def delete_page(
     db: AsyncSession = Depends(get_db),
 ):
     """Delete a page"""
-    result = await db.execute(select(Page).where(Page.slug == slug))
+    query = select(Page).where(Page.slug == slug)
+    query = apply_tenant_scope(query, Page)
+    result = await db.execute(query)
     page = result.scalar_one_or_none()
     
     if not page:
