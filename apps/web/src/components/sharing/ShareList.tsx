@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Share2, User, Users, Lock, Calendar, X, ExternalLink } from 'lucide-react';
+import { Share2, User, Users, Lock, X, ExternalLink } from 'lucide-react';
 import Card from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
 import { apiClient } from '@/lib/api/client';
 import { useToast } from '@/components/ui';
 import { formatDistanceToNow } from '@/lib/utils/dateUtils';
