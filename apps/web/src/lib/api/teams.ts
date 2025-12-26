@@ -80,6 +80,9 @@ export interface TeamListResponse {
 }
 
 export const teamsAPI = {
+  list: async (skip = 0, limit = 100): Promise<ApiResponse<TeamListResponse>> => {
+    return apiClient.get<TeamListResponse>(`/teams?skip=${skip}&limit=${limit}`);
+  },
   listTeams: async (skip = 0, limit = 100): Promise<ApiResponse<TeamListResponse>> => {
     return apiClient.get<TeamListResponse>(`/teams?skip=${skip}&limit=${limit}`);
   },

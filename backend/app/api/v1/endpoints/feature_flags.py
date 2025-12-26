@@ -92,11 +92,35 @@ async def create_feature_flag(
             variants=flag_data.variants,
             created_by_id=current_user.id
         )
+        logger.info(
+            f"Feature flag created: {flag.key} by user {current_user.id}",
+            context={
+                "flag_id": flag.id,
+                "flag_key": flag.key,
+                "user_id": current_user.id,
+                "enabled": flag.enabled,
+                "rollout_percentage": flag.rollout_percentage
+            }
+        )
         return FeatureFlagResponse.model_validate(flag)
     except ValueError as e:
+        logger.warning(
+            f"Failed to create feature flag: {e}",
+            context={"flag_key": flag_data.key, "user_id": current_user.id}
+        )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
+        )
+    except Exception as e:
+        logger.error(
+            f"Unexpected error creating feature flag: {e}",
+            context={"flag_key": flag_data.key, "user_id": current_user.id},
+            exc_info=True
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create feature flag"
         )
 
 
@@ -119,6 +143,10 @@ async def get_feature_flags(
     """
     service = FeatureFlagService(db)
     flags = await service.get_all_flags(enabled_only=enabled_only)
+    logger.debug(
+        f"Feature flags retrieved by user {current_user.id}",
+        context={"user_id": current_user.id, "enabled_only": enabled_only, "count": len(flags)}
+    )
     return [FeatureFlagResponse.model_validate(f) for f in flags]
 
 
@@ -145,10 +173,12 @@ async def get_feature_flag(
     service = FeatureFlagService(db)
     flag = await service.get_flag(key)
     if not flag:
+        logger.debug(f"Feature flag not found: {key}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Feature flag not found"
         )
+    logger.debug(f"Feature flag retrieved: {key} by user {current_user.id}")
     return FeatureFlagResponse.model_validate(flag)
 
 
@@ -182,6 +212,17 @@ async def check_feature_flag(
     if is_enabled:
         variant = await service.get_variant(key, user_id=current_user.id)
     
+    logger.debug(
+        f"Feature flag checked: {key} for user {current_user.id}",
+        context={
+            "flag_key": key,
+            "user_id": current_user.id,
+            "team_id": team_id,
+            "enabled": is_enabled,
+            "variant": variant
+        }
+    )
+    
     return {
         "enabled": is_enabled,
         "variant": variant
@@ -214,13 +255,36 @@ async def update_feature_flag(
     """
     service = FeatureFlagService(db)
     updates = flag_data.model_dump(exclude_unset=True)
-    flag = await service.update_flag(flag_id, updates)
-    if not flag:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Feature flag not found"
+    try:
+        flag = await service.update_flag(flag_id, updates)
+        if not flag:
+            logger.warning(f"Attempted to update non-existent feature flag: {flag_id}")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Feature flag not found"
+            )
+        logger.info(
+            f"Feature flag updated: {flag.key} by user {current_user.id}",
+            context={
+                "flag_id": flag_id,
+                "flag_key": flag.key,
+                "user_id": current_user.id,
+                "updated_fields": list(updates.keys())
+            }
         )
-    return FeatureFlagResponse.model_validate(flag)
+        return FeatureFlagResponse.model_validate(flag)
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(
+            f"Failed to update feature flag: {e}",
+            context={"flag_id": flag_id, "user_id": current_user.id},
+            exc_info=True
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update feature flag"
+        )
 
 
 @router.delete("/feature-flags/{flag_id}", tags=["feature-flags"])
@@ -244,13 +308,31 @@ async def delete_feature_flag(
         HTTPException: 404 if feature flag not found
     """
     service = FeatureFlagService(db)
-    success = await service.delete_flag(flag_id)
-    if success:
-        return {"success": True, "message": "Feature flag deleted successfully"}
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Feature flag not found"
-    )
+    try:
+        success = await service.delete_flag(flag_id)
+        if success:
+            logger.info(
+                f"Feature flag deleted: {flag_id} by user {current_user.id}",
+                context={"flag_id": flag_id, "user_id": current_user.id}
+            )
+            return {"success": True, "message": "Feature flag deleted successfully"}
+        logger.warning(f"Attempted to delete non-existent feature flag: {flag_id}")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Feature flag not found"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(
+            f"Failed to delete feature flag: {e}",
+            context={"flag_id": flag_id, "user_id": current_user.id},
+            exc_info=True
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to delete feature flag"
+        )
 
 
 @router.get("/feature-flags/{flag_id}/stats", tags=["feature-flags"])

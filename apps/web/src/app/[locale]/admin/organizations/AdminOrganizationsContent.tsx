@@ -36,11 +36,13 @@ export default function AdminOrganizationsContent() {
       const response = await teamsAPI.list();
       
       if (response.data) {
-        setTeams(response.data.map((team: any) => ({
+        // Backend returns { teams: [...], total: ... }
+        const teamsData = response.data.teams || response.data;
+        setTeams((Array.isArray(teamsData) ? teamsData : []).map((team: any) => ({
           id: String(team.id),
           name: team.name,
           description: team.description,
-          member_count: team.member_count || 0,
+          member_count: team.members?.length || 0,
           organization_id: team.organization_id || '',
           created_at: team.created_at,
         })));

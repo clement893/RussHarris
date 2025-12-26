@@ -58,7 +58,9 @@ export default function AdminStatisticsContent() {
         const { teamsAPI } = await import('@/lib/api');
         const teamsResponse = await teamsAPI.list();
         if (teamsResponse.data) {
-          totalOrgs = Array.isArray(teamsResponse.data) ? teamsResponse.data.length : 0;
+          // Backend returns { teams: [...], total: ... }
+          const teamsData = teamsResponse.data.teams || teamsResponse.data;
+          totalOrgs = Array.isArray(teamsData) ? teamsData.length : (teamsResponse.data.total || 0);
         }
       } catch (e) {
         // Ignore if teams API is not available

@@ -285,12 +285,26 @@ async def bootstrap_superadmin(
         
     except HTTPException:
         raise
-    except Exception as e:
+    except IntegrityError as e:
         await db.rollback()
-        logger.error(f"Error bootstrapping superadmin: {e}", exc_info=True)
+        logger.error(f"Database integrity error bootstrapping superadmin: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to bootstrap superadmin due to database constraint violation"
+        )
+    except SQLAlchemyError as e:
+        await db.rollback()
+        logger.error(f"Database error bootstrapping superadmin: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to bootstrap superadmin: {str(e)}"
+            detail="Database error occurred while bootstrapping superadmin"
+        )
+    except Exception as e:
+        await db.rollback()
+        logger.error(f"Unexpected error bootstrapping superadmin: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected error occurred"
         )
 
 
@@ -554,11 +568,23 @@ async def delete_tenant_database(
                 "message": f"Tenant database does not exist",
                 "tenant_id": tenant_id
             }
-    except Exception as e:
-        logger.error(f"Failed to delete tenant database: {e}", exc_info=True)
+    except ValueError as e:
+        logger.error(f"Invalid input for tenant database deletion: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid input: {str(e)}"
+        )
+    except SQLAlchemyError as e:
+        logger.error(f"Database error deleting tenant database: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to delete tenant database: {str(e)}"
+            detail="Database error occurred while deleting tenant database"
+        )
+    except Exception as e:
+        logger.error(f"Unexpected error deleting tenant database: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected error occurred"
         )
 
 

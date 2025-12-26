@@ -72,18 +72,21 @@ export default function TeamsPage() {
       const response = await teamsAPI.list();
       
       if (response.data) {
-        setTeams(response.data.map((team: {
+        // Backend returns { teams: [...], total: ... }
+        const teamsData = response.data.teams || response.data;
+        setTeams((Array.isArray(teamsData) ? teamsData : []).map((team: {
           id: string | number;
           name: string;
           description?: string;
           member_count?: number;
           organization_id?: string;
           created_at: string;
+          members?: any[];
         }) => ({
           id: String(team.id),
           name: team.name,
           description: team.description,
-          member_count: team.member_count || 0,
+          member_count: team.members?.length || team.member_count || 0,
           organization_id: team.organization_id || '',
           created_at: team.created_at,
         })));

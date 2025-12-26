@@ -40,20 +40,14 @@ export default function AdminUsersContent() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/v1/users', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch users');
-      }
-
-      const data = await response.json();
-      setUsers(data);
+      const { apiClient } = await import('@/lib/api/client');
+      const response = await apiClient.get('/v1/users?skip=0&limit=100');
+      
+      // Backend returns paginated response: { items: [...], total: ..., page: ..., page_size: ... }
+      const data = (response as any).data?.items || (response as any).data || [];
+      setUsers(Array.isArray(data) ? data : []);
     } catch (err) {
-      setError(getErrorMessage(err));
+      setError(getErrorMessage(err, 'Erreur lors du chargement des utilisateurs'));
     } finally {
       setLoading(false);
     }

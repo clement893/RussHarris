@@ -10,6 +10,7 @@ from app.services.documentation_service import DocumentationService
 from app.models.user import User
 from app.dependencies import get_current_user
 from app.core.database import get_db
+from app.core.logging import logger
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter()
@@ -101,20 +102,35 @@ async def create_article(
         HTTPException: 401 if user is not authenticated
     """
     service = DocumentationService(db)
-    article = await service.create_article(
-        slug=article_data.slug,
-        title=article_data.title,
-        content=article_data.content,
-        excerpt=article_data.excerpt,
-        category_id=article_data.category_id,
-        tags=article_data.tags,
-        is_published=article_data.is_published,
-        is_featured=article_data.is_featured,
-        meta_title=article_data.meta_title,
-        meta_description=article_data.meta_description,
-        author_id=current_user.id
-    )
-    return ArticleResponse.model_validate(article)
+    try:
+        article = await service.create_article(
+            slug=article_data.slug,
+            title=article_data.title,
+            content=article_data.content,
+            excerpt=article_data.excerpt,
+            category_id=article_data.category_id,
+            tags=article_data.tags,
+            is_published=article_data.is_published,
+            is_featured=article_data.is_featured,
+            meta_title=article_data.meta_title,
+            meta_description=article_data.meta_description,
+            author_id=current_user.id
+        )
+        logger.info(
+            f"Documentation article created: {article.slug} by user {current_user.id}",
+            context={"article_id": article.id, "user_id": current_user.id, "is_published": article.is_published}
+        )
+        return ArticleResponse.model_validate(article)
+    except Exception as e:
+        logger.error(
+            f"Failed to create documentation article: {e}",
+            context={"slug": article_data.slug, "user_id": current_user.id},
+            exc_info=True
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create article"
+        )
 
 
 @router.get("/documentation/articles", response_model=List[ArticleResponse], tags=["documentation"])
@@ -172,6 +188,7 @@ async def get_article(
     service = DocumentationService(db)
     article = await service.get_article(slug)
     if not article or not article.is_published:
+        logger.debug(f"Article not found or not published: {slug}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Article not found"
@@ -179,6 +196,7 @@ async def get_article(
     
     # Increment view count
     await service.increment_view_count(article.id)
+    logger.debug(f"Article viewed: {slug} (view count: {article.view_count + 1})")
     
     return ArticleResponse.model_validate(article)
 
@@ -206,13 +224,32 @@ async def submit_feedback(
         HTTPException: 404 if article not found
     """
     service = DocumentationService(db)
-    feedback = await service.submit_feedback(
-        article_id=article_id,
-        is_helpful=feedback_data.is_helpful,
-        comment=feedback_data.comment,
-        user_id=current_user.id if current_user else None
-    )
-    return {"success": True, "message": "Feedback submitted"}
+    try:
+        feedback = await service.submit_feedback(
+            article_id=article_id,
+            is_helpful=feedback_data.is_helpful,
+            comment=feedback_data.comment,
+            user_id=current_user.id if current_user else None
+        )
+        logger.info(
+            f"Documentation feedback submitted for article {article_id}",
+            context={
+                "article_id": article_id,
+                "user_id": current_user.id if current_user else None,
+                "is_helpful": feedback_data.is_helpful
+            }
+        )
+        return {"success": True, "message": "Feedback submitted"}
+    except Exception as e:
+        logger.error(
+            f"Failed to submit documentation feedback: {e}",
+            context={"article_id": article_id},
+            exc_info=True
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to submit feedback"
+        )
 
 
 @router.get("/documentation/categories", response_model=List[CategoryResponse], tags=["documentation"])
@@ -260,13 +297,31 @@ async def update_article(
     """
     service = DocumentationService(db)
     updates = article_data.model_dump(exclude_unset=True)
-    article = await service.update_article(article_id, updates)
-    if not article:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Article not found"
+    try:
+        article = await service.update_article(article_id, updates)
+        if not article:
+            logger.warning(f"Attempted to update non-existent article: {article_id}")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Article not found"
+            )
+        logger.info(
+            f"Documentation article updated: {article.slug} by user {current_user.id}",
+            context={"article_id": article_id, "user_id": current_user.id, "updated_fields": list(updates.keys())}
         )
-    return ArticleResponse.model_validate(article)
+        return ArticleResponse.model_validate(article)
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(
+            f"Failed to update documentation article: {e}",
+            context={"article_id": article_id, "user_id": current_user.id},
+            exc_info=True
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update article"
+        )
 
 
 @router.delete("/documentation/articles/{article_id}", tags=["documentation"])
@@ -291,11 +346,29 @@ async def delete_article(
         HTTPException: 403 if user is not authorized to delete
     """
     service = DocumentationService(db)
-    success = await service.delete_article(article_id)
-    if success:
-        return {"success": True, "message": "Article deleted successfully"}
-    raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Article not found"
-    )
+    try:
+        success = await service.delete_article(article_id)
+        if success:
+            logger.info(
+                f"Documentation article deleted: {article_id} by user {current_user.id}",
+                context={"article_id": article_id, "user_id": current_user.id}
+            )
+            return {"success": True, "message": "Article deleted successfully"}
+        logger.warning(f"Attempted to delete non-existent article: {article_id}")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Article not found"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(
+            f"Failed to delete documentation article: {e}",
+            context={"article_id": article_id, "user_id": current_user.id},
+            exc_info=True
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to delete article"
+        )
 
