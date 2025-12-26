@@ -28,7 +28,7 @@ export default function Container({
       className={clsx(
         'mx-auto',
         maxWidths[maxWidth],
-        padding && 'px-4 sm:px-6 lg:px-8',
+        padding && 'px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12',
         className
       )}
     >
