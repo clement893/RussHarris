@@ -10,6 +10,7 @@ import { Loading, Alert } from '@/components/ui';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { logger } from '@/lib/logger';
 import { surveysAPI } from '@/lib/api';
+import { formToSurvey } from '@/utils/surveyUtils';
 
 export default function SurveyResultsPage() {
   const t = useTranslations('surveys.results');
@@ -37,25 +38,8 @@ export default function SurveyResultsPage() {
       ]);
 
       if (surveyResponse.data) {
-        const form = surveyResponse.data;
-        setSurvey({
-          id: String(form.id),
-          name: form.name,
-          description: form.description,
-          questions: form.fields || [],
-          settings: form.settings || {
-            allowAnonymous: true,
-            requireAuth: false,
-            limitOneResponse: false,
-            limitOneResponsePerUser: true,
-            showProgressBar: true,
-            randomizeQuestions: false,
-            publicLinkEnabled: false,
-          },
-          submitButtonText: form.submit_button_text,
-          successMessage: form.success_message,
-          status: 'published' as const,
-        });
+        // Convert form data to survey format using utility function
+        setSurvey(formToSurvey({ ...surveyResponse.data, status: 'published' }));
       }
 
       if (submissionsResponse.data) {
@@ -111,7 +95,7 @@ export default function SurveyResultsPage() {
     return (
       <ProtectedRoute>
         <PageContainer>
-          <Alert type="error" title={t('error') || 'Error'} description={t('errors.notFound') || 'Survey not found'} />
+          <Alert variant="error" title={t('error') || 'Error'} description={t('errors.notFound') || 'Survey not found'} />
         </PageContainer>
       </ProtectedRoute>
     );

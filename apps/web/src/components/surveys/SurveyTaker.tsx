@@ -28,7 +28,7 @@
 
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Card,
   Button,
@@ -299,7 +299,6 @@ export default function SurveyTaker({
 
       case 'scale':
       case 'rating':
-      case 'nps':
         const min = question.scaleMin || 1;
         const max = question.scaleMax || 5;
         const step = question.scaleStep || 1;
@@ -342,6 +341,60 @@ export default function SurveyTaker({
           </div>
         );
 
+      case 'nps':
+        // NPS is always 0-10 scale
+        const npsMin = 0;
+        const npsMax = 10;
+        return (
+          <div key={question.id} className="space-y-2">
+            <label className="block text-sm font-medium">
+              {question.label} {question.required && <span className="text-danger-500">*</span>}
+            </label>
+            {question.description && (
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{question.description}</p>
+            )}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-24 text-left">
+                  {t('not_likely') || 'Not likely'}
+                </span>
+                <div className="flex-1 flex items-center gap-1 flex-wrap">
+                  {Array.from({ length: 11 }, (_, i) => {
+                    const optionValue = i;
+                    return (
+                      <button
+                        key={optionValue}
+                        type="button"
+                        onClick={() => setResponses({ ...responses, [question.name]: optionValue })}
+                        className={`px-3 py-2 rounded-lg border text-sm ${
+                          Number(value) === optionValue
+                            ? 'bg-blue-500 text-white border-blue-500'
+                            : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:border-blue-300'
+                        }`}
+                      >
+                        {optionValue}
+                      </button>
+                    );
+                  })}
+                </div>
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-24 text-right">
+                  {t('very_likely') || 'Very likely'}
+                </span>
+              </div>
+              {value !== undefined && value !== null && (
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  {Number(value) <= 6 && <span className="text-red-500">{t('detractor') || 'Detractor'}</span>}
+                  {Number(value) >= 7 && Number(value) <= 8 && (
+                    <span className="text-yellow-500">{t('passive') || 'Passive'}</span>
+                  )}
+                  {Number(value) >= 9 && <span className="text-green-500">{t('promoter') || 'Promoter'}</span>}
+                </div>
+              )}
+            </div>
+            {error && <p className="text-sm text-danger-500 mt-1">{error}</p>}
+          </div>
+        );
+
       case 'yesno':
         return (
           <div key={question.id} className="space-y-2">
@@ -362,6 +415,123 @@ export default function SurveyTaker({
                 checked={String(value) === 'no'}
                 onChange={() => setResponses({ ...responses, [question.name]: 'no' })}
               />
+            </div>
+            {error && <p className="text-sm text-danger-500 mt-1">{error}</p>}
+          </div>
+        );
+
+      case 'matrix':
+        const matrixValue = (value as Record<string, string>) || {};
+        return (
+          <div key={question.id} className="space-y-4">
+            <label className="block text-sm font-medium">
+              {question.label} {question.required && <span className="text-danger-500">*</span>}
+            </label>
+            {question.description && (
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{question.description}</p>
+            )}
+            <div className="overflow-x-auto">
+              <table className="min-w-full border-collapse">
+                <thead>
+                  <tr>
+                    <th className="border border-gray-300 dark:border-gray-600 p-2 text-left"></th>
+                    {question.matrixColumns?.map((col) => (
+                      <th key={col} className="border border-gray-300 dark:border-gray-600 p-2 text-center text-sm">
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {question.matrixRows?.map((row) => (
+                    <tr key={row}>
+                      <td className="border border-gray-300 dark:border-gray-600 p-2 text-sm font-medium">
+                        {row}
+                      </td>
+                      {question.matrixColumns?.map((col) => (
+                        <td key={col} className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                          <Radio
+                            checked={matrixValue[row] === col}
+                            onChange={() => {
+                              setResponses({
+                                ...responses,
+                                [question.name]: { ...matrixValue, [row]: col },
+                              });
+                            }}
+                          />
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {error && <p className="text-sm text-danger-500 mt-1">{error}</p>}
+          </div>
+        );
+
+      case 'ranking':
+        const rankingValue = (Array.isArray(value) ? value : []) as string[];
+        const rankingOptions = question.options || [];
+        return (
+          <div key={question.id} className="space-y-2">
+            <label className="block text-sm font-medium">
+              {question.label} {question.required && <span className="text-danger-500">*</span>}
+            </label>
+            {question.description && (
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{question.description}</p>
+            )}
+            <div className="space-y-2">
+              {rankingOptions.map((option, index) => {
+                const currentRank = rankingValue.indexOf(option.value) + 1;
+                return (
+                  <div key={option.value} className="flex items-center gap-2 p-2 border border-gray-200 dark:border-gray-700 rounded">
+                    <span className="text-sm font-medium w-8">{currentRank || '—'}</span>
+                    <span className="flex-1 text-sm">{option.label}</span>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          const newRanking = [...rankingValue];
+                          const currentIndex = newRanking.indexOf(option.value);
+                          if (currentIndex > 0) {
+                            [newRanking[currentIndex], newRanking[currentIndex - 1]] = [
+                              newRanking[currentIndex - 1],
+                              newRanking[currentIndex],
+                            ];
+                            setResponses({ ...responses, [question.name]: newRanking });
+                          }
+                        }}
+                        disabled={currentRank === 0 || currentRank === 1}
+                      >
+                        ↑
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          const newRanking = [...rankingValue];
+                          const currentIndex = newRanking.indexOf(option.value);
+                          if (currentIndex >= 0 && currentIndex < newRanking.length - 1) {
+                            [newRanking[currentIndex], newRanking[currentIndex + 1]] = [
+                              newRanking[currentIndex + 1],
+                              newRanking[currentIndex],
+                            ];
+                            setResponses({ ...responses, [question.name]: newRanking });
+                          } else if (currentIndex === -1) {
+                            newRanking.push(option.value);
+                            setResponses({ ...responses, [question.name]: newRanking });
+                          }
+                        }}
+                        disabled={currentRank === rankingOptions.length}
+                      >
+                        ↓
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
             {error && <p className="text-sm text-danger-500 mt-1">{error}</p>}
           </div>
@@ -392,9 +562,9 @@ export default function SurveyTaker({
           </div>
         )}
 
-        {error && (
-          <Alert type="error" title={t('error') || 'Error'} description={error} className="mb-4" />
-        )}
+      {error && (
+        <Alert variant="error" title={t('error') || 'Error'} description={error} className="mb-4" />
+      )}
 
         <div className="space-y-6">
           {currentPageQuestions.map((question) => renderQuestion(question))}

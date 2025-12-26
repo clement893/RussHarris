@@ -37,7 +37,9 @@ import {
   Alert,
   useToast,
 } from '@/components/ui';
-import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
+// Note: recharts needs to be installed: pnpm add recharts
+// For now, using simple div-based charts
+// import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Download, Calendar, TrendingUp, Users, CheckCircle } from 'lucide-react';
 import { PageHeader, PageContainer } from '@/components/layout';
 import { useTranslations } from 'next-intl';
@@ -67,7 +69,6 @@ export default function SurveyResults({
   survey,
   submissions,
   onExport,
-  loading,
   error,
 }: SurveyResultsProps) {
   const t = useTranslations('SurveyResults');
@@ -95,12 +96,8 @@ export default function SurveyResults({
     const total = submissions.length;
     const filtered = filteredSubmissions.length;
     const completionRate = total > 0 ? (filtered / total) * 100 : 0;
-    const averageTime = filtered > 0
-      ? filteredSubmissions.reduce((acc, sub) => {
-          // Calculate average time to complete (if we had start time)
-          return acc + 1;
-        }, 0) / filtered
-      : 0;
+    // Note: Average time calculation would require start time tracking
+    const averageTime = 0;
 
     return {
       totalResponses: total,
@@ -116,7 +113,7 @@ export default function SurveyResults({
 
     const responses = filteredSubmissions.map((sub) => sub.data[question.name]);
 
-    if (question.type === 'scale' || question.type === 'rating' || question.type === 'nps' || question.type === 'number') {
+    if (question.type === 'scale' || question.type === 'rating' || question.type === 'number') {
       // Numeric data - show distribution
       const min = question.scaleMin || 1;
       const max = question.scaleMax || 5;
@@ -141,6 +138,44 @@ export default function SurveyResults({
           percentage: filteredSubmissions.length > 0 ? (value / filteredSubmissions.length) * 100 : 0,
         })),
         average: responses.reduce((acc, val) => acc + (Number(val) || 0), 0) / (responses.length || 1),
+      };
+    } else if (question.type === 'nps') {
+      // NPS specific: 0-10 scale with NPS score calculation
+      const distribution: Record<number, number> = {};
+      for (let i = 0; i <= 10; i++) {
+        distribution[i] = 0;
+      }
+
+      responses.forEach((value) => {
+        const numValue = Number(value);
+        if (!isNaN(numValue) && numValue >= 0 && numValue <= 10) {
+          distribution[Math.round(numValue)] = (distribution[Math.round(numValue)] || 0) + 1;
+        }
+      });
+
+      // Calculate NPS score: % Promoters (9-10) - % Detractors (0-6)
+      const total = filteredSubmissions.length;
+      const promoters = Object.entries(distribution)
+        .filter(([key]) => Number(key) >= 9)
+        .reduce((sum, [, value]) => sum + value, 0);
+      const detractors = Object.entries(distribution)
+        .filter(([key]) => Number(key) <= 6)
+        .reduce((sum, [, value]) => sum + value, 0);
+      const npsScore = total > 0 ? Math.round(((promoters - detractors) / total) * 100) : 0;
+
+      return {
+        type: 'bar',
+        data: Object.entries(distribution).map(([key, value]) => ({
+          name: key,
+          value: value,
+          percentage: total > 0 ? (value / total) * 100 : 0,
+          category: Number(key) <= 6 ? 'detractor' : Number(key) >= 9 ? 'promoter' : 'passive',
+        })),
+        average: responses.reduce((acc, val) => acc + (Number(val) || 0), 0) / (responses.length || 1),
+        npsScore,
+        promoters,
+        detractors,
+        passives: total - promoters - detractors,
       };
     } else if (question.type === 'select' || question.type === 'radio' || question.type === 'yesno') {
       // Categorical data - show pie/bar chart
@@ -182,6 +217,88 @@ export default function SurveyResults({
             percentage: filteredSubmissions.length > 0 ? (value / filteredSubmissions.length) * 100 : 0,
           }))
           .sort((a, b) => b.value - a.value),
+      };
+    } else if (question.type === 'matrix') {
+      // Matrix questions - show distribution per row/column combination
+      const matrixData: Record<string, Record<string, number>> = {};
+      const rows = question.matrixRows || [];
+      const columns = question.matrixColumns || [];
+
+      // Initialize matrix
+      rows.forEach((row) => {
+        matrixData[row] = {};
+        columns.forEach((col) => {
+          matrixData[row][col] = 0;
+        });
+      });
+
+      // Count responses
+      responses.forEach((value) => {
+        if (typeof value === 'object' && value !== null) {
+          Object.entries(value as Record<string, string>).forEach(([row, col]) => {
+            if (matrixData[row] && matrixData[row][col] !== undefined) {
+              matrixData[row][col] = (matrixData[row][col] || 0) + 1;
+            }
+          });
+        }
+      });
+
+      // Convert to chart data format
+      const chartData = rows.flatMap((row) =>
+        columns.map((col) => ({
+          name: `${row} - ${col}`,
+          value: matrixData[row][col] || 0,
+          percentage: filteredSubmissions.length > 0 ? ((matrixData[row][col] || 0) / filteredSubmissions.length) * 100 : 0,
+          row,
+          col,
+        }))
+      );
+
+      return {
+        type: 'matrix',
+        data: chartData,
+        rows,
+        columns,
+      };
+    } else if (question.type === 'ranking') {
+      // Ranking questions - show average position for each option
+      const rankingData: Record<string, { total: number; sum: number; count: number }> = {};
+      const options = question.options || [];
+
+      // Initialize
+      options.forEach((opt) => {
+        rankingData[opt.value] = { total: 0, sum: 0, count: 0 };
+      });
+
+      // Calculate average positions
+      responses.forEach((value) => {
+        if (Array.isArray(value)) {
+          value.forEach((optionValue, index) => {
+            const rank = index + 1;
+            if (rankingData[optionValue]) {
+              rankingData[optionValue].sum += rank;
+              rankingData[optionValue].count += 1;
+            }
+          });
+        }
+      });
+
+      // Calculate averages
+      const chartData = options.map((opt) => {
+        const data = rankingData[opt.value];
+        const avgRank = data.count > 0 ? data.sum / data.count : 0;
+        return {
+          name: opt.label,
+          value: avgRank,
+          count: data.count,
+          percentage: filteredSubmissions.length > 0 ? (data.count / filteredSubmissions.length) * 100 : 0,
+        };
+      }).sort((a, b) => a.value - b.value); // Sort by average rank (lower is better)
+
+      return {
+        type: 'bar',
+        data: chartData,
+        isRanking: true,
       };
     }
 
@@ -252,7 +369,7 @@ export default function SurveyResults({
       />
 
       {error && (
-        <Alert type="error" title={t('error') || 'Error'} description={error} className="mb-4" />
+        <Alert variant="error" title={t('error') || 'Error'} description={error} className="mb-4" />
       )}
 
       {/* Statistics Cards */}
@@ -310,7 +427,7 @@ export default function SurveyResults({
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{question.description}</p>
               )}
 
-              {chartData.type === 'bar' && (
+              {chartData.type === 'bar' && !chartData.isRanking && (
                 <div className="mt-4">
                   {chartData.average !== undefined && (
                     <div className="mb-4">
@@ -319,41 +436,133 @@ export default function SurveyResults({
                       </p>
                     </div>
                   )}
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={chartData.data}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="value" fill="#0088FE" />
-                    </BarChart>
-                  </ResponsiveContainer>
+                  {chartData.npsScore !== undefined && (
+                    <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                      <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                        NPS Score: {chartData.npsScore}
+                      </p>
+                      <div className="flex gap-4 mt-2 text-sm">
+                        <span className="text-green-600 dark:text-green-400">
+                          {t('promoters') || 'Promoters'} (9-10): {chartData.promoters} ({Math.round((chartData.promoters / filteredSubmissions.length) * 100)}%)
+                        </span>
+                        <span className="text-yellow-600 dark:text-yellow-400">
+                          {t('passives') || 'Passives'} (7-8): {chartData.passives} ({Math.round((chartData.passives / filteredSubmissions.length) * 100)}%)
+                        </span>
+                        <span className="text-red-600 dark:text-red-400">
+                          {t('detractors') || 'Detractors'} (0-6): {chartData.detractors} ({Math.round((chartData.detractors / filteredSubmissions.length) * 100)}%)
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  {/* Simple bar chart using divs - recharts can be added later */}
+                  <div className="space-y-2">
+                    {chartData.data.map((item: { name: string; value: number; percentage: number; category?: string }, index: number) => {
+                      const color = item.category === 'promoter' 
+                        ? 'bg-green-500' 
+                        : item.category === 'detractor' 
+                        ? 'bg-red-500' 
+                        : item.category === 'passive'
+                        ? 'bg-yellow-500'
+                        : 'bg-blue-500';
+                      return (
+                        <div key={index} className="flex items-center gap-4">
+                          <span className="w-20 text-sm">{item.name}</span>
+                          <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-6 relative">
+                            <div
+                              className={`${color} h-6 rounded-full flex items-center justify-end pr-2`}
+                              style={{ width: `${(item.value / Math.max(...chartData.data.map((d: { value: number }) => d.value))) * 100}%` }}
+                            >
+                              <span className="text-white text-xs">{item.value}</span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
 
               {chartData.type === 'pie' && (
                 <div className="mt-4">
-                  <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
-                      <Pie
-                        data={chartData.data}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={({ name, percentage }) => `${name}: ${Math.round(percentage)}%`}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {chartData.data.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  {/* Simple pie chart visualization using divs */}
+                  <div className="grid grid-cols-2 gap-4">
+                    {chartData.data.map((item: { name: string; value: number; percentage: number }, index: number) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <div
+                          className="w-4 h-4 rounded"
+                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        />
+                        <span className="text-sm">{item.name}: {item.value} ({Math.round(item.percentage)}%)</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {chartData.type === 'matrix' && (
+                <div className="mt-4">
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full border-collapse">
+                      <thead>
+                        <tr>
+                          <th className="border border-gray-300 dark:border-gray-600 p-2 text-left"></th>
+                          {chartData.columns?.map((col: string) => (
+                            <th key={col} className="border border-gray-300 dark:border-gray-600 p-2 text-center text-sm">
+                              {col}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {chartData.rows?.map((row: string) => (
+                          <tr key={row}>
+                            <td className="border border-gray-300 dark:border-gray-600 p-2 text-sm font-medium">
+                              {row}
+                            </td>
+                            {chartData.columns?.map((col: string) => {
+                              const cellData = chartData.data.find(
+                                (d: any) => d.row === row && d.col === col
+                              );
+                              return (
+                                <td key={col} className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                                  <div className="text-sm font-medium">{cellData?.value || 0}</div>
+                                  <div className="text-xs text-gray-500">
+                                    {cellData ? Math.round(cellData.percentage) : 0}%
+                                  </div>
+                                </td>
+                              );
+                            })}
+                          </tr>
                         ))}
-                      </Pie>
-                      <Tooltip />
-                      <Legend />
-                    </PieChart>
-                  </ResponsiveContainer>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {chartData.type === 'bar' && chartData.isRanking && (
+                <div className="mt-4">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    {t('average_rank') || 'Average Rank (lower is better)'}
+                  </p>
+                  <div className="space-y-2">
+                    {chartData.data.map((item: { name: string; value: number; count: number; percentage: number }, index: number) => (
+                      <div key={index} className="flex items-center gap-4">
+                        <span className="w-32 text-sm">{item.name}</span>
+                        <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-6 relative">
+                          <div
+                            className="bg-green-500 h-6 rounded-full flex items-center justify-end pr-2"
+                            style={{ width: `${Math.min((item.value / Math.max(...chartData.data.map((d: { value: number }) => d.value))) * 100, 100)}%` }}
+                          >
+                            <span className="text-white text-xs">{item.value.toFixed(1)}</span>
+                          </div>
+                        </div>
+                        <span className="text-sm text-gray-600 dark:text-gray-400 w-16 text-right">
+                          {item.count} {t('responses') || 'responses'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 

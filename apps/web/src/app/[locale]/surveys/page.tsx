@@ -10,6 +10,7 @@ import { Loading, Alert, Button } from '@/components/ui';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { logger } from '@/lib/logger';
 import { surveysAPI } from '@/lib/api';
+import { formToSurvey, surveyToForm } from '@/utils/surveyUtils';
 import { Plus } from 'lucide-react';
 
 export default function SurveysPage() {
@@ -31,25 +32,8 @@ export default function SurveysPage() {
       setError(null);
       const response = await surveysAPI.list();
       if (response.data) {
-        // Convert form data to survey format
-        setSurveys(response.data.map((form: any) => ({
-          id: String(form.id),
-          name: form.name,
-          description: form.description,
-          questions: form.fields || [],
-          settings: form.settings || {
-            allowAnonymous: true,
-            requireAuth: false,
-            limitOneResponse: false,
-            limitOneResponsePerUser: true,
-            showProgressBar: true,
-            randomizeQuestions: false,
-            publicLinkEnabled: false,
-          },
-          submitButtonText: form.submit_button_text,
-          successMessage: form.success_message,
-          status: 'draft' as const,
-        })));
+        // Convert form data to survey format using utility function
+        setSurveys(response.data.map((form: any) => formToSurvey(form)));
       }
     } catch (error) {
       logger.error('Failed to load surveys', error instanceof Error ? error : new Error(String(error)));
@@ -71,24 +55,11 @@ export default function SurveysPage() {
 
   const handleSave = async (survey: Survey) => {
     try {
+      const formData = surveyToForm(survey);
       if (survey.id && surveys.find(s => s.id === survey.id)) {
-        await surveysAPI.update(Number(survey.id), {
-          name: survey.name,
-          description: survey.description,
-          fields: survey.questions as any[],
-          submit_button_text: survey.submitButtonText,
-          success_message: survey.successMessage,
-          settings: survey.settings as any,
-        });
+        await surveysAPI.update(Number(survey.id), formData);
       } else {
-        await surveysAPI.create({
-          name: survey.name,
-          description: survey.description,
-          fields: survey.questions as any[],
-          submit_button_text: survey.submitButtonText,
-          success_message: survey.successMessage,
-          settings: survey.settings as any,
-        });
+        await surveysAPI.create(formData);
       }
       await loadSurveys();
       setShowBuilder(false);

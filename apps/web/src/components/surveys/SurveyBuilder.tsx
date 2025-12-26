@@ -42,10 +42,9 @@ import {
   Switch,
   useToast,
 } from '@/components/ui';
-import { Plus, Save, Eye, Trash2, Settings, Copy, Link as LinkIcon, Calendar, Users } from 'lucide-react';
+import { Plus, Save, Eye, Trash2, Settings, Copy } from 'lucide-react';
 import { PageHeader, PageContainer } from '@/components/layout';
 import { useTranslations } from 'next-intl';
-import { clsx } from 'clsx';
 import { logger } from '@/lib/logger';
 
 export type SurveyQuestionType =
@@ -220,6 +219,27 @@ export default function SurveyBuilder({
       return;
     }
 
+    // Validate question-specific requirements
+    if ((editingQuestion.type === 'select' || editingQuestion.type === 'radio' || 
+         editingQuestion.type === 'checkbox' || editingQuestion.type === 'ranking') && 
+        (!editingQuestion.options || editingQuestion.options.length === 0)) {
+      showToast({
+        message: t('errors.optionsRequired') || 'Options are required for this question type',
+        type: 'error',
+      });
+      return;
+    }
+
+    if (editingQuestion.type === 'matrix' && 
+        (!editingQuestion.matrixRows || editingQuestion.matrixRows.length === 0 || 
+         !editingQuestion.matrixColumns || editingQuestion.matrixColumns.length === 0)) {
+      showToast({
+        message: t('errors.matrixRequired') || 'Matrix rows and columns are required',
+        type: 'error',
+      });
+      return;
+    }
+
     setCurrentSurvey((prev) => {
       const existingIndex = prev.questions.findIndex((q) => q.id === editingQuestion.id);
       if (existingIndex >= 0) {
@@ -385,7 +405,7 @@ export default function SurveyBuilder({
       />
 
       {error && (
-        <Alert type="error" title={t('error') || 'Error'} description={error} className="mb-4" />
+        <Alert variant="error" title={t('error') || 'Error'} description={error} className="mb-4" />
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
@@ -629,7 +649,7 @@ export default function SurveyBuilder({
               <Switch
                 label={t('required') || 'Required'}
                 checked={editingQuestion.required || false}
-                onChange={(checked) => setEditingQuestion({ ...editingQuestion, required: checked })}
+                onChange={(checked: boolean) => setEditingQuestion({ ...editingQuestion, required: checked })}
               />
             </div>
 
@@ -656,26 +676,26 @@ export default function SurveyBuilder({
                         .map(q => ({ label: q.label || q.name, value: q.id })),
                     ]}
                   />
-                  {editingQuestion.showIf && (
-                    <>
-                      <Select
-                        label={t('operator') || 'Operator'}
-                        value={editingQuestion.showIf.operator}
-                        onChange={(e) => setEditingQuestion({
-                          ...editingQuestion,
-                          showIf: editingQuestion.showIf ? {
-                            ...editingQuestion.showIf,
-                            operator: e.target.value as SurveyQuestion['showIf']['operator'],
-                          } : undefined,
-                        })}
-                        options={[
-                          { label: t('equals') || 'Equals', value: 'equals' },
-                          { label: t('not_equals') || 'Not equals', value: 'not_equals' },
-                          { label: t('contains') || 'Contains', value: 'contains' },
-                          { label: t('greater_than') || 'Greater than', value: 'greater_than' },
-                          { label: t('less_than') || 'Less than', value: 'less_than' },
-                        ]}
-                      />
+                      {editingQuestion.showIf && (
+                      <>
+                        <Select
+                          label={t('operator') || 'Operator'}
+                          value={editingQuestion.showIf?.operator || 'equals'}
+                          onChange={(e) => setEditingQuestion({
+                            ...editingQuestion,
+                            showIf: editingQuestion.showIf ? {
+                              ...editingQuestion.showIf,
+                              operator: e.target.value as SurveyQuestion['showIf']['operator'],
+                            } : undefined,
+                          })}
+                          options={[
+                            { label: t('equals') || 'Equals', value: 'equals' },
+                            { label: t('not_equals') || 'Not equals', value: 'not_equals' },
+                            { label: t('contains') || 'Contains', value: 'contains' },
+                            { label: t('greater_than') || 'Greater than', value: 'greater_than' },
+                            { label: t('less_than') || 'Less than', value: 'less_than' },
+                          ]}
+                        />
                       <Input
                         label={t('value') || 'Value'}
                         value={String(editingQuestion.showIf.value || '')}
@@ -721,7 +741,7 @@ export default function SurveyBuilder({
             <Switch
               label={t('allow_anonymous') || 'Allow Anonymous Responses'}
               checked={currentSurvey.settings.allowAnonymous}
-              onChange={(checked) => setCurrentSurvey({
+              onChange={(checked: boolean) => setCurrentSurvey({
                 ...currentSurvey,
                 settings: { ...currentSurvey.settings, allowAnonymous: checked },
               })}
@@ -729,7 +749,7 @@ export default function SurveyBuilder({
             <Switch
               label={t('require_auth') || 'Require Authentication'}
               checked={currentSurvey.settings.requireAuth}
-              onChange={(checked) => setCurrentSurvey({
+              onChange={(checked: boolean) => setCurrentSurvey({
                 ...currentSurvey,
                 settings: { ...currentSurvey.settings, requireAuth: checked },
               })}
@@ -737,7 +757,7 @@ export default function SurveyBuilder({
             <Switch
               label={t('limit_one_response') || 'Limit to One Response Total'}
               checked={currentSurvey.settings.limitOneResponse}
-              onChange={(checked) => setCurrentSurvey({
+              onChange={(checked: boolean) => setCurrentSurvey({
                 ...currentSurvey,
                 settings: { ...currentSurvey.settings, limitOneResponse: checked },
               })}
@@ -745,7 +765,7 @@ export default function SurveyBuilder({
             <Switch
               label={t('limit_one_per_user') || 'Limit to One Response Per User'}
               checked={currentSurvey.settings.limitOneResponsePerUser}
-              onChange={(checked) => setCurrentSurvey({
+              onChange={(checked: boolean) => setCurrentSurvey({
                 ...currentSurvey,
                 settings: { ...currentSurvey.settings, limitOneResponsePerUser: checked },
               })}
@@ -757,7 +777,7 @@ export default function SurveyBuilder({
             <Switch
               label={t('enable_public_link') || 'Enable Public Link'}
               checked={currentSurvey.settings.publicLinkEnabled}
-              onChange={(checked) => {
+              onChange={(checked: boolean) => {
                 if (checked && !currentSurvey.settings.publicLink) {
                   generatePublicLink();
                 } else {
@@ -823,7 +843,7 @@ export default function SurveyBuilder({
             <Switch
               label={t('show_progress_bar') || 'Show Progress Bar'}
               checked={currentSurvey.settings.showProgressBar}
-              onChange={(checked) => setCurrentSurvey({
+              onChange={(checked: boolean) => setCurrentSurvey({
                 ...currentSurvey,
                 settings: { ...currentSurvey.settings, showProgressBar: checked },
               })}
@@ -831,7 +851,7 @@ export default function SurveyBuilder({
             <Switch
               label={t('randomize_questions') || 'Randomize Questions'}
               checked={currentSurvey.settings.randomizeQuestions}
-              onChange={(checked) => setCurrentSurvey({
+              onChange={(checked: boolean) => setCurrentSurvey({
                 ...currentSurvey,
                 settings: { ...currentSurvey.settings, randomizeQuestions: checked },
               })}
