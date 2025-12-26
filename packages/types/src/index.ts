@@ -150,3 +150,6 @@ export * from './generated';
 
 // Theme types
 export * from './theme';
+
+// Portal types
+export * from './portal';
