@@ -18,6 +18,7 @@ import {
   Badge,
   useToast,
 } from '@/components/ui';
+import type { ColorVariant } from '@/components/ui/types';
 import { PageHeader, PageContainer, Section } from '@/components/layout';
 import { Info, Database, Shield, Settings, CheckCircle, XCircle } from 'lucide-react';
 import { logger } from '@/lib/logger';
@@ -106,16 +107,16 @@ export default function TenancyContent() {
     }
   };
 
-  const getModeBadgeVariant = (mode: string) => {
+  const getModeBadgeVariant = (mode: string): ColorVariant => {
     switch (mode) {
       case 'single':
-        return 'secondary';
+        return 'default';
       case 'shared_db':
         return 'info';
       case 'separate_db':
         return 'success';
       default:
-        return 'secondary';
+        return 'default';
     }
   };
 
@@ -260,7 +261,7 @@ export default function TenancyContent() {
                 <div className="space-y-3">
                   <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <div className="flex items-center gap-2 mb-1">
-                      <Badge variant="secondary">SINGLE</Badge>
+                      <Badge variant="default">SINGLE</Badge>
                       <span className="font-medium">{t('modes.single.label') || 'Single Tenant'}</span>
                     </div>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
