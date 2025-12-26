@@ -164,13 +164,13 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     
     // Apply fonts from typography config if available
     if ((config as any).typography?.fontFamily) {
-      const fontFamily = (config as any).typography.fontFamily.trim();
+      const fontFamily = String((config as any).typography.fontFamily).trim();
       root.style.setProperty('--font-family', fontFamily);
       if ((config as any).typography.fontFamilyHeading) {
-        root.style.setProperty('--font-family-heading', (config as any).typography.fontFamilyHeading);
+        root.style.setProperty('--font-family-heading', String((config as any).typography.fontFamilyHeading));
       }
       if ((config as any).typography.fontFamilySubheading) {
-        root.style.setProperty('--font-family-subheading', (config as any).typography.fontFamilySubheading);
+        root.style.setProperty('--font-family-subheading', String((config as any).typography.fontFamilySubheading));
       }
       if (typeof document !== 'undefined') {
         document.body.style.fontFamily = `var(--font-family), sans-serif`;
