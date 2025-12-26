@@ -23,6 +23,7 @@ from app.models.user_preference import UserPreference
 from app.models.announcement import Announcement, AnnouncementDismissal, AnnouncementType, AnnouncementPriority
 from app.models.feedback import Feedback, FeedbackAttachment, FeedbackType, FeedbackStatus
 from app.models.onboarding import OnboardingStep, UserOnboarding
+from app.models.documentation import DocumentationArticle, DocumentationCategory, DocumentationFeedback
 from app.core.security_audit import SecurityAuditLog
 
 __all__ = [
@@ -68,6 +69,9 @@ __all__ = [
     "FeedbackStatus",
     "OnboardingStep",
     "UserOnboarding",
+    "DocumentationArticle",
+    "DocumentationCategory",
+    "DocumentationFeedback",
     "SecurityAuditLog",
 ]
 

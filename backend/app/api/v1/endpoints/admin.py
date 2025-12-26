@@ -12,7 +12,7 @@ import os
 
 from app.core.database import get_db
 from app.core.cache import cached, invalidate_cache_pattern
-from app.dependencies import get_current_user, require_superadmin
+from app.dependencies import get_current_user, require_superadmin, is_superadmin
 from app.models.user import User
 from app.models.role import Role, UserRole
 from app.core.logging import logger
@@ -268,6 +268,29 @@ async def bootstrap_superadmin(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to bootstrap superadmin: {str(e)}"
         )
+
+
+@router.get(
+    "/check-my-superadmin-status",
+    response_model=dict,
+    tags=["admin"]
+)
+async def check_my_superadmin_status(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Check if the current authenticated user has superadmin role.
+    Allows any authenticated user to check their own superadmin status.
+    """
+    is_super = await is_superadmin(current_user, db)
+    
+    return {
+        "email": current_user.email,
+        "user_id": current_user.id,
+        "is_superadmin": is_super,
+        "is_active": current_user.is_active
+    }
 
 
 @router.get(

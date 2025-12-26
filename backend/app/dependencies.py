@@ -21,15 +21,14 @@ def get_current_user(
     return current_user
 
 
-async def require_superadmin(
+async def is_superadmin(
     current_user: Annotated[User, Depends(get_current_user)],
     db: Annotated[AsyncSession, Depends(get_db)]
-) -> None:
+) -> bool:
     """
-    Dependency to require superadmin role.
-    Raises HTTPException if user is not a superadmin.
+    Check if current user is a superadmin.
+    Returns True if user has superadmin role, False otherwise.
     """
-    # Check if user has superadmin role
     result = await db.execute(
         select(UserRole)
         .join(Role)
@@ -40,14 +39,51 @@ async def require_superadmin(
         )
     )
     user_role = result.scalar_one_or_none()
+    return user_role is not None
+
+
+async def require_superadmin(
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)]
+) -> None:
+    """
+    Dependency to require superadmin role.
+    Raises HTTPException if user is not a superadmin.
+    """
+    is_super = await is_superadmin(current_user, db)
     
-    if not user_role:
+    if not is_super:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Superadmin access required"
         )
     
     return None
+
+
+async def require_admin_or_superadmin(
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)]
+) -> None:
+    """
+    Dependency to require admin OR superadmin role.
+    Superadmins are automatically considered admins.
+    Raises HTTPException if user is neither admin nor superadmin.
+    """
+    # Check if user is admin (is_admin flag)
+    if current_user.is_admin:
+        return None
+    
+    # Check if user is superadmin
+    is_super = await is_superadmin(current_user, db)
+    if is_super:
+        return None
+    
+    # User is neither admin nor superadmin
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Admin or superadmin access required"
+    )
 
 
 async def get_optional_user(

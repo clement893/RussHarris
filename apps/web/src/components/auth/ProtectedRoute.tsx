@@ -4,7 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
-import { checkSuperAdminStatus } from '@/lib/api/admin';
+import { checkMySuperAdminStatus } from '@/lib/api/admin';
 import { logger } from '@/lib/logger';
 
 /**
@@ -71,12 +71,15 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
         let isAdmin = user?.is_admin || false;
         
         // If not admin, check if user is superadmin
-        if (!isAdmin && user?.email) {
+        if (!isAdmin) {
           try {
             const authToken = tokenFromStorage || token;
             if (authToken) {
-              const status = await checkSuperAdminStatus(user.email, authToken);
+              const status = await checkMySuperAdminStatus(authToken);
               isAdmin = status.is_superadmin;
+              if (status.is_superadmin) {
+                logger.debug('User is superadmin, granting admin access');
+              }
             } else {
               logger.warn('No token available for superadmin check');
             }

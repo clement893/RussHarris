@@ -1,0 +1,210 @@
+"""
+Documentation API Endpoints
+"""
+
+from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Body
+from pydantic import BaseModel, Field
+
+from app.services.documentation_service import DocumentationService
+from app.models.user import User
+from app.dependencies import get_current_user
+from app.core.database import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
+
+router = APIRouter()
+
+
+class ArticleCreate(BaseModel):
+    slug: str = Field(..., min_length=1, max_length=200)
+    title: str = Field(..., min_length=1, max_length=200)
+    content: str = Field(..., min_length=1)
+    excerpt: Optional[str] = None
+    category_id: Optional[int] = None
+    tags: Optional[List[str]] = None
+    is_published: bool = False
+    is_featured: bool = False
+    meta_title: Optional[str] = None
+    meta_description: Optional[str] = None
+
+
+class ArticleUpdate(BaseModel):
+    title: Optional[str] = Field(None, min_length=1, max_length=200)
+    content: Optional[str] = Field(None, min_length=1)
+    excerpt: Optional[str] = None
+    category_id: Optional[int] = None
+    tags: Optional[List[str]] = None
+    is_published: Optional[bool] = None
+    is_featured: Optional[bool] = None
+    meta_title: Optional[str] = None
+    meta_description: Optional[str] = None
+
+
+class ArticleResponse(BaseModel):
+    id: int
+    slug: str
+    title: str
+    content: str
+    excerpt: Optional[str]
+    category_id: Optional[int]
+    tags: Optional[List[str]]
+    is_published: bool
+    is_featured: bool
+    view_count: int
+    helpful_count: int
+    not_helpful_count: int
+    created_at: str
+    updated_at: str
+    published_at: Optional[str]
+
+    class Config:
+        from_attributes = True
+
+
+class CategoryResponse(BaseModel):
+    id: int
+    slug: str
+    name: str
+    description: Optional[str]
+    parent_id: Optional[int]
+    order: int
+    icon: Optional[str]
+
+    class Config:
+        from_attributes = True
+
+
+class FeedbackSubmit(BaseModel):
+    is_helpful: bool
+    comment: Optional[str] = None
+
+
+@router.post("/documentation/articles", response_model=ArticleResponse, status_code=status.HTTP_201_CREATED, tags=["documentation"])
+async def create_article(
+    article_data: ArticleCreate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Create a new documentation article"""
+    service = DocumentationService(db)
+    article = await service.create_article(
+        slug=article_data.slug,
+        title=article_data.title,
+        content=article_data.content,
+        excerpt=article_data.excerpt,
+        category_id=article_data.category_id,
+        tags=article_data.tags,
+        is_published=article_data.is_published,
+        is_featured=article_data.is_featured,
+        meta_title=article_data.meta_title,
+        meta_description=article_data.meta_description,
+        author_id=current_user.id
+    )
+    return ArticleResponse.model_validate(article)
+
+
+@router.get("/documentation/articles", response_model=List[ArticleResponse], tags=["documentation"])
+async def get_articles(
+    category_id: Optional[int] = Query(None),
+    featured_only: bool = Query(False),
+    search: Optional[str] = Query(None),
+    limit: int = Query(50, le=100),
+    offset: int = Query(0, ge=0),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get published documentation articles"""
+    service = DocumentationService(db)
+    articles = await service.get_published_articles(
+        category_id=category_id,
+        featured_only=featured_only,
+        search_query=search,
+        limit=limit,
+        offset=offset
+    )
+    return [ArticleResponse.model_validate(a) for a in articles]
+
+
+@router.get("/documentation/articles/{slug}", response_model=ArticleResponse, tags=["documentation"])
+async def get_article(
+    slug: str,
+    db: AsyncSession = Depends(get_db),
+):
+    """Get a documentation article by slug"""
+    service = DocumentationService(db)
+    article = await service.get_article(slug)
+    if not article or not article.is_published:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Article not found"
+        )
+    
+    # Increment view count
+    await service.increment_view_count(article.id)
+    
+    return ArticleResponse.model_validate(article)
+
+
+@router.post("/documentation/articles/{article_id}/feedback", tags=["documentation"])
+async def submit_feedback(
+    article_id: int,
+    feedback_data: FeedbackSubmit = Body(...),
+    current_user: Optional[User] = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Submit feedback on an article"""
+    service = DocumentationService(db)
+    feedback = await service.submit_feedback(
+        article_id=article_id,
+        is_helpful=feedback_data.is_helpful,
+        comment=feedback_data.comment,
+        user_id=current_user.id if current_user else None
+    )
+    return {"success": True, "message": "Feedback submitted"}
+
+
+@router.get("/documentation/categories", response_model=List[CategoryResponse], tags=["documentation"])
+async def get_categories(
+    parent_id: Optional[int] = Query(None),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get documentation categories"""
+    service = DocumentationService(db)
+    categories = await service.get_categories(parent_id=parent_id)
+    return [CategoryResponse.model_validate(c) for c in categories]
+
+
+@router.put("/documentation/articles/{article_id}", response_model=ArticleResponse, tags=["documentation"])
+async def update_article(
+    article_id: int,
+    article_data: ArticleUpdate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Update a documentation article"""
+    service = DocumentationService(db)
+    updates = article_data.model_dump(exclude_unset=True)
+    article = await service.update_article(article_id, updates)
+    if not article:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Article not found"
+        )
+    return ArticleResponse.model_validate(article)
+
+
+@router.delete("/documentation/articles/{article_id}", tags=["documentation"])
+async def delete_article(
+    article_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete a documentation article"""
+    service = DocumentationService(db)
+    success = await service.delete_article(article_id)
+    if success:
+        return {"success": True, "message": "Article deleted successfully"}
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Article not found"
+    )
+

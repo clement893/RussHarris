@@ -102,9 +102,47 @@ export async function makeSuperAdmin(
 }
 
 /**
+ * Check if the current authenticated user has superadmin role.
+ * Uses apiClient to benefit from automatic token refresh.
+ */
+export async function checkMySuperAdminStatus(
+  token?: string
+): Promise<{ is_superadmin: boolean }> {
+  try {
+    // Use apiClient which handles token refresh automatically
+    // If a token is provided, temporarily set it in storage for this request
+    if (token && token !== TokenStorage.getToken()) {
+      const originalToken = TokenStorage.getToken();
+      await TokenStorage.setToken(token); // Set token for this request
+      try {
+        const response = await apiClient.get(`/v1/admin/check-my-superadmin-status`);
+        return response.data;
+      } finally {
+        // Restore original token if it was different
+        if (originalToken) {
+          await TokenStorage.setToken(originalToken);
+        }
+      }
+    }
+    
+    // Use apiClient which automatically handles token refresh on 401
+    const response = await apiClient.get(`/v1/admin/check-my-superadmin-status`);
+    return response.data;
+  } catch (error: any) {
+    // Handle network errors
+    if (error instanceof Error && (error.name === 'AbortError' || error.message.includes('Failed to fetch'))) {
+      throw new Error(`Le backend n'est pas accessible. Assurez-vous que le serveur backend est démarré sur ${API_URL}`);
+    }
+    // Re-throw API errors (they're already formatted by apiClient)
+    throw error;
+  }
+}
+
+/**
  * Check if a user has superadmin role.
  * Requires authentication and superadmin role.
  * Uses apiClient to benefit from automatic token refresh.
+ * @deprecated Use checkMySuperAdminStatus() to check your own status instead
  */
 export async function checkSuperAdminStatus(
   email: string,
