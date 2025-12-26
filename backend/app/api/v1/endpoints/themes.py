@@ -163,9 +163,14 @@ async def list_themes(
     template_result = await db.execute(select(Theme).where(Theme.id == 32))
     template_theme = template_result.scalar_one_or_none()
     
-    # Get all other themes (excluding ID 32 to avoid duplicates) with pagination
+    # Get all other themes (excluding ID 32 and "default" theme to avoid duplicates) with pagination
+    # Filter out TemplateTheme (ID 32) and any theme with name="default" or id=0
     other_themes_result = await db.execute(
-        select(Theme).where(Theme.id != 32).order_by(Theme.id).offset(skip).limit(limit)
+        select(Theme).where(
+            (Theme.id != 32) & 
+            (Theme.id != 0) & 
+            (Theme.name != 'default')
+        ).order_by(Theme.id).offset(skip).limit(limit)
     )
     other_themes = other_themes_result.scalars().all()
     
