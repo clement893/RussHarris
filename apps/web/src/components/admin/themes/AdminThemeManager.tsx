@@ -205,6 +205,18 @@ export function AdminThemeManager({ authToken }: ThemeManagerProps) {
                 const warningColor = typeof config.warning === 'string' ? config.warning : null;
                 const infoColor = typeof config.info === 'string' ? config.info : null;
                 
+                // Type-safe typography extraction
+                const fontFamilyDisplay = (() => {
+                  const typography = config.typography;
+                  if (typography && typeof typography === 'object' && typography !== null && 'fontFamily' in typography) {
+                    const fontFamily = (typography as { fontFamily?: unknown }).fontFamily;
+                    if (typeof fontFamily === 'string') {
+                      return fontFamily.split(',')[0];
+                    }
+                  }
+                  return null;
+                })();
+                
                 return (
                   <Card
                     key={theme.id}
@@ -276,8 +288,8 @@ export function AdminThemeManager({ authToken }: ThemeManagerProps) {
                       {/* Metadata */}
                       <div className="text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-200 dark:border-gray-700">
                         <div>Mode: {typeof config.mode === 'string' ? config.mode : 'system'}</div>
-                        {config.typography && typeof config.typography === 'object' && 'fontFamily' in config.typography && typeof config.typography.fontFamily === 'string' && (
-                          <div>Police: {config.typography.fontFamily.split(',')[0]}</div>
+                        {fontFamilyDisplay && (
+                          <div>Police: {fontFamilyDisplay}</div>
                         )}
                         <div className="mt-1">
                           Mis à jour: {new Date(theme.updated_at).toLocaleString('fr-FR')}
