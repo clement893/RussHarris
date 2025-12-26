@@ -29,7 +29,9 @@
       ],
       "env": [
         "NODE_ENV",
-        "NEXT_PUBLIC_*"
+        "NEXT_PUBLIC_*",
+        "USE_WEBPACK",
+        "USE_TURBOPACK"
       ],
       "cache": true,
       "inputs": [

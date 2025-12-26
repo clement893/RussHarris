@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "prebuild": "node scripts/ensure-css-file.js",
-    "build": "next build",
+    "build": "node scripts/build-with-fallback.js",
+    "build:turbopack": "USE_TURBOPACK=true node scripts/build-with-fallback.js",
+    "build:webpack": "USE_WEBPACK=true node scripts/build-with-fallback.js",
     "lint": "next lint",
     "type-check": "tsc --noEmit --incremental",
     "type-check:ci": "tsc --noEmit --incremental --pretty false",
