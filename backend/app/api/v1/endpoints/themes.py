@@ -5,8 +5,9 @@ from typing import List
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, text
 from pydantic import BaseModel, Field
+import json
 from app.schemas.theme import (
     ThemeCreate,
     ThemeUpdate,
@@ -34,15 +35,31 @@ class ThemeModeUpdate(BaseModel):
 
 async def ensure_default_theme(db: AsyncSession, created_by: int = 1) -> Theme:
     """
-    Ensure a default theme exists. Creates one if none exists.
-    Returns the active theme (or newly created default theme).
+    Ensure TemplateTheme exists. Creates one if none exists.
+    Returns the active theme (or newly created TemplateTheme with ID 32).
     """
+    # Check if TemplateTheme exists (ID 32)
+    result = await db.execute(select(Theme).where(Theme.id == 32))
+    template_theme = result.scalar_one_or_none()
+    
+    if template_theme:
+        # If TemplateTheme exists but is not active, check if we should activate it
+        if not template_theme.is_active:
+            # Check if any theme is active
+            active_result = await db.execute(select(Theme).where(Theme.is_active == True))
+            active_theme = active_result.scalar_one_or_none()
+            if not active_theme:
+                template_theme.is_active = True
+                await db.commit()
+                await db.refresh(template_theme)
+        return template_theme
+    
     # Check if any theme exists
     result = await db.execute(select(Theme))
     themes = result.scalars().all()
     
     if not themes:
-        # Create default theme
+        # Create TemplateTheme with ID 32
         default_config = {
             "mode": "system",
             "primary": "#3b82f6",
@@ -52,18 +69,21 @@ async def ensure_default_theme(db: AsyncSession, created_by: int = 1) -> Theme:
             "info": "#06b6d4",
         }
         
-        default_theme = Theme(
-            name="default",
-            display_name="Default Theme",
-            description="Default theme created automatically",
-            config=default_config,
-            is_active=True,
-            created_by=created_by
-        )
-        db.add(default_theme)
+        # Use raw SQL to insert with specific ID 32
+        await db.execute(text("""
+            INSERT INTO themes (id, name, display_name, description, config, is_active, created_by, created_at, updated_at)
+            VALUES (32, 'TemplateTheme', 'Template Theme', 'Master theme that controls all components', 
+                    :config::jsonb, true, :created_by, NOW(), NOW())
+        """), {
+            "config": json.dumps(default_config),
+            "created_by": created_by
+        })
         await db.commit()
-        await db.refresh(default_theme)
-        return default_theme
+        
+        # Refresh to get the created theme
+        result = await db.execute(select(Theme).where(Theme.id == 32))
+        template_theme = result.scalar_one()
+        return template_theme
     
     # Check if any theme is active
     active_result = await db.execute(select(Theme).where(Theme.is_active == True))
@@ -111,9 +131,9 @@ async def get_active_theme(db: AsyncSession = Depends(get_db)):
                 "info": "#06b6d4",
             }
             return ThemeConfigResponse(
-                id=0,  # Virtual theme ID
-                name="default",
-                display_name="Default Theme",
+                id=32,  # Virtual theme ID (TemplateTheme)
+                name="TemplateTheme",
+                display_name="Template Theme",
                 config=default_config,
                 updated_at=datetime.now()
             )
@@ -336,54 +356,6 @@ async def activate_theme(
     await db.commit()
     await db.refresh(theme)
     return ThemeResponse.model_validate(theme)
-
-
-async def ensure_default_theme(db: AsyncSession, created_by: int = 1) -> Theme:
-    """
-    Ensure a default theme exists. Creates one if none exists.
-    Returns the active theme (or newly created default theme).
-    """
-    # Check if any theme exists
-    result = await db.execute(select(Theme))
-    themes = result.scalars().all()
-    
-    if not themes:
-        # Create default theme
-        default_config = {
-            "mode": "system",
-            "primary": "#3b82f6",
-            "secondary": "#8b5cf6",
-            "danger": "#ef4444",
-            "warning": "#f59e0b",
-            "info": "#06b6d4",
-        }
-        
-        default_theme = Theme(
-            name="default",
-            display_name="Default Theme",
-            description="Default theme created automatically",
-            config=default_config,
-            is_active=True,
-            created_by=created_by
-        )
-        db.add(default_theme)
-        await db.commit()
-        await db.refresh(default_theme)
-        return default_theme
-    
-    # Check if any theme is active
-    active_result = await db.execute(select(Theme).where(Theme.is_active == True))
-    active_theme = active_result.scalar_one_or_none()
-    
-    if not active_theme:
-        # Activate the first theme
-        first_theme = themes[0]
-        first_theme.is_active = True
-        await db.commit()
-        await db.refresh(first_theme)
-        return first_theme
-    
-    return active_theme
 
 
 @router.put("/active/mode", response_model=ThemeConfigResponse, tags=["themes"])

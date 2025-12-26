@@ -61,7 +61,7 @@ class TestGetActiveTheme:
     
     @patch("app.api.v1.endpoints.themes.get_db")
     def test_get_active_theme_not_found_returns_default(self, mock_get_db, client):
-        """Test getting active theme when none exists returns default"""
+        """Test getting active theme when none exists returns TemplateTheme"""
         mock_db = AsyncMock(spec=AsyncSession)
         mock_result = Mock()
         mock_result.scalar_one_or_none.return_value = None
@@ -71,7 +71,7 @@ class TestGetActiveTheme:
         response = client.get("/api/v1/themes/active")
         assert response.status_code == 200
         data = response.json()
-        assert data["name"] == "default"
+        assert data["name"] == "TemplateTheme"
         assert "config" in data
 
 
