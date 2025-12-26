@@ -50,16 +50,24 @@ export function registerServiceWorker() {
           });
         })
         .catch((error) => {
-          console.error('[SW] Service Worker registration failed:', error);
+          // Only log if it's not a missing file error (common when SW is disabled)
+          if (error.name !== 'TypeError' && !error.message?.includes('Failed to register')) {
+            console.error('[SW] Service Worker registration failed:', error);
+          }
         });
     });
 
     // Handle service worker updates
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      console.log('[SW] Service Worker controller changed');
-      // Optionally reload page to use new service worker
-      // window.location.reload();
-    });
+    try {
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        console.log('[SW] Service Worker controller changed');
+        // Optionally reload page to use new service worker
+        // window.location.reload();
+      });
+    } catch (error) {
+      // Silently handle errors from browser extensions interfering with service worker
+      // This is a common issue with browser extensions that inject message listeners
+    }
   }
 }
 

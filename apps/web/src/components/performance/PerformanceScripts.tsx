@@ -11,8 +11,16 @@ import { initializePreloading } from '@/lib/performance/preloading';
 
 export function PerformanceScripts() {
   useEffect(() => {
-    // Register service worker
-    registerServiceWorker();
+    // Register service worker (with error handling for browser extension conflicts)
+    try {
+      registerServiceWorker();
+    } catch (error) {
+      // Silently handle errors from browser extensions interfering with service worker
+      // This is a common issue with browser extensions that inject message listeners
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('[SW] Service worker registration skipped due to browser extension conflict');
+      }
+    }
 
     // Initialize preloading for critical resources
     initializePreloading();

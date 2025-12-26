@@ -109,9 +109,17 @@ export function initializePreloading() {
     preconnectOrigin('https://fonts.googleapis.com');
     preconnectOrigin('https://fonts.gstatic.com', true);
 
-    // Preload critical API endpoints
-    preloadAPIEndpoint('/api/v1/health/');
-    // Note: /api/v1/auth/me requires authentication, so we don't preload it
+    // Prefetch (not preload) non-critical API endpoints
+    // Using prefetch instead of preload for health endpoint since it's not used immediately
+    // Preload is for resources that will be used within seconds, prefetch is for future use
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_DEFAULT_API_URL || 'http://localhost:8000';
+      const healthUrl = `${apiUrl}/api/v1/health/`;
+      prefetchResource(healthUrl, 'fetch');
+    } catch (error) {
+      // Silently fail - this is a performance optimization
+    }
+    // Note: /api/v1/auth/me requires authentication, so we don't preload/prefetch it
     // Preloading authenticated endpoints can cause 422 errors if user is not logged in
   } catch (error) {
     // Silently fail preloading - it's a performance optimization, not critical
