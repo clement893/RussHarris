@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { PageHeader, PageContainer, Section } from '@/components/layout';
-import { useAuthStore } from '@/lib/store';
 import { apiClient } from '@/lib/api/client';
 import { getErrorMessage } from '@/lib/error-utils';
 import Card from '@/components/ui/Card';
