@@ -12,6 +12,7 @@ import {
   teamsAPI, 
   invitationsAPI,
 } from '@/lib/api';
+import { TokenStorage } from '@/lib/auth/tokenStorage';
 
 // Query Keys Factory
 export const queryKeys = {
@@ -46,11 +47,15 @@ export const queryKeys = {
 
 // Auth Hooks
 export function useAuth() {
+  // Only enable query if we're in browser and have a token
+  const hasToken = typeof window !== 'undefined' && !!TokenStorage.getToken();
+  
   return useQuery({
     queryKey: queryKeys.auth.me,
     queryFn: () => usersAPI.getMe(),
-    enabled: typeof window !== 'undefined',
+    enabled: typeof window !== 'undefined' && !!hasToken,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: false, // Don't retry if token is missing
   });
 }
 
@@ -71,10 +76,15 @@ export function useUser(userId: string) {
 }
 
 export function useMe() {
+  // Only enable query if we're in browser and have a token
+  const hasToken = typeof window !== 'undefined' && !!TokenStorage.getToken();
+  
   return useQuery({
     queryKey: queryKeys.users.me,
     queryFn: () => usersAPI.getMe(),
+    enabled: typeof window !== 'undefined' && !!hasToken,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: false, // Don't retry if token is missing
   });
 }
 

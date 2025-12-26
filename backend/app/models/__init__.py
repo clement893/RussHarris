@@ -21,6 +21,7 @@ from app.models.share import Share, ShareAccessLog, PermissionLevel
 from app.models.feature_flag import FeatureFlag, FeatureFlagLog
 from app.models.user_preference import UserPreference
 from app.models.announcement import Announcement, AnnouncementDismissal, AnnouncementType, AnnouncementPriority
+from app.models.feedback import Feedback, FeedbackAttachment, FeedbackType, FeedbackStatus
 from app.core.security_audit import SecurityAuditLog
 
 __all__ = [
@@ -60,6 +61,10 @@ __all__ = [
     "AnnouncementDismissal",
     "AnnouncementType",
     "AnnouncementPriority",
+    "Feedback",
+    "FeedbackAttachment",
+    "FeedbackType",
+    "FeedbackStatus",
     "SecurityAuditLog",
 ]
 

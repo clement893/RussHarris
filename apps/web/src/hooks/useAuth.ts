@@ -127,12 +127,16 @@ export function useAuth() {
     if (typeof window === 'undefined') return;
 
     const checkAuth = async () => {
+      // Wait a bit for Zustand persist to hydrate
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
       const storedToken = TokenStorage.getToken();
       const storedRefreshToken = TokenStorage.getRefreshToken();
 
       // If we have a refresh token but no access token, try to refresh
       if (!storedToken && storedRefreshToken) {
         await refreshToken();
+        return; // Exit early, refreshToken will handle user fetch
       }
 
       // If we have a token but no user, try to fetch user
@@ -142,13 +146,15 @@ export function useAuth() {
           if (response.data) {
             setUser(response.data);
           }
-        } catch (err) {
+        } catch (err: any) {
           // Token might be invalid, try refresh
-          if (storedRefreshToken) {
+          if (storedRefreshToken && (err?.response?.status === 401 || err?.response?.status === 422)) {
             await refreshToken();
-          } else {
+          } else if (err?.response?.status === 401 || err?.response?.status === 422) {
+            // No refresh token or refresh failed, logout
             handleLogout();
           }
+          // For other errors, don't logout (might be network issue)
         }
       }
     };

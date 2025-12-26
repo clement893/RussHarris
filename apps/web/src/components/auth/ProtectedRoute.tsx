@@ -77,9 +77,17 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
             if (authToken) {
               const status = await checkSuperAdminStatus(user.email, authToken);
               isAdmin = status.is_superadmin;
+            } else {
+              logger.warn('No token available for superadmin check');
             }
-          } catch (err) {
-            // If superadmin check fails, fallback to is_admin check
+          } catch (err: any) {
+            // If superadmin check fails with 401/422, token might be invalid
+            if (err?.response?.status === 401 || err?.response?.status === 422) {
+              logger.warn('Superadmin check failed due to authentication error, redirecting to login');
+              router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}&error=unauthorized`);
+              return;
+            }
+            // For other errors, fallback to is_admin check
             logger.warn('Failed to check superadmin status, using is_admin fallback', { error: String(err) });
           }
         }
