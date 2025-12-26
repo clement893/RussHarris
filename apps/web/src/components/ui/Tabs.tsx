@@ -130,6 +130,7 @@ export default function Tabs({
           {tabs.map((tab) => (
             <button
               key={tab.id}
+              type="button"
               onClick={() => !tab.disabled && handleTabChange(tab.id)}
               disabled={tab.disabled}
               className={clsx(
@@ -185,6 +186,7 @@ export function Tab({ children, value, disabled, className }: TabProps) {
 
   return (
     <button
+      type="button"
       onClick={() => !disabled && setActiveTab(value)}
       disabled={disabled}
       className={clsx(
