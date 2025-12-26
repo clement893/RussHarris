@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Flag, ToggleLeft, ToggleRight, Edit2, Trash2, BarChart3 } from 'lucide-react';
+import { Flag, ToggleLeft, ToggleRight, Trash2, BarChart3 } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { apiClient } from '@/lib/api/client';
