@@ -57,20 +57,40 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         # Content Security Policy
         # 
         # SECURITY: CSP is relaxed in development (unsafe-inline/unsafe-eval)
-        # This is acceptable for dev but MUST be tightened in production using nonces
-        # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
         # In production, use strict CSP without unsafe-inline/unsafe-eval
-        csp_policy = (
-            "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "  # Development only
-            "style-src 'self' 'unsafe-inline'; "  # Development only
-            "img-src 'self' data: https:; "
-            "font-src 'self' data:; "
-            "connect-src 'self'; "
-            "frame-ancestors 'none'; "
-            "base-uri 'self'; "
-            "form-action 'self'"
-        )
+        # See: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+        # 
+        # For production, consider using nonces:
+        # script-src 'self' 'nonce-{nonce}';
+        # style-src 'self' 'nonce-{nonce}';
+        if settings.ENVIRONMENT == "production":
+            # Strict CSP for production
+            csp_policy = (
+                "default-src 'self'; "
+                "script-src 'self'; "  # No unsafe-inline/unsafe-eval in production
+                "style-src 'self'; "  # No unsafe-inline in production
+                "img-src 'self' data: https:; "
+                "font-src 'self' data:; "
+                "connect-src 'self' https:; "
+                "frame-ancestors 'none'; "
+                "base-uri 'self'; "
+                "form-action 'self'; "
+                "object-src 'none'; "
+                "upgrade-insecure-requests"
+            )
+        else:
+            # Relaxed CSP for development
+            csp_policy = (
+                "default-src 'self'; "
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "  # Development only
+                "style-src 'self' 'unsafe-inline'; "  # Development only
+                "img-src 'self' data: https:; "
+                "font-src 'self' data:; "
+                "connect-src 'self'; "
+                "frame-ancestors 'none'; "
+                "base-uri 'self'; "
+                "form-action 'self'"
+            )
         response.headers["Content-Security-Policy"] = csp_policy
         
         # X-Content-Type-Options
