@@ -20,6 +20,7 @@ export interface PortalNavigationItem {
   icon: string;
   permission?: string;
   module?: string;
+  badge?: string | number;
   children?: PortalNavigationItem[];
 }
 
@@ -99,16 +100,19 @@ export const EMPLOYEE_PORTAL_ROUTES: PortalRoute[] = [
       {
         path: '/erp/orders/all',
         label: 'All Orders',
+        icon: 'List',
         permission: 'erp:view:all:orders',
       },
       {
         path: '/erp/orders/pending',
         label: 'Pending',
+        icon: 'Clock',
         permission: 'erp:view:all:orders',
       },
       {
         path: '/erp/orders/completed',
         label: 'Completed',
+        icon: 'CheckCircle',
         permission: 'erp:view:all:orders',
       },
     ],
@@ -122,16 +126,19 @@ export const EMPLOYEE_PORTAL_ROUTES: PortalRoute[] = [
       {
         path: '/erp/inventory/products',
         label: 'Products',
+        icon: 'Package',
         permission: 'erp:view:inventory',
       },
       {
         path: '/erp/inventory/stock',
         label: 'Stock Levels',
+        icon: 'TrendingUp',
         permission: 'inventory:view:stock',
       },
       {
         path: '/erp/inventory/movements',
         label: 'Movements',
+        icon: 'ArrowRightLeft',
         permission: 'inventory:view:stock',
       },
     ],
@@ -151,16 +158,19 @@ export const EMPLOYEE_PORTAL_ROUTES: PortalRoute[] = [
       {
         path: '/erp/invoices/all',
         label: 'All Invoices',
+        icon: 'FileText',
         permission: 'erp:view:invoices',
       },
       {
         path: '/erp/invoices/pending',
         label: 'Pending Payment',
+        icon: 'Clock',
         permission: 'accounting:view:invoices',
       },
       {
         path: '/erp/invoices/paid',
         label: 'Paid',
+        icon: 'CheckCircle',
         permission: 'accounting:view:invoices',
       },
     ],
@@ -249,18 +259,21 @@ export const EMPLOYEE_PORTAL_NAVIGATION: EmployeePortalNavigation[] = [
         id: 'orders-all',
         label: 'All Orders',
         path: '/erp/orders/all',
+        icon: 'List',
         permission: 'erp:view:all:orders',
       },
       {
         id: 'orders-pending',
         label: 'Pending',
         path: '/erp/orders/pending',
+        icon: 'Clock',
         permission: 'erp:view:all:orders',
       },
       {
         id: 'orders-completed',
         label: 'Completed',
         path: '/erp/orders/completed',
+        icon: 'CheckCircle',
         permission: 'erp:view:all:orders',
       },
     ],
@@ -277,18 +290,21 @@ export const EMPLOYEE_PORTAL_NAVIGATION: EmployeePortalNavigation[] = [
         id: 'inventory-products',
         label: 'Products',
         path: '/erp/inventory/products',
+        icon: 'Package',
         permission: 'erp:view:inventory',
       },
       {
         id: 'inventory-stock',
         label: 'Stock Levels',
         path: '/erp/inventory/stock',
+        icon: 'TrendingUp',
         permission: 'inventory:view:stock',
       },
       {
         id: 'inventory-movements',
         label: 'Movements',
         path: '/erp/inventory/movements',
+        icon: 'ArrowRightLeft',
         permission: 'inventory:view:stock',
       },
     ],
@@ -313,18 +329,21 @@ export const EMPLOYEE_PORTAL_NAVIGATION: EmployeePortalNavigation[] = [
         id: 'invoices-all',
         label: 'All Invoices',
         path: '/erp/invoices/all',
+        icon: 'FileText',
         permission: 'erp:view:invoices',
       },
       {
         id: 'invoices-pending',
         label: 'Pending Payment',
         path: '/erp/invoices/pending',
+        icon: 'Clock',
         permission: 'accounting:view:invoices',
       },
       {
         id: 'invoices-paid',
         label: 'Paid',
         path: '/erp/invoices/paid',
+        icon: 'CheckCircle',
         permission: 'accounting:view:invoices',
       },
     ],

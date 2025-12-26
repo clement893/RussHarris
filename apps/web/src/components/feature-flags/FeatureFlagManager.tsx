@@ -77,8 +77,9 @@ export function FeatureFlagManager({ className = '' }: FeatureFlagManagerProps) 
         type: 'success',
       });
     } catch (error: unknown) {
+      const errorMessage = (error as { response?: { data?: { detail?: string } } })?.response?.data?.detail || 'Failed to delete feature flag';
       showToast({
-        message: error.response?.data?.detail || 'Failed to delete feature flag',
+        message: errorMessage,
         type: 'error',
       });
     }

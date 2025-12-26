@@ -235,7 +235,16 @@ export default function ProfileSecurityPage() {
               <TabPanel value="api-keys">
                 <Section title={t('sections.apiKeys') || 'API Keys'} className="mt-6">
                   <APIKeys
-                    apiKeys={apiKeys}
+                    apiKeys={apiKeys.map((key) => ({
+                      id: String(key.id),
+                      name: key.name,
+                      key: (key as { key?: string }).key || '',
+                      prefix: key.key_prefix,
+                      lastUsed: key.last_used_at,
+                      createdAt: key.created_at,
+                      expiresAt: (key as { expires_at?: string }).expires_at,
+                      scopes: (key as { scopes?: string[] }).scopes || [],
+                    }))}
                     onCreate={handleCreateAPIKey}
                     onDelete={handleDeleteAPIKey}
                   />

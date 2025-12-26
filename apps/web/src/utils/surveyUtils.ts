@@ -41,11 +41,13 @@ export function formToSurvey(form: BackendForm): Survey {
     id: String(form.id),
     name: form.name || '',
     description: form.description || '',
-    questions: form.fields || [],
+    questions: (form.fields || []) as unknown as Survey['questions'],
     settings: form.settings || defaultSurveySettings,
     submitButtonText: form.submit_button_text,
     successMessage: form.success_message,
-    status: form.status || 'draft',
+    status: (form.status === 'draft' || form.status === 'published' || form.status === 'closed') 
+      ? form.status 
+      : 'draft',
   };
 }
 

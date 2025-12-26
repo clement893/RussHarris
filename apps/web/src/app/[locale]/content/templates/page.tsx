@@ -55,17 +55,17 @@ export default function TemplatesManagementPage() {
       }
       
       const mappedTemplates: ContentTemplate[] = (backendTemplates as BackendTemplate[]).map((tpl) => ({
-        id: tpl.id,
+        id: typeof tpl.id === 'string' ? parseInt(tpl.id, 10) : tpl.id,
         name: tpl.name,
-        content: tpl.content,
+        content: tpl.content || '',
         content_html: tpl.content_html,
-        entity_type: tpl.entity_type,
+        entity_type: tpl.entity_type || '',
         category: tpl.category,
         description: tpl.description,
         variables: tpl.variables,
         is_public: tpl.is_public || false,
-        created_at: tpl.created_at,
-        updated_at: tpl.updated_at,
+        created_at: (tpl as unknown as { created_at?: string }).created_at || new Date().toISOString(),
+        updated_at: (tpl as unknown as { updated_at?: string }).updated_at || new Date().toISOString(),
       }));
       
       setTemplates(mappedTemplates);

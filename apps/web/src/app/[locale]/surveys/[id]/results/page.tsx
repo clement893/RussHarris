@@ -53,10 +53,10 @@ export default function SurveyResultsPage() {
         }
         
         setSubmissions((submissionsResponse.data as BackendSubmission[]).map((sub) => ({
-          id: sub.id,
+          id: typeof sub.id === 'string' ? parseInt(sub.id, 10) : sub.id,
           survey_id: String(sub.form_id),
           data: sub.data,
-          user_id: sub.user_id,
+          user_id: sub.user_id !== undefined ? (typeof sub.user_id === 'string' ? parseInt(sub.user_id, 10) : sub.user_id) : undefined,
           submitted_at: sub.submitted_at,
           ip_address: sub.ip_address,
         })));

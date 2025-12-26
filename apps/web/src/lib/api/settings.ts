@@ -93,6 +93,9 @@ export const settingsAPI = {
    */
   getNotificationSettings: async (): Promise<NotificationSettings> => {
     const response = await apiClient.get<NotificationSettings>('/v1/settings/notifications');
+    if (!response.data) {
+      throw new Error('Failed to fetch notification settings: no data returned');
+    }
     return response.data;
   },
 
@@ -101,6 +104,9 @@ export const settingsAPI = {
    */
   updateNotificationSettings: async (settings: NotificationSettings): Promise<NotificationSettings> => {
     const response = await apiClient.put<NotificationSettings>('/v1/settings/notifications', settings);
+    if (!response.data) {
+      throw new Error('Failed to update notification settings: no data returned');
+    }
     return response.data;
   },
 
@@ -109,6 +115,9 @@ export const settingsAPI = {
    */
   getGeneralSettings: async (): Promise<GeneralSettings> => {
     const response = await apiClient.get<GeneralSettings>('/v1/settings/general');
+    if (!response.data) {
+      throw new Error('Failed to fetch general settings: no data returned');
+    }
     return response.data;
   },
 
@@ -117,6 +126,9 @@ export const settingsAPI = {
    */
   updateGeneralSettings: async (settings: GeneralSettings): Promise<GeneralSettings> => {
     const response = await apiClient.put<GeneralSettings>('/v1/settings/general', settings);
+    if (!response.data) {
+      throw new Error('Failed to update general settings: no data returned');
+    }
     return response.data;
   },
 
@@ -125,6 +137,9 @@ export const settingsAPI = {
    */
   getSecuritySettings: async (): Promise<SecuritySettings> => {
     const response = await apiClient.get<SecuritySettings>('/v1/settings/security');
+    if (!response.data) {
+      throw new Error('Failed to fetch security settings: no data returned');
+    }
     return response.data;
   },
 
@@ -133,6 +148,9 @@ export const settingsAPI = {
    */
   updateSecuritySettings: async (settings: SecuritySettings): Promise<SecuritySettings> => {
     const response = await apiClient.put<SecuritySettings>('/v1/settings/security', settings);
+    if (!response.data) {
+      throw new Error('Failed to update security settings: no data returned');
+    }
     return response.data;
   },
 
@@ -141,6 +159,9 @@ export const settingsAPI = {
    */
   getBillingSettings: async (): Promise<BillingSettings> => {
     const response = await apiClient.get<BillingSettings>('/v1/settings/billing');
+    if (!response.data) {
+      throw new Error('Failed to fetch billing settings: no data returned');
+    }
     return response.data;
   },
 
@@ -149,6 +170,9 @@ export const settingsAPI = {
    */
   updateBillingSettings: async (settings: BillingSettings): Promise<BillingSettings> => {
     const response = await apiClient.put<BillingSettings>('/v1/settings/billing', settings);
+    if (!response.data) {
+      throw new Error('Failed to update billing settings: no data returned');
+    }
     return response.data;
   },
 
@@ -157,6 +181,9 @@ export const settingsAPI = {
    */
   getOrganizationSettings: async (): Promise<OrganizationSettings> => {
     const response = await apiClient.get<OrganizationSettings>('/v1/settings/organization');
+    if (!response.data) {
+      throw new Error('Failed to fetch organization settings: no data returned');
+    }
     return response.data;
   },
 
@@ -165,6 +192,9 @@ export const settingsAPI = {
    */
   updateOrganizationSettings: async (settings: OrganizationSettings): Promise<OrganizationSettings> => {
     const response = await apiClient.put<OrganizationSettings>('/v1/settings/organization', settings);
+    if (!response.data) {
+      throw new Error('Failed to update organization settings: no data returned');
+    }
     return response.data;
   },
 };

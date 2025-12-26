@@ -551,7 +551,7 @@ export default function SurveyResults({
                                 <td key={col} className="border border-gray-300 dark:border-gray-600 p-2 text-center">
                                   <div className="text-sm font-medium">{cellData?.value || 0}</div>
                                   <div className="text-xs text-gray-500">
-                                    {cellData ? Math.round(cellData.percentage) : 0}%
+                                    {cellData && typeof cellData.percentage === 'number' ? Math.round(cellData.percentage) : 0}%
                                   </div>
                                 </td>
                               );

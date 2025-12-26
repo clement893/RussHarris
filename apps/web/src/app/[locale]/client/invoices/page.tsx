@@ -102,8 +102,8 @@ function ClientInvoicesContent() {
       </div>
 
       <DataTable
-        data={data?.items || []}
-        columns={columns}
+        data={(data?.items || []) as unknown as Record<string, unknown>[]}
+        columns={columns as unknown as Column<Record<string, unknown>>[]}
         loading={isLoading}
         pageSize={pageSize}
         emptyMessage="No invoices found"

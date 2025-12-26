@@ -9,15 +9,12 @@
  * @module logger
  */
 
-type LogLevel = 'log' | 'info' | 'warn' | 'error' | 'debug';
-
-interface LogContext {
+export interface LogContext {
   [key: string]: unknown;
 }
 
 class SecureLogger {
   private isDevelopment = process.env.NODE_ENV === 'development';
-  private isProduction = process.env.NODE_ENV === 'production';
 
   /**
    * Sanitize sensitive data from log context
@@ -92,6 +89,24 @@ class SecureLogger {
     if (!this.isDevelopment) return;
     const sanitized = this.sanitize(context);
     console.debug(`[DEBUG] ${message}`, sanitized || '');
+  }
+
+  /**
+   * Log a user action (only in development)
+   */
+  userAction(action: string, context?: LogContext): void {
+    if (!this.isDevelopment) return;
+    const sanitized = this.sanitize(context);
+    console.log(`[USER_ACTION] ${action}`, sanitized || '');
+  }
+
+  /**
+   * Log a performance metric (only in development)
+   */
+  performance(label: string, value: number | string, unit?: string): void {
+    if (!this.isDevelopment) return;
+    const unitStr = unit ? ` ${unit}` : '';
+    console.log(`[PERF] ${label}: ${value}${unitStr}`);
   }
 }
 

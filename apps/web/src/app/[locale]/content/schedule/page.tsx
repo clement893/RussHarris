@@ -56,17 +56,25 @@ export default function ScheduledContentPage() {
       }
       
       const mappedContent: ScheduledContent[] = (backendTasks as BackendScheduledTask[]).map((task) => ({
-        id: task.id,
+        id: typeof task.id === 'string' ? parseInt(task.id, 10) : task.id,
         name: task.name,
         description: task.description,
-        task_type: task.task_type,
+        task_type: (task.task_type === 'publish_post' || task.task_type === 'publish_page' || task.task_type === 'send_email' || task.task_type === 'custom') 
+          ? task.task_type 
+          : 'custom' as const,
         scheduled_at: task.scheduled_at,
-        status: task.status,
+        status: (task.status === 'pending' || task.status === 'running' || task.status === 'completed' || task.status === 'failed' || task.status === 'cancelled')
+          ? task.status
+          : 'pending' as const,
         recurrence: task.recurrence,
-        content_id: task.task_data?.content_id,
-        content_type: task.task_data?.content_type,
-        created_at: task.created_at,
-        updated_at: task.updated_at,
+        content_id: typeof (task as unknown as { task_data?: { content_id?: unknown } }).task_data?.content_id === 'number' 
+          ? (task as unknown as { task_data?: { content_id?: number } }).task_data?.content_id 
+          : undefined,
+        content_type: typeof (task as unknown as { task_data?: { content_type?: unknown } }).task_data?.content_type === 'string'
+          ? (task as unknown as { task_data?: { content_type?: string } }).task_data?.content_type
+          : undefined,
+        created_at: (task as unknown as { created_at?: string }).created_at || new Date().toISOString(),
+        updated_at: (task as unknown as { updated_at?: string }).updated_at || new Date().toISOString(),
       }));
       
       setScheduledContent(mappedContent);

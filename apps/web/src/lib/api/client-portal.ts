@@ -138,6 +138,9 @@ export const clientPortalAPI = {
    */
   getDashboardStats: async (): Promise<ClientDashboardStats> => {
     const response = await apiClient.get<ClientDashboardStats>('/v1/client/dashboard/stats');
+    if (!response.data) {
+      throw new Error('Failed to fetch dashboard stats: no data returned');
+    }
     return response.data;
   },
 
@@ -154,6 +157,9 @@ export const clientPortalAPI = {
     status?: string;
   }): Promise<ClientInvoiceListResponse> => {
     const response = await apiClient.get<ClientInvoiceListResponse>('/v1/client/invoices', { params });
+    if (!response.data) {
+      throw new Error('Failed to fetch invoices: no data returned');
+    }
     return response.data;
   },
 
@@ -167,6 +173,9 @@ export const clientPortalAPI = {
    */
   getInvoice: async (invoiceId: number): Promise<ClientInvoice> => {
     const response = await apiClient.get<ClientInvoice>(`/v1/client/invoices/${invoiceId}`);
+    if (!response.data) {
+      throw new Error('Failed to fetch invoice: no data returned');
+    }
     return response.data;
   },
 
@@ -183,6 +192,9 @@ export const clientPortalAPI = {
     status?: string;
   }): Promise<ClientProjectListResponse> => {
     const response = await apiClient.get<ClientProjectListResponse>('/v1/client/projects', { params });
+    if (!response.data) {
+      throw new Error('Failed to fetch projects: no data returned');
+    }
     return response.data;
   },
 
@@ -196,6 +208,9 @@ export const clientPortalAPI = {
    */
   getProject: async (projectId: number): Promise<ClientProject> => {
     const response = await apiClient.get<ClientProject>(`/v1/client/projects/${projectId}`);
+    if (!response.data) {
+      throw new Error('Failed to fetch project: no data returned');
+    }
     return response.data;
   },
 
@@ -212,6 +227,9 @@ export const clientPortalAPI = {
     status?: string;
   }): Promise<ClientTicketListResponse> => {
     const response = await apiClient.get<ClientTicketListResponse>('/v1/client/tickets', { params });
+    if (!response.data) {
+      throw new Error('Failed to fetch tickets: no data returned');
+    }
     return response.data;
   },
 
@@ -225,6 +243,9 @@ export const clientPortalAPI = {
    */
   getTicket: async (ticketId: number): Promise<ClientTicket> => {
     const response = await apiClient.get<ClientTicket>(`/v1/client/tickets/${ticketId}`);
+    if (!response.data) {
+      throw new Error('Failed to fetch ticket: no data returned');
+    }
     return response.data;
   },
 
@@ -246,6 +267,9 @@ export const clientPortalAPI = {
    */
   createTicket: async (ticketData: ClientTicketCreate): Promise<ClientTicket> => {
     const response = await apiClient.post<ClientTicket>('/v1/client/tickets', ticketData);
+    if (!response.data) {
+      throw new Error('Failed to create ticket: no data returned');
+    }
     return response.data;
   },
 };

@@ -10,7 +10,7 @@
 
 import { useState } from 'react';
 import { useApi } from '@/hooks/useApi';
-import { clientPortalAPI, ClientTicketListResponse } from '@/lib/api/client-portal';
+import { clientPortalAPI, ClientTicketListResponse, ClientTicketCreate } from '@/lib/api/client-portal';
 import { DataTable, Button, Modal } from '@/components/ui';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import type { Column } from '@/components/ui';
@@ -91,11 +91,11 @@ function ClientTicketsContent() {
   const handleCreateTicket = async (ticketData: {
     subject: string;
     description: string;
-    priority: string;
+    priority: 'low' | 'medium' | 'high' | 'urgent';
     category: string;
   }) => {
     try {
-      await clientPortalAPI.createTicket(ticketData);
+      await clientPortalAPI.createTicket(ticketData as ClientTicketCreate);
       setShowCreateModal(false);
       refetch();
     } catch (error) {
@@ -130,24 +130,23 @@ function ClientTicketsContent() {
       </div>
 
       <DataTable
-        data={data?.items || []}
-        columns={columns}
+        data={(data?.items || []) as unknown as Record<string, unknown>[]}
+        columns={columns as unknown as Column<Record<string, unknown>>[]}
         loading={isLoading}
         pageSize={pageSize}
         emptyMessage="No tickets found"
       />
 
-      {showCreateModal && (
-        <Modal
-          title="Create Support Ticket"
-          onClose={() => setShowCreateModal(false)}
-        >
-          <CreateTicketForm
-            onSubmit={handleCreateTicket}
-            onCancel={() => setShowCreateModal(false)}
-          />
-        </Modal>
-      )}
+      <Modal
+        isOpen={showCreateModal}
+        title="Create Support Ticket"
+        onClose={() => setShowCreateModal(false)}
+      >
+        <CreateTicketForm
+          onSubmit={handleCreateTicket}
+          onCancel={() => setShowCreateModal(false)}
+        />
+      </Modal>
     </div>
   );
 }
@@ -159,14 +158,14 @@ function CreateTicketForm({
   onSubmit: (data: {
     subject: string;
     description: string;
-    priority: string;
+    priority: 'low' | 'medium' | 'high' | 'urgent';
     category: string;
   }) => void;
   onCancel: () => void;
 }) {
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState('medium');
+  const [priority, setPriority] = useState<'low' | 'medium' | 'high' | 'urgent'>('medium');
   const [category, setCategory] = useState('general');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -201,7 +200,7 @@ function CreateTicketForm({
           <label className="block text-sm font-medium mb-1">Priority</label>
           <select
             value={priority}
-            onChange={(e) => setPriority(e.target.value)}
+            onChange={(e) => setPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg"
           >
             <option value="low">Low</option>

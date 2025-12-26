@@ -43,8 +43,11 @@ export default function AdminStatisticsContent() {
       const usersResponseData = (usersResponse as PaginatedResponse<{ total?: number }>).data;
       const usersData = usersResponseData && typeof usersResponseData === 'object' && 'total' in usersResponseData
         ? usersResponseData
-        : usersResponse.data;
-      const totalUsers = (usersData && typeof usersData === 'object' && 'total' in usersData ? usersData.total : 0) || 0;
+        : (usersResponse.data && typeof usersResponse.data === 'object' && 'total' in usersResponse.data ? usersResponse.data : null);
+      const responseTotal = (usersResponse as PaginatedResponse<unknown>).total;
+      const totalUsers: number = (usersData && typeof usersData === 'object' && 'total' in usersData 
+        ? (typeof usersData.total === 'number' ? usersData.total : 0)
+        : (typeof responseTotal === 'number' ? responseTotal : 0));
 
       // Load audit trail stats
       let totalLogs = 0;

@@ -10,7 +10,7 @@
 
 import { useState } from 'react';
 import { useApi } from '@/hooks/useApi';
-import { erpPortalAPI, ERPClientListResponse } from '@/lib/api/erp-portal';
+import { ERPClientListResponse } from '@/lib/api/erp-portal';
 import { DataTable } from '@/components/ui';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import type { Column } from '@/components/ui';
@@ -55,7 +55,7 @@ function ERPClientsContent() {
       key: 'company_name',
       label: 'Company',
       sortable: true,
-      render: (value) => value || '-',
+      render: (value) => (value ? String(value) : '-'),
     },
     {
       key: 'total_orders',
@@ -131,8 +131,8 @@ function ERPClientsContent() {
       </div>
 
       <DataTable
-        data={data?.items || []}
-        columns={columns}
+        data={(data?.items || []) as unknown as Record<string, unknown>[]}
+        columns={columns as unknown as Column<Record<string, unknown>>[]}
         loading={isLoading}
         pageSize={pageSize}
         emptyMessage="No clients found"

@@ -148,20 +148,20 @@ function StripeTestContent() {
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="text-gray-600 dark:text-gray-400">Plan:</span>
-              <Badge variant="default">{mySubscription.plan?.name || 'N/A'}</Badge>
+              <Badge variant="default">{((mySubscription.plan as { name?: string })?.name) || 'N/A'}</Badge>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600 dark:text-gray-400">Status:</span>
               <Badge variant={mySubscription.status === 'ACTIVE' ? 'success' : 'default'}>
-                {mySubscription.status}
+                {String(mySubscription.status)}
               </Badge>
             </div>
-            {mySubscription.current_period_end && (
+            {mySubscription.current_period_end ? (
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Period End:</span>
-                <span>{new Date(mySubscription.current_period_end).toLocaleDateString()}</span>
+                <span>{new Date(mySubscription.current_period_end as string | number | Date).toLocaleDateString()}</span>
               </div>
-            )}
+            ) : null}
             <div className="mt-4">
               <Button onClick={handleCreatePortal} disabled={loading}>
                 Open Customer Portal

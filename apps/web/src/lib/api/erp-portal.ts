@@ -111,6 +111,9 @@ export const erpPortalAPI = {
   getDashboardStats: async (department?: string): Promise<ERPDashboardStats> => {
     const params = department ? { department } : undefined;
     const response = await apiClient.get<ERPDashboardStats>('/v1/erp/dashboard/stats', { params });
+    if (!response.data) {
+      throw new Error('Failed to fetch dashboard stats: no data returned');
+    }
     return response.data;
   },
 
@@ -128,6 +131,9 @@ export const erpPortalAPI = {
     client_id?: number;
   }): Promise<ERPInvoiceListResponse> => {
     const response = await apiClient.get<ERPInvoiceListResponse>('/v1/erp/invoices', { params });
+    if (!response.data) {
+      throw new Error('Failed to fetch invoices: no data returned');
+    }
     return response.data;
   },
 
@@ -140,6 +146,9 @@ export const erpPortalAPI = {
    */
   getInvoice: async (invoiceId: number): Promise<ERPInvoice> => {
     const response = await apiClient.get<ERPInvoice>(`/v1/erp/invoices/${invoiceId}`);
+    if (!response.data) {
+      throw new Error('Failed to fetch invoice: no data returned');
+    }
     return response.data;
   },
 
@@ -156,6 +165,9 @@ export const erpPortalAPI = {
     is_active?: boolean;
   }): Promise<ERPClientListResponse> => {
     const response = await apiClient.get<ERPClientListResponse>('/v1/erp/clients', { params });
+    if (!response.data) {
+      throw new Error('Failed to fetch clients: no data returned');
+    }
     return response.data;
   },
 
@@ -168,6 +180,9 @@ export const erpPortalAPI = {
    */
   getClient: async (clientId: number): Promise<ERPClient> => {
     const response = await apiClient.get<ERPClient>(`/v1/erp/clients/${clientId}`);
+    if (!response.data) {
+      throw new Error('Failed to fetch client: no data returned');
+    }
     return response.data;
   },
 };

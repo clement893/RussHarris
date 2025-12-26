@@ -85,6 +85,10 @@ export function detectPortalType(pathname: string): PortalType | null {
  * Get portal type from user roles
  */
 export function getPortalTypeFromUser(user: PortalUser): PortalType {
+  if (!user.roles) {
+    return 'client'; // Default to client if no roles
+  }
+  
   // Check if user has client role
   const hasClientRole = user.roles.some((role: PortalRole) => 
     role === 'client' || role === 'client_admin'
@@ -129,6 +133,13 @@ export function hasPermission(
   user: PortalUser,
   permission: string
 ): PortalPermissionCheck {
+  if (!user.permissions) {
+    return {
+      hasPermission: false,
+      permission,
+    };
+  }
+  
   // Admin has all permissions
   if (user.permissions.includes('admin:*')) {
     return {
@@ -199,8 +210,12 @@ export function hasAllPermissions(
  * Check if user has role
  */
 export function hasRole(user: PortalUser, role: PortalRole | PortalRole[]): boolean {
+  if (!user.roles) {
+    return false;
+  }
   const rolesToCheck = Array.isArray(role) ? role : [role];
-  return rolesToCheck.some((r) => user.roles.includes(r));
+  const userRoles = user.roles;
+  return rolesToCheck.some((r) => userRoles.includes(r));
 }
 
 /**

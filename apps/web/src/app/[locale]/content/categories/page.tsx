@@ -55,17 +55,17 @@ export default function CategoriesManagementPage() {
       }
       
       const mappedCategories: Category[] = (backendCategories as BackendCategory[]).map((cat) => ({
-        id: cat.id,
+        id: typeof cat.id === 'string' ? parseInt(cat.id, 10) : cat.id,
         name: cat.name,
         slug: cat.slug,
         description: cat.description,
         icon: cat.icon,
         color: cat.color,
-        parent_id: cat.parent_id,
-        parent_name: cat.parent_name || undefined,
-        entity_type: cat.entity_type,
-        sort_order: cat.sort_order || 0,
-        created_at: cat.created_at,
+        parent_id: typeof cat.parent_id === 'string' ? parseInt(cat.parent_id, 10) : cat.parent_id,
+        parent_name: (cat as unknown as { parent_name?: string }).parent_name || undefined,
+        entity_type: (cat as unknown as { entity_type?: string }).entity_type || '',
+        sort_order: (cat as unknown as { sort_order?: number }).sort_order || 0,
+        created_at: (cat as unknown as { created_at?: string }).created_at || new Date().toISOString(),
       }));
       
       setCategories(mappedCategories);

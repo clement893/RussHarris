@@ -44,6 +44,12 @@ const nextConfig = {
     // Enable faster refresh for better dev experience
     optimizeCss: true,
   },
+  
+  // Turbopack configuration - set root to fix workspace detection
+  // This should point to the monorepo root where node_modules and Next.js are located
+  turbopack: {
+    root: require('path').resolve(__dirname, '../..'),
+  },
 
   // Image optimization
   images: {
@@ -52,8 +58,8 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
-  // Enable SWC minification (faster than Terser)
-  swcMinify: true,
+  // SWC minification is enabled by default in Next.js 16+
+  // No need to specify swcMinify option
 
   // Webpack configuration for better code splitting
   webpack: (config, { isServer, dev, webpack }) => {

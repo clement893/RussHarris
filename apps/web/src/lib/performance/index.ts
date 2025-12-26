@@ -4,8 +4,8 @@
  * Exports performance-related utilities
  */
 
-export { reportWebVitals } from './webVitals';
-export type { WebVitalsReport } from './webVitals';
+export { reportWebVitals, getWebVitals, getPerformanceSummary } from './webVitals';
+export type { WebVitalsMetric } from './webVitals';
 export { createLazyComponent, lazyLoad } from './lazy';
 
 

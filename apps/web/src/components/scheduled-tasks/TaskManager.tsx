@@ -92,8 +92,9 @@ export function TaskManager({ className = '' }: TaskManagerProps) {
       });
       fetchTasks();
     } catch (error: unknown) {
+      const errorMessage = (error as { response?: { data?: { detail?: string } } })?.response?.data?.detail || 'Failed to delete task';
       showToast({
-        message: error.response?.data?.detail || 'Failed to delete task',
+        message: errorMessage,
         type: 'error',
       });
     }

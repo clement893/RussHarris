@@ -47,11 +47,21 @@ export default function AdminUsersContent() {
       interface PaginatedResponse<T> {
         data?: T | { items?: T[] };
       }
-      const responseData = (response as PaginatedResponse<unknown[]>).data;
-      const data = (responseData && typeof responseData === 'object' && 'items' in responseData
-        ? (responseData as { items?: unknown[] }).items
-        : Array.isArray(responseData) ? responseData : []) as unknown[];
-      setUsers(Array.isArray(data) ? data : []);
+      const responseData = (response as PaginatedResponse<User[]>).data;
+      let usersData: User[] = [];
+      
+      if (responseData && typeof responseData === 'object') {
+        if ('items' in responseData) {
+          const items = (responseData as { items?: unknown }).items;
+          if (Array.isArray(items) && items.length > 0 && !Array.isArray(items[0])) {
+            usersData = items as User[];
+          }
+        } else if (Array.isArray(responseData)) {
+          usersData = responseData as User[];
+        }
+      }
+      
+      setUsers(usersData);
     } catch (err) {
       setError(getErrorMessage(err, 'Erreur lors du chargement des utilisateurs'));
     } finally {

@@ -6,22 +6,11 @@ import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { Card, Button, Alert, Loading } from '@/components/ui';
 import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
 import Container from '@/components/ui/Container';
+import type { ThemeConfigResponse, ThemeListResponse } from '@modele/types/theme';
 
 export default function ThemeDebugPage() {
-  interface Theme {
-    id: number | string;
-    name: string;
-    is_active: boolean;
-    [key: string]: unknown;
-  }
-  
-  interface ThemesResponse {
-    themes: Theme[];
-    [key: string]: unknown;
-  }
-  
-  const [activeTheme, setActiveTheme] = useState<Theme | null>(null);
-  const [allThemes, setAllThemes] = useState<ThemesResponse | null>(null);
+  const [activeTheme, setActiveTheme] = useState<ThemeConfigResponse | null>(null);
+  const [allThemes, setAllThemes] = useState<ThemeListResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -82,7 +71,7 @@ export default function ThemeDebugPage() {
               <div><strong>ID:</strong> {activeTheme?.id ?? 'N/A'}</div>
               <div><strong>Name:</strong> {activeTheme?.name ?? 'N/A'}</div>
               <div><strong>Display Name:</strong> {activeTheme?.display_name ?? 'N/A'}</div>
-              <div><strong>Updated At:</strong> {activeTheme?.updated_at ? new Date(activeTheme.updated_at).toLocaleString() : 'N/A'}</div>
+              <div><strong>Updated At:</strong> {(activeTheme as unknown as { updated_at?: string })?.updated_at ? new Date((activeTheme as unknown as { updated_at: string }).updated_at).toLocaleString() : 'N/A'}</div>
               <div className="mt-4">
                 <strong>Config:</strong>
                 <pre className="mt-2 p-4 bg-gray-100 dark:bg-gray-800 rounded overflow-auto text-sm">
@@ -124,8 +113,8 @@ export default function ThemeDebugPage() {
                       </div>
                     </div>
                     <div className="mt-2 text-xs text-gray-400">
-                      Created: {new Date(theme.created_at).toLocaleString()} | 
-                      Updated: {new Date(theme.updated_at).toLocaleString()}
+                      Created: {theme.created_at ? new Date(theme.created_at).toLocaleString() : 'N/A'} | 
+                      Updated: {theme.updated_at ? new Date(theme.updated_at).toLocaleString() : 'N/A'}
                     </div>
                     <div className="mt-2">
                       <strong>Config:</strong>

@@ -30,7 +30,14 @@ export function PerformanceDashboard() {
     // Get current performance metrics
     if (typeof window !== 'undefined') {
       import('@/lib/performance/webVitals').then(({ getPerformanceSummary }) => {
-        getPerformanceSummary().then((summary) => {
+        getPerformanceSummary().then((summary: {
+          lcp: number | null;
+          fid: number | null;
+          cls: number | null;
+          fcp: number | null;
+          ttfb: number | null;
+          inp: number | null;
+        }) => {
           setMetrics({
             ...summary,
             timestamp: new Date().toISOString(),

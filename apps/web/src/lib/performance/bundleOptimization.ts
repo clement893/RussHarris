@@ -8,6 +8,7 @@
  */
 export const lazyLoadHeavyLibraries = {
   // Chart libraries - only load when charts are needed
+  // @ts-expect-error - recharts is optional and loaded dynamically
   chart: () => import('recharts').catch(() => null),
   
   // Rich text editor - only load when editor is needed

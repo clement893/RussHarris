@@ -9,7 +9,7 @@
 'use client';
 
 import { useApi } from '@/hooks/useApi';
-import { clientPortalAPI, ClientProjectListResponse } from '@/lib/api/client-portal';
+import { ClientProjectListResponse } from '@/lib/api/client-portal';
 import { DataTable } from '@/components/ui';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import type { Column } from '@/components/ui';
@@ -64,19 +64,22 @@ function ClientProjectsContent() {
       key: 'progress',
       label: 'Progress',
       sortable: true,
-      render: (value) => (
-        <div className="flex items-center gap-2">
-          <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-            <div
-              className="bg-primary-500 h-2 rounded-full"
-              style={{ width: `${value}%` }}
-            />
+      render: (value) => {
+        const progress = typeof value === 'number' ? value : (typeof value === 'string' ? parseFloat(value) : 0);
+        return (
+          <div className="flex items-center gap-2">
+            <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div
+                className="bg-primary-500 h-2 rounded-full"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              {progress}%
+            </span>
           </div>
-          <span className="text-sm text-gray-600 dark:text-gray-400">
-            {value}%
-          </span>
-        </div>
-      ),
+        );
+      },
     },
     {
       key: 'created_at',
@@ -108,8 +111,8 @@ function ClientProjectsContent() {
       </div>
 
       <DataTable
-        data={data?.items || []}
-        columns={columns}
+        data={(data?.items || []) as unknown as Record<string, unknown>[]}
+        columns={columns as unknown as Column<Record<string, unknown>>[]}
         loading={isLoading}
         pageSize={pageSize}
         emptyMessage="No projects found"

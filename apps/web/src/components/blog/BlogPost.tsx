@@ -95,10 +95,10 @@ export default function BlogPost({ post, className }: BlogPostProps) {
 
         {/* Post Content */}
         <div className="prose prose-lg dark:prose-invert max-w-none mb-8">
-          {post.content_html ? (
+          {post.content_html && typeof post.content_html === 'string' ? (
             <SafeHTML html={post.content_html} />
           ) : (
-            <div className="whitespace-pre-wrap">{post.content}</div>
+            <div className="whitespace-pre-wrap">{typeof post.content === 'string' ? post.content : ''}</div>
           )}
         </div>
 

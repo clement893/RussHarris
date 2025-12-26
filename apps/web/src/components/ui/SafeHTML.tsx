@@ -36,7 +36,7 @@ export interface SafeHTMLProps {
   /**
    * Custom DOMPurify configuration
    */
-  config?: DOMPurify.Config;
+  config?: Parameters<typeof DOMPurify.sanitize>[1];
 }
 
 /**
@@ -62,7 +62,7 @@ export function SafeHTML({
     if (!html) return '';
     
     // Default safe configuration
-    const defaultConfig: DOMPurify.Config = {
+    const defaultConfig: Parameters<typeof DOMPurify.sanitize>[1] = {
       ALLOWED_TAGS: allowedTags || [
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
         'p', 'br', 'strong', 'em', 'u', 's', 'b', 'i',

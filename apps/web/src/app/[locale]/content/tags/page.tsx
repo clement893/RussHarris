@@ -55,14 +55,14 @@ export default function TagsManagementPage() {
       }
       
       const mappedTags: TagItem[] = (backendTags as BackendTag[]).map((tag) => ({
-        id: tag.id,
+        id: typeof tag.id === 'string' ? parseInt(tag.id, 10) : tag.id,
         name: tag.name,
         slug: tag.slug,
         color: tag.color,
         description: tag.description,
-        entity_type: tag.entity_type,
+        entity_type: tag.entity_type || '',
         usage_count: tag.usage_count || 0,
-        created_at: tag.created_at,
+        created_at: (tag as unknown as { created_at?: string }).created_at || new Date().toISOString(),
       }));
       
       setTags(mappedTags);

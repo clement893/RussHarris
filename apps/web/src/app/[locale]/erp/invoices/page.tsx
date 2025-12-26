@@ -10,7 +10,7 @@
 
 import { useState } from 'react';
 import { useApi } from '@/hooks/useApi';
-import { erpPortalAPI, ERPInvoiceListResponse } from '@/lib/api/erp-portal';
+import { ERPInvoiceListResponse } from '@/lib/api/erp-portal';
 import { DataTable } from '@/components/ui';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import type { Column } from '@/components/ui';
@@ -50,12 +50,14 @@ function ERPInvoicesContent() {
       key: 'client_name',
       label: 'Client',
       sortable: true,
-      render: (value, row) => (
+      render: (value: unknown, row: ERPInvoiceListResponse['items'][0]) => (
         <div>
-          <p className="font-medium text-gray-900 dark:text-white">{value || row.client_email || 'N/A'}</p>
-          {row.client_email && value && (
-            <p className="text-xs text-gray-500 dark:text-gray-400">{row.client_email}</p>
-          )}
+          <p className="font-medium text-gray-900 dark:text-white">
+            {(value ? String(value) : '') || row.client_email || 'N/A'}
+          </p>
+          {row.client_email && value ? (
+            <p className="text-xs text-gray-500 dark:text-gray-400">{String(row.client_email)}</p>
+          ) : null}
         </div>
       ),
     },
@@ -134,8 +136,8 @@ function ERPInvoicesContent() {
       </div>
 
       <DataTable
-        data={data?.items || []}
-        columns={columns}
+        data={(data?.items || []) as unknown as Record<string, unknown>[]}
+        columns={columns as unknown as Column<Record<string, unknown>>[]}
         loading={isLoading}
         pageSize={pageSize}
         emptyMessage="No invoices found"

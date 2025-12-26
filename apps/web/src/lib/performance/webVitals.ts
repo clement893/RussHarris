@@ -132,3 +132,25 @@ export function getWebVitals(): Promise<Record<string, number>> {
     }, 10000);
   });
 }
+
+/**
+ * Get performance summary with all metrics
+ */
+export async function getPerformanceSummary(): Promise<{
+  lcp: number | null;
+  fid: number | null;
+  cls: number | null;
+  fcp: number | null;
+  ttfb: number | null;
+  inp: number | null;
+}> {
+  const vitals = await getWebVitals();
+  return {
+    lcp: vitals.LCP ?? null,
+    fid: vitals.FID ?? null,
+    cls: vitals.CLS ?? null,
+    fcp: vitals.FCP ?? null,
+    ttfb: vitals.TTFB ?? null,
+    inp: vitals.INP ?? null,
+  };
+}

@@ -64,6 +64,7 @@ export function useConfirmAction<T extends (...args: unknown[]) => unknown>(
       if (confirmed) {
         return action(...args);
       }
+      return undefined as ReturnType<T>;
     },
     [action, confirm, options]
   ) as T;
