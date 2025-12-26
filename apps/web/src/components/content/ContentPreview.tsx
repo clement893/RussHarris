@@ -8,8 +8,7 @@
 
 'use client';
 
-import { Modal, Card } from '@/components/ui';
-import { X } from 'lucide-react';
+import { Modal } from '@/components/ui';
 
 export interface ContentPreviewProps {
   title: string;
