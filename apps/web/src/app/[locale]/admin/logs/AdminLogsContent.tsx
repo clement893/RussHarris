@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { PageHeader, PageContainer } from '@/components/layout';
 import { apiClient } from '@/lib/api/client';
-import { getErrorMessage } from '@/lib/error-utils';
+import { getErrorMessage } from '@/lib/errors';
 import { Button, Card, Badge, Alert, Input, Loading, DataTable, Select } from '@/components/ui';
 import type { Column } from '@/components/ui/DataTable';
 
@@ -44,16 +44,24 @@ export default function AdminLogsContent() {
       interface ApiResponse<T> {
         data?: T | { data?: T; results?: T[] };
       }
-      const responseData = (response as ApiResponse<unknown[]>).data;
-      const data = (responseData && typeof responseData === 'object' && 'data' in responseData 
-        ? (responseData as { data?: unknown[]; results?: unknown[] }).data || (responseData as { data?: unknown[]; results?: unknown[] }).results
-        : Array.isArray(responseData) ? responseData : response.data) as unknown[] | undefined;
+      const responseData = (response as ApiResponse<AuditLog[]>).data;
+      let logsData: AuditLog[] = [];
       
-      if (Array.isArray(data)) {
-        setLogs(data);
-      } else if (data?.results) {
-        setLogs(data.results);
+      if (Array.isArray(responseData)) {
+        logsData = responseData as AuditLog[];
+      } else if (responseData && typeof responseData === 'object') {
+        const dataObj = responseData as { data?: AuditLog[]; results?: AuditLog[] };
+        logsData = (dataObj.data || dataObj.results || []) as AuditLog[];
+      } else if (response.data) {
+        const apiData = response.data as { data?: AuditLog[]; results?: AuditLog[] } | AuditLog[];
+        if (Array.isArray(apiData)) {
+          logsData = apiData;
+        } else {
+          logsData = (apiData.data || apiData.results || []) as AuditLog[];
+        }
       }
+      
+      setLogs(logsData);
     } catch (err: unknown) {
       setError(getErrorMessage(err, 'Erreur lors du chargement des logs'));
     } finally {
