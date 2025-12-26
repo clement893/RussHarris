@@ -87,6 +87,14 @@ export const sitePages: Record<string, SitemapPage[]> = {
       changefreq: 'monthly',
       requiresAuth: true,
     },
+    { 
+      path: '/profile/security', 
+      title: 'Profile Security', 
+      description: 'Paramètres de sécurité, 2FA et clés API',
+      priority: 0.7,
+      changefreq: 'monthly',
+      requiresAuth: true,
+    },
   ],
   'Abonnements': [
     { 

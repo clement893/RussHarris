@@ -90,6 +90,27 @@
         "loadFailed": "Failed to load settings. Please try again.",
         "updateFailed": "Failed to update settings. Please try again."
       }
+    },
+    "security": {
+      "title": "Security",
+      "description": "Manage your security settings, 2FA, and API keys",
+      "breadcrumbs": {
+        "dashboard": "Dashboard",
+        "profile": "Profile",
+        "security": "Security"
+      },
+      "tabs": {
+        "security": "Security",
+        "apiKeys": "API Keys"
+      },
+      "sections": {
+        "security": "Security Settings",
+        "apiKeys": "API Keys"
+      },
+      "errors": {
+        "loadFailed": "Failed to load security settings. Please try again.",
+        "updateFailed": "Failed to update security settings. Please try again."
+      }
     }
   }
 }
