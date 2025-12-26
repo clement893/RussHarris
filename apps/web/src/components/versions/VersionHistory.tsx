@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { History, RotateCcw, GitCompare, Eye } from 'lucide-react';
+import { History, RotateCcw, GitCompare } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { apiClient } from '@/lib/api/client';
