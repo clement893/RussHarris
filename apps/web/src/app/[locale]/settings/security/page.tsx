@@ -127,9 +127,23 @@ export default function SecuritySettingsPage() {
                 <Section title={t('sections.apiKeys') || 'API Keys'} className="mt-6">
                   <APIKeys 
                     apiKeys={apiKeys} 
-                    onAdd={async () => {}} 
-                    onDelete={async () => {}} 
-                    onRegenerate={async () => {}} 
+                    onCreate={async (name: string, scopes: string[]) => {
+                      // TODO: Implement API key creation
+                      return {
+                        id: '',
+                        name,
+                        key: '',
+                        prefix: '',
+                        createdAt: new Date().toISOString(),
+                        scopes,
+                      };
+                    }} 
+                    onDelete={async (id: string) => {
+                      // TODO: Implement API key deletion
+                    }} 
+                    onRevoke={async (id: string) => {
+                      // TODO: Implement API key revocation
+                    }} 
                   />
                 </Section>
               </TabPanel>
