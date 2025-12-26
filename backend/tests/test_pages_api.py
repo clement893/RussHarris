@@ -3,16 +3,27 @@ Tests for Pages API endpoints
 """
 
 import pytest
-from httpx import AsyncClient
+from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.page import Page
 from app.models.user import User
+from app.core.auth import create_access_token
+
+
+# Note: These tests require the test fixtures from conftest.py
+# Run with: pytest tests/test_pages_api.py -v
 
 
 @pytest.mark.asyncio
-async def test_create_page(client: AsyncClient, test_user: User, auth_headers: dict):
+async def test_create_page(client: AsyncClient, test_user: User, db: AsyncSession):
     """Test creating a new page"""
+    from app.core.auth import create_access_token
+    
+    # Create auth token
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
     page_data = {
         "title": "Test Page",
         "slug": "test-page",
@@ -20,10 +31,10 @@ async def test_create_page(client: AsyncClient, test_user: User, auth_headers: d
         "status": "draft",
     }
     
-    response = await client.post(
+    response = client.post(
         "/api/v1/pages",
         json=page_data,
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 201
@@ -34,7 +45,7 @@ async def test_create_page(client: AsyncClient, test_user: User, auth_headers: d
 
 
 @pytest.mark.asyncio
-async def test_get_page(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_get_page(client: AsyncClient, test_user: User, db: AsyncSession):
     """Test getting a page by slug"""
     # Create a test page
     page = Page(
@@ -48,9 +59,14 @@ async def test_get_page(client: AsyncClient, test_user: User, auth_headers: dict
     await db.commit()
     await db.refresh(page)
     
-    response = await client.get(
+    from app.core.auth import create_access_token
+    
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.get(
         f"/api/v1/pages/test-page",
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
@@ -60,7 +76,7 @@ async def test_get_page(client: AsyncClient, test_user: User, auth_headers: dict
 
 
 @pytest.mark.asyncio
-async def test_list_pages(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_list_pages(client: AsyncClient, test_user: User, db: AsyncSession):
     """Test listing pages"""
     # Create test pages
     for i in range(3):
@@ -74,9 +90,14 @@ async def test_list_pages(client: AsyncClient, test_user: User, auth_headers: di
         db.add(page)
     await db.commit()
     
-    response = await client.get(
+    from app.core.auth import create_access_token
+    
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.get(
         "/api/v1/pages",
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
@@ -85,7 +106,7 @@ async def test_list_pages(client: AsyncClient, test_user: User, auth_headers: di
 
 
 @pytest.mark.asyncio
-async def test_update_page(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_update_page(client: AsyncClient, test_user: User, db: AsyncSession):
     """Test updating a page"""
     # Create a test page
     page = Page(
@@ -104,10 +125,15 @@ async def test_update_page(client: AsyncClient, test_user: User, auth_headers: d
         "status": "published",
     }
     
-    response = await client.put(
+    from app.core.auth import create_access_token
+    
+    token = create_access_token({"sub": test_user.email})
+    headers = {"Authorization": f"Bearer {token}"}
+    
+    response = client.put(
         f"/api/v1/pages/test-page",
         json=update_data,
-        headers=auth_headers
+        headers=headers
     )
     
     assert response.status_code == 200
@@ -117,7 +143,7 @@ async def test_update_page(client: AsyncClient, test_user: User, auth_headers: d
 
 
 @pytest.mark.asyncio
-async def test_delete_page(client: AsyncClient, test_user: User, auth_headers: dict, db: AsyncSession):
+async def test_delete_page(client: AsyncClient, test_user: User, db: AsyncSession):
     """Test deleting a page"""
     # Create a test page
     page = Page(
