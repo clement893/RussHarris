@@ -9,7 +9,7 @@ interface ServiceTestCardProps {
   title: string;
   description: string;
   icon: ReactNode;
-  color: 'primary' | 'secondary' | 'info';
+  color: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 }
 
 const colorClasses = {
@@ -39,6 +39,33 @@ const colorClasses = {
     text: 'text-info-900 dark:text-info-100',
     textSecondary: 'text-info-800 dark:text-info-200',
     arrow: 'text-info-600 dark:text-info-400',
+  },
+  success: {
+    border: 'border-green-200 dark:border-green-800',
+    bg: 'bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/60 dark:to-green-800/60',
+    hoverBorder: 'hover:border-green-400 dark:hover:border-green-600',
+    iconBg: 'bg-green-600 dark:bg-green-500',
+    text: 'text-green-900 dark:text-green-100',
+    textSecondary: 'text-green-800 dark:text-green-200',
+    arrow: 'text-green-600 dark:text-green-400',
+  },
+  warning: {
+    border: 'border-yellow-200 dark:border-yellow-800',
+    bg: 'bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-900/60 dark:to-yellow-800/60',
+    hoverBorder: 'hover:border-yellow-400 dark:hover:border-yellow-600',
+    iconBg: 'bg-yellow-600 dark:bg-yellow-500',
+    text: 'text-yellow-900 dark:text-yellow-100',
+    textSecondary: 'text-yellow-800 dark:text-yellow-200',
+    arrow: 'text-yellow-600 dark:text-yellow-400',
+  },
+  error: {
+    border: 'border-red-200 dark:border-red-800',
+    bg: 'bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900/60 dark:to-red-800/60',
+    hoverBorder: 'hover:border-red-400 dark:hover:border-red-600',
+    iconBg: 'bg-red-600 dark:bg-red-500',
+    text: 'text-red-900 dark:text-red-100',
+    textSecondary: 'text-red-800 dark:text-red-200',
+    arrow: 'text-red-600 dark:text-red-400',
   },
 };
 
