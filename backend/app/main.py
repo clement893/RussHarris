@@ -87,6 +87,24 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         if logger:
             logger.warning(f"Theme preference column migration skipped: {e}")
     
+    # Ensure default theme exists - only if DB is available
+    try:
+        from app.core.database import get_db
+        from app.api.v1.endpoints.themes import ensure_default_theme
+        async for db in get_db():
+            try:
+                await ensure_default_theme(db, created_by=1)
+                if logger:
+                    logger.info("Default theme ensured")
+                print("✓ Default theme ensured", file=sys.stderr)
+            except Exception as e:
+                if logger:
+                    logger.warning(f"Default theme creation skipped: {e}")
+            break
+    except Exception as e:
+        if logger:
+            logger.warning(f"Default theme initialization skipped: {e}")
+    
     # Log environment info
     if logger:
         logger.info(f"CORS Origins configured: {settings.CORS_ORIGINS}")

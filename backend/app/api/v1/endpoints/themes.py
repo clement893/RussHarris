@@ -32,6 +32,54 @@ class ThemeModeUpdate(BaseModel):
             raise ValueError("Mode must be 'light', 'dark', or 'system'")
 
 
+async def ensure_default_theme(db: AsyncSession, created_by: int = 1) -> Theme:
+    """
+    Ensure a default theme exists. Creates one if none exists.
+    Returns the active theme (or newly created default theme).
+    """
+    # Check if any theme exists
+    result = await db.execute(select(Theme))
+    themes = result.scalars().all()
+    
+    if not themes:
+        # Create default theme
+        default_config = {
+            "mode": "system",
+            "primary": "#3b82f6",
+            "secondary": "#8b5cf6",
+            "danger": "#ef4444",
+            "warning": "#f59e0b",
+            "info": "#06b6d4",
+        }
+        
+        default_theme = Theme(
+            name="default",
+            display_name="Default Theme",
+            description="Default theme created automatically",
+            config=default_config,
+            is_active=True,
+            created_by=created_by
+        )
+        db.add(default_theme)
+        await db.commit()
+        await db.refresh(default_theme)
+        return default_theme
+    
+    # Check if any theme is active
+    active_result = await db.execute(select(Theme).where(Theme.is_active == True))
+    active_theme = active_result.scalar_one_or_none()
+    
+    if not active_theme:
+        # Activate the first theme
+        first_theme = themes[0]
+        first_theme.is_active = True
+        await db.commit()
+        await db.refresh(first_theme)
+        return first_theme
+    
+    return active_theme
+
+
 @router.get("/active", response_model=ThemeConfigResponse, tags=["themes"])
 @cached(expire=3600, key_prefix="theme")  # Cache 1h - themes change rarely
 async def get_active_theme(db: AsyncSession = Depends(get_db)):
@@ -39,25 +87,31 @@ async def get_active_theme(db: AsyncSession = Depends(get_db)):
     Get the currently active theme configuration.
     Public endpoint - no authentication required.
     Returns the global theme that applies to all users.
+    Creates a default theme if none exists.
     """
     result = await db.execute(select(Theme).where(Theme.is_active == True))
     theme = result.scalar_one_or_none()
+    
     if not theme:
-        # Return default theme if no active theme exists
-        default_config = {
-            "mode": "system",  # Default mode: light, dark, or system
-            "primary": "#3b82f6",
-            "secondary": "#8b5cf6",
-            "danger": "#ef4444",
-            "warning": "#f59e0b",
-            "info": "#06b6d4",
-        }
-        return ThemeConfigResponse(
-            name="default",
-            display_name="Default Theme",
-            config=default_config,
-            updated_at=datetime.now()
-        )
+        # Try to ensure a default theme exists
+        try:
+            theme = await ensure_default_theme(db, created_by=1)
+        except Exception:
+            # If we can't create a theme, return a default response
+            default_config = {
+                "mode": "system",
+                "primary": "#3b82f6",
+                "secondary": "#8b5cf6",
+                "danger": "#ef4444",
+                "warning": "#f59e0b",
+                "info": "#06b6d4",
+            }
+            return ThemeConfigResponse(
+                name="default",
+                display_name="Default Theme",
+                config=default_config,
+                updated_at=datetime.now()
+            )
     
     # Ensure config has a mode field
     config = theme.config or {}
@@ -241,6 +295,54 @@ async def activate_theme(
     return ThemeResponse.model_validate(theme)
 
 
+async def ensure_default_theme(db: AsyncSession, created_by: int = 1) -> Theme:
+    """
+    Ensure a default theme exists. Creates one if none exists.
+    Returns the active theme (or newly created default theme).
+    """
+    # Check if any theme exists
+    result = await db.execute(select(Theme))
+    themes = result.scalars().all()
+    
+    if not themes:
+        # Create default theme
+        default_config = {
+            "mode": "system",
+            "primary": "#3b82f6",
+            "secondary": "#8b5cf6",
+            "danger": "#ef4444",
+            "warning": "#f59e0b",
+            "info": "#06b6d4",
+        }
+        
+        default_theme = Theme(
+            name="default",
+            display_name="Default Theme",
+            description="Default theme created automatically",
+            config=default_config,
+            is_active=True,
+            created_by=created_by
+        )
+        db.add(default_theme)
+        await db.commit()
+        await db.refresh(default_theme)
+        return default_theme
+    
+    # Check if any theme is active
+    active_result = await db.execute(select(Theme).where(Theme.is_active == True))
+    active_theme = active_result.scalar_one_or_none()
+    
+    if not active_theme:
+        # Activate the first theme
+        first_theme = themes[0]
+        first_theme.is_active = True
+        await db.commit()
+        await db.refresh(first_theme)
+        return first_theme
+    
+    return active_theme
+
+
 @router.put("/active/mode", response_model=ThemeConfigResponse, tags=["themes"])
 @invalidate_cache_pattern("theme:*")
 async def update_active_theme_mode(
@@ -253,15 +355,14 @@ async def update_active_theme_mode(
     Update the mode (light/dark/system) of the currently active theme.
     Requires superadmin authentication.
     This affects all users globally.
+    Creates a default theme if none exists.
     """
     result = await db.execute(select(Theme).where(Theme.is_active == True))
     theme = result.scalar_one_or_none()
     
     if not theme:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No active theme found. Please activate a theme first."
-        )
+        # Create or activate a default theme
+        theme = await ensure_default_theme(db, created_by=current_user.id)
     
     # Update the mode in config
     config = theme.config or {}
