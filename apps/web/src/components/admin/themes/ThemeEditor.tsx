@@ -84,6 +84,26 @@ interface ThemeConfig {
     lg?: string;
     xl?: string;
   };
+  effects?: {
+    glassmorphism?: {
+      enabled?: boolean;
+      blur?: string; // backdrop-filter blur value (e.g., "10px")
+      opacity?: number; // background opacity (0-1, e.g., 0.1)
+      borderOpacity?: number; // border opacity (0-1, e.g., 0.2)
+      saturation?: number; // backdrop-filter saturation (e.g., 180%)
+    };
+    shadows?: {
+      sm?: string; // small shadow
+      md?: string; // medium shadow
+      lg?: string; // large shadow
+      xl?: string; // extra large shadow
+    };
+    gradients?: {
+      enabled?: boolean;
+      direction?: string; // e.g., "to-br", "to-r", "to-b"
+      intensity?: number; // 0-1
+    };
+  };
 }
 
 export function ThemeEditor({ theme, onSubmit, onCancel, isLoading = false }: ThemeEditorProps) {
@@ -266,6 +286,10 @@ export function ThemeEditor({ theme, onSubmit, onCancel, isLoading = false }: Th
               <Tab value="advanced">
                 <Layout className="w-4 h-4 mr-2" />
                 Avancé
+              </Tab>
+              <Tab value="effects">
+                <Sparkles className="w-4 h-4 mr-2" />
+                Effets
               </Tab>
               <Tab value="preview">
                 <Eye className="w-4 h-4 mr-2" />
@@ -562,6 +586,215 @@ export function ThemeEditor({ theme, onSubmit, onCancel, isLoading = false }: Th
                     <p className="text-xs text-gray-500 mt-2">
                       Éditeur JSON avancé pour modifier directement la configuration complète
                     </p>
+                  </div>
+                </div>
+              </TabPanel>
+
+              <TabPanel value="effects">
+                <div className="space-y-6 mt-4">
+                  {/* Glassmorphism */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Glassmorphism</h3>
+                    <Card className="p-4">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">
+                              Activer le glassmorphism
+                            </label>
+                            <p className="text-xs text-gray-500">
+                              Effet de verre avec transparence et flou d'arrière-plan
+                            </p>
+                          </div>
+                          <input
+                            type="checkbox"
+                            checked={getConfigValue('effects.glassmorphism.enabled', 'false') === 'true'}
+                            onChange={(e) => updateConfig('effects.glassmorphism.enabled', e.target.checked.toString())}
+                            className="w-5 h-5"
+                          />
+                        </div>
+
+                        {getConfigValue('effects.glassmorphism.enabled', 'false') === 'true' && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Intensité du flou
+                              </label>
+                              <Input
+                                type="text"
+                                value={getConfigValue('effects.glassmorphism.blur', '10px')}
+                                onChange={(e) => updateConfig('effects.glassmorphism.blur', e.target.value)}
+                                placeholder="10px"
+                                helperText="Valeur CSS pour backdrop-filter: blur()"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Opacité du fond
+                              </label>
+                              <Input
+                                type="number"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={getConfigValue('effects.glassmorphism.opacity', '0.1')}
+                                onChange={(e) => updateConfig('effects.glassmorphism.opacity', e.target.value)}
+                                placeholder="0.1"
+                                helperText="0 (transparent) à 1 (opaque)"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Opacité de la bordure
+                              </label>
+                              <Input
+                                type="number"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={getConfigValue('effects.glassmorphism.borderOpacity', '0.2')}
+                                onChange={(e) => updateConfig('effects.glassmorphism.borderOpacity', e.target.value)}
+                                placeholder="0.2"
+                                helperText="0 (transparent) à 1 (opaque)"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Saturation
+                              </label>
+                              <Input
+                                type="text"
+                                value={getConfigValue('effects.glassmorphism.saturation', '180%')}
+                                onChange={(e) => updateConfig('effects.glassmorphism.saturation', e.target.value)}
+                                placeholder="180%"
+                                helperText="Valeur CSS pour backdrop-filter: saturate()"
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Preview */}
+                        {getConfigValue('effects.glassmorphism.enabled', 'false') === 'true' && (
+                          <div className="mt-4 pt-4 border-t">
+                            <label className="block text-sm font-medium mb-2">Aperçu</label>
+                            <div
+                              className="p-6 rounded-lg border relative overflow-hidden"
+                              style={{
+                                background: `rgba(255, 255, 255, ${getConfigValue('effects.glassmorphism.opacity', '0.1')})`,
+                                backdropFilter: `blur(${getConfigValue('effects.glassmorphism.blur', '10px')}) saturate(${getConfigValue('effects.glassmorphism.saturation', '180%')})`,
+                                borderColor: `rgba(255, 255, 255, ${getConfigValue('effects.glassmorphism.borderOpacity', '0.2')})`,
+                              }}
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 -z-10" />
+                              <p className="text-sm">
+                                Exemple de carte avec effet glassmorphism
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </Card>
+                  </div>
+
+                  {/* Shadows */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Ombres personnalisées</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Ombre petite</label>
+                        <Input
+                          value={getConfigValue('effects.shadows.sm', '0 1px 2px 0 rgba(0, 0, 0, 0.05)')}
+                          onChange={(e) => updateConfig('effects.shadows.sm', e.target.value)}
+                          placeholder="0 1px 2px 0 rgba(0, 0, 0, 0.05)"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Ombre moyenne</label>
+                        <Input
+                          value={getConfigValue('effects.shadows.md', '0 4px 6px -1px rgba(0, 0, 0, 0.1)')}
+                          onChange={(e) => updateConfig('effects.shadows.md', e.target.value)}
+                          placeholder="0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Ombre grande</label>
+                        <Input
+                          value={getConfigValue('effects.shadows.lg', '0 10px 15px -3px rgba(0, 0, 0, 0.1)')}
+                          onChange={(e) => updateConfig('effects.shadows.lg', e.target.value)}
+                          placeholder="0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Ombre très grande</label>
+                        <Input
+                          value={getConfigValue('effects.shadows.xl', '0 20px 25px -5px rgba(0, 0, 0, 0.1)')}
+                          onChange={(e) => updateConfig('effects.shadows.xl', e.target.value)}
+                          placeholder="0 20px 25px -5px rgba(0, 0, 0, 0.1)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Gradients */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Dégradés</h3>
+                    <Card className="p-4">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">
+                              Activer les dégradés
+                            </label>
+                            <p className="text-xs text-gray-500">
+                              Ajouter des dégradés de couleurs aux éléments
+                            </p>
+                          </div>
+                          <input
+                            type="checkbox"
+                            checked={getConfigValue('effects.gradients.enabled', 'false') === 'true'}
+                            onChange={(e) => updateConfig('effects.gradients.enabled', e.target.checked.toString())}
+                            className="w-5 h-5"
+                          />
+                        </div>
+
+                        {getConfigValue('effects.gradients.enabled', 'false') === 'true' && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Direction
+                              </label>
+                              <Select
+                                options={[
+                                  { label: 'Vers le bas à droite', value: 'to-br' },
+                                  { label: 'Vers la droite', value: 'to-r' },
+                                  { label: 'Vers le bas', value: 'to-b' },
+                                  { label: 'Vers le bas à gauche', value: 'to-bl' },
+                                  { label: 'Vers le haut', value: 'to-t' },
+                                  { label: 'Vers le haut à droite', value: 'to-tr' },
+                                ]}
+                                value={getConfigValue('effects.gradients.direction', 'to-br')}
+                                onChange={(e) => updateConfig('effects.gradients.direction', e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Intensité
+                              </label>
+                              <Input
+                                type="number"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={getConfigValue('effects.gradients.intensity', '0.3')}
+                                onChange={(e) => updateConfig('effects.gradients.intensity', e.target.value)}
+                                placeholder="0.3"
+                                helperText="0 (désactivé) à 1 (maximum)"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </Card>
                   </div>
                 </div>
               </TabPanel>
