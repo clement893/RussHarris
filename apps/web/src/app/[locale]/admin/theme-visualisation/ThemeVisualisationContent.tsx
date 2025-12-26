@@ -105,6 +105,13 @@ export function ThemeVisualisationContent() {
     fetchTheme();
   }, []);
 
+  // Update JSON input when editedConfig changes (if JSON editor is visible)
+  useEffect(() => {
+    if (editedConfig && showJsonImport) {
+      setJsonInput(JSON.stringify(editedConfig, null, 2));
+    }
+  }, [editedConfig, showJsonImport]);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
