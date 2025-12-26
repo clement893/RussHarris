@@ -53,20 +53,41 @@ function GoogleAuthTestContent() {
         },
       });
 
-      if (response.data?.auth_url) {
+      // Extract auth_url from response (handle both ApiResponse wrapper and direct response)
+      const extractAuthUrl = (data: unknown): string | undefined => {
+        if (!data || typeof data !== 'object') return undefined;
+        
+        // Check if it's ApiResponse wrapper
+        if ('data' in data && data.data && typeof data.data === 'object') {
+          const innerData = data.data as { auth_url?: string };
+          return innerData.auth_url;
+        }
+        
+        // Check if it's direct response
+        if ('auth_url' in data) {
+          return (data as { auth_url?: string }).auth_url;
+        }
+        
+        return undefined;
+      };
+
+      const authUrlValue = extractAuthUrl(response) || extractAuthUrl((response as any)?.data);
+
+      if (authUrlValue) {
         setStatus({
           configured: true,
-          auth_url: response.data.auth_url,
+          auth_url: authUrlValue,
         });
-        setAuthUrl(response.data.auth_url);
+        setAuthUrl(authUrlValue);
       } else {
         setStatus({
           configured: false,
         });
+        setError('Google OAuth is configured but no authorization URL was returned');
       }
     } catch (err) {
       const axiosError = err as AxiosError<ApiErrorResponse>;
-      const errorMessage = axiosError.response?.data?.detail || 'Failed to check Google Auth status';
+      const errorMessage = axiosError.response?.data?.detail || axiosError.response?.data?.message || 'Failed to check Google Auth status';
       
       if (axiosError.response?.status === 503) {
         // Service unavailable means not configured
