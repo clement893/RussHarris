@@ -12,3 +12,6 @@ export type { FAQItem, FAQProps } from './FAQ';
 export { default as ContactSupport } from './ContactSupport';
 export type { ContactSupportProps } from './ContactSupport';
 
+export { default as SupportTickets } from './SupportTickets';
+export type { SupportTicket, SupportTicketsProps } from './SupportTickets';
+
