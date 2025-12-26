@@ -180,8 +180,13 @@ async def list_themes(
         themes_list.append(template_theme)
     themes_list.extend(other_themes)
     
-    # Get total count for pagination (all themes including TemplateTheme)
-    total_result = await db.execute(select(Theme))
+    # Get total count for pagination (all themes including TemplateTheme, excluding "default" theme)
+    total_result = await db.execute(
+        select(Theme).where(
+            (Theme.id != 0) & 
+            (Theme.name != 'default')
+        )
+    )
     all_themes = total_result.scalars().all()
     total_count = len(all_themes)
     

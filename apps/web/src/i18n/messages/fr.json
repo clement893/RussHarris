@@ -169,6 +169,30 @@
       "success": {
         "saved": "Paramètres d'équipe enregistrés avec succès"
       }
+    },
+    "security": {
+      "title": "Paramètres de sécurité",
+      "description": "Gérez vos paramètres de sécurité, l'authentification à deux facteurs et les clés API",
+      "breadcrumbs": {
+        "dashboard": "Tableau de bord",
+        "settings": "Paramètres",
+        "security": "Sécurité"
+      },
+      "errors": {
+        "loadFailed": "Échec du chargement des paramètres de sécurité. Veuillez réessayer.",
+        "saveFailed": "Échec de l'enregistrement des paramètres de sécurité. Veuillez réessayer."
+      },
+      "success": {
+        "saved": "Paramètres de sécurité enregistrés avec succès"
+      },
+      "tabs": {
+        "security": "Sécurité",
+        "apiKeys": "Clés API"
+      },
+      "sections": {
+        "security": "Paramètres de sécurité",
+        "apiKeys": "Clés API"
+      }
     }
   }
 }

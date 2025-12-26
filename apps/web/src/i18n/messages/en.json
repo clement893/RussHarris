@@ -169,6 +169,30 @@
       "success": {
         "saved": "Team settings saved successfully"
       }
+    },
+    "security": {
+      "title": "Security Settings",
+      "description": "Manage your security settings, two-factor authentication, and API keys",
+      "breadcrumbs": {
+        "dashboard": "Dashboard",
+        "settings": "Settings",
+        "security": "Security"
+      },
+      "errors": {
+        "loadFailed": "Failed to load security settings. Please try again.",
+        "saveFailed": "Failed to save security settings. Please try again."
+      },
+      "success": {
+        "saved": "Security settings saved successfully"
+      },
+      "tabs": {
+        "security": "Security",
+        "apiKeys": "API Keys"
+      },
+      "sections": {
+        "security": "Security Settings",
+        "apiKeys": "API Keys"
+      }
     }
   }
 }
