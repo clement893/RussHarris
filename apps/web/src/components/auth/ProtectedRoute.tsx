@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
+import { checkSuperAdminStatus } from '@/lib/api/admin';
 import { logger } from '@/lib/logger';
 
 /**
@@ -65,9 +66,28 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
       }
 
       // Check admin privileges if required
-      if (requireAdmin && !user?.is_admin) {
-        router.replace('/dashboard?error=unauthorized');
-        return;
+      if (requireAdmin) {
+        // Check if user is admin OR superadmin
+        let isAdmin = user?.is_admin || false;
+        
+        // If not admin, check if user is superadmin
+        if (!isAdmin && user?.email) {
+          try {
+            const authToken = tokenFromStorage || token;
+            if (authToken) {
+              const status = await checkSuperAdminStatus(user.email, authToken);
+              isAdmin = status.is_superadmin;
+            }
+          } catch (err) {
+            // If superadmin check fails, fallback to is_admin check
+            logger.warn('Failed to check superadmin status, using is_admin fallback', err);
+          }
+        }
+        
+        if (!isAdmin) {
+          router.replace('/dashboard?error=unauthorized');
+          return;
+        }
       }
 
       // Authorize access
