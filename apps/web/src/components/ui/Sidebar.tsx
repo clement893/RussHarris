@@ -60,11 +60,11 @@ export default function Sidebar({
       <div key={item.label}>
         <div
           className={clsx(
-            'flex items-center justify-between px-4 py-2.5 rounded-lg transition-colors',
+            'flex items-center justify-between px-3 md:px-4 py-2 md:py-2.5 rounded-lg transition-colors',
             isActive
               ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-900 dark:text-primary-100 font-medium'
               : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800',
-            level > 0 && 'ml-4'
+            level > 0 && 'ml-2 md:ml-4'
           )}
         >
           {item.href ? (
@@ -115,7 +115,7 @@ export default function Sidebar({
     <aside
       className={clsx(
         'bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 h-full transition-all duration-300 flex flex-col',
-        collapsed ? 'w-16' : 'w-64 md:w-72',
+        collapsed ? 'w-16' : 'w-64 md:w-72 lg:w-80',
         className
       )}
     >
@@ -135,7 +135,7 @@ export default function Sidebar({
           </button>
         </div>
       )}
-      <nav className="p-4 space-y-1 flex-1 overflow-y-auto">{items.map((item) => renderItem(item))}</nav>
+      <nav className="p-3 md:p-4 space-y-1 flex-1 overflow-y-auto">{items.map((item) => renderItem(item))}</nav>
       {user && (
         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
           <div className={clsx(

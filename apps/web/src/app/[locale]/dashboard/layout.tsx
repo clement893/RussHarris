@@ -174,7 +174,7 @@ function DashboardLayoutContent({
         <div className="flex-1 flex flex-col min-w-0 w-full">
           {/* Desktop Header */}
           <header className="hidden xl:block bg-white dark:bg-gray-800 shadow border-b border-gray-200 dark:border-gray-700">
-            <div className="px-6 py-4 flex items-center justify-between">
+            <div className="px-4 md:px-6 py-3 md:py-4 flex items-center justify-between">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 {pathname === '/dashboard' && 'Dashboard'}
                 {pathname === '/dashboard/projects' && 'Projets'}
