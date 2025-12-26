@@ -5,7 +5,7 @@ Uses Pydantic Settings for validation
 
 import os
 from functools import lru_cache
-from typing import List, Union
+from typing import List, Union, Optional
 
 from pydantic import Field, PostgresDsn, field_validator, model_validator, field_serializer
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -235,6 +235,20 @@ class Settings(BaseSettings):
         ge=10,
         le=300,
         description="Query execution timeout (seconds)",
+    )
+
+    # Multi-Tenancy Configuration
+    TENANCY_MODE: str = Field(
+        default="single",
+        description="Tenancy mode: 'single' (no multi-tenancy), 'shared_db' (shared DB with team_id), 'separate_db' (one DB per tenant)",
+    )
+    TENANT_DB_REGISTRY_URL: Optional[str] = Field(
+        default=None,
+        description="Database URL for tenant registry (used in separate_db mode)",
+    )
+    TENANT_DB_BASE_URL: Optional[str] = Field(
+        default=None,
+        description="Base database URL for tenant databases (used in separate_db mode for pattern-based DB creation)",
     )
 
     # Stripe Configuration

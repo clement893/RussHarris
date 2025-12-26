@@ -365,5 +365,60 @@
         "preferences": "Preferences"
       }
     }
+  },
+  "admin": {
+    "tenancy": {
+      "title": "Multi-Tenancy Configuration",
+      "description": "Configure and manage multi-tenancy settings",
+      "breadcrumbs": {
+        "home": "Home",
+        "admin": "Admin",
+        "tenancy": "Tenancy"
+      },
+      "currentStatus": "Current Status",
+      "configuration": "Configuration",
+      "information": "Information",
+      "mode": "Mode",
+      "status": "Status",
+      "enabled": "Multi-tenancy is enabled",
+      "disabled": "Multi-tenancy is disabled",
+      "tenancyMode": "Tenancy Mode",
+      "registryUrl": "Registry Database URL",
+      "baseUrl": "Base Database URL",
+      "registryUrlHelper": "Database URL for tenant registry",
+      "baseUrlHelper": "Base URL for tenant databases (pattern: {base_url}/tenant_{id}_db)",
+      "save": "Save Configuration",
+      "saving": "Saving...",
+      "reload": "Reload",
+      "modes": {
+        "title": "Available Modes",
+        "single": {
+          "label": "Single Tenant",
+          "description": "No multi-tenancy. Single database, no filtering. Default mode."
+        },
+        "shared_db": {
+          "label": "Shared Database",
+          "description": "Multi-tenancy with shared database. All data in one database, filtered by team_id."
+        },
+        "separate_db": {
+          "label": "Separate Databases",
+          "description": "Multi-tenancy with separate databases. One database per tenant for maximum isolation."
+        }
+      },
+      "info": {
+        "configNote": "Tenancy mode is configured via the TENANCY_MODE environment variable. Changes require server restart."
+      },
+      "warning": {
+        "title": "Important",
+        "message": "Changing tenancy mode requires database migrations and may affect existing data. Always backup your database before making changes."
+      },
+      "success": {
+        "saved": "Configuration saved successfully"
+      },
+      "errors": {
+        "loadFailed": "Failed to load configuration. Please try again.",
+        "saveFailed": "Failed to save configuration. Please try again."
+      }
+    }
   }
 }
