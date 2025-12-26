@@ -255,6 +255,19 @@ def create_app() -> FastAPI:
         )
         logger.info("Request signing enabled")
 
+    # Tenancy Middleware (conditionally enabled)
+    # This middleware extracts tenant ID from headers/query params
+    # Only active when TENANCY_MODE is not 'single'
+    from app.core.tenancy_middleware import TenancyMiddleware
+    from app.core.tenancy import TenancyConfig
+    if TenancyConfig.is_enabled():
+        app.add_middleware(
+            TenancyMiddleware,
+            header_name="X-Tenant-ID",
+            query_param="tenant_id",
+        )
+        logger.info(f"Tenancy middleware enabled (mode: {TenancyConfig.get_mode()})")
+
     # CSRF Protection Middleware (after CORS, before routes)
     # Skip CSRF for webhooks and public endpoints
     if not os.getenv("DISABLE_CSRF", "").lower() == "true":

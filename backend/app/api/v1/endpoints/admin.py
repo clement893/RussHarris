@@ -3,7 +3,7 @@ Admin API Endpoints
 Endpoints for administrative operations
 """
 
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -16,6 +16,13 @@ from app.dependencies import get_current_user, require_superadmin, is_superadmin
 from app.models.user import User
 from app.models.role import Role, UserRole
 from app.core.logging import logger
+from app.core.tenancy import (
+    TenancyConfig,
+    TenancyMode,
+    get_current_tenant,
+    get_user_tenant_id,
+    get_user_tenants,
+)
 
 router = APIRouter()
 
@@ -337,5 +344,96 @@ async def check_superadmin_status(
         "user_id": user.id,
         "is_superadmin": user_role is not None,
         "is_active": user.is_active
+    }
+
+
+# ============================================================================
+# Tenancy Endpoints
+# ============================================================================
+
+class TenancyConfigResponse(BaseModel):
+    """Response model for tenancy configuration"""
+    mode: str
+    enabled: bool
+    current_tenant_id: Optional[int] = None
+
+
+class UserTenantsResponse(BaseModel):
+    """Response model for user tenants"""
+    user_id: int
+    primary_tenant_id: Optional[int] = None
+    all_tenant_ids: List[int] = []
+
+
+@router.get(
+    "/tenancy/config",
+    response_model=TenancyConfigResponse,
+    tags=["admin", "tenancy"]
+)
+async def get_tenancy_config(
+    current_user: User = Depends(get_current_user),
+    _: None = Depends(require_superadmin)
+):
+    """
+    Get current tenancy configuration.
+    Requires superadmin authentication.
+    """
+    return TenancyConfigResponse(
+        mode=TenancyConfig.get_mode().value,
+        enabled=TenancyConfig.is_enabled(),
+        current_tenant_id=get_current_tenant()
+    )
+
+
+@router.get(
+    "/tenancy/user/{user_id}/tenants",
+    response_model=UserTenantsResponse,
+    tags=["admin", "tenancy"]
+)
+async def get_user_tenants_endpoint(
+    user_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+    _: None = Depends(require_superadmin)
+):
+    """
+    Get all tenants for a user.
+    Requires superadmin authentication.
+    """
+    primary_tenant_id = await get_user_tenant_id(user_id, db)
+    all_tenant_ids = await get_user_tenants(user_id, db)
+    
+    return UserTenantsResponse(
+        user_id=user_id,
+        primary_tenant_id=primary_tenant_id,
+        all_tenant_ids=all_tenant_ids
+    )
+
+
+@router.get(
+    "/tenancy/current-tenant",
+    response_model=dict,
+    tags=["admin", "tenancy"]
+)
+async def get_current_tenant_endpoint(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Get current tenant ID from context.
+    Available to all authenticated users.
+    """
+    tenant_id = get_current_tenant()
+    user_tenant_id = None
+    
+    # If no tenant in context, try to get from user
+    if tenant_id is None:
+        user_tenant_id = await get_user_tenant_id(current_user.id, db)
+    
+    return {
+        "current_tenant_id": tenant_id,
+        "user_primary_tenant_id": user_tenant_id,
+        "tenancy_enabled": TenancyConfig.is_enabled(),
+        "tenancy_mode": TenancyConfig.get_mode().value
     }
 
