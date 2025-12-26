@@ -13,6 +13,7 @@ from app.models.menu import Menu
 from app.models.user import User
 from app.dependencies import get_current_user, get_db
 from app.core.security_audit import SecurityAuditLogger
+from app.core.tenancy_helpers import apply_tenant_scope
 
 router = APIRouter()
 
@@ -60,6 +61,8 @@ async def list_menus(
     query = select(Menu)
     if location:
         query = query.where(Menu.location == location)
+    # Apply tenant scoping if tenancy is enabled
+    query = apply_tenant_scope(query, Menu)
     result = await db.execute(query.order_by(Menu.created_at.desc()))
     menus = result.scalars().all()
     return [MenuResponse.model_validate(menu) for menu in menus]
@@ -72,7 +75,10 @@ async def get_menu(
     db: AsyncSession = Depends(get_db),
 ):
     """Get a menu by ID"""
-    result = await db.execute(select(Menu).where(Menu.id == menu_id))
+    query = select(Menu).where(Menu.id == menu_id)
+    # Apply tenant scoping if tenancy is enabled
+    query = apply_tenant_scope(query, Menu)
+    result = await db.execute(query)
     menu = result.scalar_one_or_none()
     
     if not menu:
@@ -159,7 +165,9 @@ async def delete_menu(
     db: AsyncSession = Depends(get_db),
 ):
     """Delete a menu"""
-    result = await db.execute(select(Menu).where(Menu.id == menu_id))
+    query = select(Menu).where(Menu.id == menu_id)
+    query = apply_tenant_scope(query, Menu)
+    result = await db.execute(query)
     menu = result.scalar_one_or_none()
     
     if not menu:

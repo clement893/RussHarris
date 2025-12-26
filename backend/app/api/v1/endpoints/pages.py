@@ -13,6 +13,7 @@ from app.models.page import Page
 from app.models.user import User
 from app.dependencies import get_current_user, get_db
 from app.core.security_audit import SecurityAuditLogger
+from app.core.tenancy_helpers import apply_tenant_scope
 
 router = APIRouter()
 
@@ -81,6 +82,8 @@ async def list_pages(
     query = select(Page)
     if status:
         query = query.where(Page.status == status)
+    # Apply tenant scoping if tenancy is enabled
+    query = apply_tenant_scope(query, Page)
     query = query.order_by(Page.created_at.desc()).offset(skip).limit(limit)
     
     result = await db.execute(query)
@@ -95,7 +98,10 @@ async def get_page(
     db: AsyncSession = Depends(get_db),
 ):
     """Get a page by slug"""
-    result = await db.execute(select(Page).where(Page.slug == slug))
+    query = select(Page).where(Page.slug == slug)
+    # Apply tenant scoping if tenancy is enabled
+    query = apply_tenant_scope(query, Page)
+    result = await db.execute(query)
     page = result.scalar_one_or_none()
     
     if not page:
@@ -112,7 +118,9 @@ async def create_page(
 ):
     """Create a new page"""
     # Check if slug already exists
-    result = await db.execute(select(Page).where(Page.slug == page_data.slug))
+    query = select(Page).where(Page.slug == page_data.slug)
+    query = apply_tenant_scope(query, Page)
+    result = await db.execute(query)
     if result.scalar_one_or_none():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -160,7 +168,9 @@ async def update_page(
     db: AsyncSession = Depends(get_db),
 ):
     """Update a page"""
-    result = await db.execute(select(Page).where(Page.slug == slug))
+    query = select(Page).where(Page.slug == slug)
+    query = apply_tenant_scope(query, Page)
+    result = await db.execute(query)
     page = result.scalar_one_or_none()
     
     if not page:
@@ -178,7 +188,9 @@ async def update_page(
         page.title = page_data.title
     if page_data.slug is not None and page_data.slug != slug:
         # Check if new slug exists
-        result = await db.execute(select(Page).where(Page.slug == page_data.slug))
+        query = select(Page).where(Page.slug == page_data.slug)
+        query = apply_tenant_scope(query, Page)
+        result = await db.execute(query)
         if result.scalar_one_or_none():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,

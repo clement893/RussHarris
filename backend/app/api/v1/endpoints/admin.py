@@ -24,6 +24,7 @@ from app.core.tenancy import (
     get_user_tenants,
 )
 from app.core.tenant_database_manager import TenantDatabaseManager
+from app.core.tenancy_metrics import TenancyMetrics
 
 router = APIRouter()
 
@@ -544,4 +545,51 @@ async def delete_tenant_database(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to delete tenant database: {str(e)}"
         )
+
+
+@router.get(
+    "/tenancy/metrics",
+    response_model=dict,
+    tags=["admin", "tenancy"]
+)
+async def get_tenancy_metrics(
+    tenant_id: Optional[int] = Query(None, description="Specific tenant ID (optional)"),
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+    _: None = Depends(require_superadmin)
+):
+    """
+    Get tenancy metrics and statistics.
+    Requires superadmin authentication.
+    """
+    if tenant_id:
+        stats = await TenancyMetrics.get_tenant_statistics(db, tenant_id)
+        return stats
+    else:
+        stats = await TenancyMetrics.get_system_statistics(db)
+        return stats
+
+
+@router.get(
+    "/tenancy/tenants/{tenant_id}/statistics",
+    response_model=dict,
+    tags=["admin", "tenancy"]
+)
+async def get_tenant_statistics(
+    tenant_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+    _: None = Depends(require_superadmin)
+):
+    """
+    Get statistics for a specific tenant.
+    Requires superadmin authentication.
+    """
+    stats = await TenancyMetrics.get_tenant_statistics(db, tenant_id)
+    if not stats:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Tenant {tenant_id} not found or has no data"
+        )
+    return stats
 
