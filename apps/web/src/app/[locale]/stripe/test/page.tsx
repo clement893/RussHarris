@@ -27,8 +27,6 @@ function StripeTestContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
-  const [portalUrl, setPortalUrl] = useState<string | null>(null);
   const [mySubscription, setMySubscription] = useState<any>(null);
 
   useEffect(() => {
@@ -69,7 +67,6 @@ function StripeTestContent() {
       setLoading(true);
       setError('');
       setSuccess('');
-      setCheckoutUrl(null);
 
       const baseUrl = window.location.origin;
       const response = await subscriptionsAPI.createCheckoutSession({
@@ -79,7 +76,6 @@ function StripeTestContent() {
       });
 
       if (response.data?.url) {
-        setCheckoutUrl(response.data.url);
         setSuccess('Checkout session created successfully! Redirecting...');
         setTimeout(() => {
           window.location.href = response.data.url;
@@ -98,13 +94,11 @@ function StripeTestContent() {
       setLoading(true);
       setError('');
       setSuccess('');
-      setPortalUrl(null);
 
       const baseUrl = window.location.origin;
       const response = await subscriptionsAPI.createPortalSession(`${baseUrl}/stripe/test`);
 
       if (response.data?.url) {
-        setPortalUrl(response.data.url);
         setSuccess('Portal session created successfully! Redirecting...');
         setTimeout(() => {
           window.location.href = response.data.url;
