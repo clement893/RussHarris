@@ -87,9 +87,15 @@ async def list_users(
         paginated_result = await paginate_query(db, query, pagination, count_query=count_query)
         # Convert SQLAlchemy User objects to UserResponse schemas
         # This ensures proper serialization and excludes any relationships that shouldn't be exposed
-        user_responses = [
-            UserResponse.model_validate(user) for user in paginated_result.items
-        ]
+        user_responses = []
+        for user in paginated_result.items:
+            try:
+                user_responses.append(UserResponse.model_validate(user))
+            except Exception as validation_error:
+                logger.error(f"Error validating user {user.id}: {validation_error}", exc_info=True)
+                # Skip this user if validation fails
+                continue
+        
         return PaginatedResponse.create(
             items=user_responses,
             total=paginated_result.total,
@@ -104,10 +110,16 @@ async def list_users(
             if filters:
                 query_fallback = query_fallback.where(and_(*filters))
             paginated_result = await paginate_query(db, query_fallback, pagination, count_query=count_query)
-            # Convert to UserResponse
-            user_responses = [
-                UserResponse.model_validate(user) for user in paginated_result.items
-            ]
+            # Convert to UserResponse with individual error handling
+            user_responses = []
+            for user in paginated_result.items:
+                try:
+                    user_responses.append(UserResponse.model_validate(user))
+                except Exception as validation_error:
+                    logger.error(f"Error validating user {user.id} in fallback: {validation_error}", exc_info=True)
+                    # Skip this user if validation fails
+                    continue
+            
             return PaginatedResponse.create(
                 items=user_responses,
                 total=paginated_result.total,
