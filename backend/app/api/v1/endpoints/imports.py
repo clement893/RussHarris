@@ -33,9 +33,36 @@ async def import_data(
     current_user: User = Depends(get_current_user),
 ):
     """
-    Import data from various formats (CSV, Excel, JSON)
-    Format can be 'auto' (detected from filename) or explicit: 'csv', 'excel', 'json'
+    Import data from various formats (CSV, Excel, JSON).
+    
+    Format can be 'auto' (detected from filename) or explicit: 'csv', 'excel', 'json'.
+    File is validated for size (max 10MB) and format before processing.
+    
+    Args:
+        file: File to import (CSV, Excel, or JSON)
+        format: File format ('auto', 'csv', 'excel', or 'json')
+        encoding: File encoding (default: utf-8)
+        has_headers: Whether first row contains headers (default: True)
+        current_user: Authenticated user
+        
+    Returns:
+        ImportResponse: Import results with data, errors, and warnings
+        
+    Raises:
+        HTTPException: 400 if file format is invalid or unsupported
+        HTTPException: 400 if file is too large
+        HTTPException: 503 if required dependencies are missing
     """
+    from app.core.file_validation import validate_import_file
+    
+    # Validate file before processing
+    is_valid, error = validate_import_file(file)
+    if not is_valid:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=error or "Invalid import file"
+        )
+    
     try:
         # Read file content
         file_content = await file.read()

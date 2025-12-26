@@ -100,7 +100,7 @@ async def upload_attachment(
     
     Args:
         feedback_id: ID of the feedback entry
-        file: File to upload (max size: 10MB)
+        file: File to upload (max size: 10MB, allowed: images, documents)
         current_user: Authenticated user (must own the feedback)
         db: Database session
         
@@ -112,9 +112,47 @@ async def upload_attachment(
         HTTPException: 403 if user doesn't own the feedback
         HTTPException: 400 if file is too large or invalid format
     """
+    from app.core.file_validation import validate_document_file, validate_image_file
+    
+    # Verify feedback exists and user owns it
+    service = FeedbackService(db)
+    feedback = await service.get_feedback(feedback_id)
+    if not feedback:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Feedback not found"
+        )
+    
+    if feedback.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to upload attachments to this feedback"
+        )
+    
+    # Validate file - allow both images and documents
+    is_image = file.content_type and file.content_type.startswith("image/")
+    
+    if is_image:
+        is_valid, error = validate_image_file(file)
+    else:
+        is_valid, error = validate_document_file(file)
+    
+    if not is_valid:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=error or "Invalid file format or size"
+        )
+    
     # TODO: Implement file upload to storage
-    # For now, just return success
-    return {"success": True, "message": "File upload not yet implemented"}
+    # For now, just return success with validation passed
+    return {
+        "success": True,
+        "message": "File validated successfully",
+        "filename": file.filename,
+        "size": file.size,
+        "content_type": file.content_type,
+        "note": "File upload to storage not yet implemented"
+    }
 
 
 @router.get("/feedback", response_model=List[FeedbackResponse], tags=["feedback"])
@@ -142,11 +180,30 @@ async def get_feedback(
     Returns:
         List[FeedbackResponse]: List of feedback entries matching criteria
     """
+    from app.dependencies import is_admin_or_superadmin
+    
     service = FeedbackService(db)
     
-    # TODO: Check if user is admin
-    # For now, return user's own feedback
-    feedback = await service.get_user_feedback(current_user.id, status=status)
+    # Check if user is admin - admins can see all feedback
+    is_admin = await is_admin_or_superadmin(current_user, db)
+    
+    if is_admin:
+        # Admins can see all feedback
+        feedback = await service.get_all_feedback(
+            status=status,
+            type=type,
+            limit=limit,
+            offset=offset
+        )
+    else:
+        # Regular users see only their own feedback
+        feedback = await service.get_user_feedback(current_user.id, status=status)
+        # Apply type filter if provided
+        if type:
+            feedback = [f for f in feedback if f.type == type]
+        # Apply pagination
+        feedback = feedback[offset:offset + limit]
+    
     return [FeedbackResponse.model_validate(f) for f in feedback]
 
 
@@ -173,6 +230,8 @@ async def get_feedback_item(
         HTTPException: 404 if feedback not found
         HTTPException: 403 if user is not authorized to view this feedback
     """
+    from app.dependencies import is_admin_or_superadmin
+    
     service = FeedbackService(db)
     feedback = await service.get_feedback(feedback_id)
     if not feedback:
@@ -181,8 +240,9 @@ async def get_feedback_item(
             detail="Feedback not found"
         )
     
-    # TODO: Check if user owns this feedback or is admin
-    if feedback.user_id != current_user.id:
+    # Check if user owns this feedback or is admin
+    is_admin = await is_admin_or_superadmin(current_user, db)
+    if not is_admin and feedback.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to view this feedback"
@@ -216,19 +276,40 @@ async def update_feedback(
         HTTPException: 404 if feedback not found
         HTTPException: 403 if user is not authorized to update
     """
+    from app.dependencies import is_admin_or_superadmin
+    
     service = FeedbackService(db)
+    
+    # Verify feedback exists and user has permission
+    feedback = await service.get_feedback(feedback_id)
+    if not feedback:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Feedback not found"
+        )
+    
+    is_admin = await is_admin_or_superadmin(current_user, db)
+    
+    # Check permissions
+    if not is_admin and feedback.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to update this feedback"
+        )
+    
+    # Only admins can add responses
     updates = feedback_data.model_dump(exclude_unset=True)
+    if updates.get('response') and not is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only admins can add responses to feedback"
+        )
     
     # If responding, set responded_by
     if updates.get('response'):
         updates['responded_by_id'] = current_user.id
     
     feedback = await service.update_feedback(feedback_id, updates)
-    if not feedback:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Feedback not found"
-        )
     return FeedbackResponse.model_validate(feedback)
 
 
@@ -255,7 +336,27 @@ async def delete_feedback(
         HTTPException: 404 if feedback not found
         HTTPException: 403 if user is not authorized to delete
     """
+    from app.dependencies import is_admin_or_superadmin
+    
     service = FeedbackService(db)
+    
+    # Verify feedback exists and user has permission
+    feedback = await service.get_feedback(feedback_id)
+    if not feedback:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Feedback not found"
+        )
+    
+    is_admin = await is_admin_or_superadmin(current_user, db)
+    
+    # Check permissions
+    if not is_admin and feedback.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to delete this feedback"
+        )
+    
     success = await service.delete_feedback(feedback_id)
     if success:
         return {"success": True, "message": "Feedback deleted successfully"}
