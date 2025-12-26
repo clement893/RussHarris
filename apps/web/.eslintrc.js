@@ -77,6 +77,14 @@ module.exports = {
     // Next.js specific
     '@next/next/no-html-link-for-pages': 'error',
     '@next/next/no-img-element': 'warn',
+
+    // Complexity analysis
+    complexity: ['warn', { max: 10 }],
+    'max-lines': ['warn', { max: 300, skipBlankLines: true, skipComments: true }],
+    'max-lines-per-function': ['warn', { max: 50, skipBlankLines: true, skipComments: true }],
+    'max-depth': ['warn', { max: 4 }],
+    'max-params': ['warn', { max: 5 }],
+    'max-nested-callbacks': ['warn', { max: 3 }],
   },
   overrides: [
     {

@@ -6,6 +6,7 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { apiClient } from '@/lib/api/client';
 import { useToast } from '@/components/ui';
+import { logger } from '@/lib/logger';
 
 interface Template {
   id: number;
@@ -50,11 +51,18 @@ export function TemplateManager({
           limit: 50,
         },
       });
-      if (response.data) {
+      
+      // Edge case: Handle null/undefined response
+      if (response?.data && Array.isArray(response.data)) {
         setTemplates(response.data);
+      } else {
+        setTemplates([]);
       }
     } catch (error) {
-      console.error('Failed to fetch templates:', error);
+      // Edge case: Better error handling
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch templates';
+      logger.error('Failed to fetch templates', error instanceof Error ? error : new Error(errorMessage));
+      setTemplates([]); // Set empty array on error to prevent undefined state
     } finally {
       setIsLoading(false);
     }
@@ -77,20 +85,49 @@ export function TemplateManager({
   };
 
   const handleDelete = async (templateId: number) => {
+    // Edge case: Validate templateId
+    if (!templateId || typeof templateId !== 'number' || templateId <= 0) {
+      showToast({
+        message: 'Invalid template ID',
+        type: 'error',
+      });
+      return;
+    }
+
     if (!confirm('Are you sure you want to delete this template?')) return;
 
     try {
       await apiClient.delete(`/api/v1/templates/templates/${templateId}`);
-      setTemplates(templates.filter((t) => t.id !== templateId));
+      
+      // Edge case: Handle concurrent deletions
+      setTemplates((prevTemplates) => {
+        const filtered = prevTemplates.filter((t) => t.id !== templateId);
+        // Verify deletion was successful
+        if (filtered.length === prevTemplates.length) {
+          logger.warn('Template not found in list during deletion', { templateId });
+        }
+        return filtered;
+      });
+      
       showToast({
         message: 'Template deleted successfully',
         type: 'success',
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
+      // Edge case: Better error handling
+      const errorMessage =
+        error && typeof error === 'object' && 'response' in error
+          ? (error.response as { data?: { detail?: string } })?.data?.detail || 'Failed to delete template'
+          : error instanceof Error
+          ? error.message
+          : 'Failed to delete template';
+      
       showToast({
-        message: error.response?.data?.detail || 'Failed to delete template',
+        message: errorMessage,
         type: 'error',
       });
+      
+      logger.error('Failed to delete template', error instanceof Error ? error : new Error(String(error)));
     }
   };
 

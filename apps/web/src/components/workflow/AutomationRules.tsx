@@ -97,7 +97,28 @@ export default function AutomationRules({
   const [loading, setLoading] = useState(false);
 
   const handleCreate = async () => {
-    if (!formData.name.trim() || !formData.trigger.event || formData.actions.length === 0) return;
+    // Edge case: Validate form data
+    const trimmedName = formData.name?.trim() || '';
+    if (!trimmedName) {
+      logger.warn('Cannot create rule: name is required');
+      return;
+    }
+
+    if (!formData.trigger?.event) {
+      logger.warn('Cannot create rule: trigger event is required');
+      return;
+    }
+
+    if (!formData.actions || formData.actions.length === 0) {
+      logger.warn('Cannot create rule: at least one action is required');
+      return;
+    }
+
+    // Edge case: Validate name length
+    if (trimmedName.length > 255) {
+      logger.warn('Cannot create rule: name exceeds maximum length');
+      return;
+    }
 
     setLoading(true);
     try {
@@ -111,7 +132,9 @@ export default function AutomationRules({
         actions: [],
       });
     } catch (error: unknown) {
-      logger.error('Failed to create rule', error instanceof Error ? error : new Error(String(error)));
+      const errorObj = error instanceof Error ? error : new Error(String(error));
+      logger.error('Failed to create rule', errorObj);
+      // Edge case: Don't close modal on error so user can retry
     } finally {
       setLoading(false);
     }

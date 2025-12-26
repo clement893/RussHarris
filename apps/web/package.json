@@ -28,6 +28,7 @@
     "analyze:browser": "BUNDLE_ANALYZE=browser ANALYZE=true next build",
     "check:bundle-size": "node scripts/check-bundle-size.js",
     "audit:accessibility": "node scripts/audit-accessibility.js",
+    "analyze:complexity": "node scripts/analyze-complexity.js",
     "test:load": "k6 run k6-load-test.js",
     "test:visual": "playwright test tests/e2e/visual-regression.spec.ts",
     "test:e2e:all": "playwright test"

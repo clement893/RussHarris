@@ -65,8 +65,8 @@ export { default as Banner } from './Banner';
 export type { BannerVariant } from './Banner';
 
 // Form Components
-export { default as Form, FormField } from './Form';
-export type { FormProps, FormFieldProps } from './Form';
+export { default as Form } from './Form';
+export type { FormProps } from './Form';
 
 // Feedback Components
 export { default as Alert } from './Alert';
@@ -119,6 +119,8 @@ export { default as DragDropList } from './DragDropList';
 export type { DragDropListProps, DragDropListItem } from './DragDropList';
 export { default as VideoPlayer } from './VideoPlayer';
 export type { VideoPlayerProps } from './VideoPlayer';
+export { FormField } from './FormField';
+export type { FormFieldProps } from './FormField';
 export { default as AudioPlayer } from './AudioPlayer';
 export type { AudioPlayerProps } from './AudioPlayer';
 export { default as FormBuilder } from './FormBuilder';
