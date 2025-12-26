@@ -199,6 +199,12 @@ export function AdminThemeManager({ authToken }: ThemeManagerProps) {
                 const config = theme.config || {};
                 const primaryColor = config.primary || '#3b82f6';
                 
+                // Type-safe color extraction
+                const secondaryColor = typeof config.secondary === 'string' ? config.secondary : null;
+                const dangerColor = typeof config.danger === 'string' ? config.danger : null;
+                const warningColor = typeof config.warning === 'string' ? config.warning : null;
+                const infoColor = typeof config.info === 'string' ? config.info : null;
+                
                 return (
                   <Card
                     key={theme.id}
@@ -237,31 +243,31 @@ export function AdminThemeManager({ authToken }: ThemeManagerProps) {
                           style={{ backgroundColor: typeof primaryColor === 'string' ? primaryColor : '#3b82f6' }}
                           title="Couleur principale"
                         />
-                        {typeof config.secondary === 'string' && config.secondary && (
+                        {secondaryColor && (
                           <div
                             className="w-8 h-8 rounded border-2 border-gray-300 dark:border-gray-600"
-                            style={{ backgroundColor: config.secondary }}
+                            style={{ backgroundColor: secondaryColor }}
                             title="Couleur secondaire"
                           />
                         )}
-                        {typeof config.danger === 'string' && config.danger && (
+                        {dangerColor && (
                           <div
                             className="w-8 h-8 rounded border-2 border-gray-300 dark:border-gray-600"
-                            style={{ backgroundColor: config.danger }}
+                            style={{ backgroundColor: dangerColor }}
                             title="Couleur danger"
                           />
                         )}
-                        {typeof config.warning === 'string' && config.warning && (
+                        {warningColor && (
                           <div
                             className="w-8 h-8 rounded border-2 border-gray-300 dark:border-gray-600"
-                            style={{ backgroundColor: config.warning }}
+                            style={{ backgroundColor: warningColor }}
                             title="Couleur avertissement"
                           />
                         )}
-                        {typeof config.info === 'string' && config.info && (
+                        {infoColor && (
                           <div
                             className="w-8 h-8 rounded border-2 border-gray-300 dark:border-gray-600"
-                            style={{ backgroundColor: config.info }}
+                            style={{ backgroundColor: infoColor }}
                             title="Couleur information"
                           />
                         )}
