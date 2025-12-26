@@ -31,7 +31,7 @@ from sqlalchemy import select
 from app.models.user import User
 from app.models.role import Role, UserRole
 from app.core.database import get_db
-from app.core.auth import get_current_user
+from app.dependencies import get_current_user
 
 
 class Permission:
