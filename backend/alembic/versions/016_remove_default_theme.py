@@ -8,6 +8,7 @@ Create Date: 2025-12-26 16:22:17.000000
 from alembic import op
 import sqlalchemy as sa
 from datetime import datetime
+import json
 
 # revision identifiers, used by Alembic.
 revision = '016_remove_default_theme'
@@ -76,7 +77,6 @@ def upgrade():
                 "info": "#06b6d4",
             }
             
-            import json
             conn.execute(sa.text("""
                 INSERT INTO themes (id, name, display_name, description, config, is_active, created_by, created_at, updated_at)
                 VALUES (32, 'TemplateTheme', 'Template Theme', 'Master theme that controls all components', 
