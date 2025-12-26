@@ -88,50 +88,23 @@ pip install -r requirements.txt
 
 ### 4. Environment Variables
 
-Create a `.env` file in the `backend` directory:
+**Quick Setup**: Copy an example configuration file:
 
-```env
-# Database
-DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/dbname
+```bash
+# For development
+cp examples/env.development.example .env
 
-# Security
-SECRET_KEY=your-secret-key-min-32-chars
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=15
-REFRESH_TOKEN_EXPIRE_DAYS=30
-
-# CORS
-CORS_ORIGINS=http://localhost:3000
-FRONTEND_URL=http://localhost:3000
-
-# OAuth
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-
-# Stripe
-STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
-
-# Email (SendGrid)
-SENDGRID_API_KEY=your-sendgrid-api-key
-SENDGRID_FROM_EMAIL=noreply@example.com
-
-# Redis (optional)
-REDIS_URL=redis://localhost:6379/0
-
-# AWS S3 (optional)
-AWS_ACCESS_KEY_ID=your-access-key
-AWS_SECRET_ACCESS_KEY=your-secret-key
-AWS_REGION=us-east-1
-S3_BUCKET_NAME=your-bucket-name
-
-# OpenAI (optional)
-OPENAI_API_KEY=your-openai-api-key
-
-# Environment
-ENVIRONMENT=development
-DEBUG=True
+# For minimal setup (no external services)
+cp examples/env.minimal.example .env
 ```
+
+**Then edit `.env`** and set at minimum:
+- `PROJECT_NAME` - Your app name
+- `DATABASE_URL` - PostgreSQL connection string
+- `SECRET_KEY` - Generate with `openssl rand -hex 32`
+- `FRONTEND_URL` - Your frontend URL
+
+See [Configuration Examples](./examples/README.md) for all available options and [Template Quick Start](./TEMPLATE_QUICK_START.md) for detailed setup instructions.
 
 ### 5. Database Setup
 
@@ -423,10 +396,17 @@ docker run -p 8000:8000 --env-file .env modele-backend
 
 ## 📚 Additional Documentation
 
+### Core Documentation
 - [API Endpoints](./API_ENDPOINTS.md) - Complete API reference
 - [Database Schema](./DATABASE_SCHEMA.md) - Database structure
+- [Testing Guide](./README_TESTING.md) - Testing strategies and examples
 - [Authentication Guide](../apps/web/AUTHENTICATION.md) - Auth setup
 - [Error Handling](../apps/web/ERROR_HANDLING.md) - Error patterns
+
+### Template Documentation
+- [Template Quick Start](./TEMPLATE_QUICK_START.md) - Get started in 5 minutes
+- [Template Customization Guide](./TEMPLATE_CUSTOMIZATION.md) - Customize for your needs
+- [Configuration Examples](./examples/README.md) - Example environment configurations
 
 ## 🛠️ Available Scripts
 
