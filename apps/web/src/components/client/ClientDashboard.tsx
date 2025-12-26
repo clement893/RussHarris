@@ -121,5 +121,5 @@ export const ClientDashboard = memo(function ClientDashboard() {
       </div>
     </div>
   );
-}
+});
 
