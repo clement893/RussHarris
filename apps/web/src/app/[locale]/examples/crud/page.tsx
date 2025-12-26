@@ -40,7 +40,7 @@ export default function ExampleCRUDPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-  const [formData, setFormData] = useState({ name: '', description: '', status: 'active' as const });
+  const [formData, setFormData] = useState<{ name: string; description: string; status: 'active' | 'inactive' }>({ name: '', description: '', status: 'active' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCreate = () => {
