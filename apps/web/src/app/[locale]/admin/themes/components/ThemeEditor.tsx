@@ -10,6 +10,7 @@ import { useThemeEditor } from '../hooks/useThemeEditor';
 import { ThemeTabs } from './ThemeTabs';
 import { ThemeForm } from './ThemeForm';
 import { JSONEditor } from './JSONEditor';
+import { ThemePreview } from './ThemePreview';
 import { Card, Button, Alert } from '@/components/ui';
 import type { Theme, ThemeConfig } from '@modele/types';
 import type { ThemeFormData } from '../types';
@@ -193,11 +194,7 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
           )}
 
           {state.activeTab === 'preview' && (
-            <div className="p-4 bg-muted rounded-lg">
-              <p className="text-muted-foreground">
-                Prévisualisation - À implémenter dans le Batch 9
-              </p>
-            </div>
+            <ThemePreview config={state.config} />
           )}
         </div>
 
