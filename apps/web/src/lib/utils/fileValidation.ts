@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * File Validation Utilities
  * 
@@ -263,7 +264,7 @@ export function validateExtensionMatchesMimeType(
  *   // File is safe, use result.sanitizedName for storage
  *   await saveFile(result.sanitizedName, file);
  * } else {
- *   console.error(result.error);
+ *   logger.error('', result.error);
  * }
  * ```
  */

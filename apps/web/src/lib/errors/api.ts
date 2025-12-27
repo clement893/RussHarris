@@ -9,6 +9,7 @@
  */
 
 import { AxiosError } from 'axios';
+import { logger } from '@/lib/logger';
 import {
   AppError,
   BadRequestError,
@@ -96,8 +97,8 @@ function createErrorFromStatusCode(
  *   await apiClient.get('/users');
  * } catch (error) {
  *   const appError = handleApiError(error);
- *   console.error(appError.message); // Detailed error message
- *   console.error(appError.details); // Additional context
+ *   logger.error('', appError.message); // Detailed error message
+ *   logger.error('', appError.details); // Additional context
  * }
  * ```
  */

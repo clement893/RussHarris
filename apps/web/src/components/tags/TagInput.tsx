@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { logger } from '@/lib/logger';
 import { X, Plus, Tag as TagIcon } from 'lucide-react';
 import { apiClient } from '@/lib/api/client';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -69,7 +70,7 @@ export function TagInput({
         setShowSuggestions(true);
       }
     } catch (error) {
-      console.error('Failed to fetch tag suggestions:', error);
+      logger.error('', 'Failed to fetch tag suggestions:', error);
       setSuggestions([]);
     }
   };

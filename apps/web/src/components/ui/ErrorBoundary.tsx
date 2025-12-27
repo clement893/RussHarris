@@ -7,6 +7,7 @@
 'use client';
 
 import { Component, ReactNode, ErrorInfo } from 'react';
+import { logger } from '@/lib/logger';
 import { Alert } from './index';
 import { Button } from './index';
 
@@ -56,7 +57,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         })
         .catch((importError) => {
           // Fallback to console if logger import fails
-          console.error('ErrorBoundary caught an error (logger unavailable):', error, {
+          logger.error('', 'ErrorBoundary caught an error (logger unavailable):', error, {
             componentStack: errorInfo.componentStack,
             importError,
           });

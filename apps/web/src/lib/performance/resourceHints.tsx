@@ -6,6 +6,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { initializePreloading } from './preloading';
 
 export function ResourceHints() {
@@ -25,7 +26,7 @@ export function ResourceHints() {
     } catch (error) {
       // Silently fail - resource hints are performance optimizations, not critical
       if (process.env.NODE_ENV === 'development') {
-        console.warn('Failed to initialize resource hints:', error);
+        logger.warn('Failed to initialize resource hints:', error);
       }
       return () => {
         // Return cleanup function even if initialization failed

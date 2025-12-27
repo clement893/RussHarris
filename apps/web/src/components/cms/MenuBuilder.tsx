@@ -28,6 +28,7 @@
 'use client';
 
 import { useState } from 'react';
+import { logger } from '@/lib/logger';
 import { Card, Button, Input, Select, Modal, Alert } from '@/components/ui';
 import { DragDropList } from '@/components/ui';
 import type { DragDropListItem } from '@/components/ui';
@@ -143,7 +144,7 @@ export default function MenuBuilder({
             size="sm"
             onClick={() => {
               // TODO: Implement edit functionality
-              console.log('Edit item', item);
+              logger.log('Edit item', item);
             }}
           >
             <Edit className="w-4 h-4" />

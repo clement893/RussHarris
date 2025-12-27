@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import { ShareDialog, ShareList } from '@/components/sharing';
 import { useState } from 'react';
 import { Button } from '@/components/ui';
@@ -36,7 +37,7 @@ export default function SharingComponentsContent() {
                 entityId={1}
                 onClose={() => setShowShareDialog(false)}
                 onShare={() => {
-                  console.log('Shared');
+                  logger.log('Shared');
                   setShowShareDialog(false);
                 }}
               />

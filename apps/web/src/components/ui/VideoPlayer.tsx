@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { clsx } from 'clsx';
 import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, SkipBack, SkipForward } from '@/lib/icons';
 import Button from './Button';
@@ -140,7 +141,7 @@ export default function VideoPlayer({
 
     if (!document.fullscreenElement) {
       video.requestFullscreen().catch((err) => {
-        console.error('Error attempting to enable fullscreen:', err);
+        logger.error('', 'Error attempting to enable fullscreen:', err);
       });
     } else {
       document.exitFullscreen();

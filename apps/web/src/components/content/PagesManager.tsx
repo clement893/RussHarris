@@ -9,6 +9,7 @@
 'use client';
 
 import { useState } from 'react';
+import { logger } from '@/lib/logger';
 import { Card, DataTable, Button, Modal, Input, Textarea, Badge, Alert } from '@/components/ui';
 import type { Column } from '@/components/ui/DataTable';
 import { Plus, Edit, Trash2, Eye, FileText } from 'lucide-react';
@@ -163,7 +164,7 @@ export default function PagesManager({
 
   const handleView = (page: Page) => {
     // TODO: Navigate to page preview or open preview modal
-    console.log('View page:', page);
+    logger.log('View page:', page);
   };
 
   const handleDelete = async (id: number) => {

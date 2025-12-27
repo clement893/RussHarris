@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import { FavoriteButton, FavoritesList } from '@/components/favorites';
 
 export default function FavoritesComponentsContent() {
@@ -49,7 +50,7 @@ export default function FavoritesComponentsContent() {
             <FavoritesList
               entityType="post"
               onFavoriteClick={(favorite) => {
-                console.log('Favorite clicked:', favorite);
+                logger.log('Favorite clicked:', favorite);
               }}
             />
           </div>

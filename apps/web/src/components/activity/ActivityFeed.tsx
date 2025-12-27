@@ -6,6 +6,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { logger } from '@/lib/logger';
 import { clsx } from 'clsx';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
@@ -65,7 +66,7 @@ export default function ActivityFeed({
           });
         }
       } catch (error) {
-        console.error('Failed to refresh activities', error);
+        logger.error('', 'Failed to refresh activities', error);
       }
     }, refreshInterval);
 
@@ -88,7 +89,7 @@ export default function ActivityFeed({
         setActivities((prev) => [...prev, ...newActivities]);
       }
     } catch (error) {
-      console.error('Failed to load more activities', error);
+      logger.error('', 'Failed to load more activities', error);
     } finally {
       setLoading(false);
     }

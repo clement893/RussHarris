@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { logger } from '@/lib/logger';
 import Button from '@/components/ui/Button';
 import { Upload, AlertCircle, CheckCircle } from 'lucide-react';
 import { apiClient } from '@/lib/api/client';
@@ -93,7 +94,7 @@ export function DataImporter({
 
       onImportComplete?.(response.data);
     } catch (error: unknown) {
-      console.error('Import error:', error);
+      logger.error('', 'Import error:', error);
       const errorMessage = 
         (error && typeof error === 'object' && 'response' in error && 
          error.response && typeof error.response === 'object' && 'data' in error.response &&

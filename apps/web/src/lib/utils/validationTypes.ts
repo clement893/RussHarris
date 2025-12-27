@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Shared Validation Types
  * 
@@ -14,7 +15,7 @@
  * ```typescript
  * const result: ValidationResult = validateEmail('user@example.com');
  * if (!result.valid) {
- *   console.error(result.error);
+ *   logger.error('', result.error);
  * }
  * ```
  */
@@ -37,7 +38,7 @@ export interface ValidationResult<T = never> {
  *   'html'
  * );
  * if (result.valid) {
- *   console.log(result.sanitized); // Safe HTML
+ *   logger.log('', { message: result.sanitized }); // Safe HTML
  * }
  * ```
  */

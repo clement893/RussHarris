@@ -9,6 +9,7 @@
 'use client';
 
 import { useState } from 'react';
+import { logger } from '@/lib/logger';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
@@ -60,7 +61,7 @@ export default function APISettings({
       setIsSaving(true);
       await onSave(formData);
     } catch (error) {
-      console.error('Failed to save API settings:', error);
+      logger.error('', 'Failed to save API settings:', error);
       throw error;
     } finally {
       setIsSaving(false);

@@ -9,6 +9,7 @@
 'use client';
 
 import { useState } from 'react';
+import { logger } from '@/lib/logger';
 import { Card, Button, Textarea, Badge, Avatar } from '@/components/ui';
 import type { SupportTicket } from './SupportTickets';
 import { Send, Clock } from 'lucide-react';
@@ -52,7 +53,7 @@ export default function TicketDetails({
       await onReply(replyMessage);
       setReplyMessage('');
     } catch (error) {
-      console.error('Failed to send reply', error);
+      logger.error('', 'Failed to send reply', error);
     } finally {
       setIsSubmitting(false);
     }

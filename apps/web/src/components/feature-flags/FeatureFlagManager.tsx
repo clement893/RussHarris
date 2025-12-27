@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Flag, ToggleLeft, ToggleRight, Trash2, BarChart3 } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -40,7 +41,7 @@ export function FeatureFlagManager({ className = '' }: FeatureFlagManagerProps) 
         setFlags(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch feature flags:', error);
+      logger.error('', 'Failed to fetch feature flags:', error);
     } finally {
       setIsLoading(false);
     }

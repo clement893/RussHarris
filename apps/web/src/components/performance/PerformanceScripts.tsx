@@ -6,6 +6,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { registerServiceWorker } from '@/lib/performance/serviceWorker';
 import { initializePreloading } from '@/lib/performance/preloading';
 
@@ -18,7 +19,7 @@ export function PerformanceScripts() {
       // Silently handle errors from browser extensions interfering with service worker
       // This is a common issue with browser extensions that inject message listeners
       if (process.env.NODE_ENV === 'development') {
-        console.debug('[SW] Service worker registration skipped due to browser extension conflict');
+        logger.debug('[SW] Service worker registration skipped due to browser extension conflict');
       }
     }
 

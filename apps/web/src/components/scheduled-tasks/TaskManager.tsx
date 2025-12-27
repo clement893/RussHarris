@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Clock, Play, Pause, Trash2, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -59,7 +60,7 @@ export function TaskManager({ className = '' }: TaskManagerProps) {
         setTasks(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch tasks:', error);
+      logger.error('', 'Failed to fetch tasks:', error);
     } finally {
       setIsLoading(false);
     }

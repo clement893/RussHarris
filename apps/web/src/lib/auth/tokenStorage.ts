@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Secure Token Storage
  * 
@@ -51,7 +52,7 @@ export class TokenStorage {
       // Token is already in sessionStorage, so API call failure is not critical
       // Log error but don't throw - token is still available for immediate use
       if (process.env.NODE_ENV === 'development') {
-        console.warn('Failed to set token via API route, but token is stored in sessionStorage:', error);
+        logger.warn('Failed to set token via API route, but token is stored in sessionStorage:', error);
       }
     }
   }

@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import { TemplateManager, TemplateEditor } from '@/components/templates';
 
 export default function TemplatesComponentsContent() {
@@ -26,7 +27,7 @@ export default function TemplatesComponentsContent() {
             <TemplateManager
               entityType="page"
               onSelect={(template) => {
-                console.log('Template selected:', template);
+                logger.log('Template selected:', template);
               }}
             />
           </div>
@@ -38,7 +39,7 @@ export default function TemplatesComponentsContent() {
               entityType="page"
               templateId={1}
               onSave={async (template) => {
-                console.log('Template saved:', template);
+                logger.log('Template saved:', template);
               }}
             />
           </div>

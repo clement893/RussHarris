@@ -252,7 +252,7 @@ function UploadContent() {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Button clicked', { selectedFilesCount: selectedFiles.length, uploading, files: selectedFiles.map(f => f.name) });
+                    logger.log('Button clicked', { selectedFilesCount: selectedFiles.length, uploading, files: selectedFiles.map(f => f.name) });
                     if (selectedFiles.length === 0) {
                       setError('Veuillez sélectionner au moins un fichier avant de cliquer sur Uploader');
                       return;
@@ -272,7 +272,7 @@ function UploadContent() {
                   <Button
                     variant="outline"
                     onClick={() => {
-                      console.log('Clearing selection');
+                      logger.log('Clearing selection');
                       setSelectedFiles([]);
                     }}
                     disabled={uploading}

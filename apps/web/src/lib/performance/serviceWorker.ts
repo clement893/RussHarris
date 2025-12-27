@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Service Worker Registration
  * Registers and manages service worker for offline support and caching
@@ -33,7 +34,7 @@ export function registerServiceWorker() {
           scope: '/',
         })
         .then((registration) => {
-          console.log('[SW] Service Worker registered:', registration.scope);
+          logger.log('[SW] Service Worker registered:', registration.scope);
 
           // Check for updates
           registration.addEventListener('updatefound', () => {
@@ -42,7 +43,7 @@ export function registerServiceWorker() {
               newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                   // New service worker available
-                  console.log('[SW] New service worker available');
+                  logger.log('[SW] New service worker available');
                   // Optionally show update notification to user
                 }
               });
@@ -52,7 +53,7 @@ export function registerServiceWorker() {
         .catch((error) => {
           // Only log if it's not a missing file error (common when SW is disabled)
           if (error.name !== 'TypeError' && !error.message?.includes('Failed to register')) {
-            console.error('[SW] Service Worker registration failed:', error);
+            logger.error('', '[SW] Service Worker registration failed:', error);
           }
         });
     });
@@ -60,7 +61,7 @@ export function registerServiceWorker() {
     // Handle service worker updates
     try {
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        console.log('[SW] Service Worker controller changed');
+        logger.log('[SW] Service Worker controller changed');
         // Optionally reload page to use new service worker
         // window.location.reload();
       });
@@ -82,7 +83,7 @@ export function unregisterServiceWorker() {
   navigator.serviceWorker.ready.then((registration) => {
     registration.unregister().then((success) => {
       if (success) {
-        console.log('[SW] Service Worker unregistered');
+        logger.log('[SW] Service Worker unregistered');
       }
     });
   });

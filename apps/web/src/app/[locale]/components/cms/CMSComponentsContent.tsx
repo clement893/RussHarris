@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import { MenuBuilder, CMSFormBuilder, FormSubmissions, SEOManager } from '@/components/cms';
 import type { Menu, CMSForm } from '@/components/cms';
 import { useState } from 'react';
@@ -60,7 +61,7 @@ export default function CMSComponentsContent() {
             <MenuBuilder
               menu={sampleMenu}
               onSave={async (menu) => {
-                console.log('Menu saved:', menu);
+                logger.log('Menu saved:', menu);
               }}
             />
           </div>
@@ -71,7 +72,7 @@ export default function CMSComponentsContent() {
             <CMSFormBuilder
               form={sampleForm}
               onSave={async (form) => {
-                console.log('Form saved:', form);
+                logger.log('Form saved:', form);
               }}
             />
           </div>
@@ -82,7 +83,7 @@ export default function CMSComponentsContent() {
             <FormSubmissions
               submissions={[]}
               onView={(submission) => {
-                console.log('View submission:', submission);
+                logger.log('View submission:', submission);
               }}
             />
           </div>
@@ -93,7 +94,7 @@ export default function CMSComponentsContent() {
             <SEOManager
               initialSettings={{}}
               onSave={async (settings) => {
-                console.log('SEO settings saved:', settings);
+                logger.log('SEO settings saved:', settings);
               }}
             />
           </div>

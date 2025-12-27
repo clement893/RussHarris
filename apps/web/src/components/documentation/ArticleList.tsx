@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { BookOpen, Search, Star } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Input from '@/components/ui/Input';
@@ -47,7 +48,7 @@ export function ArticleList({ className = '' }: ArticleListProps) {
         setCategories(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch categories:', error);
+      logger.error('', 'Failed to fetch categories:', error);
     }
   };
 
@@ -64,7 +65,7 @@ export function ArticleList({ className = '' }: ArticleListProps) {
         setArticles(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch articles:', error);
+      logger.error('', 'Failed to fetch articles:', error);
     } finally {
       setIsLoading(false);
     }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { logger } from '@/lib/logger';
 import Button from '@/components/ui/Button';
 import { FileSpreadsheet, FileText, FileJson, FileType } from 'lucide-react';
 import { useToast } from '@/components/ui';
@@ -87,7 +88,7 @@ export function DataExporter({
         type: 'success',
       });
     } catch (error: unknown) {
-      console.error('Export error:', error);
+      logger.error('', 'Export error:', error);
       showToast({
         message: getErrorMessage(error) || 'Failed to export data.',
         type: 'error',

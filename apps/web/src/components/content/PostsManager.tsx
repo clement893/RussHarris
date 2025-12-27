@@ -9,6 +9,7 @@
 'use client';
 
 import { useState } from 'react';
+import { logger } from '@/lib/logger';
 import { Card, DataTable, Button, Modal, Input, Textarea, Badge, Alert } from '@/components/ui';
 import type { Column } from '@/components/ui/DataTable';
 import { Plus, Edit, Trash2, Eye, BookOpen, Calendar, User } from 'lucide-react';
@@ -191,7 +192,7 @@ export default function PostsManager({
 
   const handleView = (post: BlogPost) => {
     // TODO: Navigate to post preview or open preview modal
-    console.log('View post:', post);
+    logger.log('View post:', post);
   };
 
   const handleDelete = async (id: number) => {

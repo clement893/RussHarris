@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import { SurveyBuilder, SurveyTaker, SurveyResults } from '@/components/surveys';
 import type { Survey } from '@/components/surveys';
 import { useState } from 'react';
@@ -45,7 +46,7 @@ export default function SurveysComponentsContent() {
             <SurveyBuilder
               survey={sampleSurvey}
               onSave={async (survey) => {
-                console.log('Survey saved:', survey);
+                logger.log('Survey saved:', survey);
               }}
             />
           </div>
@@ -56,7 +57,7 @@ export default function SurveysComponentsContent() {
             <SurveyTaker
               survey={sampleSurvey}
               onSubmit={async (data) => {
-                console.log('Survey submitted:', data);
+                logger.log('Survey submitted:', data);
               }}
             />
           </div>
@@ -68,7 +69,7 @@ export default function SurveysComponentsContent() {
               survey={sampleSurvey}
               submissions={[]}
               onExport={async (format) => {
-                console.log('Export survey results:', format);
+                logger.log('Export survey results:', format);
               }}
             />
           </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { logger } from '@/lib/logger';
 import Input from '@/components/ui/Input';
 import { Search, X, Loader2 } from 'lucide-react';
 import { apiClient } from '@/lib/api/client';
@@ -72,7 +73,7 @@ export function SearchBar({
         setShowSuggestions(true);
       }
     } catch (error) {
-      console.error('Autocomplete error:', error);
+      logger.error('', 'Autocomplete error:', error);
       setSuggestions([]);
     } finally {
       setIsSearching(false);
@@ -100,7 +101,7 @@ export function SearchBar({
         setShowSuggestions(false);
       }
     } catch (error) {
-      console.error('Search error:', error);
+      logger.error('', 'Search error:', error);
     } finally {
       setIsSearching(false);
     }

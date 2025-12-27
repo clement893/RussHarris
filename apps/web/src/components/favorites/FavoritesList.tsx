@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Heart, Tag, FileText, Folder, User, X } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import { apiClient } from '@/lib/api/client';
@@ -63,7 +64,7 @@ export function FavoritesList({
         setFavorites(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch favorites:', error);
+      logger.error('', 'Failed to fetch favorites:', error);
     } finally {
       setIsLoading(false);
     }

@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import { TagManager, TagInput } from '@/components/tags';
 import { useState } from 'react';
 
@@ -45,7 +46,7 @@ export default function TagsComponentsContent() {
               selectedTags={tags}
               onTagsChange={(newTags) => {
                 setTags(newTags);
-                console.log('Tags changed:', newTags);
+                logger.log('Tags changed:', newTags);
               }}
               placeholder="Add tags..."
             />

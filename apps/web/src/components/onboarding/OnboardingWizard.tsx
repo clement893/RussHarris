@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { X, Check, ChevronRight, ChevronLeft } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -56,7 +57,7 @@ export function OnboardingWizard({ className = '', onComplete }: OnboardingWizar
         }
       }
     } catch (error) {
-      console.error('Failed to initialize onboarding:', error);
+      logger.error('', 'Failed to initialize onboarding:', error);
     } finally {
       setIsLoading(false);
     }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Shield, Download, AlertCircle, CheckCircle, XCircle, Info, AlertTriangle } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -81,7 +82,7 @@ export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {
         setLogs(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch audit logs:', error);
+      logger.error('', 'Failed to fetch audit logs:', error);
     } finally {
       setIsLoading(false);
     }

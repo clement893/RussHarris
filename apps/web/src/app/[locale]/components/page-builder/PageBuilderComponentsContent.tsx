@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import { PageEditor, PagePreview, SectionTemplates } from '@/components/page-builder';
 import type { PageSection } from '@/components/page-builder';
 import { useState } from 'react';
@@ -43,10 +44,10 @@ export default function PageBuilderComponentsContent() {
             <PageEditor
               initialSections={sections}
               onSave={async (sections) => {
-                console.log('Sections saved:', sections);
+                logger.log('Sections saved:', sections);
               }}
               onPreview={() => {
-                console.log('Preview clicked');
+                logger.log('Preview clicked');
               }}
             />
           </div>
@@ -62,7 +63,7 @@ export default function PageBuilderComponentsContent() {
           <div className="max-w-6xl">
             <SectionTemplates
               onSelectTemplate={(template) => {
-                console.log('Template selected:', template);
+                logger.log('Template selected:', template);
               }}
             />
           </div>

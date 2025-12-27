@@ -7,6 +7,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { logger } from '@/lib/logger';
 
 export function GlobalErrorHandler() {
   useEffect(() => {
@@ -35,13 +36,13 @@ export function GlobalErrorHandler() {
           })
           .catch(() => {
             // Fallback to console if logger fails
-            console.error('Unhandled promise rejection:', error);
-            console.error('Reason:', reason);
+            logger.error('', 'Unhandled promise rejection:', error);
+            logger.error('Reason:', reason);
           });
       } catch (e) {
         // Last resort fallback
-        console.error('Unhandled promise rejection:', error);
-        console.error('Reason:', reason);
+        logger.error('', 'Unhandled promise rejection:', error);
+        logger.error('Reason:', reason);
       }
 
       // Try to report to Sentry if available
@@ -85,8 +86,8 @@ export function GlobalErrorHandler() {
           })
           .catch(() => {
             // Fallback to console if logger fails
-            console.error('Unhandled error:', error);
-            console.error('Details:', {
+            logger.error('', 'Unhandled error:', error);
+            logger.error('Details:', {
               message: event.message,
               filename: event.filename,
               lineno: event.lineno,
@@ -95,7 +96,7 @@ export function GlobalErrorHandler() {
           });
       } catch (e) {
         // Last resort fallback
-        console.error('Unhandled error:', error);
+        logger.error('', 'Unhandled error:', error);
       }
 
       // Try to report to Sentry if available

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Bug, Lightbulb, HelpCircle, MessageSquare, ThumbsUp, FileText, CheckCircle, Clock, XCircle } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import { apiClient } from '@/lib/api/client';
@@ -59,7 +60,7 @@ export function FeedbackList({ className = '' }: FeedbackListProps) {
         setFeedback(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch feedback:', error);
+      logger.error('', 'Failed to fetch feedback:', error);
     } finally {
       setIsLoading(false);
     }

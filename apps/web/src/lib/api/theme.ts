@@ -10,6 +10,7 @@ import type {
   ThemeConfigResponse,
 } from '@modele/types';
 import { apiClient } from './client';
+import { logger } from '@/lib/logger';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
 
 /**
@@ -103,7 +104,7 @@ export async function listThemes(
   );
   
   // Debug: log the response structure (works in production too)
-  console.log('[listThemes] apiClient response:', {
+  logger.log('[listThemes] apiClient response:', {
     responseType: typeof response,
     hasData: response && typeof response === 'object' && 'data' in response,
     hasThemes: response && typeof response === 'object' && 'themes' in response,

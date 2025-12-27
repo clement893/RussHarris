@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { History, RotateCcw, GitCompare } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -57,7 +58,7 @@ export function VersionHistory({
         setVersions(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch versions:', error);
+      logger.error('', 'Failed to fetch versions:', error);
     } finally {
       setIsLoading(false);
     }
@@ -104,7 +105,7 @@ export function VersionHistory({
         }
       );
       // Show comparison in a modal or new page
-      console.log('Comparison:', response.data);
+      logger.log('Comparison:', response.data);
       showToast({
         message: 'Comparison loaded (check console)',
         type: 'info',

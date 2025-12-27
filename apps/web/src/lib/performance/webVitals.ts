@@ -6,6 +6,7 @@
  */
 
 import { onCLS, onFID, onFCP, onLCP, onTTFB, onINP, Metric } from 'web-vitals';
+import { logger } from '@/lib/logger';
 
 export interface WebVitalsMetric {
   name: string;
@@ -37,14 +38,14 @@ function sendToAnalytics(metric: WebVitalsMetric) {
     }).catch((error) => {
       // Use logger instead of console.error for production safety
       if (process.env.NODE_ENV === 'development') {
-        console.error('Failed to send Web Vitals:', error);
+        logger.error('', 'Failed to send Web Vitals:', error);
       }
     });
   }
   
   // Also log to console in development
   if (process.env.NODE_ENV === 'development') {
-    console.log('[Web Vitals]', metric.name, {
+    logger.log('[Web Vitals]', metric.name, {
       value: metric.value,
       rating: metric.rating,
     });

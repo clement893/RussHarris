@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Settings, Save, X } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -33,7 +34,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
         setEditedPreferences(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch preferences:', error);
+      logger.error('', 'Failed to fetch preferences:', error);
     } finally {
       setIsLoading(false);
     }

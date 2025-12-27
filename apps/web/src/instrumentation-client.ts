@@ -7,6 +7,7 @@
  */
 
 import * as Sentry from '@sentry/nextjs';
+import { logger } from '@/lib/logger';
 
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 const SENTRY_ENVIRONMENT = process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT || process.env.NODE_ENV || 'development';
@@ -97,7 +98,7 @@ if (SENTRY_DSN) {
 } else {
   // Log warning if Sentry is not configured
   if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-    console.warn('[Sentry] NEXT_PUBLIC_SENTRY_DSN is not set. Sentry error tracking is disabled.');
+    logger.warn('[Sentry] NEXT_PUBLIC_SENTRY_DSN is not set. Sentry error tracking is disabled.');
   }
 }
 

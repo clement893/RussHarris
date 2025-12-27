@@ -6,6 +6,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { logger } from '@/lib/logger';
 import { clsx } from 'clsx';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -63,7 +64,7 @@ export default function OfflineSupport({
       try {
         setSyncQueue(JSON.parse(storedQueue));
       } catch (e: unknown) {
-        console.error('Failed to parse sync queue:', e);
+        logger.error('Failed to parse sync queue:', e);
       }
     }
 

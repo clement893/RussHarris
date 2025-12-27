@@ -9,6 +9,7 @@
  */
 
 import { apiClient } from './client';
+import { logger } from '@/lib/logger';
 
 /**
  * ERP Dashboard Statistics
@@ -105,7 +106,7 @@ export const erpPortalAPI = {
    * @example
    * ```ts
    * const stats = await erpPortalAPI.getDashboardStats('sales');
-   * console.log(stats.total_orders);
+   * logger.log('', { message: stats.total_orders });
    * ```
    */
   getDashboardStats: async (department?: string): Promise<ERPDashboardStats> => {

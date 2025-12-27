@@ -17,6 +17,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { clsx } from 'clsx';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -96,7 +97,7 @@ export default function GeneralSettings({
       setIsSaving(true);
       await onSave(formData);
     } catch (error) {
-      console.error('Failed to save general settings:', error);
+      logger.error('', 'Failed to save general settings:', error);
       throw error;
     } finally {
       setIsSaving(false);

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Preloading Utilities
  * Resource hints and preloading strategies for better performance
@@ -84,7 +85,7 @@ export function preloadAPIEndpoint(endpoint: string) {
   } catch (error) {
     // Silently fail preloading - it's a performance optimization, not critical
     if (process.env.NODE_ENV === 'development') {
-      console.warn('Failed to preload API endpoint:', endpoint, error);
+      logger.warn('Failed to preload API endpoint:', endpoint, error);
     }
   }
 }
@@ -124,7 +125,7 @@ export function initializePreloading() {
   } catch (error) {
     // Silently fail preloading - it's a performance optimization, not critical
     if (process.env.NODE_ENV === 'development') {
-      console.warn('Failed to initialize preloading:', error);
+      logger.warn('Failed to initialize preloading:', error);
     }
   }
 }

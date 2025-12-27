@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Mail, Edit2, Trash2, Save } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -49,7 +50,7 @@ export function EmailTemplateManager({ className = '' }: EmailTemplateManagerPro
         setTemplates(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch templates:', error);
+      logger.error('', 'Failed to fetch templates:', error);
     } finally {
       setIsLoading(false);
     }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Card, Badge, Button } from '@/components/ui';
 // Note: apiClient import removed - not used in this component
 
@@ -60,7 +61,7 @@ export function PerformanceDashboard() {
         setStats(JSON.parse(storedStats));
       }
     } catch (error) {
-      console.error('Failed to fetch performance stats:', error);
+      logger.error('', 'Failed to fetch performance stats:', error);
     } finally {
       setIsLoading(false);
     }

@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Client-Side Rate Limiter
  * 
@@ -11,7 +12,7 @@
  * if (rateLimiter.isAllowed('api:/users', 60, 60000)) {
  *   await fetch('/api/users');
  * } else {
- *   console.log('Rate limit exceeded');
+ *   logger.log('Rate limit exceeded');
  * }
  * 
  * // Use endpoint-specific config
@@ -105,7 +106,7 @@ class RateLimiter {
    * @example
    * ```typescript
    * const remaining = rateLimiter.getRemaining('api:/users', 60);
-   * console.log(`${remaining} requests remaining`);
+   * logger.log(`${remaining} requests remaining`);
    * ```
    */
   getRemaining(
@@ -136,7 +137,7 @@ class RateLimiter {
    * @example
    * ```typescript
    * const resetIn = rateLimiter.getResetTime('api:/users');
-   * console.log(`Rate limit resets in ${resetIn}ms`);
+   * logger.log(`Rate limit resets in ${resetIn}ms`);
    * ```
    */
   getResetTime(key: string): number {

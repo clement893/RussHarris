@@ -1,3 +1,4 @@
+import { logger } from '@/lib/logger';
 /**
  * Structured Logging for Frontend
  * Provides consistent logging with levels and context
@@ -32,16 +33,16 @@ class Logger {
 
     switch (level) {
       case LogLevel.DEBUG:
-        console.debug(formattedMessage);
+        logger.debug('', { message: formattedMessage });
         break;
       case LogLevel.INFO:
-        console.info(formattedMessage);
+        logger.info('', { message: formattedMessage });
         break;
       case LogLevel.WARN:
-        console.warn(formattedMessage);
+        logger.warn('', { message: formattedMessage });
         break;
       case LogLevel.ERROR:
-        console.error(formattedMessage);
+        logger.error('', { message: formattedMessage });
         break;
     }
 

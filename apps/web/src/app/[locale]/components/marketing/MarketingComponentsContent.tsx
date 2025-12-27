@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import { NewsletterSignup, LeadCaptureForm } from '@/components/marketing';
 
 export default function MarketingComponentsContent() {
@@ -28,10 +29,10 @@ export default function MarketingComponentsContent() {
               buttonText="S'abonner"
               showNameFields={false}
               onSuccess={() => {
-                console.log('Newsletter signup successful');
+                logger.log('Newsletter signup successful');
               }}
               onError={(error) => {
-                console.error('Newsletter signup error:', error);
+                logger.error('', 'Newsletter signup error:', error);
               }}
             />
           </div>
@@ -44,7 +45,7 @@ export default function MarketingComponentsContent() {
               buttonText="S'abonner"
               showNameFields={true}
               onSuccess={() => {
-                console.log('Newsletter signup successful');
+                logger.log('Newsletter signup successful');
               }}
             />
           </div>
@@ -54,7 +55,7 @@ export default function MarketingComponentsContent() {
           <div className="max-w-2xl">
             <LeadCaptureForm
               onSubmit={async (data) => {
-                console.log('Lead captured:', data);
+                logger.log('Lead captured:', data);
               }}
             />
           </div>

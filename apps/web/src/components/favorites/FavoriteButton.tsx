@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Heart } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { apiClient } from '@/lib/api/client';
@@ -43,7 +44,7 @@ export function FavoriteButton({
         setIsFavorited(response.data.is_favorited);
       }
     } catch (error) {
-      console.error('Failed to check favorite status:', error);
+      logger.error('', 'Failed to check favorite status:', error);
     }
   };
 
@@ -56,7 +57,7 @@ export function FavoriteButton({
         setFavoritesCount(response.data.count);
       }
     } catch (error) {
-      console.error('Failed to fetch favorites count:', error);
+      logger.error('', 'Failed to fetch favorites count:', error);
     }
   };
 

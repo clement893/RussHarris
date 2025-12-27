@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Share2, User, Users, Lock, X, ExternalLink } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import { apiClient } from '@/lib/api/client';
@@ -48,7 +49,7 @@ export function ShareList({ entityType, entityId, className = '' }: ShareListPro
         setShares(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch shares:', error);
+      logger.error('', 'Failed to fetch shares:', error);
     } finally {
       setIsLoading(false);
     }

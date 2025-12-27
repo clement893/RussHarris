@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { X, AlertCircle, CheckCircle, AlertTriangle, Info, Gift } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { apiClient } from '@/lib/api/client';
@@ -56,7 +57,7 @@ export function AnnouncementBanner({ className = '', showOnLogin = false }: Anno
         setAnnouncements(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch announcements:', error);
+      logger.error('', 'Failed to fetch announcements:', error);
     }
   };
 
@@ -65,7 +66,7 @@ export function AnnouncementBanner({ className = '', showOnLogin = false }: Anno
       await apiClient.post(`/api/v1/announcements/announcements/${announcementId}/dismiss`);
       setDismissedIds(new Set([...dismissedIds, announcementId]));
     } catch (error) {
-      console.error('Failed to dismiss announcement:', error);
+      logger.error('', 'Failed to dismiss announcement:', error);
     }
   };
 

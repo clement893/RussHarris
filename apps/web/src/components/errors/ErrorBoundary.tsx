@@ -19,7 +19,7 @@
  * // With error handler
  * <ErrorBoundary
  *   onError={(error, errorInfo) => {
- *     console.error('Caught error:', error);
+ *     logger.error('', 'Caught error:', error);
  *   }}
  * >
  *   <MyComponent />
@@ -30,6 +30,7 @@
 'use client';
 
 import { Component, ErrorInfo, ReactNode } from 'react';
+import { logger } from '@/lib/logger';
 import * as Sentry from '@sentry/nextjs';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -94,7 +95,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('ErrorBoundary caught an error:', error, errorInfo);
+      logger.error('', 'ErrorBoundary caught an error:', error, errorInfo);
     }
   }
 

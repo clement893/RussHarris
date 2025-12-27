@@ -6,6 +6,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import { TrendingUp, Zap, Clock, Activity, RefreshCw } from 'lucide-react';
@@ -67,7 +68,7 @@ export default function PerformanceDashboard() {
         const summary = await getPerformanceSummary();
         setMetrics(summary);
       } catch (error) {
-        console.error('Failed to load performance metrics:', error);
+        logger.error('', 'Failed to load performance metrics:', error);
       } finally {
         setIsLoading(false);
       }

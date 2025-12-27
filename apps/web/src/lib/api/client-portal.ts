@@ -9,6 +9,7 @@
  */
 
 import { apiClient } from './client';
+import { logger } from '@/lib/logger';
 
 /**
  * Client Dashboard Statistics
@@ -133,7 +134,7 @@ export const clientPortalAPI = {
    * @example
    * ```ts
    * const stats = await clientPortalAPI.getDashboardStats();
-   * console.log(stats.total_invoices);
+   * logger.log('', { message: stats.total_invoices });
    * ```
    */
   getDashboardStats: async (): Promise<ClientDashboardStats> => {

@@ -6,6 +6,7 @@
 'use client';
 
 import { useState } from 'react';
+import { logger } from '@/lib/logger';
 import { clsx } from 'clsx';
 import DOMPurify from 'dompurify';
 import Card from '@/components/ui/Card';
@@ -31,7 +32,7 @@ This is a **markdown** editor with live preview.
 
 \`\`\`javascript
 function hello() {
-  console.log("Hello, World!");
+  logger.log("Hello, World!");
 }
 \`\`\`
 

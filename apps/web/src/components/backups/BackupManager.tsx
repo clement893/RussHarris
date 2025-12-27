@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { Database, FileText, Archive, Download, Trash2, RotateCcw, CheckCircle, XCircle, Clock } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
@@ -66,7 +67,7 @@ export function BackupManager({ className = '' }: BackupManagerProps) {
         setBackups(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch backups:', error);
+      logger.error('', 'Failed to fetch backups:', error);
     } finally {
       setIsLoading(false);
     }

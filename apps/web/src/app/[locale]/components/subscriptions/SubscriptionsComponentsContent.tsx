@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import { PricingCard, PricingSection, SubscriptionCard } from '@/components/subscriptions';
 import type { Plan } from '@/components/subscriptions';
 
@@ -56,7 +57,7 @@ export default function SubscriptionsComponentsContent() {
             <PricingCard
               plan={samplePlan}
               onSelect={(planId) => {
-                console.log('Plan selected:', planId);
+                logger.log('Plan selected:', planId);
               }}
             />
           </div>
@@ -73,10 +74,10 @@ export default function SubscriptionsComponentsContent() {
             <SubscriptionCard
               subscription={sampleSubscription}
               onCancel={() => {
-                console.log('Cancel subscription');
+                logger.log('Cancel subscription');
               }}
               onResume={() => {
-                console.log('Resume subscription');
+                logger.log('Resume subscription');
               }}
             />
           </div>

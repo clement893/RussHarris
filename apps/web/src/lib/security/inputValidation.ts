@@ -10,7 +10,7 @@
  * // Validate email
  * const emailResult = validateEmail('user@example.com');
  * if (!emailResult.valid) {
- *   console.error(emailResult.error);
+ *   logger.error('', emailResult.error);
  * }
  * 
  * // Sanitize HTML
@@ -26,6 +26,7 @@
  */
 
 import DOMPurify from 'isomorphic-dompurify';
+import { logger } from '@/lib/logger';
 
 /**
  * Maximum input lengths for different field types
@@ -67,7 +68,7 @@ export const MIN_LENGTHS = {
  * ```typescript
  * const result = validateLength('username', 3, 50, 'Username');
  * if (!result.valid) {
- *   console.error(result.error); // "Username must be at least 3 characters"
+ *   logger.error('', result.error); // "Username must be at least 3 characters"
  * }
  * ```
  */
@@ -169,7 +170,7 @@ export function sanitizeText(text: string): string {
  * if (result.valid) {
  *   // Email is valid
  * } else {
- *   console.error(result.error);
+ *   logger.error('', result.error);
  * }
  * ```
  */
@@ -205,7 +206,7 @@ export function validateEmail(email: string): { valid: boolean; error?: string }
  * ```typescript
  * const result = validateUrl('https://example.com');
  * if (!result.valid) {
- *   console.error(result.error);
+ *   logger.error('', result.error);
  * }
  * ```
  */
@@ -247,7 +248,7 @@ export function validateUrl(url: string): { valid: boolean; error?: string } {
  * ```typescript
  * const result = validatePassword('MyP@ssw0rd123');
  * if (result.valid) {
- *   console.log(`Password strength: ${result.strength}`); // 'strong'
+ *   logger.log(`Password strength: ${result.strength}`); // 'strong'
  * }
  * ```
  */

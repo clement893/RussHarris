@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import Sidebar from '@/components/layout/Sidebar';
@@ -69,7 +70,7 @@ export default function LayoutComponentsContent() {
             title="Something went wrong"
             description="Unable to load the requested content"
             onRetry={() => {
-              console.log('Retrying...');
+              logger.log('Retrying...');
             }}
           />
         </Section>

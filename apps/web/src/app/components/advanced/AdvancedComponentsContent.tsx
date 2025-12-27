@@ -104,7 +104,7 @@ export default function AdvancedComponentsContent() {
   return \`Hello, \${name}!\`;
 }
 
-console.log(greet('World'));`}
+logger.log('', { message: greet('World' }));`}
             onChange={(value) => {
               logger.info('Code changed:', { length: value.length });
             }}

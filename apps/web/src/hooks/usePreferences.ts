@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { logger } from '@/lib/logger';
 import { apiClient } from '@/lib/api/client';
 
 /**
@@ -18,7 +19,7 @@ export function usePreferences() {
     } catch (error) {
       // Use logger instead of console.error for production safety
       if (process.env.NODE_ENV === 'development') {
-        console.error('Failed to fetch preferences:', error);
+        logger.error('', 'Failed to fetch preferences:', error);
       }
     } finally {
       setIsLoading(false);
@@ -43,7 +44,7 @@ export function usePreferences() {
       return true;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error(`Failed to set preference ${key}:`, error);
+        logger.error('', `Failed to set preference ${key}:`, error);
       }
       return false;
     }
@@ -56,7 +57,7 @@ export function usePreferences() {
       return true;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
-        console.error('Failed to set preferences:', error);
+        logger.error('', 'Failed to set preferences:', error);
       }
       return false;
     }

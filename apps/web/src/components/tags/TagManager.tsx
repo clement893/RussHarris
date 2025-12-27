@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { Tag as TagIcon, Trash2, Edit2, TrendingUp } from 'lucide-react';
@@ -47,7 +48,7 @@ export function TagManager({ entityType, className = '' }: TagManagerProps) {
         setTags(response.data);
       }
     } catch (error) {
-      console.error('Failed to fetch tags:', error);
+      logger.error('', 'Failed to fetch tags:', error);
     } finally {
       setIsLoading(false);
     }

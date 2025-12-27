@@ -38,7 +38,7 @@
  * <Card 
  *   title="Clickable Card"
  *   hover
- *   onClick={() => console.log('Card clicked')}
+ *   onClick={() => logger.log('Card clicked')}
  * >
  *   <p>Click me!</p>
  * </Card>
@@ -79,6 +79,7 @@
 'use client';
 
 import { type ReactNode, type HTMLAttributes } from 'react';
+import { logger } from '@/lib/logger';
 import { clsx } from 'clsx';
 
 export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> {

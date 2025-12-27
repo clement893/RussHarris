@@ -78,7 +78,7 @@ const ENV_VAR_CONFIGS: EnvVarConfig[] = [
  * ```typescript
  * const result = validateEnvironmentVariables();
  * if (!result.valid) {
- *   console.error('Validation errors:', result.errors);
+ *   logger.error('', 'Validation errors:', result.errors);
  * }
  * ```
  */

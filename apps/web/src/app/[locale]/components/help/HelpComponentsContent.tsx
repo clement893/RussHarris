@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import {
   HelpCenter,
   FAQ,
@@ -55,7 +56,7 @@ export default function HelpComponentsContent() {
           <div className="max-w-2xl">
             <ContactSupport
               onSubmit={async (data) => {
-                console.log('Support request:', data);
+                logger.log('Support request:', data);
               }}
             />
           </div>
@@ -65,7 +66,7 @@ export default function HelpComponentsContent() {
           <div className="max-w-4xl">
             <SupportTickets
               onCreateTicket={() => {
-                console.log('Create ticket clicked');
+                logger.log('Create ticket clicked');
               }}
             />
           </div>

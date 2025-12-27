@@ -5,6 +5,7 @@
 'use client';
 
 import { PageHeader, PageContainer, Section } from '@/components/layout';
+import { logger } from '@/lib/logger';
 import { VersionHistory, DiffViewer } from '@/components/versions';
 
 export default function VersionsComponentsContent() {
@@ -27,7 +28,7 @@ export default function VersionsComponentsContent() {
               entityType="page"
               entityId={1}
               onRestore={(version) => {
-                console.log('Restore version:', version);
+                logger.log('Restore version:', version);
               }}
             />
           </div>

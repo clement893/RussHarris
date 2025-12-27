@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 import { apiClient } from '@/lib/api/client';
 
 interface FeatureFlagResult {
@@ -33,7 +34,7 @@ export function useFeatureFlag(key: string, teamId?: number): {
           setResult(response.data);
         }
       } catch (error) {
-        console.error(`Failed to check feature flag ${key}:`, error);
+        logger.error('', `Failed to check feature flag ${key}:`, error);
         setResult({ enabled: false });
       } finally {
         setIsLoading(false);

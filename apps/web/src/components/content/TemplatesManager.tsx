@@ -9,6 +9,7 @@
 'use client';
 
 import { useState } from 'react';
+import { logger } from '@/lib/logger';
 import { Card, DataTable, Button, Modal, Input, Textarea, Badge, Alert } from '@/components/ui';
 import type { Column } from '@/components/ui/DataTable';
 import { Plus, Edit, Trash2, FileText, Eye } from 'lucide-react';
@@ -179,7 +180,7 @@ export default function TemplatesManager({
 
   const handleView = (template: ContentTemplate) => {
     // TODO: Open preview modal or navigate to preview page
-    console.log('View template:', template);
+    logger.log('View template:', template);
   };
 
   const handleDelete = async (id: number) => {

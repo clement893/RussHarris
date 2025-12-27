@@ -9,6 +9,7 @@
 'use client';
 
 import { useState } from 'react';
+import { logger } from '@/lib/logger';
 import { useApi } from '@/hooks/useApi';
 import { clientPortalAPI, ClientTicketListResponse, ClientTicketCreate } from '@/lib/api/client-portal';
 import { DataTable, Button, Modal } from '@/components/ui';
@@ -99,7 +100,7 @@ function ClientTicketsContent() {
       setShowCreateModal(false);
       refetch();
     } catch (error) {
-      console.error('Failed to create ticket:', error);
+      logger.error('', 'Failed to create ticket:', error);
     }
   };
 
