@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getActiveTheme, getTheme, updateTheme } from '@/lib/api/theme';
-import type { ThemeConfigResponse, ThemeConfig, ThemeUpdate, Theme } from '@modele/types';
+import type { ThemeConfigResponse, ThemeConfig, ThemeUpdate } from '@modele/types';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Alert from '@/components/ui/Alert';
@@ -175,23 +175,31 @@ export function ThemeVisualisationContent() {
   const typography = (config as any).typography || {};
   const effects = (config as any).effects || {};
 
-  // Extract color values
+  // Extract color values - support both flat and nested color structures
+  const colorsConfig = (config as any).colors || {};
   const colors = {
-    primary: config.primary_color || '#3b82f6',
-    secondary: config.secondary_color || '#8b5cf6',
-    danger: config.danger_color || '#ef4444',
-    warning: config.warning_color || '#f59e0b',
-    info: config.info_color || '#06b6d4',
-    success: config.success_color || '#10b981',
+    primary: config.primary_color || colorsConfig.primary || '#3b82f6',
+    secondary: config.secondary_color || colorsConfig.secondary || '#8b5cf6',
+    danger: config.danger_color || colorsConfig.destructive || colorsConfig.danger || '#ef4444',
+    warning: config.warning_color || colorsConfig.warning || '#f59e0b',
+    info: config.info_color || colorsConfig.info || '#06b6d4',
+    success: config.success_color || colorsConfig.success || '#10b981',
   };
 
-  // Extract font family
-  const fontFamily = config.font_family || typography.fontFamily || 'Inter, sans-serif';
-  const fontFamilyHeading = typography.fontFamilyHeading || fontFamily;
-  const fontFamilySubheading = typography.fontFamilySubheading || fontFamily;
+  // Extract font family - support both flat and nested typography structures
+  const fontFamily = config.font_family || typography.fontFamily || typography['font-family']?.sans || 'Inter, sans-serif';
+  const fontFamilyHeading = typography.fontFamilyHeading || typography['font-family']?.heading || fontFamily;
+  const fontFamilySubheading = typography.fontFamilySubheading || typography['font-family']?.subheading || fontFamily;
 
-  // Extract border radius
-  const borderRadius = config.border_radius || '8px';
+  // Extract border radius - support both flat and nested structures
+  const borderRadiusConfig = (config as any).borderRadius || (config as any)['border-radius'] || {};
+  const borderRadius = config.border_radius || borderRadiusConfig.base || borderRadiusConfig.lg || '8px';
+  
+  // Extract spacing if available
+  const spacing = (config as any).spacing || {};
+  
+  // Extract shadows if available
+  const shadows = (config as any).shadow || effects.shadows || {};
 
   // Get computed CSS variables
   const getComputedColor = (varName: string, fallback: string) => {
