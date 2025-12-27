@@ -76,18 +76,16 @@ export function ThemeManagementContent() {
       await activateTheme(themeId);
       await fetchThemes(); // Refresh list
       showToast({
-        title: 'Thème activé',
         message: 'Le thème a été activé avec succès.',
-        variant: 'success',
+        type: 'success',
       });
       // Refresh active theme in the app
       await getActiveTheme();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to activate theme';
       showToast({
-        title: 'Erreur',
         message: errorMessage,
-        variant: 'error',
+        type: 'error',
       });
       logger.error('Failed to activate theme', err instanceof Error ? err : new Error(String(err)));
     } finally {
@@ -100,9 +98,8 @@ export function ThemeManagementContent() {
       // Validate form
       if (!newTheme.name || !newTheme.display_name) {
         showToast({
-          title: 'Erreur de validation',
           message: 'Le nom et le nom d\'affichage sont requis.',
-          variant: 'error',
+          type: 'error',
         });
         return;
       }
@@ -128,16 +125,14 @@ export function ThemeManagementContent() {
       });
       await fetchThemes(); // Refresh list
       showToast({
-        title: 'Thème créé',
         message: 'Le nouveau thème a été créé avec succès.',
-        variant: 'success',
+        type: 'success',
       });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to create theme';
       showToast({
-        title: 'Erreur',
         message: errorMessage,
-        variant: 'error',
+        type: 'error',
       });
       logger.error('Failed to create theme', err instanceof Error ? err : new Error(String(err)));
     }
@@ -153,16 +148,14 @@ export function ThemeManagementContent() {
       setThemeToDelete(null);
       await fetchThemes(); // Refresh list
       showToast({
-        title: 'Thème supprimé',
         message: 'Le thème a été supprimé avec succès.',
-        variant: 'success',
+        type: 'success',
       });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to delete theme';
       showToast({
-        title: 'Erreur',
         message: errorMessage,
-        variant: 'error',
+        type: 'error',
       });
       logger.error('Failed to delete theme', err instanceof Error ? err : new Error(String(err)));
     } finally {
@@ -173,9 +166,8 @@ export function ThemeManagementContent() {
   const openDeleteModal = (theme: Theme) => {
     if (theme.is_active) {
       showToast({
-        title: 'Impossible de supprimer',
         message: 'Vous ne pouvez pas supprimer le thème actif. Activez un autre thème d\'abord.',
-        variant: 'error',
+        type: 'error',
       });
       return;
     }
