@@ -21,6 +21,7 @@ import { GoogleAnalytics } from '@/components/marketing/GoogleAnalytics';
 import RTLProvider from '@/components/i18n/RTLProvider';
 import SkipLink from '@/components/ui/SkipLink';
 import type { Locale } from '@/i18n/routing';
+import { themeInlineScript } from '@/lib/theme/theme-inline-script';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -76,6 +77,16 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={inter.variable}>
       <head>
+        {/* Theme inline script - loads theme before React hydration to prevent FOUC */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: themeInlineScript.replace(
+              'http://localhost:8000',
+              apiUrl
+            ),
+          }}
+        />
+        
         {/* Resource hints for performance */}
         {apiHost && (
           <>
