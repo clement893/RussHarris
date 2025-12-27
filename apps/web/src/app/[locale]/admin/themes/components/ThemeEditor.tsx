@@ -22,8 +22,15 @@ interface ThemeEditorProps {
   onCancel: () => void;
 }
 
+// Check if theme is TemplateTheme (ID 32 or name 'template-theme')
+function isTemplateTheme(theme: Theme | null): boolean {
+  if (!theme) return false;
+  return theme.id === 32 || theme.name === 'template-theme' || theme.name === 'TemplateTheme';
+}
+
 export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
   const { state, updateConfig, setActiveTab } = useThemeEditor(theme);
+  const isTemplate = isTemplateTheme(theme);
   const [formData, setFormData] = useState<ThemeFormData>({
     name: theme?.name || '',
     display_name: theme?.display_name || '',
@@ -179,6 +186,12 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
         )}
 
         <ThemeTabs activeTab={state.activeTab} onTabChange={setActiveTab} />
+
+        {isTemplate && (
+          <Alert variant="warning" title="Thème Template" className="mb-4">
+            Ce thème est le TemplateTheme. Seule la configuration (couleurs, polices, etc.) peut être modifiée. Le nom et la description ne peuvent pas être changés.
+          </Alert>
+        )}
 
         <div className="mt-6">
           {state.activeTab === 'form' && (

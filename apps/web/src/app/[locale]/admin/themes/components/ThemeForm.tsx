@@ -26,9 +26,15 @@ export function ThemeForm({ formData, onChange }: ThemeFormProps) {
           onChange={(e) => onChange('name', e.target.value)}
           placeholder="mon-theme"
           required
+          disabled={formData.name === 'template-theme' || formData.name === 'TemplateTheme'}
         />
         <p className="text-xs text-muted-foreground mt-1">
           Nom unique utilisé pour identifier le thème (sans espaces, en minuscules)
+          {(formData.name === 'template-theme' || formData.name === 'TemplateTheme') && (
+            <span className="block mt-1 text-warning-600 dark:text-warning-400">
+              ⚠ Le TemplateTheme ne peut pas avoir son nom modifié
+            </span>
+          )}
         </p>
       </div>
 
@@ -42,9 +48,15 @@ export function ThemeForm({ formData, onChange }: ThemeFormProps) {
           onChange={(e) => onChange('display_name', e.target.value)}
           placeholder="Mon Thème"
           required
+          disabled={formData.name === 'template-theme' || formData.name === 'TemplateTheme'}
         />
         <p className="text-xs text-muted-foreground mt-1">
           Nom affiché dans l'interface d'administration
+          {(formData.name === 'template-theme' || formData.name === 'TemplateTheme') && (
+            <span className="block mt-1 text-warning-600 dark:text-warning-400">
+              ⚠ Le TemplateTheme ne peut pas avoir son nom modifié
+            </span>
+          )}
         </p>
       </div>
 

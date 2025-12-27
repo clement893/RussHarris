@@ -49,12 +49,23 @@ function ThemesPageContent() {
   const handleSave = async (config: ThemeConfig, formData: ThemeFormData) => {
     try {
       if (editingTheme) {
+        // TemplateTheme (ID 32) can only have its config updated, not display_name or description
+        const isTemplateTheme = editingTheme.id === 32;
+        
         // Update existing theme
-        await updateTheme(editingTheme.id, {
-          display_name: formData.display_name,
-          description: formData.description || undefined,
-          config,
-        });
+        if (isTemplateTheme) {
+          // Only update config for TemplateTheme
+          await updateTheme(editingTheme.id, {
+            config,
+          });
+        } else {
+          // Update all fields for regular themes
+          await updateTheme(editingTheme.id, {
+            display_name: formData.display_name,
+            description: formData.description || undefined,
+            config,
+          });
+        }
         
         // Clear cache and refresh if active
         clearThemeCache();
