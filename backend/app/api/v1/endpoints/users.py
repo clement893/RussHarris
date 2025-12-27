@@ -5,9 +5,11 @@ Example implementation of optimized endpoints
 
 from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import JSONResponse
 from starlette.requests import Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_, or_
+import json
 
 from app.core.database import get_db
 from app.core.pagination import PaginationParams, paginate_query, PaginatedResponse, get_pagination_params
@@ -84,22 +86,29 @@ async def list_users(
     
     # Paginate query with separate count query to avoid issues with eager loading
     try:
-        paginated_result = await paginate_query(db, query, pagination, count_query=count_query)
+        # First, get the count
+        count_result = await db.execute(count_query)
+        total = count_result.scalar_one() or 0
+        
+        # Then, get the paginated items (without eager loading to avoid issues)
+        paginated_query = query.offset(pagination.offset).limit(pagination.limit)
+        result = await db.execute(paginated_query)
+        users = result.scalars().all()
+        
         # Convert SQLAlchemy User objects to UserResponse schemas
-        # This ensures proper serialization and excludes any relationships that shouldn't be exposed
         user_responses = []
-        for user in paginated_result.items:
+        for user in users:
             try:
                 # Convert SQLAlchemy User to dict, excluding relationships
-                # This prevents issues with eager-loaded relationships
+                # Handle datetime conversion explicitly
                 user_dict = {
                     "id": user.id,
                     "email": user.email,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "is_active": user.is_active,
-                    "created_at": user.created_at,
-                    "updated_at": user.updated_at,
+                    "created_at": user.created_at.isoformat() if hasattr(user.created_at, 'isoformat') else str(user.created_at),
+                    "updated_at": user.updated_at.isoformat() if hasattr(user.updated_at, 'isoformat') else str(user.updated_at),
                 }
                 user_responses.append(UserResponse.model_validate(user_dict))
             except Exception as validation_error:
@@ -113,11 +122,16 @@ async def list_users(
                 # Skip this user if validation fails
                 continue
         
-        return PaginatedResponse.create(
+        paginated_response = PaginatedResponse.create(
             items=user_responses,
-            total=paginated_result.total,
-            page=paginated_result.page,
-            page_size=paginated_result.page_size,
+            total=total,
+            page=pagination.page,
+            page_size=pagination.page_size,
+        )
+        # Convert to JSONResponse for slowapi compatibility
+        return JSONResponse(
+            content=paginated_response.model_dump(),
+            status_code=200
         )
     except Exception as e:
         logger.error(f"Error paginating users query: {e}", exc_info=True)
@@ -156,21 +170,31 @@ async def list_users(
                     # Skip this user if validation fails
                     continue
             
-            return PaginatedResponse.create(
+            paginated_response = PaginatedResponse.create(
                 items=user_responses,
                 total=paginated_result.total,
                 page=paginated_result.page,
                 page_size=paginated_result.page_size,
             )
+            # Convert to JSONResponse for slowapi compatibility
+            return JSONResponse(
+                content=paginated_response.model_dump(),
+                status_code=200
+            )
         except Exception as fallback_error:
             logger.error(f"Error in fallback query: {fallback_error}", exc_info=True)
             # Last resort: return empty result instead of crashing
             try:
-                return PaginatedResponse.create(
+                paginated_response = PaginatedResponse.create(
                     items=[],
                     total=0,
                     page=pagination.page,
                     page_size=pagination.page_size,
+                )
+                # Convert to JSONResponse for slowapi compatibility
+                return JSONResponse(
+                    content=paginated_response.model_dump(),
+                    status_code=200
                 )
             except Exception as final_error:
                 logger.error(f"Error creating empty response: {final_error}", exc_info=True)
