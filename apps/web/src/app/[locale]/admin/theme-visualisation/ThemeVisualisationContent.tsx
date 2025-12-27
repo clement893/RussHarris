@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { getActiveTheme, getTheme, updateTheme } from '@/lib/api/theme';
 import { uploadFont, listFonts, deleteFont } from '@/lib/api/theme-font';
 import type { ThemeFont } from '@modele/types';
-import { useGlobalTheme } from '@/lib/theme/global-theme-provider';
+import { useGlobalTheme, applyThemeConfigDirectly } from '@/lib/theme/global-theme-provider';
 import { DEFAULT_THEME_CONFIG } from '@/lib/theme/default-theme-config';
 import type { ThemeConfigResponse, ThemeConfig, ThemeUpdate } from '@modele/types';
 import Card from '@/components/ui/Card';
@@ -107,7 +107,7 @@ export function ThemeVisualisationContent() {
         config: configToSave as Partial<ThemeConfig>,
       };
 
-      await updateTheme(theme.id, updateData);
+      const updatedTheme = await updateTheme(theme.id, updateData);
       
       setSuccessMessage(`Thème "${theme.display_name}" mis à jour avec succès !`);
       setIsEditing(false);
@@ -115,11 +115,22 @@ export function ThemeVisualisationContent() {
       // Refresh theme data
       await fetchTheme();
       
-      // Refresh global theme immediately to apply changes site-wide if this is the active theme
-      await refreshTheme();
+      // If this is the active theme, apply the changes immediately
+      if (theme.is_active) {
+        // Import applyThemeConfig to apply the new config directly
+        const { applyThemeConfig } = await import('@/lib/theme/global-theme-provider');
+        // Apply the updated config immediately
+        applyThemeConfig(configToSave);
+        // Also refresh from backend to ensure consistency
+        await refreshTheme();
+      } else {
+        // If not active, just refresh (won't change anything but ensures consistency)
+        await refreshTheme();
+        setSuccessMessage(`Thème "${theme.display_name}" mis à jour avec succès ! Pour voir les changements, activez ce thème.`);
+      }
       
-      // Clear success message after 3 seconds
-      setTimeout(() => setSuccessMessage(null), 3000);
+      // Clear success message after 5 seconds
+      setTimeout(() => setSuccessMessage(null), 5000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update theme');
     } finally {
