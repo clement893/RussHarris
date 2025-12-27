@@ -8,10 +8,10 @@ interface StatusCardProps {
 
 export default function StatusCard({ title, description, status = 'success' }: StatusCardProps) {
   const statusClasses = {
-    success: 'border-secondary-200 dark:border-secondary-800 bg-secondary-100 dark:bg-secondary-900/40',
-    error: 'border-red-200 dark:border-red-800 bg-red-100 dark:bg-red-900/40',
-    warning: 'border-yellow-200 dark:border-yellow-800 bg-yellow-100 dark:bg-yellow-900/40',
-    info: 'border-blue-200 dark:border-blue-800 bg-blue-100 dark:bg-blue-900/40',
+    success: 'border-secondary-200 dark:border-secondary-800 bg-secondary-100 dark:bg-secondary-900',
+    error: 'border-red-200 dark:border-red-800 bg-red-100 dark:bg-red-900',
+    warning: 'border-yellow-200 dark:border-yellow-800 bg-yellow-100 dark:bg-yellow-900',
+    info: 'border-blue-200 dark:border-blue-800 bg-blue-100 dark:bg-blue-900',
   };
 
   const textClasses = {

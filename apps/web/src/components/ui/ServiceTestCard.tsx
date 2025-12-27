@@ -15,7 +15,7 @@ interface ServiceTestCardProps {
 const colorClasses = {
   primary: {
     border: 'border-primary-200 dark:border-primary-800',
-    bg: 'bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/60 dark:to-primary-800/60',
+    bg: 'bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900 dark:to-primary-800',
     hoverBorder: 'hover:border-primary-400 dark:hover:border-primary-600',
     iconBg: 'bg-primary-600 dark:bg-primary-500',
     text: 'text-primary-900 dark:text-primary-100',
@@ -24,7 +24,7 @@ const colorClasses = {
   },
   secondary: {
     border: 'border-secondary-200 dark:border-secondary-800',
-    bg: 'bg-gradient-to-br from-secondary-50 to-secondary-100 dark:from-secondary-900/60 dark:to-secondary-800/60',
+    bg: 'bg-gradient-to-br from-secondary-50 to-secondary-100 dark:from-secondary-900 dark:to-secondary-800',
     hoverBorder: 'hover:border-secondary-400 dark:hover:border-secondary-600',
     iconBg: 'bg-secondary-600 dark:bg-secondary-500',
     text: 'text-secondary-900 dark:text-secondary-100',
@@ -33,7 +33,7 @@ const colorClasses = {
   },
   info: {
     border: 'border-info-200 dark:border-info-800',
-    bg: 'bg-gradient-to-br from-info-50 to-info-100 dark:from-info-900/60 dark:to-info-800/60',
+    bg: 'bg-gradient-to-br from-info-50 to-info-100 dark:from-info-900 dark:to-info-800',
     hoverBorder: 'hover:border-info-400 dark:hover:border-info-600',
     iconBg: 'bg-info-600 dark:bg-info-500',
     text: 'text-info-900 dark:text-info-100',
@@ -42,7 +42,7 @@ const colorClasses = {
   },
   success: {
     border: 'border-success-200 dark:border-success-800',
-    bg: 'bg-gradient-to-br from-success-50 to-success-100 dark:from-success-900/60 dark:to-success-800/60',
+    bg: 'bg-gradient-to-br from-success-50 to-success-100 dark:from-success-900 dark:to-success-800',
     hoverBorder: 'hover:border-success-400 dark:hover:border-success-600',
     iconBg: 'bg-success-600 dark:bg-success-500',
     text: 'text-success-900 dark:text-success-100',
@@ -51,7 +51,7 @@ const colorClasses = {
   },
   warning: {
     border: 'border-warning-200 dark:border-warning-800',
-    bg: 'bg-gradient-to-br from-warning-50 to-warning-100 dark:from-warning-900/60 dark:to-warning-800/60',
+    bg: 'bg-gradient-to-br from-warning-50 to-warning-100 dark:from-warning-900 dark:to-warning-800',
     hoverBorder: 'hover:border-warning-400 dark:hover:border-warning-600',
     iconBg: 'bg-warning-600 dark:bg-warning-500',
     text: 'text-warning-900 dark:text-warning-100',
@@ -60,7 +60,7 @@ const colorClasses = {
   },
   error: {
     border: 'border-danger-200 dark:border-danger-800',
-    bg: 'bg-gradient-to-br from-danger-50 to-danger-100 dark:from-danger-900/60 dark:to-danger-800/60',
+    bg: 'bg-gradient-to-br from-danger-50 to-danger-100 dark:from-danger-900 dark:to-danger-800',
     hoverBorder: 'hover:border-danger-400 dark:hover:border-danger-600',
     iconBg: 'bg-danger-600 dark:bg-danger-500',
     text: 'text-danger-900 dark:text-danger-100',
