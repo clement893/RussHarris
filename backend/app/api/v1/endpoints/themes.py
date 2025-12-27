@@ -56,17 +56,8 @@ async def ensure_default_theme(db: AsyncSession, created_by: int = 1) -> Theme:
     
     # TemplateTheme doesn't exist - create it with ID 32
     # This should always happen regardless of other themes existing
-    default_config = {
-        "mode": "system",
-        "primary_color": "#3b82f6",
-        "secondary_color": "#8b5cf6",
-        "danger_color": "#ef4444",
-        "warning_color": "#f59e0b",
-        "info_color": "#06b6d4",
-        "success_color": "#10b981",
-        "font_family": "Inter",
-        "border_radius": "8px",
-    }
+    from app.core.theme_defaults import DEFAULT_THEME_CONFIG
+    default_config = DEFAULT_THEME_CONFIG.copy()
     
     # Check if any theme is currently active
     active_result = await db.execute(select(Theme).where(Theme.is_active == True))
@@ -113,17 +104,8 @@ async def get_active_theme(db: AsyncSession = Depends(get_db)):
         except Exception as e:
             # If we can't create a theme, return a default response
             # This should rarely happen, but handle gracefully
-            default_config = {
-                "mode": "system",
-                "primary_color": "#3b82f6",
-                "secondary_color": "#8b5cf6",
-                "danger_color": "#ef4444",
-                "warning_color": "#f59e0b",
-                "info_color": "#06b6d4",
-                "success_color": "#10b981",
-                "font_family": "Inter",
-                "border_radius": "8px",
-            }
+            from app.core.theme_defaults import DEFAULT_THEME_CONFIG
+            default_config = DEFAULT_THEME_CONFIG.copy()
             return ThemeConfigResponse(
                 id=32,  # Virtual theme ID (TemplateTheme)
                 name="TemplateTheme",

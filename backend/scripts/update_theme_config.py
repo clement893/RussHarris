@@ -44,20 +44,58 @@ async def update_theme_config():
             # Get current config
             current_config = theme.config or {}
             
-            # Create new config with proper field names
-            new_config = {
-                "mode": current_config.get("mode", "system"),
-                "primary_color": current_config.get("primary_color") or current_config.get("primary", "#3b82f6"),
-                "secondary_color": current_config.get("secondary_color") or current_config.get("secondary", "#8b5cf6"),
-                "danger_color": current_config.get("danger_color") or current_config.get("danger", "#ef4444"),
-                "warning_color": current_config.get("warning_color") or current_config.get("warning", "#f59e0b"),
-                "info_color": current_config.get("info_color") or current_config.get("info", "#06b6d4"),
-                "success_color": current_config.get("success_color", "#10b981"),
-                "font_family": current_config.get("font_family", "Inter"),
-                "border_radius": current_config.get("border_radius", "8px"),
-            }
+            # Import comprehensive default config
+            from app.core.theme_defaults import DEFAULT_THEME_CONFIG
             
-            # Preserve any additional fields
+            # Start with comprehensive default config
+            new_config = DEFAULT_THEME_CONFIG.copy()
+            
+            # Preserve existing values if they exist (merge strategy)
+            # Update basic colors if they exist in old format
+            if "primary" in current_config and "primary_color" not in current_config:
+                new_config["primary_color"] = current_config["primary"]
+            elif "primary_color" in current_config:
+                new_config["primary_color"] = current_config["primary_color"]
+                
+            if "secondary" in current_config and "secondary_color" not in current_config:
+                new_config["secondary_color"] = current_config["secondary"]
+            elif "secondary_color" in current_config:
+                new_config["secondary_color"] = current_config["secondary_color"]
+                
+            if "danger" in current_config and "danger_color" not in current_config:
+                new_config["danger_color"] = current_config["danger"]
+            elif "danger_color" in current_config:
+                new_config["danger_color"] = current_config["danger_color"]
+                
+            if "warning" in current_config and "warning_color" not in current_config:
+                new_config["warning_color"] = current_config["warning"]
+            elif "warning_color" in current_config:
+                new_config["warning_color"] = current_config["warning_color"]
+                
+            if "info" in current_config and "info_color" not in current_config:
+                new_config["info_color"] = current_config["info"]
+            elif "info_color" in current_config:
+                new_config["info_color"] = current_config["info_color"]
+            
+            # Preserve mode if set
+            if "mode" in current_config:
+                new_config["mode"] = current_config["mode"]
+            
+            # Preserve existing nested structures if they exist
+            if "typography" in current_config:
+                new_config["typography"] = {**new_config.get("typography", {}), **current_config["typography"]}
+            if "colors" in current_config:
+                new_config["colors"] = {**new_config.get("colors", {}), **current_config["colors"]}
+            if "spacing" in current_config:
+                new_config["spacing"] = {**new_config.get("spacing", {}), **current_config["spacing"]}
+            if "borderRadius" in current_config:
+                new_config["borderRadius"] = {**new_config.get("borderRadius", {}), **current_config["borderRadius"]}
+            if "shadow" in current_config:
+                new_config["shadow"] = {**new_config.get("shadow", {}), **current_config["shadow"]}
+            if "effects" in current_config:
+                new_config["effects"] = {**new_config.get("effects", {}), **current_config["effects"]}
+            
+            # Preserve any other custom fields
             for key, value in current_config.items():
                 if key not in new_config and key not in ["primary", "secondary", "danger", "warning", "info"]:
                     new_config[key] = value
