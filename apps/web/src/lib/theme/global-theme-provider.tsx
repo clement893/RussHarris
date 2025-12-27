@@ -9,7 +9,7 @@ import { logger } from '@/lib/logger';
 import type { ThemeConfigResponse, ThemeConfig } from '@modele/types';
 import { generateColorShades, generateRgb } from './color-utils';
 import { watchDarkModePreference, getThemeConfigForMode, applyDarkModeClass } from './dark-mode-utils';
-import { getThemeFromCache, saveThemeToCache, hasValidThemeCache } from './theme-cache';
+import { getThemeFromCache, saveThemeToCache } from './theme-cache';
 
 interface GlobalThemeContextType {
   theme: ThemeConfigResponse | null;
@@ -212,11 +212,14 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
       }
 
       // Load font dynamically
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = config.font_url;
-      link.setAttribute('data-theme-font', 'true');
-      document.head.appendChild(link);
+      const fontUrl = typeof config.font_url === 'string' ? config.font_url : String(config.font_url || '');
+      if (fontUrl) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = fontUrl;
+        link.setAttribute('data-theme-font', 'true');
+        document.head.appendChild(link);
+      }
     }
 
     // Apply fonts - Only set CSS variables, don't modify body/html directly to avoid hydration issues

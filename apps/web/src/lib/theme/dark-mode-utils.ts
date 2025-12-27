@@ -49,33 +49,33 @@ export function getThemeConfigForMode(config: ThemeConfig): ThemeConfig {
     // Merge dark mode config with custom config
     const configColors = (config as any).colors;
     const configTypography = (config as any).typography;
+    const mergedColors = configColors && typeof configColors === 'object' && !Array.isArray(configColors)
+      ? { ...DARK_MODE_CONFIG.colors, ...configColors }
+      : DARK_MODE_CONFIG.colors;
+    const mergedTypography = configTypography && typeof configTypography === 'object' && !Array.isArray(configTypography)
+      ? { ...DARK_MODE_CONFIG.typography, ...configTypography }
+      : DARK_MODE_CONFIG.typography;
     return {
       ...config,
-      colors: {
-        ...DARK_MODE_CONFIG.colors,
-        ...(configColors && typeof configColors === 'object' ? configColors : {}),
-      },
-      typography: {
-        ...DARK_MODE_CONFIG.typography,
-        ...(configTypography && typeof configTypography === 'object' ? configTypography : {}),
-      },
+      colors: mergedColors,
+      typography: mergedTypography,
     } as ThemeConfig;
   }
   
   // Light mode - use default or provided config
   const configColors = (config as any).colors;
   const configTypography = (config as any).typography;
+  const mergedColors = configColors && typeof configColors === 'object' && !Array.isArray(configColors)
+    ? { ...DEFAULT_THEME_CONFIG.colors, ...configColors }
+    : DEFAULT_THEME_CONFIG.colors;
+  const mergedTypography = configTypography && typeof configTypography === 'object' && !Array.isArray(configTypography)
+    ? { ...DEFAULT_THEME_CONFIG.typography, ...configTypography }
+    : DEFAULT_THEME_CONFIG.typography;
   return {
     ...DEFAULT_THEME_CONFIG,
     ...config,
-    colors: {
-      ...DEFAULT_THEME_CONFIG.colors,
-      ...(configColors && typeof configColors === 'object' ? configColors : {}),
-    },
-    typography: {
-      ...DEFAULT_THEME_CONFIG.typography,
-      ...(configTypography && typeof configTypography === 'object' ? configTypography : {}),
-    },
+    colors: mergedColors,
+    typography: mergedTypography,
   } as ThemeConfig;
 }
 

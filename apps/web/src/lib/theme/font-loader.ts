@@ -83,7 +83,7 @@ export function loadFontWithFallback(
   fontFamily: string,
   options: FontLoadOptions = {}
 ): Promise<void> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (typeof document === 'undefined') {
       resolve(); // SSR, skip
       return;
@@ -93,7 +93,6 @@ export function loadFontWithFallback(
     
     // Set fallback font immediately
     const root = document.documentElement;
-    const originalFont = root.style.getPropertyValue('--font-family');
     root.style.setProperty('--font-family', `${fontFamily}, ${fallback}`);
     
     // Preload font

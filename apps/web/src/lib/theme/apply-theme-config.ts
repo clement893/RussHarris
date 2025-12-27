@@ -6,7 +6,6 @@ import type { ThemeConfig } from '@modele/types';
 import { generateColorShades, generateRgb } from './color-utils';
 import { validateThemeConfig } from './theme-validator';
 import { getThemeConfigForMode, applyDarkModeClass } from './dark-mode-utils';
-import { preloadFont, loadFontWithFallback } from './font-loader';
 import { logger } from '@/lib/logger';
 
 export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
