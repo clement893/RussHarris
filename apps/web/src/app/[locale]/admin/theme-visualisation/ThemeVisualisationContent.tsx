@@ -10,6 +10,7 @@ import { applyThemeConfigDirectly } from '@/lib/theme/apply-theme-config';
 import { DEFAULT_THEME_CONFIG } from '@/lib/theme/default-theme-config';
 import { validateThemeConfig } from '@/lib/theme/theme-validator';
 import { formatValidationErrors } from '@/lib/api/theme-errors';
+import { logger } from '@/lib/logger';
 import type { ThemeConfigResponse, ThemeConfig, ThemeUpdate } from '@modele/types';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
