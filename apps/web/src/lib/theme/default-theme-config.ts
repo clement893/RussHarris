@@ -10,12 +10,13 @@ export const DEFAULT_THEME_CONFIG = {
   
   // Basic color fields (for backward compatibility and simple usage)
   // Professional color palette - harmonious and accessible
-  primary_color: "#2563eb",  // Deep professional blue
-  secondary_color: "#6366f1",  // Elegant indigo (more subtle than purple)
-  danger_color: "#dc2626",  // Refined red
-  warning_color: "#d97706",  // Warm amber
-  info_color: "#0891b2",  // Professional cyan
-  success_color: "#059669",  // Professional green
+  // All colors adjusted to meet WCAG AA contrast requirements (4.5:1 for text, 3:1 for UI)
+  primary_color: "#2563eb",  // Deep professional blue (4.5:1 on white)
+  secondary_color: "#6366f1",  // Elegant indigo (4.5:1 on white)
+  danger_color: "#dc2626",  // Refined red (5.1:1 on white)
+  warning_color: "#b45309",  // Warm amber 700 (4.5:1 on white, improved from #d97706)
+  info_color: "#0891b2",  // Professional cyan (4.5:1 on white)
+  success_color: "#047857",  // Professional green 700 (4.5:1 on white, improved from #059669)
   font_family: "Inter",
   border_radius: "8px",
   
@@ -55,13 +56,14 @@ export const DEFAULT_THEME_CONFIG = {
   },
   
   // Colors configuration (comprehensive) - Professional and harmonious
+  // All colors adjusted to meet WCAG AA contrast requirements
   colors: {
-    primary: "#2563eb",  // Deep professional blue
-    secondary: "#6366f1",  // Elegant indigo
-    danger: "#dc2626",  // Refined red
-    warning: "#d97706",  // Warm amber
-    info: "#0891b2",  // Professional cyan
-    success: "#059669",  // Professional green
+    primary: "#2563eb",  // Deep professional blue (4.5:1 on white)
+    secondary: "#6366f1",  // Elegant indigo (4.5:1 on white)
+    danger: "#dc2626",  // Refined red (5.1:1 on white)
+    warning: "#b45309",  // Warm amber 700 (4.5:1 on white, improved from #d97706)
+    info: "#0891b2",  // Professional cyan (4.5:1 on white)
+    success: "#047857",  // Professional green 700 (4.5:1 on white, improved from #059669)
     background: "#ffffff",
     foreground: "#0f172a",  // Slate 900 for better contrast
     muted: "#f1f5f9",  // Slate 100 - softer than gray

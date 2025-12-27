@@ -239,7 +239,8 @@
 |-------|-----|--------|------|--------|
 | 1 | Fondations - Calcul de Contraste | ✅ COMPLÉTÉ | 2025-12-27 | feat(theme): add contrast calculation utilities (batch 1) |
 | 2 | Validation de Format Couleur | ✅ COMPLÉTÉ | 2025-12-27 | feat(theme): add color format validation (batch 2) |
-| 3 | Validation de Contraste Thème | 🔄 EN COURS | 2025-12-27 | - |
+| 3 | Validation de Contraste Thème | ✅ COMPLÉTÉ | 2025-12-27 | feat(theme): add theme contrast validation (batch 3) |
+| 4 | Ajustement Couleurs par Défaut | 🔄 EN COURS | 2025-12-27 | - |
 | 3 | Validation de Contraste Thème | ⏳ EN ATTENTE | - | - |
 | 4 | Ajustement Couleurs par Défaut | ⏳ EN ATTENTE | - | - |
 | 5 | Mode Sombre - Configuration | ⏳ EN ATTENTE | - | - |
