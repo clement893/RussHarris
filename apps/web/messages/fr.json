@@ -116,6 +116,22 @@
         "saveFailed": "Échec de l'enregistrement des paramètres de l'organisation. Veuillez réessayer."
       }
     },
+    "team": {
+      "title": "Paramètres d'équipe",
+      "description": "Gérez les membres de votre équipe et leurs permissions",
+      "breadcrumbs": {
+        "dashboard": "Tableau de bord",
+        "settings": "Paramètres",
+        "team": "Équipe"
+      },
+      "errors": {
+        "loadFailed": "Échec du chargement des paramètres d'équipe. Veuillez réessayer.",
+        "saveFailed": "Échec de l'enregistrement des paramètres d'équipe. Veuillez réessayer."
+      },
+      "success": {
+        "saved": "Paramètres d'équipe enregistrés avec succès"
+      }
+    },
     "preferences": {
       "title": "Paramètres des préférences",
       "description": "Gérez vos préférences utilisateur et la personnalisation",
@@ -127,6 +143,22 @@
       "errors": {
         "loadFailed": "Échec du chargement des préférences. Veuillez réessayer.",
         "saveFailed": "Échec de l'enregistrement des préférences. Veuillez réessayer."
+      }
+    },
+    "billing": {
+      "title": "Paramètres de facturation",
+      "description": "Gérez vos paramètres de facturation et préférences",
+      "breadcrumbs": {
+        "dashboard": "Tableau de bord",
+        "settings": "Paramètres",
+        "billing": "Facturation"
+      },
+      "errors": {
+        "loadFailed": "Échec du chargement des paramètres de facturation. Veuillez réessayer.",
+        "saveFailed": "Échec de l'enregistrement des paramètres de facturation. Veuillez réessayer."
+      },
+      "success": {
+        "saved": "Paramètres de facturation enregistrés avec succès"
       }
     }
   }
