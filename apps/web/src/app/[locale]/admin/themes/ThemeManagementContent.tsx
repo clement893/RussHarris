@@ -513,12 +513,18 @@ export function ThemeManagementContent() {
             <Button
               onClick={() => setShowCreateModal(false)}
               variant="secondary"
+              disabled={creating}
             >
               Annuler
             </Button>
-            <Button onClick={handleCreateTheme} variant="primary">
+            <Button 
+              onClick={handleCreateTheme} 
+              variant="primary"
+              disabled={creating}
+              loading={creating}
+            >
               <Plus className="w-4 h-4 mr-2" />
-              Créer le thème
+              {creating ? 'Création...' : 'Créer le thème'}
             </Button>
           </div>
         </div>
