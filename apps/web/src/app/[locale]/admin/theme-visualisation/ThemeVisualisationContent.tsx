@@ -107,6 +107,46 @@ export function ThemeVisualisationContent() {
     setError(null);
   };
 
+  const handleResetToDefault = async () => {
+    if (!theme || theme.id !== 32) {
+      setError('Seul le TemplateTheme (ID: 32) peut être réinitialisé.');
+      return;
+    }
+
+    if (!confirm('Êtes-vous sûr de vouloir restaurer le thème par défaut ? Toutes les modifications seront perdues.')) {
+      return;
+    }
+
+    try {
+      setSaving(true);
+      setError(null);
+      setSuccessMessage(null);
+
+      // Reset to default theme configuration
+      const updateData: ThemeUpdate = {
+        config: DEFAULT_THEME_CONFIG as Partial<ThemeConfig>,
+      };
+
+      await updateTheme(32, updateData);
+      
+      setSuccessMessage('Thème restauré aux valeurs par défaut avec succès !');
+      setIsEditing(false);
+      
+      // Refresh theme data
+      await fetchTheme();
+      
+      // Refresh global theme immediately to apply changes site-wide
+      await refreshTheme();
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccessMessage(null), 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to reset theme');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const updateConfigField = (path: string[], value: any) => {
     if (!editedConfig) return;
 
