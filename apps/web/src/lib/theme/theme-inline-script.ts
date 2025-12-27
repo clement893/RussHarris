@@ -93,29 +93,34 @@ export const themeInlineScript = `
     const baseHue = hsl.h;
     
     function generateShade(targetLightness) {
-      // Adjust saturation: lighter shades get less saturation, darker get more
+      // Improved saturation adjustment for better contrast
+      // Ensures lighter shades maintain minimum saturation for visibility
       var adjustedSaturation = baseSaturation;
       if (targetLightness > baseLightness) {
-        adjustedSaturation = Math.max(0, baseSaturation * (1 - (targetLightness - baseLightness) / 100));
+        // Lighter shades: maintain minimum saturation for contrast
+        var reduction = (targetLightness - baseLightness) / 150; // Less aggressive reduction
+        adjustedSaturation = Math.max(20, baseSaturation * (1 - reduction)); // Minimum 20% saturation
       } else {
-        adjustedSaturation = Math.min(100, baseSaturation * (1 + (baseLightness - targetLightness) / 200));
+        // Darker shades: increase saturation for richer colors
+        adjustedSaturation = Math.min(100, baseSaturation * (1 + (baseLightness - targetLightness) / 150));
       }
       var shadeRgb = hslToRgb(baseHue, adjustedSaturation, targetLightness);
       return rgbToHex(shadeRgb.r, shadeRgb.g, shadeRgb.b);
     }
     
+    // Improved lightness values for better contrast
     const shades = {
-      50: generateShade(95),
-      100: generateShade(90),
-      200: generateShade(80),
-      300: generateShade(70),
-      400: generateShade(60),
-      500: hex,
-      600: generateShade(40),
-      700: generateShade(30),
-      800: generateShade(20),
-      900: generateShade(10),
-      950: generateShade(5)
+      50: generateShade(97),   // Very light (increased from 95)
+      100: generateShade(92),  // Light (increased from 90)
+      200: generateShade(85),  // Lighter (increased from 80)
+      300: generateShade(75),  // Light (increased from 70)
+      400: generateShade(65),  // Medium-light (increased from 60)
+      500: hex,                // Base color
+      600: generateShade(45),  // Medium-dark (increased from 40)
+      700: generateShade(35),  // Dark (increased from 30)
+      800: generateShade(25),  // Darker (increased from 20)
+      900: generateShade(15),  // Very dark (increased from 10)
+      950: generateShade(8)    // Darkest (increased from 5)
     };
     
     return shades;
