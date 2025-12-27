@@ -286,6 +286,7 @@ async def login(
     )
 
     # Log successful login
+    # Note: log_authentication_event() commits internally, so we don't need to commit again
     try:
         await SecurityAuditLogger.log_authentication_event(
             db=db,
@@ -300,8 +301,6 @@ async def login(
             success="success",
             metadata={"login_method": "password"}
         )
-        # Ensure the audit log is committed
-        await db.commit()
     except Exception as e:
         # Don't fail the request if audit logging fails, but log the error prominently
         error_msg = (

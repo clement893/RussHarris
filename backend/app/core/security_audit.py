@@ -149,9 +149,9 @@ class SecurityAuditLogger:
         
         try:
             db.add(audit_log)
-            # Use flush() instead of commit() to avoid transaction conflicts
-            # The session will be committed by FastAPI's dependency system
-            await db.flush()
+            # Commit immediately to ensure the audit log is saved
+            # This is critical for security audit logs - they must be persisted
+            await db.commit()
             await db.refresh(audit_log)
             
             # Also log to application logger
