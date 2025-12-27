@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 import { useThemeEditor } from '../hooks/useThemeEditor';
 import { ThemeTabs } from './ThemeTabs';
 import { ThemeForm } from './ThemeForm';
+import { JSONEditor } from './JSONEditor';
 import { Card, Button, Alert } from '@/components/ui';
 import type { Theme, ThemeConfig } from '@modele/types';
 import type { ThemeFormData } from '../types';
@@ -39,6 +40,8 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [jsonValidationError, setJsonValidationError] = useState<string | null>(null);
+  const [isJSONValid, setIsJSONValid] = useState(true);
 
   useEffect(() => {
     if (theme) {
@@ -57,6 +60,22 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
         border_radius: (theme.config as any)?.border_radius || '',
         mode: (theme.config as any)?.mode || 'system',
       });
+    } else {
+      // Reset form data for new theme
+      setFormData({
+        name: '',
+        display_name: '',
+        description: '',
+        primary_color: '#2563eb',
+        secondary_color: '#6366f1',
+        danger_color: '#dc2626',
+        warning_color: '#d97706',
+        info_color: '#0891b2',
+        success_color: '#059669',
+        font_family: '',
+        border_radius: '',
+        mode: 'system',
+      });
     }
   }, [theme]);
 
@@ -65,27 +84,58 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
     
     // Update config when colors change
     if (field.includes('_color') || field === 'font_family' || field === 'border_radius') {
-      updateConfig({
+      const updatedConfig = {
+        ...state.config,
         [field]: value,
-      } as Partial<ThemeConfig>);
+      } as ThemeConfig;
+      updateConfig(updatedConfig);
     }
   };
 
+  const handleJSONChange = (newConfig: ThemeConfig) => {
+    // Update config from JSON
+    updateConfig(newConfig);
+    
+    // Sync form data with new config
+    setFormData((prev) => ({
+      ...prev,
+      primary_color: newConfig.primary_color || prev.primary_color,
+      secondary_color: newConfig.secondary_color || prev.secondary_color,
+      danger_color: newConfig.danger_color || prev.danger_color,
+      warning_color: newConfig.warning_color || prev.warning_color,
+      info_color: newConfig.info_color || prev.info_color,
+      success_color: newConfig.success_color || prev.success_color,
+      font_family: (newConfig as any).font_family || prev.font_family,
+      border_radius: (newConfig as any).border_radius || prev.border_radius,
+    }));
+  };
+
+  const handleJSONValidationChange = (isValid: boolean, error: string | null) => {
+    setIsJSONValid(isValid);
+    setJsonValidationError(error);
+  };
+
   const handleSave = async () => {
+    // Check if JSON is valid when on JSON tab
+    if (state.activeTab === 'json' && !isJSONValid) {
+      setError('Le JSON contient des erreurs. Veuillez les corriger avant de sauvegarder.');
+      return;
+    }
+
     try {
       setSaving(true);
       setError(null);
 
-      // Build config from form data
+      // Use current config from state (which may have been updated from JSON or form)
       const config: ThemeConfig = {
-        primary_color: formData.primary_color,
-        secondary_color: formData.secondary_color,
-        danger_color: formData.danger_color,
-        warning_color: formData.warning_color,
-        info_color: formData.info_color,
-        success_color: formData.success_color,
-        font_family: formData.font_family || undefined,
-        border_radius: formData.border_radius || undefined,
+        primary_color: state.config.primary_color || formData.primary_color,
+        secondary_color: state.config.secondary_color || formData.secondary_color,
+        danger_color: state.config.danger_color || formData.danger_color,
+        warning_color: state.config.warning_color || formData.warning_color,
+        info_color: state.config.info_color || formData.info_color,
+        success_color: state.config.success_color || formData.success_color,
+        font_family: (state.config as any).font_family || formData.font_family || undefined,
+        border_radius: (state.config as any).border_radius || formData.border_radius || undefined,
       } as ThemeConfig;
 
       await onSave(config, formData);
@@ -121,6 +171,12 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
           </Alert>
         )}
 
+        {jsonValidationError && state.activeTab === 'json' && (
+          <Alert variant="error" title="Erreur JSON" className="mb-4">
+            {jsonValidationError}
+          </Alert>
+        )}
+
         <ThemeTabs activeTab={state.activeTab} onTabChange={setActiveTab} />
 
         <div className="mt-6">
@@ -129,11 +185,11 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
           )}
 
           {state.activeTab === 'json' && (
-            <div className="p-4 bg-muted rounded-lg">
-              <p className="text-muted-foreground">
-                Éditeur JSON - À implémenter dans le Batch 6
-              </p>
-            </div>
+            <JSONEditor
+              config={state.config}
+              onChange={handleJSONChange}
+              onValidationChange={handleJSONValidationChange}
+            />
           )}
 
           {state.activeTab === 'preview' && (
@@ -149,7 +205,11 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
           <Button onClick={onCancel} variant="outline" disabled={saving}>
             Annuler
           </Button>
-          <Button onClick={handleSave} variant="primary" disabled={saving}>
+          <Button
+            onClick={handleSave}
+            variant="primary"
+            disabled={saving || (state.activeTab === 'json' && !isJSONValid)}
+          >
             <Save className="w-4 h-4 mr-2" />
             {saving ? 'Sauvegarde...' : 'Sauvegarder'}
           </Button>
