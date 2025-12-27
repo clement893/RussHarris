@@ -49,115 +49,58 @@ const defaultContextValue: ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType>(defaultContextValue);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  // Preload theme from localStorage synchronously to avoid re-renders
-  const initialTheme = useMemo(() => getInitialTheme(), []);
-  const initialResolvedTheme = useMemo(() => resolveTheme(initialTheme), [initialTheme]);
-  
-  const [theme, setThemeState] = useState<Theme>(initialTheme);
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(initialResolvedTheme);
-  
-  // Apply theme to document immediately on mount (synchronous)
-  // BUT: Don't override if script inline already applied the correct class
-  useLayoutEffect(() => {
+  // Read current theme from DOM (set by inline script) or localStorage
+  // This avoids conflicts - we just read what's already there
+  const getCurrentResolvedTheme = (): 'light' | 'dark' => {
+    if (typeof window === 'undefined') return 'light';
     const root = window.document.documentElement;
-    const currentClass = root.classList.contains('dark') ? 'dark' : root.classList.contains('light') ? 'light' : null;
-    
-    // Only update if the current class doesn't match what we want
-    // This prevents removing 'dark' that was set by the inline script
-    if (currentClass !== initialResolvedTheme) {
-      root.classList.remove('light', 'dark');
-      root.classList.add(initialResolvedTheme);
-    }
-  }, []); // Only run once on mount
+    if (root.classList.contains('dark')) return 'dark';
+    if (root.classList.contains('light')) return 'light';
+    // Fallback to localStorage or system preference
+    const savedTheme = localStorage.getItem('theme') as Theme | null;
+    if (savedTheme === 'dark') return 'dark';
+    if (savedTheme === 'light') return 'light';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  };
 
-  // Load theme preference asynchronously (non-blocking)
+  const getCurrentTheme = (): Theme => {
+    if (typeof window === 'undefined') return 'system';
+    return (localStorage.getItem('theme') as Theme | null) || 'system';
+  };
+
+  const [theme, setThemeState] = useState<Theme>(getCurrentTheme);
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(getCurrentResolvedTheme);
+
+  // Sync resolvedTheme with DOM changes (e.g., from inline script or external changes)
   useEffect(() => {
-    // If we already have a theme from localStorage, skip API call
-    if (initialTheme !== 'system' || localStorage.getItem('theme')) {
-      return;
-    }
-    
-    // Load global theme from database (non-critical, use startTransition)
-    startTransition(() => {
-      getActiveTheme()
-        .then((response) => {
-          const mode = (response.config?.mode as Theme) || 'system';
-          if (mode !== theme) {
-            setThemeState(mode);
-          }
-        })
-        .catch(() => {
-          // Silently fallback - theme already set from localStorage or default
-        });
-    });
-    
-    // Poll for global theme changes every 30 seconds (only if no local preference)
-    const interval = setInterval(() => {
-      const savedTheme = localStorage.getItem('theme') as Theme | null;
-      if (!savedTheme) {
-        getActiveTheme()
-          .then((response) => {
-            const mode = (response.config?.mode as Theme) || 'system';
-            if (mode !== theme) {
-              setThemeState(mode);
-            }
-          })
-          .catch(() => {
-            // Silently fail
-          });
+    const root = window.document.documentElement;
+    const observer = new MutationObserver(() => {
+      const current = root.classList.contains('dark') ? 'dark' : 'light';
+      if (current !== resolvedTheme) {
+        setResolvedTheme(current);
       }
-    }, 30000);
-    return () => clearInterval(interval);
-  }, []); // Only run once on mount
+    });
 
-  // Update resolved theme and apply to document when theme changes
-  useLayoutEffect(() => {
-    const root = window.document.documentElement;
-    
-    // Déterminer le thème résolu
-    const resolved = resolveTheme(theme);
-    
-    // Batch state updates to avoid multiple re-renders
-    if (resolved !== resolvedTheme) {
-      setResolvedTheme(resolved);
-    }
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
 
-    // Check current class to avoid unnecessary DOM manipulation
-    const currentClass = root.classList.contains('dark') ? 'dark' : root.classList.contains('light') ? 'light' : null;
-    
-    // Only update if the resolved theme is different from current
-    if (currentClass !== resolved) {
-      root.classList.remove('light', 'dark');
-      root.classList.add(resolved);
-    }
+    return () => observer.disconnect();
+  }, [resolvedTheme]);
 
-    // Note: Theme is now global and managed by superadmins only
-    // Users cannot change it, so we don't save to DB here
-    // Only save to localStorage as fallback
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('theme', theme);
-    }
-  }, [theme]); // Only depend on theme, not resolvedTheme
-
+  // Listen to system preference changes (only if theme is 'system')
   useEffect(() => {
-    // Écouter les changements de préférence système
+    if (theme !== 'system') return;
+
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = () => {
-      if (theme === 'system') {
-        const resolved = mediaQuery.matches ? 'dark' : 'light';
-        const root = document.documentElement;
-        const currentClass = root.classList.contains('dark') ? 'dark' : root.classList.contains('light') ? 'light' : null;
-        
-        // Only update if different
-        if (currentClass !== resolved) {
-          // Use startTransition for non-critical UI updates
-          startTransition(() => {
-            setResolvedTheme(resolved);
-            root.classList.remove('light', 'dark');
-            root.classList.add(resolved);
-          });
-        }
-      }
+      const resolved = mediaQuery.matches ? 'dark' : 'light';
+      const root = document.documentElement;
+      // Update DOM and state
+      root.classList.remove('light', 'dark');
+      root.classList.add(resolved);
+      setResolvedTheme(resolved);
     };
 
     mediaQuery.addEventListener('change', handleChange);
@@ -165,24 +108,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme]);
 
   const setTheme = (newTheme: Theme) => {
-    // Allow users to override the global theme with their local preference
-    // This preference is stored in localStorage and takes precedence
     setThemeState(newTheme);
     if (typeof window !== 'undefined') {
       localStorage.setItem('theme', newTheme);
-    }
-    
-    // Apply immediately (synchronous for user interactions)
-    const root = window.document.documentElement;
-    const resolved = resolveTheme(newTheme);
-    const currentClass = root.classList.contains('dark') ? 'dark' : root.classList.contains('light') ? 'light' : null;
-    
-    setResolvedTheme(resolved);
-    
-    // Only update if different
-    if (currentClass !== resolved) {
+      
+      // Apply to DOM immediately
+      const root = window.document.documentElement;
+      const resolved = resolveTheme(newTheme);
       root.classList.remove('light', 'dark');
       root.classList.add(resolved);
+      setResolvedTheme(resolved);
     }
   };
 
