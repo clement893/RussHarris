@@ -6,7 +6,6 @@
 
 'use client';
 
-import { Link } from '@/i18n/routing';
 import { Card, Container, StatsCard } from '@/components/ui';
 import ButtonLink from '@/components/ui/ButtonLink';
 import { Hero, TechStack, CTA } from '@/components/sections';
