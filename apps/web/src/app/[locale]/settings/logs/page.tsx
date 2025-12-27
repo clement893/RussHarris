@@ -15,7 +15,9 @@ import { apiClient } from '@/lib/api';
 import { getErrorMessage } from '@/lib/errors';
 import { Button, Card, Badge, Alert, Input, Loading, DataTable, Select } from '@/components/ui';
 import type { Column } from '@/components/ui/DataTable';
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
+import { checkMySuperAdminStatus } from '@/lib/api/admin';
+import { TokenStorage } from '@/lib/auth/tokenStorage';
 
 interface AuditLog {
   id: number;
@@ -31,29 +33,60 @@ interface AuditLog {
 export default function LogsSettingsPage() {
   const router = useRouter();
   const t = useTranslations('settings.logs');
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user, token } = useAuthStore();
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [eventTypeFilter, setEventTypeFilter] = useState('');
   const [severityFilter, setSeverityFilter] = useState('');
 
   useEffect(() => {
-    if (!isAuthenticated()) {
-      router.push('/auth/login');
-      return;
-    }
+    const checkPermissions = async () => {
+      if (!isAuthenticated()) {
+        router.push('/auth/login');
+        return;
+      }
 
-    // Only admins can view logs
-    if (!user?.is_admin) {
-      setError(t('errors.unauthorized') || 'You do not have permission to view logs');
-      setLoading(false);
-      return;
-    }
+      // Check superadmin status
+      try {
+        const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
+        const authToken = token || tokenFromStorage;
+        
+        if (authToken && user?.email) {
+          const status = await checkMySuperAdminStatus(authToken);
+          setIsSuperAdmin(status.is_superadmin === true);
+          
+          if (!status.is_superadmin) {
+            setError(t('errors.unauthorized') || 'Vous n\'avez pas la permission de consulter les logs. Cette fonctionnalité nécessite un compte superadmin.');
+            setIsChecking(false);
+            setLoading(false);
+            return;
+          }
+        } else {
+          // Fallback: check is_admin if no token available
+          if (!user?.is_admin) {
+            setError(t('errors.unauthorized') || 'Vous n\'avez pas la permission de consulter les logs. Cette fonctionnalité nécessite un compte superadmin.');
+            setIsChecking(false);
+            setLoading(false);
+            return;
+          }
+          setIsSuperAdmin(true);
+        }
+        
+        setIsChecking(false);
+        loadLogs();
+      } catch (err) {
+        setError(t('errors.unauthorized') || 'Vous n\'avez pas la permission de consulter les logs. Cette fonctionnalité nécessite un compte superadmin.');
+        setIsChecking(false);
+        setLoading(false);
+      }
+    };
 
-    loadLogs();
-  }, [isAuthenticated, user, router, eventTypeFilter, severityFilter]);
+    checkPermissions();
+  }, [isAuthenticated, user, token, router, eventTypeFilter, severityFilter, t]);
 
   const loadLogs = async () => {
     try {
@@ -179,8 +212,20 @@ export default function LogsSettingsPage() {
     },
   ];
 
+  if (isChecking) {
+    return (
+      <ProtectedSuperAdminRoute>
+        <PageContainer>
+          <div className="flex items-center justify-center min-h-[400px]">
+            <Loading />
+          </div>
+        </PageContainer>
+      </ProtectedSuperAdminRoute>
+    );
+  }
+
   return (
-    <ProtectedRoute>
+    <ProtectedSuperAdminRoute>
       <PageContainer>
         <PageHeader
           title={t('title') || 'Logs'}
@@ -198,11 +243,11 @@ export default function LogsSettingsPage() {
           </Alert>
         )}
 
-        {!user?.is_admin ? (
+        {!isSuperAdmin ? (
           <Card>
             <div className="py-12 text-center">
               <p className="text-gray-600 dark:text-gray-400">
-                {t('errors.unauthorized') || 'You do not have permission to view logs'}
+                {t('errors.unauthorized') || 'Vous n\'avez pas la permission de consulter les logs. Cette fonctionnalité nécessite un compte superadmin.'}
               </p>
             </div>
           </Card>
@@ -264,7 +309,7 @@ export default function LogsSettingsPage() {
           </div>
         )}
       </PageContainer>
-    </ProtectedRoute>
+    </ProtectedSuperAdminRoute>
   );
 }
 
