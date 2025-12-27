@@ -20,25 +20,25 @@ interface BannerProps {
 
 const variantStyles: Record<BannerVariant, { bg: string; border: string; text: string; icon: ReactNode }> = {
   info: {
-    bg: 'bg-info-50 dark:bg-info-900/20',
+    bg: 'bg-info-50 dark:bg-info-900',
     border: 'border-info-200 dark:border-info-800',
     text: 'text-info-900 dark:text-info-200',
     icon: <Info className="w-5 h-5" />,
   },
   success: {
-    bg: 'bg-success-50 dark:bg-success-900/20',
+    bg: 'bg-success-50 dark:bg-success-900',
     border: 'border-success-200 dark:border-success-800',
     text: 'text-success-800 dark:text-success-200',
     icon: <CheckCircle className="w-5 h-5" />,
   },
   warning: {
-    bg: 'bg-warning-50 dark:bg-warning-900/20',
+    bg: 'bg-warning-50 dark:bg-warning-900',
     border: 'border-warning-200 dark:border-warning-800',
     text: 'text-warning-800 dark:text-warning-200',
     icon: <AlertTriangle className="w-5 h-5" />,
   },
   error: {
-    bg: 'bg-error-50 dark:bg-error-900/20',
+    bg: 'bg-error-50 dark:bg-error-900',
     border: 'border-error-200 dark:border-error-800',
     text: 'text-error-800 dark:text-error-200',
     icon: <AlertCircle className="w-5 h-5" />,

@@ -33,25 +33,25 @@ export default function Toast({
 
   const variants = {
     success: {
-      bg: 'bg-secondary-50 dark:bg-secondary-900/20',
+      bg: 'bg-secondary-50 dark:bg-secondary-900',
       border: 'border-secondary-200 dark:border-secondary-800',
       text: 'text-secondary-800 dark:text-secondary-200',
       icon: 'text-secondary-400',
     },
     error: {
-      bg: 'bg-danger-50 dark:bg-danger-900/20',
+      bg: 'bg-danger-50 dark:bg-danger-900',
       border: 'border-danger-200 dark:border-danger-800',
       text: 'text-danger-800 dark:text-danger-200',
       icon: 'text-danger-400',
     },
     warning: {
-      bg: 'bg-warning-50 dark:bg-warning-900/20',
+      bg: 'bg-warning-50 dark:bg-warning-900',
       border: 'border-warning-200 dark:border-warning-800',
       text: 'text-warning-800 dark:text-warning-200',
       icon: 'text-warning-400',
     },
     info: {
-      bg: 'bg-primary-50 dark:bg-primary-900/20',
+      bg: 'bg-primary-50 dark:bg-primary-900',
       border: 'border-primary-200 dark:border-primary-800',
       text: 'text-primary-800 dark:text-primary-200',
       icon: 'text-primary-400',
