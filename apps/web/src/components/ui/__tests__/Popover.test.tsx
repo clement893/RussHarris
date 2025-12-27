@@ -141,7 +141,7 @@ describe('Popover', () => {
 
   it('applies placement classes', async () => {
     const user = userEvent.setup();
-    const { rerender, container } = render(
+    const { container, unmount } = render(
       <Popover 
         trigger={<button>Open</button>} 
         content={<div>Content</div>}
@@ -153,10 +153,14 @@ describe('Popover', () => {
 
     await waitFor(() => {
       const content = container.querySelector('[role="dialog"]');
+      expect(content).toBeInTheDocument();
+      // Check for placement class - top placement should have bottom-full
       expect(content).toHaveClass('bottom-full');
     }, { timeout: 3000 });
 
-    rerender(
+    unmount();
+
+    const { container: container2 } = render(
       <Popover 
         trigger={<button>Open</button>} 
         content={<div>Content</div>}
@@ -167,7 +171,9 @@ describe('Popover', () => {
     await user.click(screen.getByText('Open'));
 
     await waitFor(() => {
-      const content = container.querySelector('[role="dialog"]');
+      const content = container2.querySelector('[role="dialog"]');
+      expect(content).toBeInTheDocument();
+      // Check for placement class - bottom placement should have top-full
       expect(content).toHaveClass('top-full');
     }, { timeout: 3000 });
   });
