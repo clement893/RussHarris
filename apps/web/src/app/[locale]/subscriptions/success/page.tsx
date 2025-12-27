@@ -69,29 +69,29 @@ function SubscriptionSuccessContent() {
             </svg>
           </div>
 
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          <h1 className="text-4xl font-bold text-foreground mb-4">
             Abonnement confirmé !
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+          <p className="text-xl text-muted-foreground mb-8">
             Merci pour votre confiance. Votre abonnement <strong>{planName}</strong> est maintenant actif.
           </p>
 
           {/* Subscription Details */}
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-8 text-left">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Détails de votre abonnement</h2>
+          <div className="bg-muted rounded-lg p-6 mb-8 text-left">
+            <h2 className="text-lg font-semibold text-foreground mb-4">Détails de votre abonnement</h2>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Plan:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">{planName}</span>
+                <span className="text-muted-foreground">Plan:</span>
+                <span className="font-medium text-foreground">{planName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Période:</span>
-                <span className="font-medium text-gray-900 dark:text-gray-100">
+                <span className="text-muted-foreground">Période:</span>
+                <span className="font-medium text-foreground">
                   {billingPeriod === 'month' ? 'Mensuel' : 'Annuel'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Statut:</span>
+                <span className="text-muted-foreground">Statut:</span>
                 <span className="font-medium text-green-600 dark:text-green-400">Actif</span>
               </div>
             </div>
@@ -99,8 +99,8 @@ function SubscriptionSuccessContent() {
 
           {/* Next Steps */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Prochaines étapes</h3>
-            <ul className="text-left space-y-2 text-gray-600 dark:text-gray-400">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Prochaines étapes</h3>
+            <ul className="text-left space-y-2 text-muted-foreground">
               <li className="flex items-start">
                 <span className="text-green-600 mr-2">✓</span>
                 <span>Vous pouvez maintenant accéder à toutes les fonctionnalités de votre plan</span>
@@ -143,7 +143,7 @@ export default function SubscriptionSuccessPage() {
           <Card className="w-full max-w-2xl">
             <div className="p-8 text-center">
               <Loading />
-              <p className="mt-4 text-gray-600 dark:text-gray-400">Chargement...</p>
+              <p className="mt-4 text-muted-foreground">Chargement...</p>
             </div>
           </Card>
         </div>

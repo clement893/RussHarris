@@ -109,7 +109,7 @@ function DatabaseTestContent() {
         {/* Header */}
         <div>
           <h1 className="text-3xl font-bold mb-2">Database Health Check</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground">
             Comprehensive database health monitoring and diagnostics
           </p>
         </div>
@@ -148,7 +148,7 @@ function DatabaseTestContent() {
                 {healthData.timestamp && (
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">Last Check:</span>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                    <span className="text-sm text-muted-foreground">
                       {new Date(healthData.timestamp).toLocaleString()}
                     </span>
                   </div>
@@ -179,11 +179,11 @@ function DatabaseTestContent() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Expected:</span>
+                      <span className="text-sm text-muted-foreground">Expected:</span>
                       <p className="text-lg font-semibold">{healthData.checks.tables.expected}</p>
                     </div>
                     <div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Found:</span>
+                      <span className="text-sm text-muted-foreground">Found:</span>
                       <p className="text-lg font-semibold">{healthData.checks.tables.found}</p>
                     </div>
                   </div>
@@ -296,7 +296,7 @@ function DatabaseTestContent() {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {Object.entries(healthData.checks.statistics).map(([table, count]) => (
                     <div key={table} className="border rounded-lg p-3">
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-1 font-mono">{table}</p>
+                      <p className="text-xs text-muted-foreground mb-1 font-mono">{table}</p>
                       <p className="text-lg font-semibold">
                         {typeof count === 'number' ? count.toLocaleString() : count}
                       </p>
@@ -330,7 +330,7 @@ function DatabaseTestContent() {
 
         {/* Instructions */}
         <Card title="About Database Health Check">
-          <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="space-y-4 text-sm text-foreground">
             <p>
               This tool performs comprehensive health checks on your database including:
             </p>

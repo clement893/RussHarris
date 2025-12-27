@@ -65,10 +65,10 @@ export default function TestSentryPage() {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+          <h1 className="text-3xl font-bold text-foreground">
             Sentry Testing Page
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-muted-foreground mt-2">
             Use these buttons to test Sentry error tracking and monitoring
           </p>
         </div>
@@ -80,12 +80,12 @@ export default function TestSentryPage() {
         )}
 
         <Card className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          <h2 className="text-xl font-semibold text-foreground mb-4">
             Test Error Tracking
           </h2>
           <div className="space-y-4">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <p className="text-sm text-muted-foreground mb-2">
                 Test captured exception (handled error)
               </p>
               <Button onClick={testError} variant="primary">
@@ -94,7 +94,7 @@ export default function TestSentryPage() {
             </div>
 
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <p className="text-sm text-muted-foreground mb-2">
                 Test message capture (non-error event)
               </p>
               <Button onClick={testMessage} variant="secondary">
@@ -103,7 +103,7 @@ export default function TestSentryPage() {
             </div>
 
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <p className="text-sm text-muted-foreground mb-2">
                 Test async error (handled async error)
               </p>
               <Button onClick={testAsyncError} variant="secondary">
@@ -112,7 +112,7 @@ export default function TestSentryPage() {
             </div>
 
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <p className="text-sm text-muted-foreground mb-2">
                 Test unhandled error (triggers Error Boundary)
               </p>
               <Button onClick={testUnhandledError} variant="danger">
@@ -123,14 +123,14 @@ export default function TestSentryPage() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          <h2 className="text-xl font-semibold text-foreground mb-4">
             Browser Console Test
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
             Open browser DevTools (F12) and run this in the console:
           </p>
-          <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg font-mono text-sm">
-            <code className="text-gray-900 dark:text-gray-100">
+          <div className="bg-muted p-4 rounded-lg font-mono text-sm">
+            <code className="text-foreground">
               throw new Error('Sentry Test Error - ' + new Date().toISOString())
             </code>
           </div>
@@ -149,7 +149,7 @@ export default function TestSentryPage() {
         </Card>
 
         <Card className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <h3 className="text-lg font-semibold text-foreground mb-2">
             🔗 Quick Links
           </h3>
           <div className="space-y-2">

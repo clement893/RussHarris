@@ -155,7 +155,7 @@ function EmailTestContent() {
           {/* Health Check */}
           <Card title="SendGrid Health Check" className="mb-6">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 Verify SendGrid configuration and connection status
               </p>
               <Button
@@ -170,19 +170,19 @@ function EmailTestContent() {
             {healthStatus && (
               <div className="mt-4 space-y-3">
                 <div className="flex items-center gap-2">
-                  <strong className="text-sm text-gray-700 dark:text-gray-300">Configured:</strong>
+                  <strong className="text-sm text-foreground">Configured:</strong>
                   <Badge variant={healthStatus.configured ? 'success' : 'error'}>
                     {healthStatus.configured ? '✅ Yes' : '❌ No'}
                   </Badge>
                 </div>
                 <div className="text-sm">
-                  <p className="text-gray-700 dark:text-gray-300">
+                  <p className="text-foreground">
                     <strong>From Email:</strong> {healthStatus.from_email || 'N/A'}
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300">
+                  <p className="text-foreground">
                     <strong>From Name:</strong> {healthStatus.from_name || 'N/A'}
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300">
+                  <p className="text-foreground">
                     <strong>Status:</strong> {healthStatus.status || 'N/A'}
                   </p>
                 </div>
@@ -192,7 +192,7 @@ function EmailTestContent() {
 
           {/* Email Type Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Email Type</label>
+            <label className="block text-sm font-medium mb-2 text-foreground">Email Type</label>
             <Tabs defaultTab={emailType} onChange={(value) => setEmailType(value as 'test' | 'welcome' | 'custom')}>
               <TabList>
                 <Tab value="test">Test Email</Tab>
@@ -296,9 +296,9 @@ function EmailTestContent() {
 
         {/* Instructions */}
         <Card title="How to Test">
-          <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
+          <div className="space-y-4 text-sm text-foreground">
             <div>
-              <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">1. Health Check</h3>
+              <h3 className="font-semibold mb-1 text-foreground">1. Health Check</h3>
               <p>Click "Check Status" to verify SendGrid configuration. You should see:</p>
               <ul className="list-disc list-inside ml-4 mt-1">
                 <li>Configured: ✅ Yes</li>

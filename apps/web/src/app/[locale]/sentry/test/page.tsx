@@ -135,10 +135,10 @@ function SentryTestContent() {
   return (
     <Container className="py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 className="text-3xl font-bold text-foreground mb-2">
           Sentry Test
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-muted-foreground">
           Test Sentry error tracking and monitoring integration
         </p>
       </div>
@@ -160,26 +160,26 @@ function SentryTestContent() {
         <h2 className="text-xl font-semibold mb-4">Configuration Status</h2>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-gray-600 dark:text-gray-400">Sentry DSN:</span>
+            <span className="text-muted-foreground">Sentry DSN:</span>
             <Badge variant={isConfigured() ? 'success' : 'error'}>
               {isConfigured() ? 'Configured' : 'Not Configured'}
             </Badge>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-600 dark:text-gray-400">Environment:</span>
+            <span className="text-muted-foreground">Environment:</span>
             <Badge variant="default">
               {process.env.NODE_ENV || 'development'}
             </Badge>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-600 dark:text-gray-400">Sentry Enabled in Dev:</span>
+            <span className="text-muted-foreground">Sentry Enabled in Dev:</span>
             <Badge variant={process.env.NEXT_PUBLIC_SENTRY_ENABLE_DEV === 'true' ? 'success' : 'warning'}>
               {process.env.NEXT_PUBLIC_SENTRY_ENABLE_DEV === 'true' ? 'Yes' : 'No (required for dev testing)'}
             </Badge>
           </div>
           {isConfigured() && (
-            <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <div className="mt-4 p-4 bg-muted rounded">
+              <p className="text-sm text-muted-foreground mb-2">
                 DSN (masked):
               </p>
               <code className="text-xs break-all">
@@ -280,8 +280,8 @@ function SentryTestContent() {
             </Button>
           </div>
           {user && (
-            <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="p-4 bg-muted rounded">
+              <p className="text-sm text-muted-foreground">
                 Current user: {user.email} (ID: {user.id})
               </p>
             </div>
@@ -311,9 +311,9 @@ function SentryTestContent() {
       {/* Instructions */}
       <Card>
         <h2 className="text-xl font-semibold mb-4">How to Test</h2>
-        <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
+        <div className="space-y-4 text-sm text-foreground">
           <div>
-            <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">1. Check Configuration</h3>
+            <h3 className="font-semibold mb-1 text-foreground">1. Check Configuration</h3>
             <p>Verify that Sentry is configured in environment variables:</p>
             <ul className="list-disc list-inside ml-4 mt-1">
               <li>NEXT_PUBLIC_SENTRY_DSN (required)</li>

@@ -128,7 +128,7 @@ export default function SurveysPage() {
         <div className="mt-8">
           {surveys.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400 mb-4">
+              <p className="text-muted-foreground mb-4">
                 {t('no_surveys') || 'No surveys yet'}
               </p>
               <Button onClick={handleCreate}>
@@ -141,14 +141,14 @@ export default function SurveysPage() {
               {surveys.map((survey) => (
                 <div
                   key={survey.id}
-                  className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-lg transition-shadow cursor-pointer"
+                  className="p-4 border border-border rounded-lg hover:shadow-lg transition-shadow cursor-pointer"
                   onClick={() => handleEdit(survey)}
                 >
                   <h3 className="font-semibold mb-2">{survey.name}</h3>
                   {survey.description && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{survey.description}</p>
+                    <p className="text-sm text-muted-foreground mb-2">{survey.description}</p>
                   )}
-                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <span>{survey.questions.length} {t('questions') || 'questions'}</span>
                     <span className="capitalize">{survey.status}</span>
                   </div>

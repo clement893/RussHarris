@@ -175,8 +175,8 @@ function SubscriptionsContent() {
     <div className="py-12">
       <Container>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">My Subscriptions</h1>
-        <p className="text-gray-600 dark:text-gray-400">Manage your subscription and payments</p>
+        <h1 className="text-4xl font-bold text-foreground mb-2">My Subscriptions</h1>
+        <p className="text-muted-foreground">Manage your subscription and payments</p>
       </div>
 
       {error && (
@@ -203,7 +203,7 @@ function SubscriptionsContent() {
       ) : (
         <Card>
           <div className="py-12 text-center">
-            <p className="text-gray-600 dark:text-gray-400 mb-6">You don't have an active subscription</p>
+            <p className="text-muted-foreground mb-6">You don't have an active subscription</p>
             <Link href="/pricing">
               <Button>View Plans</Button>
             </Link>
