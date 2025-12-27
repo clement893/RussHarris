@@ -5,6 +5,7 @@
 import type { ThemeConfig } from '@modele/types';
 import { generateColorShades, generateRgb } from './color-utils';
 import { validateThemeConfig } from './theme-validator';
+import { getThemeConfigForMode, applyDarkModeClass } from './dark-mode-utils';
 import { logger } from '@/lib/logger';
 
 export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
@@ -17,9 +18,20 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   
   const { validateContrast = true, logWarnings = true } = options || {};
   
+  // Get theme config for current mode (light/dark/system)
+  const modeConfig = getThemeConfigForMode(config);
+  
+  // Apply dark mode class if needed
+  const mode = (config as any).mode || 'system';
+  if (mode === 'dark' || (mode === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    applyDarkModeClass(true);
+  } else {
+    applyDarkModeClass(false);
+  }
+  
   // Validate theme configuration if requested
   if (validateContrast) {
-    const validation = validateThemeConfig(config as any, { 
+    const validation = validateThemeConfig(modeConfig as any, { 
       strictContrast: false, 
       logWarnings 
     });
@@ -40,17 +52,20 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
 
   const root = document.documentElement;
   
+  // Use mode-specific config
+  const configToApply = modeConfig;
+  
   // Support multiple formats:
   // 1. Flat format: primary_color, secondary_color, etc.
   // 2. Short format: primary, secondary, etc. (directly in config)
   // 3. Nested format: colors.primary, colors.secondary, etc.
-  const colorsConfig = (config as any).colors || {};
-  const primaryColor = (config as any).primary || config.primary_color || colorsConfig.primary_color || colorsConfig.primary;
-  const secondaryColor = (config as any).secondary || config.secondary_color || colorsConfig.secondary_color || colorsConfig.secondary;
-  const dangerColor = (config as any).danger || config.danger_color || colorsConfig.danger_color || colorsConfig.destructive || colorsConfig.danger;
-  const warningColor = (config as any).warning || config.warning_color || colorsConfig.warning_color || colorsConfig.warning;
-  const infoColor = (config as any).info || config.info_color || colorsConfig.info_color || colorsConfig.info;
-  const successColor = (config as any).success || config.success_color || colorsConfig.success_color || colorsConfig.success;
+  const colorsConfig = (configToApply as any).colors || {};
+  const primaryColor = (configToApply as any).primary || configToApply.primary_color || colorsConfig.primary_color || colorsConfig.primary;
+  const secondaryColor = (configToApply as any).secondary || configToApply.secondary_color || colorsConfig.secondary_color || colorsConfig.secondary;
+  const dangerColor = (configToApply as any).danger || configToApply.danger_color || colorsConfig.danger_color || colorsConfig.destructive || colorsConfig.danger;
+  const warningColor = (configToApply as any).warning || configToApply.warning_color || colorsConfig.warning_color || colorsConfig.warning;
+  const infoColor = (configToApply as any).info || configToApply.info_color || colorsConfig.info_color || colorsConfig.info;
+  const successColor = (configToApply as any).success || configToApply.success_color || colorsConfig.success_color || colorsConfig.success;
   
   // Generate color shades from base colors
   if (primaryColor) {
@@ -142,7 +157,7 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   }
   
   // Load font URL if configured
-  if (config.font_url && typeof config.font_url === 'string' && typeof document !== 'undefined') {
+  if (configToApply.font_url && typeof configToApply.font_url === 'string' && typeof document !== 'undefined') {
     const existingLink = document.querySelector(`link[data-theme-font]`);
     if (existingLink) {
       existingLink.remove();
@@ -155,8 +170,8 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   }
   
   // Apply fonts from typography config if available
-  if ((config as any).typography?.fontUrl && typeof document !== 'undefined') {
-    const fontUrl = (config as any).typography.fontUrl;
+  if ((configToApply as any).typography?.fontUrl && typeof document !== 'undefined') {
+    const fontUrl = (configToApply as any).typography.fontUrl;
     const existingLink = document.querySelector(`link[data-theme-font]`);
     if (existingLink) {
       existingLink.remove();
@@ -169,31 +184,31 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   }
   
   // Apply fonts
-  if (config.font_family) {
-    const fontFamily = config.font_family.trim();
+  if (configToApply.font_family) {
+    const fontFamily = configToApply.font_family.trim();
     root.style.setProperty('--font-family', `${fontFamily}, sans-serif`);
     root.style.setProperty('--font-family-heading', `${fontFamily}, sans-serif`);
     root.style.setProperty('--font-family-subheading', `${fontFamily}, sans-serif`);
   }
   
-  if ((config as any).typography?.fontFamily) {
-    const fontFamily = String((config as any).typography.fontFamily).trim();
+  if ((configToApply as any).typography?.fontFamily) {
+    const fontFamily = String((configToApply as any).typography.fontFamily).trim();
     root.style.setProperty('--font-family', fontFamily);
-    if ((config as any).typography.fontFamilyHeading) {
-      root.style.setProperty('--font-family-heading', String((config as any).typography.fontFamilyHeading));
+    if ((configToApply as any).typography.fontFamilyHeading) {
+      root.style.setProperty('--font-family-heading', String((configToApply as any).typography.fontFamilyHeading));
     }
-    if ((config as any).typography.fontFamilySubheading) {
-      root.style.setProperty('--font-family-subheading', String((config as any).typography.fontFamilySubheading));
+    if ((configToApply as any).typography.fontFamilySubheading) {
+      root.style.setProperty('--font-family-subheading', String((configToApply as any).typography.fontFamilySubheading));
     }
   }
   
   // Apply border radius
-  if (config.border_radius) {
-    root.style.setProperty('--border-radius', config.border_radius);
+  if (configToApply.border_radius) {
+    root.style.setProperty('--border-radius', configToApply.border_radius);
   }
   
   // Apply CSS effects
-  const effects = (config as any).effects;
+  const effects = (configToApply as any).effects;
   if (effects) {
     // Support both old format (glassmorphism.enabled) and new format (glassmorphism.card, etc.)
     if (effects.glassmorphism) {

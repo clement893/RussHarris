@@ -99,14 +99,38 @@
 
 ---
 
-## 🔄 Batch Actuel: Batch 5 - Mode Sombre - Configuration
+## ✅ Batch 5 COMPLÉTÉ: Mode Sombre - Configuration
+
+### Tâches Complétées ✅
+- [x] Créer `dark-mode-config.ts` avec configuration mode sombre
+- [x] Créer tests complets (14 tests, tous passent)
+- [x] Vérifier tous les contrastes mode sombre respectent WCAG AA
+- [x] Commit et push batch 5
+
+### Résultats
+- ✅ 14 tests TypeScript créés et passent
+- ✅ Configuration mode sombre complète avec couleurs WCAG AA
+- ✅ Utilisation de shades 400 pour meilleure visibilité
+- ✅ Helper function meetsDarkModeContrast() créée
+- ✅ Commit: `feat(theme): add dark mode configuration (batch 5)`
+- ✅ Push effectué avec succès
+
+### Score Mis à Jour
+- **Couleurs**: 9/10 → 10/10 ⬆️
+- **Contrastes**: 9/10 → 10/10 ⬆️
+- **Score Global**: 7.8/10 → 8.6/10 ⬆️
+
+---
+
+## 🔄 Batch Actuel: Batch 6 - Mode Sombre - Application
 
 ### Prochaines Étapes
-1. Créer `dark-mode-config.ts` avec configuration mode sombre
-2. Créer tests pour mode sombre
-3. Exécuter tests: `pnpm test dark-mode-config`
-4. Commit: `feat(theme): add dark mode configuration (batch 5)`
-5. Push vers repository
+1. Modifier `apply-theme-config.ts` pour détecter mode sombre
+2. Modifier `global-theme-provider.tsx` pour appliquer mode sombre
+3. Ajouter détection prefers-color-scheme
+4. Exécuter tests
+5. Commit: `feat(theme): apply dark mode dynamically (batch 6)`
+6. Push vers repository
 
 ---
 
