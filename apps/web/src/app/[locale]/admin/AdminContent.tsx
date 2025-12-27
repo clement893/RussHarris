@@ -3,7 +3,6 @@
 import { PageHeader, PageContainer, Section } from '@/components/layout';
 import { Card, Button, Badge } from '@/components/ui';
 import Link from 'next/link';
-import { AdminThemeSection } from '@/components/admin/AdminThemeSection';
 
 export default function AdminContent() {
   return (
@@ -85,31 +84,7 @@ export default function AdminContent() {
           </Link>
         </Card>
 
-        <Card title="Gestion des Thèmes" className="flex flex-col">
-          <p className="text-muted-foreground mb-4">
-            Créer, activer et gérer les thèmes de la plateforme.
-          </p>
-          <Link href="/admin/themes">
-            <Button variant="primary" className="w-full">
-              Gérer les thèmes
-            </Button>
-          </Link>
-        </Card>
-
-        <Card title="Visualisation du Thème" className="flex flex-col">
-          <p className="text-muted-foreground mb-4">
-            Visualiser et modifier le thème actif de la plateforme.
-          </p>
-          <Link href="/admin/theme-visualisation?themeId=32">
-            <Button variant="primary" className="w-full">
-              Visualiser le thème
-            </Button>
-          </Link>
-        </Card>
       </div>
-
-      {/* Theme Management Section */}
-      <AdminThemeSection />
 
       <Section title="Statut du système" className="mt-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

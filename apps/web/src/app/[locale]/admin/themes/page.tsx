@@ -1,20 +1,36 @@
 'use client';
 
-import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
-import Container from '@/components/ui/Container';
-import { ThemeManagementContent } from './ThemeManagementContent';
+/**
+ * Theme Management Page
+ * Main page for superadmin theme management
+ */
 
-// Force dynamic rendering
-export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
+import { PageHeader, PageContainer } from '@/components/layout';
+import { Card } from '@/components/ui';
 
-export default function ThemesManagementPage() {
+export default function ThemesPage() {
   return (
-    <ProtectedSuperAdminRoute>
-      <Container className="py-8">
-        <ThemeManagementContent />
-      </Container>
-    </ProtectedSuperAdminRoute>
+    <PageContainer>
+      <PageHeader
+        title="Gestion des Thèmes"
+        description="Créez, modifiez et activez les thèmes de la plateforme"
+        breadcrumbs={[
+          { label: 'Accueil', href: '/' },
+          { label: 'Administration', href: '/admin' },
+          { label: 'Thèmes' },
+        ]}
+      />
+
+      <div className="mt-6">
+        <Card>
+          <div className="p-6">
+            <p className="text-muted-foreground">
+              Interface de gestion des thèmes en cours de développement.
+            </p>
+          </div>
+        </Card>
+      </div>
+    </PageContainer>
   );
 }
 
