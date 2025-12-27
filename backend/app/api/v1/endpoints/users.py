@@ -90,9 +90,16 @@ async def list_users(
         user_responses = []
         for user in paginated_result.items:
             try:
+                # Use model_validate directly on SQLAlchemy object - Pydantic handles conversion
                 user_responses.append(UserResponse.model_validate(user))
             except Exception as validation_error:
-                logger.error(f"Error validating user {user.id}: {validation_error}", exc_info=True)
+                logger.error(
+                    f"Error validating user {user.id} (email: {user.email}): {validation_error}\n"
+                    f"  User data: id={user.id}, email={user.email}, first_name={user.first_name}, "
+                    f"last_name={user.last_name}, is_active={user.is_active}, "
+                    f"created_at={user.created_at}, updated_at={user.updated_at}",
+                    exc_info=True
+                )
                 # Skip this user if validation fails
                 continue
         
@@ -104,6 +111,8 @@ async def list_users(
         )
     except Exception as e:
         logger.error(f"Error paginating users query: {e}", exc_info=True)
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
         # Try without eager loading as fallback
         try:
             query_fallback = select(User).order_by(User.created_at.desc())
@@ -114,9 +123,16 @@ async def list_users(
             user_responses = []
             for user in paginated_result.items:
                 try:
+                    # Use model_validate directly on SQLAlchemy object - Pydantic handles conversion
                     user_responses.append(UserResponse.model_validate(user))
                 except Exception as validation_error:
-                    logger.error(f"Error validating user {user.id} in fallback: {validation_error}", exc_info=True)
+                    logger.error(
+                        f"Error validating user {user.id} (email: {user.email}) in fallback: {validation_error}\n"
+                        f"  User data: id={user.id}, email={user.email}, first_name={user.first_name}, "
+                        f"last_name={user.last_name}, is_active={user.is_active}, "
+                        f"created_at={user.created_at}, updated_at={user.updated_at}",
+                        exc_info=True
+                    )
                     # Skip this user if validation fails
                     continue
             
