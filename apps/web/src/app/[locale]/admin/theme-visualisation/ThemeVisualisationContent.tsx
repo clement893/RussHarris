@@ -351,7 +351,7 @@ export function ThemeVisualisationContent() {
             className="w-8 h-8 animate-spin mx-auto mb-4" 
             style={{ color: 'var(--color-primary-500, #3b82f6)' }}
           />
-          <p className="text-gray-600 dark:text-gray-400">Chargement du thème...</p>
+          <p className="text-muted-foreground">Chargement du thème...</p>
         </div>
       </div>
     );
@@ -421,10 +421,10 @@ export function ThemeVisualisationContent() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
             Visualisation du Thème Actif
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground">
             Thème: <span className="font-semibold">{theme.display_name}</span> (ID: {theme.id})
             {canEdit && (
               <span className="ml-2 text-xs bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-1 rounded">
@@ -611,7 +611,7 @@ export function ThemeVisualisationContent() {
                 />
                 
                 {/* Font Upload Section */}
-                <div className="mt-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900">
+                <div className="mt-4 p-4 border border-border rounded-lg bg-muted">
                   <h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
                     <Upload className="w-4 h-4" />
                     Uploader une police personnalisée
@@ -630,7 +630,7 @@ export function ThemeVisualisationContent() {
                             setSelectedFontFile(file);
                           }
                         }}
-                        className="block w-full text-sm text-gray-500 dark:text-gray-400
+                        className="block w-full text-sm text-muted-foreground
                           file:mr-4 file:py-2 file:px-4
                           file:rounded-lg file:border-0
                           file:text-sm file:font-semibold
@@ -640,7 +640,7 @@ export function ThemeVisualisationContent() {
                           dark:file:bg-primary-500 dark:hover:file:bg-primary-600"
                       />
                       {selectedFontFile && (
-                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        <p className="mt-2 text-sm text-muted-foreground">
                           Fichier sélectionné: {selectedFontFile.name} ({(selectedFontFile.size / 1024).toFixed(2)} KB)
                         </p>
                       )}
@@ -673,11 +673,11 @@ export function ThemeVisualisationContent() {
                         {uploadedFonts.map((font) => (
                           <div
                             key={font.id}
-                            className="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700"
+                            className="flex items-center justify-between p-2 bg-background rounded border border-border"
                           >
                             <div className="flex-1">
                               <p className="text-sm font-medium">{font.name}</p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                              <p className="text-xs text-muted-foreground">
                                 {font.font_family} • {font.font_format.toUpperCase()} • {(font.file_size / 1024).toFixed(2)} KB
                               </p>
                             </div>
@@ -779,7 +779,7 @@ export function ThemeVisualisationContent() {
                 <div className="space-y-2">
                   <label className="block text-sm font-medium mb-2">
                     Modifier la configuration JSON directement
-                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                    <span className="text-xs text-muted-foreground ml-2">
                       (Les modifications sont appliquées en temps réel)
                     </span>
                   </label>
@@ -938,7 +938,7 @@ export function ThemeVisualisationContent() {
                       Appliquer JSON
                     </Button>
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-muted-foreground">
                     💡 Astuce : Modifiez le JSON directement pour changer toutes les propriétés du thème. Les modifications sont appliquées en temps réel. Cliquez sur "Appliquer JSON" pour valider et appliquer les changements.
                   </p>
                 </div>
@@ -946,7 +946,7 @@ export function ThemeVisualisationContent() {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex gap-4 pt-4 border-t border-border">
               <Button
                 onClick={handleSave}
                 variant="primary"
@@ -973,15 +973,15 @@ export function ThemeVisualisationContent() {
       <Card title="Informations du Thème">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Nom</p>
+            <p className="text-sm text-muted-foreground mb-1">Nom</p>
             <p className="font-semibold">{theme.name}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Nom d'affichage</p>
+            <p className="text-sm text-muted-foreground mb-1">Nom d'affichage</p>
             <p className="font-semibold">{theme.display_name}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">ID</p>
+            <p className="text-sm text-muted-foreground mb-1">ID</p>
             <p className="font-semibold">{theme.id}</p>
           </div>
         </div>
@@ -1000,15 +1000,15 @@ export function ThemeVisualisationContent() {
           {Object.entries(colors).map(([name, color]) => (
             <div key={name} className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium capitalize text-gray-700 dark:text-gray-300">
+                <span className="text-sm font-medium capitalize text-foreground">
                   {name}
                 </span>
-                <code className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+                <code className="text-xs bg-muted px-2 py-1 rounded">
                   {color}
                 </code>
               </div>
               <div
-                className="h-16 rounded-lg border-2 border-gray-200 dark:border-gray-700 shadow-sm"
+                className="h-16 rounded-lg border-2 border-border shadow-sm"
                 style={{ backgroundColor: color }}
               />
               {/* Show color shades if available */}
@@ -1021,7 +1021,7 @@ export function ThemeVisualisationContent() {
                   return (
                     <div
                       key={shade}
-                      className="flex-1 h-8 rounded border border-gray-200 dark:border-gray-700"
+                      className="flex-1 h-8 rounded border border-border"
                       style={{ backgroundColor: shadeColor }}
                       title={`${name}-${shade}: ${shadeColor}`}
                     />
@@ -1046,37 +1046,37 @@ export function ThemeVisualisationContent() {
           {/* Font Families */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Police principale</p>
+              <p className="text-sm text-muted-foreground mb-2">Police principale</p>
               <div
-                className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+                className="p-4 bg-muted rounded-lg border border-border"
                 style={{ fontFamily }}
               >
                 <p className="text-lg font-medium">Exemple de texte</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   {fontFamily}
                 </p>
               </div>
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Police des titres</p>
+              <p className="text-sm text-muted-foreground mb-2">Police des titres</p>
               <div
-                className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+                className="p-4 bg-muted rounded-lg border border-border"
                 style={{ fontFamily: fontFamilyHeading }}
               >
                 <h3 className="text-xl font-bold">Titre d'exemple</h3>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   {fontFamilyHeading}
                 </p>
               </div>
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Police des sous-titres</p>
+              <p className="text-sm text-muted-foreground mb-2">Police des sous-titres</p>
               <div
-                className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+                className="p-4 bg-muted rounded-lg border border-border"
                 style={{ fontFamily: fontFamilySubheading }}
               >
                 <h4 className="text-lg font-semibold">Sous-titre</h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   {fontFamilySubheading}
                 </p>
               </div>
@@ -1091,12 +1091,12 @@ export function ThemeVisualisationContent() {
                 {Object.entries(typography.fontSize).map(([size, value]) => (
                   <div key={size} className="text-center">
                     <div
-                      className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+                      className="p-3 bg-muted rounded-lg border border-border"
                       style={{ fontSize: value as string }}
                     >
                       <p className="font-medium">Aa</p>
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 capitalize">
+                    <p className="text-xs text-muted-foreground mt-1 capitalize">
                       {size}: {value as string}
                     </p>
                   </div>
@@ -1113,12 +1113,12 @@ export function ThemeVisualisationContent() {
                 {Object.entries(typography.fontWeight).map(([weight, value]) => (
                   <div key={weight} className="text-center">
                     <div
-                      className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+                      className="p-3 bg-muted rounded-lg border border-border"
                       style={{ fontWeight: value as string }}
                     >
                       <p>Exemple</p>
                     </div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 capitalize">
+                    <p className="text-xs text-muted-foreground mt-1 capitalize">
                       {weight}: {value as string}
                     </p>
                   </div>
@@ -1130,8 +1130,8 @@ export function ThemeVisualisationContent() {
           {/* Font URL */}
           {(typography.fontUrl || (config as any).font_url) && (
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">URL de la police</p>
-              <code className="block p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-sm break-all">
+              <p className="text-sm text-muted-foreground mb-2">URL de la police</p>
+              <code className="block p-3 bg-muted rounded-lg border border-border text-sm break-all">
                 {typography.fontUrl || (config as any).font_url}
               </code>
             </div>
@@ -1160,8 +1160,8 @@ export function ThemeVisualisationContent() {
               Exemple
             </div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Valeur</p>
-              <code className="text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+              <p className="text-sm text-muted-foreground mb-1">Valeur</p>
+              <code className="text-sm bg-muted px-2 py-1 rounded">
                 {borderRadius}
               </code>
             </div>
@@ -1181,7 +1181,7 @@ export function ThemeVisualisationContent() {
                         backgroundColor: 'var(--color-primary-500, #3b82f6)'
                       }}
                     />
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 capitalize">
+                    <p className="text-xs text-muted-foreground mt-1 capitalize">
                       {size}: {value as string}
                     </p>
                   </div>
@@ -1205,7 +1205,7 @@ export function ThemeVisualisationContent() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Object.entries(spacing).map(([size, value]) => (
               <div key={size} className="text-center">
-                <div className="flex items-center justify-center h-12 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-center h-12 bg-muted rounded-lg border border-border">
                   <div
                     className="bg-primary-500 rounded"
                     style={{ 
@@ -1215,7 +1215,7 @@ export function ThemeVisualisationContent() {
                     }}
                   />
                 </div>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 capitalize">
+                <p className="text-xs text-muted-foreground mt-1 capitalize">
                   {size}: {value as string}
                 </p>
               </div>
@@ -1246,10 +1246,10 @@ export function ThemeVisualisationContent() {
                     backdropFilter: `blur(${effects.glassmorphism.blur || '10px'}) saturate(${effects.glassmorphism.saturation || '180%'})`,
                   }}
                 >
-                  <p className="text-gray-800 dark:text-gray-200">
+                  <p className="text-foreground">
                     Exemple d'effet glassmorphism
                   </p>
-                  <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                  <div className="mt-2 text-xs text-muted-foreground">
                     Blur: {effects.glassmorphism.blur || '10px'} | 
                     Opacité: {effects.glassmorphism.opacity || 0.1} | 
                     Saturation: {effects.glassmorphism.saturation || '180%'}
@@ -1266,13 +1266,13 @@ export function ThemeVisualisationContent() {
                   {Object.entries(effects.shadows || shadows).map(([name, shadow]) => (
                     <div key={name} className="text-center">
                       <div
-                        className="w-full h-20 bg-white dark:bg-gray-800 rounded-lg mb-2"
+                        className="w-full h-20 bg-background rounded-lg mb-2"
                         style={{ boxShadow: shadow as string }}
                       />
-                      <p className="text-xs text-gray-600 dark:text-gray-400 capitalize">
+                      <p className="text-xs text-muted-foreground capitalize">
                         {name}
                       </p>
-                      <code className="text-xs text-gray-500 dark:text-gray-400 mt-1 block break-all">
+                      <code className="text-xs text-muted-foreground mt-1 block break-all">
                         {String(shadow).substring(0, 30)}...
                       </code>
                     </div>
@@ -1292,7 +1292,7 @@ export function ThemeVisualisationContent() {
                     opacity: effects.gradients.intensity || 0.3,
                   }}
                 />
-                <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                <div className="mt-2 text-xs text-muted-foreground">
                   Direction: {effects.gradients.direction || 'to-br'} | 
                   Intensité: {effects.gradients.intensity || 0.3}
                 </div>
@@ -1337,7 +1337,7 @@ export function ThemeVisualisationContent() {
           <div>
             <p className="text-sm font-medium mb-3">Carte</p>
             <Card title="Exemple de carte" subtitle="Sous-titre de la carte">
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-foreground">
                 Ceci est un exemple de carte utilisant le thème actif. 
                 Les couleurs, polices et styles sont appliqués automatiquement.
               </p>
@@ -1348,7 +1348,7 @@ export function ThemeVisualisationContent() {
 
       {/* Raw Config */}
       <Card title="Configuration Complète (JSON)">
-        <pre className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-x-auto text-xs">
+        <pre className="p-4 bg-muted rounded-lg border border-border overflow-x-auto text-xs">
           {JSON.stringify(config, null, 2)}
         </pre>
       </Card>

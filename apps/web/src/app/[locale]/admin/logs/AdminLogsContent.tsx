@@ -130,7 +130,7 @@ export default function AdminLogsContent() {
       key: 'timestamp',
       label: 'Date/Heure',
       render: (_value, log) => (
-        <span className="text-sm text-gray-600 dark:text-gray-400">
+        <span className="text-sm text-muted-foreground">
           {new Date(log.timestamp).toLocaleString('fr-FR')}
         </span>
       ),
@@ -148,7 +148,7 @@ export default function AdminLogsContent() {
       key: 'event_type',
       label: 'Type',
       render: (_value, log) => (
-        <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+        <span className="text-sm font-medium text-foreground">
           {log.event_type}
         </span>
       ),
@@ -157,7 +157,7 @@ export default function AdminLogsContent() {
       key: 'message',
       label: 'Message',
       render: (_value, log) => (
-        <span className="text-sm text-gray-700 dark:text-gray-300">
+        <span className="text-sm text-foreground">
           {log.message}
         </span>
       ),
@@ -166,7 +166,7 @@ export default function AdminLogsContent() {
       key: 'user_id',
       label: 'Utilisateur',
       render: (_value, log) => (
-        <span className="text-sm text-gray-600 dark:text-gray-400">
+        <span className="text-sm text-muted-foreground">
           {log.user_id ? `ID: ${log.user_id}` : 'Système'}
         </span>
       ),
@@ -175,7 +175,7 @@ export default function AdminLogsContent() {
       key: 'ip_address',
       label: 'IP',
       render: (_value, log) => (
-        <span className="text-xs text-gray-500 dark:text-gray-500">
+        <span className="text-xs text-muted-foreground">
           {log.ip_address || '-'}
         </span>
       ),

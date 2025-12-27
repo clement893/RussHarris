@@ -294,7 +294,7 @@ export function ThemeManagementContent() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-primary-500" />
-          <p className="text-gray-600 dark:text-gray-400">Chargement des thèmes...</p>
+          <p className="text-muted-foreground">Chargement des thèmes...</p>
         </div>
       </div>
     );
@@ -305,11 +305,11 @@ export function ThemeManagementContent() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
             <Palette className="w-8 h-8" />
             Gestion des Thèmes
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-muted-foreground mt-2">
             Gérez les thèmes de la plateforme. Activez un thème pour l'appliquer à tous les utilisateurs.
           </p>
         </div>
@@ -335,11 +335,11 @@ export function ThemeManagementContent() {
       {/* Themes Grid */}
       {themes.length === 0 ? (
         <Card className="text-center py-12">
-          <Palette className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+          <Palette className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+          <h3 className="text-xl font-semibold text-foreground mb-2">
             Aucun thème trouvé
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-muted-foreground mb-6">
             Créez votre premier thème pour commencer.
           </p>
           <Button onClick={() => setShowCreateModal(true)} variant="primary">
@@ -367,16 +367,16 @@ export function ThemeManagementContent() {
 
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  <h3 className="text-xl font-semibold text-foreground">
                     {theme.display_name}
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 font-mono">
+                  <p className="text-sm text-muted-foreground font-mono">
                     {theme.name}
                   </p>
                 </div>
 
                 {theme.description && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     {theme.description}
                   </p>
                 )}
@@ -385,28 +385,28 @@ export function ThemeManagementContent() {
                 <div className="flex gap-2">
                   {(theme.config.primary_color || (theme.config as any).colors?.primary) && (
                     <div
-                      className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-700"
+                      className="w-8 h-8 rounded-full border-2 border-border"
                       style={{ backgroundColor: theme.config.primary_color || (theme.config as any).colors?.primary }}
                       title="Primary"
                     />
                   )}
                   {(theme.config.secondary_color || (theme.config as any).colors?.secondary) && (
                     <div
-                      className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-700"
+                      className="w-8 h-8 rounded-full border-2 border-border"
                       style={{ backgroundColor: theme.config.secondary_color || (theme.config as any).colors?.secondary }}
                       title="Secondary"
                     />
                   )}
                   {(theme.config.danger_color || (theme.config as any).colors?.danger || (theme.config as any).colors?.destructive) && (
                     <div
-                      className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-700"
+                      className="w-8 h-8 rounded-full border-2 border-border"
                       style={{ backgroundColor: theme.config.danger_color || (theme.config as any).colors?.danger || (theme.config as any).colors?.destructive }}
                       title="Danger"
                     />
                   )}
                 </div>
 
-                <div className="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex gap-2 pt-4 border-t border-border">
                   {!theme.is_active && (
                     <Button
                       onClick={() => handleActivateTheme(theme.id)}
@@ -504,10 +504,10 @@ export function ThemeManagementContent() {
           />
 
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Couleurs</h3>
+            <h3 className="text-sm font-semibold text-foreground">Couleurs</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Couleur principale
                 </label>
                 <input
@@ -519,11 +519,11 @@ export function ThemeManagementContent() {
                       config: { ...newTheme.config, primary_color: e.target.value },
                     })
                   }
-                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                  className="w-full h-10 rounded border border-border"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Couleur secondaire
                 </label>
                 <input
@@ -535,11 +535,11 @@ export function ThemeManagementContent() {
                       config: { ...newTheme.config, secondary_color: e.target.value },
                     })
                   }
-                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                  className="w-full h-10 rounded border border-border"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Danger
                 </label>
                 <input
@@ -551,11 +551,11 @@ export function ThemeManagementContent() {
                       config: { ...newTheme.config, danger_color: e.target.value },
                     })
                   }
-                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                  className="w-full h-10 rounded border border-border"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Warning
                 </label>
                 <input
@@ -567,11 +567,11 @@ export function ThemeManagementContent() {
                       config: { ...newTheme.config, warning_color: e.target.value },
                     })
                   }
-                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                  className="w-full h-10 rounded border border-border"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Info
                 </label>
                 <input
@@ -583,11 +583,11 @@ export function ThemeManagementContent() {
                       config: { ...newTheme.config, info_color: e.target.value },
                     })
                   }
-                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                  className="w-full h-10 rounded border border-border"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Success
                 </label>
                 <input
@@ -599,14 +599,14 @@ export function ThemeManagementContent() {
                       config: { ...newTheme.config, success_color: e.target.value },
                     })
                   }
-                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                  className="w-full h-10 rounded border border-border"
                 />
               </div>
             </div>
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Typographie</h3>
+            <h3 className="text-sm font-semibold text-foreground">Typographie</h3>
             <Input
               label="Police de caractères"
               value={newTheme.config.font_family || ''}
@@ -622,7 +622,7 @@ export function ThemeManagementContent() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Apparence</h3>
+            <h3 className="text-sm font-semibold text-foreground">Apparence</h3>
             <Input
               label="Border Radius"
               value={newTheme.config.border_radius || DEFAULT_THEME_CONFIG.border_radius}
@@ -670,7 +670,7 @@ export function ThemeManagementContent() {
       >
         {themeToDelete && (
           <div className="space-y-4">
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-muted-foreground">
               Êtes-vous sûr de vouloir supprimer le thème{' '}
               <strong>{themeToDelete.display_name}</strong> ?
             </p>

@@ -163,16 +163,16 @@ export default function AdminStatisticsContent() {
               {statCards.map((stat, index) => (
                 <Card key={index} className="p-6">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    <h3 className="text-sm font-medium text-muted-foreground">
                       {stat.title}
                     </h3>
                     <Badge variant={stat.variant}>{stat.value.toLocaleString('fr-FR')}</Badge>
                   </div>
                   <div className="mt-2">
-                    <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                    <p className="text-3xl font-bold text-foreground">
                       {stat.value.toLocaleString('fr-FR')}
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       {stat.description}
                     </p>
                   </div>
@@ -184,7 +184,7 @@ export default function AdminStatisticsContent() {
           <Section title="Métriques détaillées" className="mt-8">
             <Card>
               <div className="p-6">
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-muted-foreground">
                   Les métriques détaillées seront disponibles prochainement.
                 </p>
               </div>

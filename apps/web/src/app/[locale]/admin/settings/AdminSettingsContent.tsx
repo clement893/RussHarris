@@ -82,10 +82,10 @@ export default function AdminSettingsContent() {
           <Card className="p-6 space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                <label className="text-sm font-medium text-foreground">
                   Mode maintenance
                 </label>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   Active le mode maintenance pour restreindre l'accès au système
                 </p>
               </div>
@@ -97,10 +97,10 @@ export default function AdminSettingsContent() {
 
             <div className="flex items-center justify-between">
               <div>
-                <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                <label className="text-sm font-medium text-foreground">
                   Inscriptions activées
                 </label>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   Permet aux nouveaux utilisateurs de s'inscrire
                 </p>
               </div>
@@ -112,10 +112,10 @@ export default function AdminSettingsContent() {
 
             <div className="flex items-center justify-between">
               <div>
-                <label className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                <label className="text-sm font-medium text-foreground">
                   Vérification email requise
                 </label>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   Les utilisateurs doivent vérifier leur email pour activer leur compte
                 </p>
               </div>

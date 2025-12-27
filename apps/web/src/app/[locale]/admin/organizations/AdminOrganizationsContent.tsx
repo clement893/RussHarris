@@ -132,9 +132,9 @@ export default function AdminOrganizationsContent() {
       label: 'Nom',
       render: (_value, team) => (
         <div>
-          <div className="font-medium text-gray-900 dark:text-gray-100">{team.name}</div>
+          <div className="font-medium text-foreground">{team.name}</div>
           {team.description && (
-            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{team.description}</div>
+            <div className="text-sm text-muted-foreground mt-1">{team.description}</div>
           )}
         </div>
       ),
@@ -150,7 +150,7 @@ export default function AdminOrganizationsContent() {
       key: 'created_at',
       label: 'Créé le',
       render: (_value, team) => (
-        <span className="text-sm text-gray-600 dark:text-gray-400">
+        <span className="text-sm text-muted-foreground">
           {new Date(team.created_at).toLocaleDateString('fr-FR')}
         </span>
       ),
