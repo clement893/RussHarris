@@ -815,8 +815,14 @@ export function ThemeVisualisationContent() {
                           // This ensures the JSON is properly formatted
                           setJsonInput(JSON.stringify(updatedConfig, null, 2));
                           
-                          setSuccessMessage('Configuration JSON appliquée avec succès !');
-                          setTimeout(() => setSuccessMessage(null), 3000);
+                          // If this is the active theme, apply the changes immediately for preview
+                          if (theme?.is_active) {
+                            applyThemeConfigDirectly(updatedConfig);
+                            setSuccessMessage('Configuration JSON appliquée avec succès ! Les changements sont visibles immédiatement (aperçu).');
+                          } else {
+                            setSuccessMessage('Configuration JSON appliquée avec succès ! Sauvegardez pour appliquer les changements.');
+                          }
+                          setTimeout(() => setSuccessMessage(null), 5000);
                           setError(null);
                         } catch (err) {
                           const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue';
