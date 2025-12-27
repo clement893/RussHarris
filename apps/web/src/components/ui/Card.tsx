@@ -79,7 +79,6 @@
 'use client';
 
 import { type ReactNode, type HTMLAttributes } from 'react';
-import { logger } from '@/lib/logger';
 import { clsx } from 'clsx';
 
 export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onClick'> {

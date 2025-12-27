@@ -45,7 +45,8 @@ function sendToAnalytics(metric: WebVitalsMetric) {
   
   // Also log to console in development
   if (process.env.NODE_ENV === 'development') {
-    logger.log('[Web Vitals]', metric.name, {
+    logger.log('[Web Vitals]', {
+      name: metric.name,
       value: metric.value,
       rating: metric.rating,
     });

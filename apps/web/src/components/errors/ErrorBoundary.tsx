@@ -30,7 +30,7 @@
 'use client';
 
 import { Component, ErrorInfo, ReactNode } from 'react';
-import { logger } from '@/lib/logger';
+import { logger, type LogContext } from '@/lib/logger';
 import * as Sentry from '@sentry/nextjs';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -95,7 +95,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
-      logger.error('', 'ErrorBoundary caught an error:', error, errorInfo);
+      logger.error('ErrorBoundary caught an error', error, errorInfo as LogContext);
     }
   }
 

@@ -9,9 +9,7 @@
  * @module logger
  */
 
-export interface LogContext {
-  [key: string]: unknown;
-}
+export type LogContext = Record<string, unknown> | unknown;
 
 class SecureLogger {
   private isDevelopment = process.env.NODE_ENV === 'development';
@@ -19,8 +17,13 @@ class SecureLogger {
   /**
    * Sanitize sensitive data from log context
    */
-  private sanitize(context: LogContext | undefined): LogContext | undefined {
+  private sanitize(context: LogContext | undefined): Record<string, unknown> | undefined {
     if (!context) return undefined;
+
+    // If context is not an object, return it as-is wrapped
+    if (typeof context !== 'object' || context === null || Array.isArray(context)) {
+      return { value: context };
+    }
 
     const sensitiveKeys = [
       'password',
@@ -37,7 +40,7 @@ class SecureLogger {
       'cvv',
     ];
 
-    const sanitized = { ...context };
+    const sanitized = { ...context as Record<string, unknown> };
     for (const key in sanitized) {
       const keyLower = key.toLowerCase();
       if (sensitiveKeys.some(sensitive => keyLower.includes(sensitive))) {
@@ -51,52 +54,52 @@ class SecureLogger {
   /**
    * Log a message (only in development)
    */
-  log(message: string, context?: LogContext): void {
+  log(message: string, context?: unknown): void {
     if (!this.isDevelopment) return;
-    const sanitized = this.sanitize(context);
+    const sanitized = this.sanitize(context as LogContext);
     console.log(`[LOG] ${message}`, sanitized || '');
   }
 
   /**
    * Log an info message (only in development)
    */
-  info(message: string, context?: LogContext): void {
+  info(message: string, context?: unknown): void {
     if (!this.isDevelopment) return;
-    const sanitized = this.sanitize(context);
+    const sanitized = this.sanitize(context as LogContext);
     console.info(`[INFO] ${message}`, sanitized || '');
   }
 
   /**
    * Log a warning (always logged, but sanitized)
    */
-  warn(message: string, context?: LogContext): void {
-    const sanitized = this.sanitize(context);
+  warn(message: string, context?: unknown): void {
+    const sanitized = this.sanitize(context as LogContext);
     console.warn(`[WARN] ${message}`, sanitized || '');
   }
 
   /**
    * Log an error (always logged, but sanitized)
    */
-  error(message: string, error?: Error | unknown, context?: LogContext): void {
-    const sanitized = this.sanitize(context);
+  error(message: string, error?: Error | unknown, context?: unknown): void {
+    const sanitized = this.sanitize(context as LogContext);
     console.error(`[ERROR] ${message}`, error || '', sanitized || '');
   }
 
   /**
    * Log a debug message (only in development)
    */
-  debug(message: string, context?: LogContext): void {
+  debug(message: string, context?: unknown): void {
     if (!this.isDevelopment) return;
-    const sanitized = this.sanitize(context);
+    const sanitized = this.sanitize(context as LogContext);
     console.debug(`[DEBUG] ${message}`, sanitized || '');
   }
 
   /**
    * Log a user action (only in development)
    */
-  userAction(action: string, context?: LogContext): void {
+  userAction(action: string, context?: unknown): void {
     if (!this.isDevelopment) return;
-    const sanitized = this.sanitize(context);
+    const sanitized = this.sanitize(context as LogContext);
     console.log(`[USER_ACTION] ${action}`, sanitized || '');
   }
 

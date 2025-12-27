@@ -9,7 +9,6 @@
  */
 
 import { AxiosError } from 'axios';
-import { logger } from '@/lib/logger';
 import {
   AppError,
   BadRequestError,

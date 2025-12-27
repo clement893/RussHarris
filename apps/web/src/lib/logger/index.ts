@@ -1,4 +1,3 @@
-import { logger } from '@/lib/logger';
 /**
  * Structured Logging for Frontend
  * Provides consistent logging with levels and context
@@ -11,38 +10,51 @@ export enum LogLevel {
   ERROR = 'error',
 }
 
-export interface LogContext {
-  [key: string]: unknown;
-}
+export type LogContext = Record<string, unknown> | unknown;
 
 class Logger {
   private isDevelopment = process.env.NODE_ENV === 'development';
 
-  private formatMessage(level: LogLevel, message: string, context?: LogContext): string {
+  private formatMessage(level: LogLevel, message: string, context?: unknown): string {
     const timestamp = new Date().toISOString();
-    const contextStr = context ? ` ${JSON.stringify(context)}` : '';
+    let contextStr = '';
+    if (context) {
+      try {
+        const contextObj = typeof context === 'object' && context !== null && !Array.isArray(context)
+          ? (context as Record<string, unknown>)
+          : { value: context };
+        contextStr = ` ${JSON.stringify(contextObj)}`;
+      } catch {
+        contextStr = ` ${String(context)}`;
+      }
+    }
     return `[${timestamp}] [${level.toUpperCase()}] ${message}${contextStr}`;
   }
 
-  private log(level: LogLevel, message: string, context?: LogContext): void {
+  private log(level: LogLevel, message: string, context?: unknown): void {
     if (!this.isDevelopment && level === LogLevel.DEBUG) {
       return;
     }
 
     const formattedMessage = this.formatMessage(level, message, context);
 
+    // Convert context to LogContext format
+    const logContext: Record<string, unknown> = typeof context === 'object' && context !== null && !Array.isArray(context)
+      ? (context as Record<string, unknown>)
+      : { value: context };
+
     switch (level) {
       case LogLevel.DEBUG:
-        logger.debug('', { message: formattedMessage });
+        console.debug(`[DEBUG] ${formattedMessage}`, logContext);
         break;
       case LogLevel.INFO:
-        logger.info('', { message: formattedMessage });
+        console.info(`[INFO] ${formattedMessage}`, logContext);
         break;
       case LogLevel.WARN:
-        logger.warn('', { message: formattedMessage });
+        console.warn(`[WARN] ${formattedMessage}`, logContext);
         break;
       case LogLevel.ERROR:
-        logger.error('', { message: formattedMessage });
+        console.error(`[ERROR] ${formattedMessage}`, logContext);
         break;
     }
 
@@ -51,10 +63,13 @@ class Logger {
       // Use dynamic import to avoid bundling Sentry if not installed
       import('@/lib/sentry/client')
         .then(({ captureException }) => {
-          const error = context?.error instanceof Error 
-            ? context.error 
+          const contextObj = typeof context === 'object' && context !== null && !Array.isArray(context)
+            ? (context as Record<string, unknown>)
+            : {};
+          const error = (contextObj as { error?: unknown })?.error instanceof Error 
+            ? (contextObj as { error: Error }).error 
             : new Error(message);
-          captureException(error, context);
+          captureException(error, contextObj);
         })
         .catch(() => {
           // Sentry not available or not configured, continue silently
@@ -62,23 +77,26 @@ class Logger {
     }
   }
 
-  debug(message: string, context?: LogContext): void {
+  debug(message: string, context?: unknown): void {
     this.log(LogLevel.DEBUG, message, context);
   }
 
-  info(message: string, context?: LogContext): void {
+  info(message: string, context?: unknown): void {
     this.log(LogLevel.INFO, message, context);
   }
 
-  warn(message: string, context?: LogContext): void {
+  warn(message: string, context?: unknown): void {
     this.log(LogLevel.WARN, message, context);
   }
 
-  error(message: string, error?: Error | unknown, context?: LogContext): void {
+  error(message: string, error?: Error | unknown, context?: unknown): void {
     const errorMessage = error instanceof Error ? error.message : (error ? String(error) : '');
     const fullMessage = errorMessage ? `${message}: ${errorMessage}` : message;
+    const contextObj = typeof context === 'object' && context !== null && !Array.isArray(context)
+      ? (context as Record<string, unknown>)
+      : {};
     const errorContext = {
-      ...context,
+      ...contextObj,
       error: error instanceof Error ? {
         name: error.name,
         message: error.message,
@@ -88,9 +106,10 @@ class Logger {
     this.log(LogLevel.ERROR, fullMessage, errorContext);
   }
 
-  performance(message: string, context?: LogContext): void {
+  performance(label: string, value: number | string, unit?: string): void {
     // Performance logs are treated as INFO level
-    this.log(LogLevel.INFO, message, context);
+    const unitStr = unit ? ` ${unit}` : '';
+    this.log(LogLevel.INFO, `${label}: ${value}${unitStr}`);
   }
 }
 

@@ -57,7 +57,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         })
         .catch((importError) => {
           // Fallback to console if logger import fails
-          logger.error('', 'ErrorBoundary caught an error (logger unavailable):', error, {
+          logger.error('ErrorBoundary caught an error (logger unavailable)', error, {
             componentStack: errorInfo.componentStack,
             importError,
           });

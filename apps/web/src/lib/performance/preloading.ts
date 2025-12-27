@@ -85,7 +85,7 @@ export function preloadAPIEndpoint(endpoint: string) {
   } catch (error) {
     // Silently fail preloading - it's a performance optimization, not critical
     if (process.env.NODE_ENV === 'development') {
-      logger.warn('Failed to preload API endpoint:', endpoint, error);
+      logger.warn('Failed to preload API endpoint', { endpoint, error });
     }
   }
 }

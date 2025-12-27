@@ -9,7 +9,6 @@
  */
 
 import { apiClient } from './client';
-import { logger } from '@/lib/logger';
 
 /**
  * Client Dashboard Statistics

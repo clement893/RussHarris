@@ -26,7 +26,6 @@
  */
 
 import DOMPurify from 'isomorphic-dompurify';
-import { logger } from '@/lib/logger';
 
 /**
  * Maximum input lengths for different field types
