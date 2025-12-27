@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { listThemes, activateTheme, createTheme, deleteTheme, getActiveTheme } from '@/lib/api/theme';
+import { useGlobalTheme } from '@/lib/theme/global-theme-provider';
+import { DEFAULT_THEME_CONFIG } from '@/lib/theme/default-theme-config';
 import type { Theme, ThemeCreate, ThemeListResponse } from '@modele/types';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -24,6 +26,7 @@ import { logger } from '@/lib/logger';
 export function ThemeManagementContent() {
   const router = useRouter();
   const { showToast } = useToast();
+  const { refreshTheme } = useGlobalTheme();
   const [themes, setThemes] = useState<Theme[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,23 +35,24 @@ export function ThemeManagementContent() {
   const [themeToDelete, setThemeToDelete] = useState<Theme | null>(null);
   const [activatingId, setActivatingId] = useState<number | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [creating, setCreating] = useState(false);
 
-  // Form state for creating new theme
+  // Form state for creating new theme - use comprehensive default config
   const [newTheme, setNewTheme] = useState<ThemeCreate>({
     name: '',
     display_name: '',
     description: '',
     config: {
-      primary_color: '#3b82f6',
-      secondary_color: '#8b5cf6',
-      danger_color: '#ef4444',
-      warning_color: '#f59e0b',
-      info_color: '#06b6d4',
-      success_color: '#10b981',
-      font_family: 'Inter',
-      border_radius: '8px',
-      mode: 'system', // Add mode field
+      ...DEFAULT_THEME_CONFIG,
+      // Override with user-selected colors
+      primary_color: DEFAULT_THEME_CONFIG.primary_color,
+      secondary_color: DEFAULT_THEME_CONFIG.secondary_color,
+      danger_color: DEFAULT_THEME_CONFIG.danger_color,
+      warning_color: DEFAULT_THEME_CONFIG.warning_color,
+      info_color: DEFAULT_THEME_CONFIG.info_color,
+      success_color: DEFAULT_THEME_CONFIG.success_color,
     },
+    is_active: false, // Don't activate by default
   });
 
   const fetchThemes = async () => {
@@ -75,12 +79,14 @@ export function ThemeManagementContent() {
       setActivatingId(themeId);
       await activateTheme(themeId);
       await fetchThemes(); // Refresh list
+      
+      // Refresh global theme immediately to apply changes site-wide
+      await refreshTheme();
+      
       showToast({
         message: 'Le thème a été activé avec succès.',
         type: 'success',
       });
-      // Refresh active theme in the app
-      await getActiveTheme();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to activate theme';
       showToast({
@@ -104,26 +110,70 @@ export function ThemeManagementContent() {
         return;
       }
 
-      await createTheme(newTheme);
+      // Validate name format (lowercase, dashes, underscores only)
+      const nameRegex = /^[a-z0-9_-]+$/;
+      if (!nameRegex.test(newTheme.name)) {
+        showToast({
+          message: 'Le nom technique doit contenir uniquement des lettres minuscules, chiffres, tirets et underscores.',
+          type: 'error',
+        });
+        return;
+      }
+
+      setCreating(true);
+      
+      // Ensure config has all required fields from default config
+      const themeToCreate: ThemeCreate = {
+        ...newTheme,
+        config: {
+          ...DEFAULT_THEME_CONFIG,
+          ...newTheme.config,
+          // Ensure colors are set in both formats for compatibility
+          primary_color: newTheme.config.primary_color || DEFAULT_THEME_CONFIG.primary_color,
+          secondary_color: newTheme.config.secondary_color || DEFAULT_THEME_CONFIG.secondary_color,
+          danger_color: newTheme.config.danger_color || DEFAULT_THEME_CONFIG.danger_color,
+          warning_color: newTheme.config.warning_color || DEFAULT_THEME_CONFIG.warning_color,
+          info_color: newTheme.config.info_color || DEFAULT_THEME_CONFIG.info_color,
+          success_color: newTheme.config.success_color || DEFAULT_THEME_CONFIG.success_color,
+          colors: {
+            ...DEFAULT_THEME_CONFIG.colors,
+            primary: newTheme.config.primary_color || DEFAULT_THEME_CONFIG.primary_color,
+            secondary: newTheme.config.secondary_color || DEFAULT_THEME_CONFIG.secondary_color,
+            danger: newTheme.config.danger_color || DEFAULT_THEME_CONFIG.danger_color,
+            warning: newTheme.config.warning_color || DEFAULT_THEME_CONFIG.warning_color,
+            info: newTheme.config.info_color || DEFAULT_THEME_CONFIG.info_color,
+            success: newTheme.config.success_color || DEFAULT_THEME_CONFIG.success_color,
+          },
+        },
+      };
+
+      await createTheme(themeToCreate);
       setShowCreateModal(false);
-      // Reset form
+      
+      // Reset form to default
       setNewTheme({
         name: '',
         display_name: '',
         description: '',
         config: {
-          primary_color: '#3b82f6',
-          secondary_color: '#8b5cf6',
-          danger_color: '#ef4444',
-          warning_color: '#f59e0b',
-          info_color: '#06b6d4',
-          success_color: '#10b981',
-          font_family: 'Inter',
-          border_radius: '8px',
-          mode: 'system',
+          ...DEFAULT_THEME_CONFIG,
+          primary_color: DEFAULT_THEME_CONFIG.primary_color,
+          secondary_color: DEFAULT_THEME_CONFIG.secondary_color,
+          danger_color: DEFAULT_THEME_CONFIG.danger_color,
+          warning_color: DEFAULT_THEME_CONFIG.warning_color,
+          info_color: DEFAULT_THEME_CONFIG.info_color,
+          success_color: DEFAULT_THEME_CONFIG.success_color,
         },
+        is_active: false,
       });
+      
       await fetchThemes(); // Refresh list
+      
+      // If the new theme was set as active, refresh global theme
+      if (themeToCreate.is_active) {
+        await refreshTheme();
+      }
+      
       showToast({
         message: 'Le nouveau thème a été créé avec succès.',
         type: 'success',
@@ -135,6 +185,8 @@ export function ThemeManagementContent() {
         type: 'error',
       });
       logger.error('Failed to create theme', err instanceof Error ? err : new Error(String(err)));
+    } finally {
+      setCreating(false);
     }
   };
 
