@@ -4,7 +4,7 @@ User Preferences API Endpoints
 
 from typing import Dict, Any, Optional
 from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException, status, Body
+from fastapi import APIRouter, Depends, HTTPException, status, Body, Response
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from sqlalchemy.exc import ProgrammingError, OperationalError
@@ -70,11 +70,11 @@ class PreferencesDictResponse(BaseModel):
         }
 
 
-@router.get("/preferences", tags=["user-preferences"])
+@router.get("/preferences", response_model=None, tags=["user-preferences"])
 async def get_all_preferences(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
-):
+) -> JSONResponse:
     """Get all preferences for the current user"""
     try:
         service = UserPreferenceService(db)
@@ -112,12 +112,12 @@ async def get_all_preferences(
         )
 
 
-@router.get("/preferences/{key}", tags=["user-preferences"])
+@router.get("/preferences/{key}", response_model=None, tags=["user-preferences"])
 async def get_preference(
     key: str,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
-):
+) -> JSONResponse:
     """Get a specific preference for the current user"""
     try:
         service = UserPreferenceService(db)
@@ -162,7 +162,11 @@ async def set_preference(
         )
         # Clean the preference value to ensure JSON serialization
         cleaned_value = clean_preference_value(preference.value)
-        return PreferenceResponse(key=preference.key, value=cleaned_value)
+        # Convert to JSONResponse for slowapi compatibility
+        return JSONResponse(
+            content={"key": preference.key, "value": cleaned_value},
+            status_code=200
+        )
     except Exception as e:
         from app.core.logging import logger
         logger.error(f"Error setting preference {key}: {e}", exc_info=True)
@@ -172,17 +176,21 @@ async def set_preference(
         )
 
 
-@router.put("/preferences", tags=["user-preferences"])
+@router.put("/preferences", response_model=None, tags=["user-preferences"])
 async def set_preferences(
     preferences: Dict[str, Any] = Body(...),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
-):
+) -> JSONResponse:
     """Set multiple preferences at once"""
     try:
         service = UserPreferenceService(db)
         await service.set_preferences(current_user.id, preferences)
-        return {"success": True, "message": "Preferences updated successfully"}
+        # Convert to JSONResponse for slowapi compatibility
+        return JSONResponse(
+            content={"success": True, "message": "Preferences updated successfully"},
+            status_code=200
+        )
     except Exception as e:
         from app.core.logging import logger
         logger.error(f"Error setting preferences: {e}", exc_info=True)
@@ -192,32 +200,40 @@ async def set_preferences(
         )
 
 
-@router.delete("/preferences/{key}", tags=["user-preferences"])
+@router.delete("/preferences/{key}", response_model=None, tags=["user-preferences"])
 async def delete_preference(
     key: str,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
-):
+) -> JSONResponse:
     """Delete a specific preference"""
     service = UserPreferenceService(db)
     success = await service.delete_preference(current_user.id, key)
     if success:
-        return {"success": True, "message": "Preference deleted successfully"}
+        # Convert to JSONResponse for slowapi compatibility
+        return JSONResponse(
+            content={"success": True, "message": "Preference deleted successfully"},
+            status_code=200
+        )
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail="Preference not found"
     )
 
 
-@router.delete("/preferences", tags=["user-preferences"])
+@router.delete("/preferences", response_model=None, tags=["user-preferences"])
 async def delete_all_preferences(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
-):
+) -> JSONResponse:
     """Delete all preferences for the current user"""
     service = UserPreferenceService(db)
     count = await service.delete_all_preferences(current_user.id)
-    return {"success": True, "message": f"Deleted {count} preferences"}
+    # Convert to JSONResponse for slowapi compatibility
+    return JSONResponse(
+        content={"success": True, "message": f"Deleted {count} preferences"},
+        status_code=200
+    )
 
 
 
