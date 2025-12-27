@@ -187,6 +187,7 @@ export default async function LocaleLayout({
               
               /* Apply background colors immediately to prevent flash */
               /* Use CSS variables to avoid conflicts with React hydration */
+              /* Body styles are set via inline style prop in layout.tsx, this CSS ensures fallback */
               body {
                 background-color: var(--color-background, #ffffff);
                 color: var(--color-foreground, #0f172a);
@@ -238,6 +239,8 @@ export default async function LocaleLayout({
           color: 'var(--color-foreground, #0f172a)'
         }}
         suppressHydrationWarning
+        // Note: suppressHydrationWarning can be removed after testing confirms no hydration errors
+        // We've fixed the root cause (removed direct body style manipulation from inline script)
       >
         <SkipLink />
         <SchemaMarkup

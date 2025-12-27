@@ -12,7 +12,20 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+// Default context value to prevent "useTheme must be used within a ThemeProvider" errors
+// This ensures the hook always works, even during SSR/hydration before mounted state
+const defaultContextValue: ThemeContextType = {
+  theme: 'system',
+  resolvedTheme: 'light',
+  setTheme: () => {
+    // No-op during SSR/hydration
+  },
+  toggleTheme: () => {
+    // No-op during SSR/hydration
+  },
+};
+
+const ThemeContext = createContext<ThemeContextType>(defaultContextValue);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('system');
@@ -129,22 +142,22 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme(newTheme);
   };
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
+  // Always render the Provider to prevent "useTheme must be used within a ThemeProvider" errors
+  // Use default values during SSR/hydration, then switch to actual values when mounted
+  const contextValue = mounted
+    ? { theme, resolvedTheme, setTheme, toggleTheme }
+    : defaultContextValue;
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme, toggleTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
 }
 
 export function useTheme() {
+  // Context always has a value now (defaultContextValue), so no need to check for undefined
   const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
-  }
   return context;
 }
 
