@@ -381,11 +381,11 @@ export default function SurveyTaker({
               </div>
               {value !== undefined && value !== null && (
                 <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {Number(value) <= 6 && <span className="text-red-500">{t('detractor') || 'Detractor'}</span>}
+                  {Number(value) <= 6 && <span className="text-danger-500">{t('detractor') || 'Detractor'}</span>}
                   {Number(value) >= 7 && Number(value) <= 8 && (
-                    <span className="text-yellow-500">{t('passive') || 'Passive'}</span>
+                    <span className="text-warning-500">{t('passive') || 'Passive'}</span>
                   )}
-                  {Number(value) >= 9 && <span className="text-green-500">{t('promoter') || 'Promoter'}</span>}
+                  {Number(value) >= 9 && <span className="text-success-500">{t('promoter') || 'Promoter'}</span>}
                 </div>
               )}
             </div>
