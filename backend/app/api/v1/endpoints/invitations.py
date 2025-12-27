@@ -146,7 +146,7 @@ async def accept_invitation(
     return InvitationResponse.model_validate(invitation)
 
 
-@router.post("/{invitation_id}/cancel", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{invitation_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def cancel_invitation(
     invitation_id: int,
     current_user: User = Depends(get_current_user),
