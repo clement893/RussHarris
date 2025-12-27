@@ -310,11 +310,16 @@ export function ThemeVisualisationContent() {
 
       {/* Theme Editor */}
       {canEdit && isEditing && editedConfig && (
-        <Card title="Éditer le TemplateTheme">
+        <Card title={`Éditer le thème: ${theme.display_name}`}>
           <div className="space-y-6">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Modifiez les propriétés du TemplateTheme (ID: 32). Les changements seront appliqués à toute l'application.
-            </p>
+            <Alert variant="info" title="Information">
+              Modifiez les propriétés du thème "{theme.display_name}" (ID: {theme.id}). Les changements seront appliqués immédiatement.
+              {theme.is_active && (
+                <span className="block mt-2 font-semibold text-primary-600 dark:text-primary-400">
+                  ⚠️ Ce thème est actuellement actif. Les modifications seront visibles sur tout le site.
+                </span>
+              )}
+            </Alert>
 
             {/* Colors Section */}
             <div>

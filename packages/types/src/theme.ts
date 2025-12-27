@@ -55,4 +55,5 @@ export interface ThemeConfigResponse {
   name: string;
   display_name: string;
   config: ThemeConfig;
+  is_active?: boolean;
 }
