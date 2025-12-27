@@ -14,6 +14,7 @@
 | Batch 3 | ✅ Done | ~27-40% | 7 components | TBD |
 | Batch 4 | ✅ Done | ~30-44% | 5 components | TBD |
 | Batch 5 | ✅ Done | ~32-47% | 4 components | TBD |
+| Batch 6 | ✅ Done | ~34-50% | 4 components | TBD |
 | Batch 2 | 🔴 Not Started | - | 5 | - |
 | Batch 3 | 🔴 Not Started | - | 7 | - |
 | Batch 4 | 🔴 Not Started | - | 5 | - |
