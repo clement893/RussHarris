@@ -325,24 +325,24 @@ export function ThemeManagementContent() {
 
                 {/* Color Preview */}
                 <div className="flex gap-2">
-                  {theme.config.primary_color && (
+                  {(theme.config.primary_color || (theme.config as any).colors?.primary) && (
                     <div
                       className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-700"
-                      style={{ backgroundColor: theme.config.primary_color }}
+                      style={{ backgroundColor: theme.config.primary_color || (theme.config as any).colors?.primary }}
                       title="Primary"
                     />
                   )}
-                  {theme.config.secondary_color && (
+                  {(theme.config.secondary_color || (theme.config as any).colors?.secondary) && (
                     <div
                       className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-700"
-                      style={{ backgroundColor: theme.config.secondary_color }}
+                      style={{ backgroundColor: theme.config.secondary_color || (theme.config as any).colors?.secondary }}
                       title="Secondary"
                     />
                   )}
-                  {theme.config.danger_color && (
+                  {(theme.config.danger_color || (theme.config as any).colors?.danger || (theme.config as any).colors?.destructive) && (
                     <div
                       className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-gray-700"
-                      style={{ backgroundColor: theme.config.danger_color }}
+                      style={{ backgroundColor: theme.config.danger_color || (theme.config as any).colors?.danger || (theme.config as any).colors?.destructive }}
                       title="Danger"
                     />
                   )}
