@@ -70,9 +70,15 @@ export function ThemeForm({ formData, onChange }: ThemeFormProps) {
           onChange={(e) => onChange('description', e.target.value)}
           placeholder="Description du thème..."
           rows={3}
+          disabled={formData.name === 'template-theme' || formData.name === 'TemplateTheme'}
         />
         <p className="text-xs text-muted-foreground mt-1">
           Description optionnelle du thème
+          {(formData.name === 'template-theme' || formData.name === 'TemplateTheme') && (
+            <span className="block mt-1 text-warning-600 dark:text-warning-400">
+              ⚠ Le TemplateTheme ne peut pas avoir sa description modifiée
+            </span>
+          )}
         </p>
       </div>
 
