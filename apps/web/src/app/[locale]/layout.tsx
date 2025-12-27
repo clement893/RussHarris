@@ -174,15 +174,15 @@ export default async function LocaleLayout({
                 --color-ring: #2563eb;
               }
               
-              @media (prefers-color-scheme: dark) {
-                :root {
-                  --color-background: #0f172a;
-                  --color-foreground: #f1f5f9;
-                  --color-muted: #1e293b;
-                  --color-muted-foreground: #94a3b8;
-                  --color-border: #334155;
-                  --color-input: #1e293b;
-                }
+              /* Dark mode styles - Use .dark class instead of @media for user preference */
+              /* This ensures styles apply when user chooses dark mode, not just system preference */
+              .dark {
+                --color-background: #1f2937;
+                --color-foreground: #ffffff;
+                --color-muted: #111827;
+                --color-muted-foreground: #d1d5db;
+                --color-border: #374151;
+                --color-input: #1f2937;
               }
               
               /* Apply background colors immediately to prevent flash */
@@ -193,11 +193,10 @@ export default async function LocaleLayout({
                 color: var(--color-foreground, #0f172a);
               }
               
-              @media (prefers-color-scheme: dark) {
-                body {
-                  background-color: var(--color-background, #0f172a);
-                  color: var(--color-foreground, #f1f5f9);
-                }
+              /* Dark mode body styles - Use .dark class instead of @media */
+              .dark body {
+                background-color: var(--color-background, #1f2937);
+                color: var(--color-foreground, #ffffff);
               }
             `,
           }}
