@@ -1,11 +1,18 @@
 /**
  * Inline script to apply theme before React hydration
  * This prevents FOUC (Flash of Unstyled Content) on hard refresh
+ * 
+ * IMPORTANT: This script must execute IMMEDIATELY and SYNCHRONOUSLY
+ * to prevent any color flash. It applies default colors first, then
+ * loads the actual theme asynchronously.
  */
 
 export const themeInlineScript = `
 (function() {
   'use strict';
+  
+  // Execute immediately - don't wait for DOMContentLoaded
+  // This ensures colors are applied before any CSS is rendered
   
   // Function to generate color shades (simplified version)
   function generateColorShades(hex) {
