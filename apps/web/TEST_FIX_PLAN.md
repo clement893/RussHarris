@@ -251,9 +251,9 @@ For each batch:
 
 | Batch | Status | Tests Fixed | TypeScript Errors | Build Errors | Git Commit |
 |-------|--------|-------------|-------------------|--------------|-----------|
-| Batch 1 | ⏳ Pending | - | - | - | - |
-| Batch 2 | ⏳ Pending | - | - | - | - |
-| Batch 3 | ⏳ Pending | - | - | - | - |
+| Batch 1 | ✅ Complete | 13/13 passing | ✅ None | ✅ None | ⏳ Pending |
+| Batch 2 | ✅ Complete | 14/14 passing | ✅ None | ✅ None | ⏳ Pending |
+| Batch 3 | 🟡 In Progress | 18/27 passing (9 failures) | ✅ None | ✅ None | ⏳ Pending |
 | Batch 4 | ⏳ Pending | - | - | - | - |
 | Batch 5 | ⏳ Pending | - | - | - | - |
 | Batch 6 | ⏳ Pending | - | - | - | - |
@@ -269,6 +269,23 @@ For each batch:
 - Ensure backward compatibility when fixing implementations
 - Document any breaking changes if necessary
 - Keep test coverage high (aim for 100%)
+
+## Current Status (2025-01-27)
+
+**Batches 1 & 2**: ✅ Already fixed - tests passing
+- Batch 1 (ApiClient): 13/13 tests passing
+- Batch 2 (Error Utils): 14/14 tests passing
+
+**Batch 3**: 🟡 In Progress - React 19 compatibility issue
+- Issue: `result.current` is null when `validationSchema` is used in useForm hook
+- 9 tests failing: Tests that use `validationSchema` fail because `result.current` is null
+- Attempted fixes:
+  - Changed `parse` to `safeParse` in `validateAll`
+  - Added try-catch around `isValid` computation
+  - Added `waitFor` checks (timed out)
+  - Used `partial()` schema for partial validation
+- Root cause: Likely React 19 compatibility issue with `@testing-library/react` or hook rendering
+- Next steps: Investigate React 19 compatibility, check if hook throws during render, or skip and return later
 
 ## Success Metrics
 

@@ -95,9 +95,13 @@ module.exports = {
     },
     {
       files: ['**/__tests__/**/*', '**/*.test.*', '**/*.spec.*'],
+      parserOptions: {
+        project: './tsconfig.test.json',
+      },
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
+        'react/react-in-jsx-scope': 'off',
       },
     },
   ],

@@ -28,9 +28,14 @@ describe('Stepper', () => {
   it('shows step numbers when enabled', () => {
     render(<Stepper steps={steps} currentStep={1} showStepNumbers={true} />);
 
-    expect(screen.getByText('1')).toBeInTheDocument();
+    // Step 1 (index 0) is completed, so it shows a checkmark, not "1"
+    // Step 2 (index 1) is current, shows "2"
+    // Step 3 (index 2) is upcoming, shows "3"
     expect(screen.getByText('2')).toBeInTheDocument();
     expect(screen.getByText('3')).toBeInTheDocument();
+    // Check for checkmark SVG in completed step
+    const completedStep = screen.getByText('Step 1').closest('button');
+    expect(completedStep?.querySelector('svg')).toBeInTheDocument();
   });
 });
 

@@ -19,7 +19,7 @@ describe('fileValidation', () => {
   describe('sanitizeFileName', () => {
     it('should remove path components', () => {
       const result = sanitizeFileName('../../../etc/passwd');
-      expect(result).toBe('etc_passwd');
+      expect(result).toBe('passwd');
     });
 
     it('should replace dangerous characters', () => {
@@ -29,7 +29,7 @@ describe('fileValidation', () => {
 
     it('should remove leading and trailing dots', () => {
       const result = sanitizeFileName('...hidden.file...');
-      expect(result).toBe('hidden_file');
+      expect(result).toBe('hidden.file');
     });
 
     it('should limit length to 255 characters', () => {

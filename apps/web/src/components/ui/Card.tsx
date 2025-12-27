@@ -131,10 +131,6 @@ export default function Card({
         onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
         className
       )}
-      style={{
-        backgroundColor: 'var(--color-background)',
-        borderColor: 'var(--color-border)',
-      }}
       onClick={onClick ? (e: React.MouseEvent<HTMLDivElement>) => {
         // Only trigger card onClick if the click target is the card itself or a non-interactive element
         const target = e.target as HTMLElement;
@@ -159,25 +155,16 @@ export default function Card({
       {...props}
     >
       {(title || subtitle || header) && (
-        <div 
-          className="px-6 py-4 border-b border-gray-200 dark:border-gray-700"
-          style={{ borderColor: 'var(--color-border)' }}
-        >
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           {header || (
             <>
               {title && (
-                <h3 
-                  className="text-lg font-semibold text-gray-900 dark:text-white"
-                  style={{ color: 'var(--color-foreground)' }}
-                >
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   {title}
                 </h3>
               )}
               {subtitle && (
-                <p 
-                  className="mt-1 text-sm text-gray-700 dark:text-gray-300"
-                  style={{ color: 'var(--color-muted-foreground)' }}
-                >
+                <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">
                   {subtitle}
                 </p>
               )}
@@ -189,13 +176,7 @@ export default function Card({
       <div className={clsx(padding && 'p-6')}>{children}</div>
 
       {cardFooter && (
-        <div 
-          className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900/70"
-          style={{
-            borderColor: 'var(--color-border)',
-            backgroundColor: 'var(--color-muted)',
-          }}
-        >
+        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900/70">
           {cardFooter}
         </div>
       )}

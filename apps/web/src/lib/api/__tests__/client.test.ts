@@ -13,24 +13,30 @@ vi.mock('../api', () => ({
 
 describe('ApiClient', () => {
   let apiClient: ApiClient;
-  const mockAxios = vi.fn();
+  const mockGet = vi.fn();
+  const mockPost = vi.fn();
+  const mockPut = vi.fn();
+  const mockPatch = vi.fn();
+  const mockDelete = vi.fn();
+  const mockRequestInterceptor = vi.fn();
+  const mockResponseInterceptor = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
-    apiClient = new ApiClient('http://localhost:8000/api');
-    // Mock axios methods
+    
+    // Mock axios.create BEFORE creating ApiClient instance
     vi.spyOn(axios, 'create').mockReturnValue({
-      get: mockAxios,
-      post: mockAxios,
-      put: mockAxios,
-      patch: mockAxios,
-      delete: mockAxios,
+      get: mockGet,
+      post: mockPost,
+      put: mockPut,
+      patch: mockPatch,
+      delete: mockDelete,
       interceptors: {
         request: {
-          use: vi.fn(),
+          use: mockRequestInterceptor,
         },
         response: {
-          use: vi.fn(),
+          use: mockResponseInterceptor,
         },
       },
       defaults: {
@@ -39,6 +45,9 @@ describe('ApiClient', () => {
         },
       },
     } as unknown as ReturnType<typeof axios.create>);
+    
+    // Now create the ApiClient instance
+    apiClient = new ApiClient('http://localhost:8000/api');
   });
 
   afterEach(() => {
@@ -55,11 +64,11 @@ describe('ApiClient', () => {
         config: {} as any,
       };
 
-      mockAxios.mockResolvedValue(mockResponse);
+      mockGet.mockResolvedValue(mockResponse);
 
       const result = await apiClient.get('/users');
 
-      expect(mockAxios).toHaveBeenCalledWith('/users', undefined);
+      expect(mockGet).toHaveBeenCalledWith('/users', undefined);
       expect(result).toEqual(mockResponse.data);
     });
 
@@ -72,12 +81,12 @@ describe('ApiClient', () => {
         config: {} as any,
       };
 
-      mockAxios.mockResolvedValue(mockResponse);
+      mockGet.mockResolvedValue(mockResponse);
 
       const config = { params: { page: 1 } };
       await apiClient.get('/users', config);
 
-      expect(mockAxios).toHaveBeenCalledWith('/users', config);
+      expect(mockGet).toHaveBeenCalledWith('/users', config);
     });
   });
 
@@ -92,11 +101,11 @@ describe('ApiClient', () => {
         config: {} as any,
       };
 
-      mockAxios.mockResolvedValue(mockResponse);
+      mockPost.mockResolvedValue(mockResponse);
 
       const result = await apiClient.post('/users', mockData);
 
-      expect(mockAxios).toHaveBeenCalledWith('/users', mockData, undefined);
+      expect(mockPost).toHaveBeenCalledWith('/users', mockData, undefined);
       expect(result).toEqual(mockResponse.data);
     });
 
@@ -110,12 +119,12 @@ describe('ApiClient', () => {
         config: {} as any,
       };
 
-      mockAxios.mockResolvedValue(mockResponse);
+      mockPost.mockResolvedValue(mockResponse);
 
       const config = { headers: { 'Content-Type': 'multipart/form-data' } };
       await apiClient.post('/users', mockData, config);
 
-      expect(mockAxios).toHaveBeenCalledWith('/users', mockData, config);
+      expect(mockPost).toHaveBeenCalledWith('/users', mockData, config);
     });
   });
 
@@ -130,11 +139,11 @@ describe('ApiClient', () => {
         config: {} as any,
       };
 
-      mockAxios.mockResolvedValue(mockResponse);
+      mockPut.mockResolvedValue(mockResponse);
 
       const result = await apiClient.put('/users/1', mockData);
 
-      expect(mockAxios).toHaveBeenCalledWith('/users/1', mockData, undefined);
+      expect(mockPut).toHaveBeenCalledWith('/users/1', mockData, undefined);
       expect(result).toEqual(mockResponse.data);
     });
   });
@@ -150,11 +159,11 @@ describe('ApiClient', () => {
         config: {} as any,
       };
 
-      mockAxios.mockResolvedValue(mockResponse);
+      mockPatch.mockResolvedValue(mockResponse);
 
       const result = await apiClient.patch('/users/1', mockData);
 
-      expect(mockAxios).toHaveBeenCalledWith('/users/1', mockData, undefined);
+      expect(mockPatch).toHaveBeenCalledWith('/users/1', mockData, undefined);
       expect(result).toEqual(mockResponse.data);
     });
   });
@@ -169,11 +178,11 @@ describe('ApiClient', () => {
         config: {} as any,
       };
 
-      mockAxios.mockResolvedValue(mockResponse);
+      mockDelete.mockResolvedValue(mockResponse);
 
       const result = await apiClient.delete('/users/1');
 
-      expect(mockAxios).toHaveBeenCalledWith('/users/1', undefined);
+      expect(mockDelete).toHaveBeenCalledWith('/users/1', undefined);
       expect(result).toEqual(mockResponse.data);
     });
   });
@@ -189,7 +198,7 @@ describe('ApiClient', () => {
       const mockAppError = new Error('Not found');
       vi.mocked(handleApiError).mockReturnValue(mockAppError as any);
 
-      mockAxios.mockRejectedValue(mockError);
+      mockGet.mockRejectedValue(mockError);
 
       await expect(apiClient.get('/users/999')).rejects.toThrow();
       expect(handleApiError).toHaveBeenCalledWith(mockError);
@@ -202,7 +211,7 @@ describe('ApiClient', () => {
       const mockAppError = new Error('Network error');
       vi.mocked(handleApiError).mockReturnValue(mockAppError as any);
 
-      mockAxios.mockRejectedValue(mockError);
+      mockGet.mockRejectedValue(mockError);
 
       await expect(apiClient.get('/users')).rejects.toThrow();
       expect(handleApiError).toHaveBeenCalledWith(mockError);

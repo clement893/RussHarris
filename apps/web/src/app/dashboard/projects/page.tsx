@@ -2,6 +2,7 @@
 
 // Force dynamic rendering to avoid prerendering issues
 export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
 import Container from '@/components/ui/Container';

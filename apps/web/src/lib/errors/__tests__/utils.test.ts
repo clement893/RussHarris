@@ -12,6 +12,7 @@ import { describe, it, expect } from 'vitest';
 import { AxiosError } from 'axios';
 import { isApiError, isAxiosErrorType, getErrorMessage, getErrorDetail } from '../utils';
 import { AppError } from '../AppError';
+import { ErrorCode } from '../types';
 
 describe('Error Utils', () => {
   describe('isApiError', () => {
@@ -68,7 +69,7 @@ describe('Error Utils', () => {
 
   describe('getErrorMessage', () => {
     it('extracts message from AppError', () => {
-      const error = new AppError('Custom error message');
+      const error = new AppError(ErrorCode.UNKNOWN_ERROR, 'Custom error message');
       expect(getErrorMessage(error)).toBe('Custom error message');
     });
 
@@ -105,7 +106,7 @@ describe('Error Utils', () => {
 
   describe('getErrorDetail', () => {
     it('extracts detail from AppError', () => {
-      const error = new AppError('Error', { detail: 'Error detail' });
+      const error = new AppError(ErrorCode.UNKNOWN_ERROR, 'Error', 500, { detail: 'Error detail' });
       expect(getErrorDetail(error)).toBe('Error detail');
     });
 

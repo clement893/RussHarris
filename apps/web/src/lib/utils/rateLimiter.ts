@@ -27,7 +27,7 @@ interface RateLimitEntry {
   resetTime: number;
 }
 
-class RateLimiter {
+export class RateLimiter {
   private limits: Map<string, RateLimitEntry> = new Map();
   private readonly defaultWindowMs: number;
   private readonly defaultMaxRequests: number;

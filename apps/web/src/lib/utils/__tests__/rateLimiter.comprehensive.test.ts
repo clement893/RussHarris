@@ -56,12 +56,12 @@ describe('RateLimiter', () => {
     });
   });
 
-  describe('getRemainingRequests', () => {
+  describe('getRemaining', () => {
     it('should return correct remaining requests', () => {
       rateLimiter.isAllowed('user1', 10, 60000);
       rateLimiter.isAllowed('user1', 10, 60000);
 
-      const remaining = rateLimiter.getRemainingRequests('user1', 10, 60000);
+      const remaining = rateLimiter.getRemaining('user1', 10);
       expect(remaining).toBeLessThan(10);
       expect(remaining).toBeGreaterThanOrEqual(0);
     });
@@ -71,12 +71,12 @@ describe('RateLimiter', () => {
         rateLimiter.isAllowed('user1', 10, 60000);
       }
 
-      const remaining = rateLimiter.getRemainingRequests('user1', 10, 60000);
+      const remaining = rateLimiter.getRemaining('user1', 10);
       expect(remaining).toBe(0);
     });
   });
 
-  describe('resetLimit', () => {
+  describe('reset', () => {
     it('should reset limit for a key', () => {
       // Make some requests
       for (let i = 0; i < 5; i++) {
@@ -84,10 +84,10 @@ describe('RateLimiter', () => {
       }
 
       // Reset limit
-      rateLimiter.resetLimit('user1');
+      rateLimiter.reset('user1');
 
       // Should have full limit again
-      const remaining = rateLimiter.getRemainingRequests('user1', 10, 60000);
+      const remaining = rateLimiter.getRemaining('user1', 10);
       expect(remaining).toBe(10);
     });
   });

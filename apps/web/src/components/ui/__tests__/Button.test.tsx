@@ -164,10 +164,11 @@ describe('Button Component', () => {
       expect(button).toBeInTheDocument();
     });
 
-    it('supports aria-disabled when disabled', () => {
+    it('supports disabled state', () => {
       render(<Button disabled aria-label="Disabled button">Disabled</Button>);
       const button = screen.getByRole('button');
-      expect(button).toHaveAttribute('aria-disabled', 'true');
+      expect(button).toBeDisabled();
+      // Button uses native disabled attribute, not aria-disabled
     });
   });
 

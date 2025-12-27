@@ -6,7 +6,7 @@ import Tabs, { TabList, Tab, TabPanels, TabPanel } from '../Tabs';
 describe('Tabs', () => {
   it('renders tabs with content', () => {
     render(
-      <Tabs defaultValue="tab1">
+      <Tabs defaultTab="tab1">
         <TabList>
           <Tab value="tab1">Tab 1</Tab>
           <Tab value="tab2">Tab 2</Tab>
@@ -26,7 +26,7 @@ describe('Tabs', () => {
   it('switches tabs when clicked', async () => {
     const user = userEvent.setup();
     render(
-      <Tabs defaultValue="tab1">
+      <Tabs defaultTab="tab1">
         <TabList>
           <Tab value="tab1">Tab 1</Tab>
           <Tab value="tab2">Tab 2</Tab>

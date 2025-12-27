@@ -391,6 +391,8 @@ describe('useForm', () => {
         })
       );
 
+      expect(result.current).not.toBeNull();
+
       act(() => {
         result.current.setValue('email', 'changed@example.com');
         result.current.setError('email', 'Error');
@@ -413,6 +415,8 @@ describe('useForm', () => {
         })
       );
 
+      expect(result.current).not.toBeNull();
+
       act(() => {
         result.current.setValue('email', 'changed@example.com');
         result.current.setError('email', 'Error');
@@ -434,6 +438,8 @@ describe('useForm', () => {
         })
       );
 
+      expect(result.current).not.toBeNull();
+
       const fieldProps = result.current.getFieldProps('email');
 
       expect(fieldProps).toHaveProperty('name', 'email');
@@ -452,6 +458,8 @@ describe('useForm', () => {
           onSubmit: vi.fn(),
         })
       );
+
+      expect(result.current).not.toBeNull();
 
       act(() => {
         result.current.setValue('email', 'invalid');
@@ -478,6 +486,7 @@ describe('useForm', () => {
         })
       );
 
+      expect(result.current).not.toBeNull();
       expect(result.current.isValid).toBe(true);
     });
 
@@ -490,6 +499,7 @@ describe('useForm', () => {
         })
       );
 
+      expect(result.current).not.toBeNull();
       expect(result.current.isValid).toBe(false);
     });
   });

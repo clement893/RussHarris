@@ -14,9 +14,8 @@ describe('Accessibility Tests', () => {
 
   it('Card has no accessibility violations', async () => {
     const { container } = render(
-      <Card>
-        <Card.Header>Test Card</Card.Header>
-        <Card.Content>Content</Card.Content>
+      <Card title="Test Card">
+        Content
       </Card>
     );
     const results = await axe(container);

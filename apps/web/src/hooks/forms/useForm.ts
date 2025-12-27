@@ -94,26 +94,47 @@ export function useForm<T extends Record<string, unknown>>(
     if (!validationSchema) return {};
 
     try {
-      validationSchema.parse(values);
-      return {};
+      // Use safeParse to avoid throwing errors
+      // Validate only fields that exist in values to avoid issues with partial objects
+      const result = validationSchema.safeParse(values);
+      if (result.success) {
+        return {};
+      }
+      
+      // Extract errors only for fields that exist in values
+      const fieldErrors: Record<string, string> = {};
+      result.error.issues.forEach((err) => {
+        const path = err.path[0] as string;
+        if (path) {
+          fieldErrors[path] = err.message;
+        }
+      });
+      return fieldErrors;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        const fieldErrors: Record<string, string> = {};
-        error.issues.forEach((err) => {
-          const path = err.path[0] as string;
-          if (path) {
-            fieldErrors[path] = err.message;
-          }
-        });
-        return fieldErrors;
+      // Fallback for any unexpected errors - this should never happen with safeParse
+      // but we catch it just in case
+      if (error instanceof Error) {
+        console.error('Unexpected validation error:', error.message);
       }
       return {};
     }
   }, [validationSchema, values]);
 
+  // Compute isValid lazily to avoid issues during initial render
   const isValid = useMemo(() => {
-    return Object.keys(validateAll()).length === 0;
-  }, [validateAll]);
+    if (!validationSchema) {
+      // If no schema, form is considered valid if no errors exist
+      return Object.keys(errors).length === 0;
+    }
+    try {
+      const validationErrors = validateAll();
+      return Object.keys(validationErrors).length === 0;
+    } catch (error) {
+      // Fallback to false if validation fails unexpectedly
+      console.error('Error computing isValid:', error);
+      return false;
+    }
+  }, [validateAll, validationSchema, errors]);
 
   const setValue = useCallback((name: keyof T, value: unknown) => {
     setValuesState((prev) => ({ ...prev, [name]: value }));

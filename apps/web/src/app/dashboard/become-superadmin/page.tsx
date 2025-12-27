@@ -8,6 +8,7 @@ import { bootstrapSuperAdmin, makeSuperAdmin, checkSuperAdminStatus } from '@/li
 import { Shield, Key, Mail, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 function BecomeSuperAdminContent() {
   const { user } = useAuthStore();

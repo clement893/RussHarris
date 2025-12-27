@@ -87,7 +87,7 @@ describe('Select', () => {
   it('has error styling when error is present', () => {
     const { container } = render(<Select options={mockOptions} error="Error" />);
     const select = container.querySelector('select');
-    expect(select).toHaveClass('border-red-500');
+    expect(select).toHaveClass('border-error-500');
   });
 
   it('forwards ref', () => {

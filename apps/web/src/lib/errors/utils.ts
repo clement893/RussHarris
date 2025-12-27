@@ -30,9 +30,14 @@ export interface ApiError extends Error {
  * Type guard to check if error is an API error
  */
 export function isApiError(error: unknown): error is ApiError {
+  if (!error || typeof error !== 'object') {
+    return false;
+  }
+  // Check if it has API error properties (response, isAxiosError, or statusCode)
   return (
-    error instanceof Error &&
-    ('response' in error || 'isAxiosError' in error || 'statusCode' in error)
+    'response' in error ||
+    'isAxiosError' in error ||
+    'statusCode' in error
   );
 }
 
@@ -57,13 +62,18 @@ export function getErrorMessage(error: unknown, fallback?: string): string {
     return error.message || fallback || 'An error occurred';
   }
   if (isApiError(error)) {
-    return (
-      error.response?.data?.detail ||
-      error.response?.data?.message ||
-      error.message ||
-      fallback ||
-      'An error occurred'
-    );
+    // Check for detail first, then message, then error.message
+    const apiError = error as ApiError;
+    if (apiError.response?.data?.detail) {
+      return apiError.response.data.detail;
+    }
+    if (apiError.response?.data?.message) {
+      return apiError.response.data.message;
+    }
+    if ('message' in apiError && typeof apiError.message === 'string') {
+      return apiError.message;
+    }
+    return fallback || 'An error occurred';
   }
   if (error instanceof Error) {
     return error.message || fallback || 'An error occurred';
@@ -80,7 +90,11 @@ export function getErrorMessage(error: unknown, fallback?: string): string {
  */
 export function getErrorDetail(error: unknown): string | undefined {
   if (error instanceof AppError) {
-    return error.details?.detail ? String(error.details.detail) : undefined;
+    // Check if details has a 'detail' property
+    if (error.details && typeof error.details === 'object' && 'detail' in error.details) {
+      return String(error.details.detail);
+    }
+    return undefined;
   }
   if (
     error &&

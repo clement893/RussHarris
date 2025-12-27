@@ -29,7 +29,7 @@ describe('Banner', () => {
     const onClose = vi.fn();
     render(<Banner onClose={onClose} dismissible>Test</Banner>);
     
-    const closeButton = screen.getByRole('button', { name: /close/i });
+    const closeButton = screen.getByRole('button', { name: /fermer/i });
     await user.click(closeButton);
     
     expect(onClose).toHaveBeenCalledTimes(1);
@@ -37,7 +37,7 @@ describe('Banner', () => {
 
   it('does not show close button when dismissible is false', () => {
     render(<Banner>Test</Banner>);
-    expect(screen.queryByRole('button', { name: /close/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /fermer/i })).not.toBeInTheDocument();
   });
 
   it('applies variant styles correctly', () => {
