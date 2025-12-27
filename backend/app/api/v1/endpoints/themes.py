@@ -359,7 +359,17 @@ async def update_theme(
     Update an existing theme.
     Requires superadmin authentication.
     If is_active=True, automatically deactivates all other themes.
+    TemplateTheme (ID 32) can be updated but its name cannot be changed.
     """
+    # Prevent modification of TemplateTheme name (ID 32)
+    if theme_id == 32:
+        # Allow config updates but prevent name/display_name changes
+        if theme_data.display_name is not None:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Cannot modify display_name of TemplateTheme (ID 32). Only config can be updated."
+            )
+    
     result = await db.execute(select(Theme).where(Theme.id == theme_id))
     theme = result.scalar_one_or_none()
     if not theme:
@@ -472,7 +482,15 @@ async def delete_theme(
     Delete a theme.
     Requires superadmin authentication.
     Cannot delete the active theme.
+    Cannot delete TemplateTheme (ID 32).
     """
+    # Prevent deletion of TemplateTheme (ID 32)
+    if theme_id == 32:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Cannot delete TemplateTheme (ID 32). This is a protected system theme."
+        )
+    
     result = await db.execute(select(Theme).where(Theme.id == theme_id))
     theme = result.scalar_one_or_none()
     if not theme:

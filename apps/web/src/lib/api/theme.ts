@@ -12,6 +12,20 @@ import type {
 import { apiClient } from './client';
 import { logger } from '@/lib/logger';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
+import { parseThemeError, formatValidationErrors, type ParsedThemeError } from './theme-errors';
+
+/**
+ * Custom error class for theme validation errors
+ */
+export class ThemeValidationError extends Error {
+  constructor(
+    public parsedError: ParsedThemeError,
+    message?: string
+  ) {
+    super(message || parsedError.message);
+    this.name = 'ThemeValidationError';
+  }
+}
 
 /**
  * Helper function to extract data from FastAPI response.
@@ -152,63 +166,81 @@ export async function getTheme(
  * Create a new theme.
  * Requires authentication and superadmin role.
  * Uses apiClient for automatic token management and error handling.
+ * Throws ThemeValidationError if validation fails.
  */
 export async function createTheme(
   themeData: ThemeCreate,
   token?: string
 ): Promise<Theme> {
-  // If a specific token is provided, temporarily set it in storage
-  if (token && token !== TokenStorage.getToken()) {
-    const originalToken = TokenStorage.getToken();
-    await TokenStorage.setToken(token);
-    try {
-      const response = await apiClient.post<Theme>('/v1/themes', themeData);
-      return extractFastApiData<Theme>(response);
-    } finally {
-      // Restore original token
-      if (originalToken) {
-        await TokenStorage.setToken(originalToken);
-      } else {
-        await TokenStorage.removeTokens();
+  try {
+    // If a specific token is provided, temporarily set it in storage
+    if (token && token !== TokenStorage.getToken()) {
+      const originalToken = TokenStorage.getToken();
+      await TokenStorage.setToken(token);
+      try {
+        const response = await apiClient.post<Theme>('/v1/themes', themeData);
+        return extractFastApiData<Theme>(response);
+      } finally {
+        // Restore original token
+        if (originalToken) {
+          await TokenStorage.setToken(originalToken);
+        } else {
+          await TokenStorage.removeTokens();
+        }
       }
     }
+    
+    // Use apiClient which automatically handles token from TokenStorage
+    const response = await apiClient.post<Theme>('/v1/themes', themeData);
+    return extractFastApiData<Theme>(response);
+  } catch (error) {
+    const parsed = parseThemeError(error);
+    if (parsed.isValidationError) {
+      throw new ThemeValidationError(parsed, formatValidationErrors(parsed.validationErrors).join('\n'));
+    }
+    throw error;
   }
-  
-  // Use apiClient which automatically handles token from TokenStorage
-  const response = await apiClient.post<Theme>('/v1/themes', themeData);
-  return extractFastApiData<Theme>(response);
 }
 
 /**
  * Update an existing theme.
  * Requires authentication and superadmin role.
  * Uses apiClient for automatic token management and error handling.
+ * Throws ThemeValidationError if validation fails.
  */
 export async function updateTheme(
   themeId: number,
   themeData: ThemeUpdate,
   token?: string
 ): Promise<Theme> {
-  // If a specific token is provided, temporarily set it in storage
-  if (token && token !== TokenStorage.getToken()) {
-    const originalToken = TokenStorage.getToken();
-    await TokenStorage.setToken(token);
-    try {
-      const response = await apiClient.put<Theme>(`/v1/themes/${themeId}`, themeData);
-      return extractFastApiData<Theme>(response);
-    } finally {
-      // Restore original token
-      if (originalToken) {
-        await TokenStorage.setToken(originalToken);
-      } else {
-        await TokenStorage.removeTokens();
+  try {
+    // If a specific token is provided, temporarily set it in storage
+    if (token && token !== TokenStorage.getToken()) {
+      const originalToken = TokenStorage.getToken();
+      await TokenStorage.setToken(token);
+      try {
+        const response = await apiClient.put<Theme>(`/v1/themes/${themeId}`, themeData);
+        return extractFastApiData<Theme>(response);
+      } finally {
+        // Restore original token
+        if (originalToken) {
+          await TokenStorage.setToken(originalToken);
+        } else {
+          await TokenStorage.removeTokens();
+        }
       }
     }
+    
+    // Use apiClient which automatically handles token from TokenStorage
+    const response = await apiClient.put<Theme>(`/v1/themes/${themeId}`, themeData);
+    return extractFastApiData<Theme>(response);
+  } catch (error) {
+    const parsed = parseThemeError(error);
+    if (parsed.isValidationError) {
+      throw new ThemeValidationError(parsed, formatValidationErrors(parsed.validationErrors).join('\n'));
+    }
+    throw error;
   }
-  
-  // Use apiClient which automatically handles token from TokenStorage
-  const response = await apiClient.put<Theme>(`/v1/themes/${themeId}`, themeData);
-  return extractFastApiData<Theme>(response);
 }
 
 /**

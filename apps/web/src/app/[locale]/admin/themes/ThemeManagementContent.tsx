@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { listThemes, activateTheme, createTheme, deleteTheme } from '@/lib/api/theme';
+import { listThemes, activateTheme, createTheme, deleteTheme, ThemeValidationError } from '@/lib/api/theme';
+import { formatValidationErrors } from '@/lib/api/theme-errors';
 import { useGlobalTheme } from '@/lib/theme/global-theme-provider';
 import { DEFAULT_THEME_CONFIG } from '@/lib/theme/default-theme-config';
+import { validateThemeConfig, getValidationSummary } from '@/lib/theme/theme-validator';
 import type { Theme, ThemeCreate, ThemeListResponse } from '@modele/types';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -18,7 +20,8 @@ import {
   Check, 
   Trash2, 
   RefreshCw,
-  Eye
+  Eye,
+  AlertTriangle
 } from 'lucide-react';
 import { useToast } from '@/components/ui';
 import { logger } from '@/lib/logger';
@@ -36,6 +39,7 @@ export function ThemeManagementContent() {
   const [activatingId, setActivatingId] = useState<number | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [creating, setCreating] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   // Form state for creating new theme - use comprehensive default config
   const [newTheme, setNewTheme] = useState<ThemeCreate>({
@@ -120,8 +124,6 @@ export function ThemeManagementContent() {
         return;
       }
 
-      setCreating(true);
-      
       // Ensure config has all required fields from default config
       const themeToCreate: ThemeCreate = {
         ...newTheme,
@@ -147,6 +149,45 @@ export function ThemeManagementContent() {
         },
       };
 
+      // Validate theme configuration before submission
+      const validation = validateThemeConfig(themeToCreate.config, {
+        strictContrast: false,
+        logWarnings: false,
+      });
+
+      if (!validation.valid) {
+        const errors: string[] = [];
+        
+        // Add color format errors
+        if (validation.colorFormatErrors.length > 0) {
+          errors.push(`Erreurs de format de couleur (${validation.colorFormatErrors.length}):`);
+          validation.colorFormatErrors.forEach(error => {
+            errors.push(`  • ${error.field}: ${error.message}`);
+          });
+        }
+        
+        // Add critical contrast issues
+        const criticalIssues = validation.contrastIssues.filter(issue => issue.level === 'fail');
+        if (criticalIssues.length > 0) {
+          errors.push(`Problèmes de contraste critiques (${criticalIssues.length}):`);
+          criticalIssues.forEach(issue => {
+            errors.push(`  • ${issue.element}: ${issue.message}`);
+          });
+        }
+        
+        setValidationErrors(errors);
+        showToast({
+          message: `Erreurs de validation détectées. Veuillez corriger les problèmes avant de continuer.`,
+          type: 'error',
+          duration: 10000,
+        });
+        return;
+      }
+
+      // Clear validation errors if validation passes
+      setValidationErrors([]);
+
+      setCreating(true);
       await createTheme(themeToCreate);
       setShowCreateModal(false);
       
@@ -179,12 +220,24 @@ export function ThemeManagementContent() {
         type: 'success',
       });
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to create theme';
-      showToast({
-        message: errorMessage,
-        type: 'error',
-      });
-      logger.error('Failed to create theme', err instanceof Error ? err : new Error(String(err)));
+      // Handle ThemeValidationError specifically
+      if (err instanceof ThemeValidationError) {
+        const formattedErrors = formatValidationErrors(err.parsedError.validationErrors);
+        setValidationErrors(formattedErrors);
+        showToast({
+          message: 'Erreurs de validation détectées par le serveur. Veuillez corriger les problèmes.',
+          type: 'error',
+          duration: 10000,
+        });
+      } else {
+        const errorMessage = err instanceof Error ? err.message : 'Échec de la création du thème';
+        showToast({
+          message: errorMessage,
+          type: 'error',
+          duration: 10000,
+        });
+        logger.error('Failed to create theme', err instanceof Error ? err : new Error(String(err)));
+      }
     } finally {
       setCreating(false);
     }
@@ -400,11 +453,26 @@ export function ThemeManagementContent() {
       {/* Create Theme Modal */}
       <Modal
         isOpen={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
+        onClose={() => {
+          setShowCreateModal(false);
+          setValidationErrors([]);
+        }}
         title="Créer un nouveau thème"
         size="lg"
       >
         <div className="space-y-4">
+          {/* Validation Errors Display */}
+          {validationErrors.length > 0 && (
+            <Alert variant="error" title="Erreurs de validation" className="mb-4">
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                {validationErrors.map((error, index) => (
+                  <li key={index} className={error.startsWith('  •') ? 'ml-4' : 'font-semibold'}>
+                    {error}
+                  </li>
+                ))}
+              </ul>
+            </Alert>
+          )}
           <Input
             label="Nom technique"
             value={newTheme.name}
@@ -430,84 +498,139 @@ export function ThemeManagementContent() {
             rows={3}
           />
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Couleur principale
-              </label>
-              <input
-                type="color"
-                value={newTheme.config.primary_color}
-                onChange={(e) =>
-                  setNewTheme({
-                    ...newTheme,
-                    config: { ...newTheme.config, primary_color: e.target.value },
-                  })
-                }
-                className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Couleur secondaire
-              </label>
-              <input
-                type="color"
-                value={newTheme.config.secondary_color}
-                onChange={(e) =>
-                  setNewTheme({
-                    ...newTheme,
-                    config: { ...newTheme.config, secondary_color: e.target.value },
-                  })
-                }
-                className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Danger
-              </label>
-              <input
-                type="color"
-                value={newTheme.config.danger_color}
-                onChange={(e) =>
-                  setNewTheme({
-                    ...newTheme,
-                    config: { ...newTheme.config, danger_color: e.target.value },
-                  })
-                }
-                className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Warning
-              </label>
-              <input
-                type="color"
-                value={newTheme.config.warning_color}
-                onChange={(e) =>
-                  setNewTheme({
-                    ...newTheme,
-                    config: { ...newTheme.config, warning_color: e.target.value },
-                  })
-                }
-                className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
-              />
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Couleurs</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Couleur principale
+                </label>
+                <input
+                  type="color"
+                  value={newTheme.config.primary_color}
+                  onChange={(e) =>
+                    setNewTheme({
+                      ...newTheme,
+                      config: { ...newTheme.config, primary_color: e.target.value },
+                    })
+                  }
+                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Couleur secondaire
+                </label>
+                <input
+                  type="color"
+                  value={newTheme.config.secondary_color}
+                  onChange={(e) =>
+                    setNewTheme({
+                      ...newTheme,
+                      config: { ...newTheme.config, secondary_color: e.target.value },
+                    })
+                  }
+                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Danger
+                </label>
+                <input
+                  type="color"
+                  value={newTheme.config.danger_color}
+                  onChange={(e) =>
+                    setNewTheme({
+                      ...newTheme,
+                      config: { ...newTheme.config, danger_color: e.target.value },
+                    })
+                  }
+                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Warning
+                </label>
+                <input
+                  type="color"
+                  value={newTheme.config.warning_color}
+                  onChange={(e) =>
+                    setNewTheme({
+                      ...newTheme,
+                      config: { ...newTheme.config, warning_color: e.target.value },
+                    })
+                  }
+                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Info
+                </label>
+                <input
+                  type="color"
+                  value={newTheme.config.info_color || DEFAULT_THEME_CONFIG.info_color}
+                  onChange={(e) =>
+                    setNewTheme({
+                      ...newTheme,
+                      config: { ...newTheme.config, info_color: e.target.value },
+                    })
+                  }
+                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Success
+                </label>
+                <input
+                  type="color"
+                  value={newTheme.config.success_color || DEFAULT_THEME_CONFIG.success_color}
+                  onChange={(e) =>
+                    setNewTheme({
+                      ...newTheme,
+                      config: { ...newTheme.config, success_color: e.target.value },
+                    })
+                  }
+                  className="w-full h-10 rounded border border-gray-300 dark:border-gray-600"
+                />
+              </div>
             </div>
           </div>
 
-          <Input
-            label="Police de caractères"
-            value={newTheme.config.font_family || ''}
-            onChange={(e) =>
-              setNewTheme({
-                ...newTheme,
-                config: { ...newTheme.config, font_family: e.target.value },
-              })
-            }
-            placeholder="Inter"
-          />
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Typographie</h3>
+            <Input
+              label="Police de caractères"
+              value={newTheme.config.font_family || ''}
+              onChange={(e) =>
+                setNewTheme({
+                  ...newTheme,
+                  config: { ...newTheme.config, font_family: e.target.value },
+                })
+              }
+              placeholder="Inter"
+              helperText="Exemple: Inter, Roboto, sans-serif"
+            />
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Apparence</h3>
+            <Input
+              label="Border Radius"
+              value={newTheme.config.border_radius || DEFAULT_THEME_CONFIG.border_radius}
+              onChange={(e) =>
+                setNewTheme({
+                  ...newTheme,
+                  config: { ...newTheme.config, border_radius: e.target.value },
+                })
+              }
+              placeholder="8px"
+              helperText="Exemple: 8px, 0.5rem, 4px"
+            />
+          </div>
 
           <div className="flex justify-end gap-2 pt-4">
             <Button

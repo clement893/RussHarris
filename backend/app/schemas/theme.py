@@ -4,6 +4,7 @@ Pydantic schemas for Theme API endpoints.
 from datetime import datetime
 from typing import Optional, Dict, Any
 from pydantic import BaseModel, Field, validator
+from app.core.theme_validation import validate_theme_config
 
 
 class ThemeBase(BaseModel):
@@ -19,6 +20,39 @@ class ThemeBase(BaseModel):
         if not v.replace('_', '').replace('-', '').isalnum():
             raise ValueError('Theme name must contain only alphanumeric characters, hyphens, and underscores')
         return v.lower()
+    
+    @validator('config')
+    def validate_config(cls, v):
+        """
+        Validate theme configuration.
+        Checks color formats and contrast compliance (WCAG AA).
+        """
+        if not v or not isinstance(v, dict):
+            return v
+        
+        # Validate theme config (non-strict mode - allows warnings but blocks critical errors)
+        is_valid, color_errors, contrast_issues = validate_theme_config(v, strict_contrast=False)
+        
+        # Build error message if validation fails
+        if not is_valid:
+            error_parts = []
+            
+            if color_errors:
+                error_parts.append("Color format errors:")
+                for error in color_errors:
+                    error_parts.append(f"  - {error['field']}: {error['message']}")
+            
+            # Only include critical contrast issues (fail level)
+            critical_contrast_issues = [issue for issue in contrast_issues if issue.get('level') == 'fail']
+            if critical_contrast_issues:
+                error_parts.append("Critical contrast issues:")
+                for issue in critical_contrast_issues:
+                    error_parts.append(f"  - {issue['element']}: {issue['message']}")
+            
+            if error_parts:
+                raise ValueError('\n'.join(error_parts))
+        
+        return v
 
 
 class ThemeCreate(ThemeBase):
@@ -32,6 +66,40 @@ class ThemeUpdate(BaseModel):
     description: Optional[str] = None
     config: Optional[Dict[str, Any]] = None
     is_active: Optional[bool] = None
+    
+    @validator('config')
+    def validate_config(cls, v):
+        """
+        Validate theme configuration.
+        Checks color formats and contrast compliance (WCAG AA).
+        Only validates if config is provided (not None).
+        """
+        if v is None or not isinstance(v, dict):
+            return v
+        
+        # Validate theme config (non-strict mode - allows warnings but blocks critical errors)
+        is_valid, color_errors, contrast_issues = validate_theme_config(v, strict_contrast=False)
+        
+        # Build error message if validation fails
+        if not is_valid:
+            error_parts = []
+            
+            if color_errors:
+                error_parts.append("Color format errors:")
+                for error in color_errors:
+                    error_parts.append(f"  - {error['field']}: {error['message']}")
+            
+            # Only include critical contrast issues (fail level)
+            critical_contrast_issues = [issue for issue in contrast_issues if issue.get('level') == 'fail']
+            if critical_contrast_issues:
+                error_parts.append("Critical contrast issues:")
+                for issue in critical_contrast_issues:
+                    error_parts.append(f"  - {issue['element']}: {issue['message']}")
+            
+            if error_parts:
+                raise ValueError('\n'.join(error_parts))
+        
+        return v
 
 
 class ThemeResponse(ThemeBase):

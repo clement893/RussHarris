@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { getActiveTheme, getTheme, updateTheme } from '@/lib/api/theme';
+import { getActiveTheme, getTheme, updateTheme, ThemeValidationError } from '@/lib/api/theme';
 import { uploadFont, listFonts, deleteFont } from '@/lib/api/theme-font';
 import type { ThemeFont } from '@modele/types';
 import { useGlobalTheme } from '@/lib/theme/global-theme-provider';
 import { applyThemeConfigDirectly } from '@/lib/theme/apply-theme-config';
 import { DEFAULT_THEME_CONFIG } from '@/lib/theme/default-theme-config';
+import { validateThemeConfig } from '@/lib/theme/theme-validator';
+import { formatValidationErrors } from '@/lib/api/theme-errors';
 import type { ThemeConfigResponse, ThemeConfig, ThemeUpdate } from '@modele/types';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -30,6 +32,8 @@ export function ThemeVisualisationContent() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [jsonInput, setJsonInput] = useState<string>('');
+  const [jsonErrors, setJsonErrors] = useState<string[]>([]);
+  const [accessibilityIssues, setAccessibilityIssues] = useState<string[]>([]);
   const [uploadedFonts, setUploadedFonts] = useState<ThemeFont[]>([]);
   const [uploadingFont, setUploadingFont] = useState(false);
   const [selectedFontFile, setSelectedFontFile] = useState<File | null>(null);
@@ -131,7 +135,13 @@ export function ThemeVisualisationContent() {
       // Clear success message after 5 seconds
       setTimeout(() => setSuccessMessage(null), 5000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update theme');
+      // Handle ThemeValidationError specifically
+      if (err instanceof ThemeValidationError) {
+        const formattedErrors = formatValidationErrors(err.parsedError.validationErrors);
+        setError(`Erreurs de validation: ${formattedErrors.join('; ')}`);
+      } else {
+        setError(err instanceof Error ? err.message : 'Failed to update theme');
+      }
     } finally {
       setSaving(false);
     }
@@ -269,6 +279,27 @@ export function ThemeVisualisationContent() {
     }
   };
 
+  // Validate theme config and check accessibility when editedConfig changes
+  useEffect(() => {
+    if (editedConfig && isEditing) {
+      // Validate theme configuration
+      const validation = validateThemeConfig(editedConfig, {
+        strictContrast: false,
+        logWarnings: false,
+      });
+      
+      // Set accessibility issues
+      if (validation.contrastIssues.length > 0) {
+        const issues = validation.contrastIssues.map(issue => 
+          `${issue.element}: ${issue.message} (Ratio: ${issue.ratio}:1)`
+        );
+        setAccessibilityIssues(issues);
+      } else {
+        setAccessibilityIssues([]);
+      }
+    }
+  }, [editedConfig, isEditing]);
+
   // Update JSON input when editedConfig changes (always keep in sync when editing)
   // But only if jsonInput hasn't been manually edited (to avoid overwriting user input)
   useEffect(() => {
@@ -283,10 +314,12 @@ export function ThemeVisualisationContent() {
         // Compare stringified versions to check for actual differences
         if (!currentJson || JSON.stringify(currentJson) !== JSON.stringify(configJson)) {
           setJsonInput(JSON.stringify(editedConfig, null, 2));
+          setJsonErrors([]); // Clear errors when syncing
         }
       } catch {
         // If jsonInput is invalid JSON, update it from editedConfig
         setJsonInput(JSON.stringify(editedConfig, null, 2));
+        setJsonErrors([]);
       }
     }
   }, [editedConfig, isEditing]); // Removed jsonInput from dependencies to avoid loops
@@ -731,6 +764,33 @@ export function ThemeVisualisationContent() {
                       (Les modifications sont appliquées en temps réel)
                     </span>
                   </label>
+                  {/* JSON Validation Errors */}
+                  {jsonErrors.length > 0 && (
+                    <Alert variant="error" title="Erreurs JSON" className="mb-2">
+                      <ul className="list-disc list-inside space-y-1 text-sm">
+                        {jsonErrors.map((error, index) => (
+                          <li key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    </Alert>
+                  )}
+                  
+                  {/* Accessibility Issues Warning */}
+                  {accessibilityIssues.length > 0 && (
+                    <Alert variant="warning" title="Problèmes d'accessibilité détectés" className="mb-2">
+                      <ul className="list-disc list-inside space-y-1 text-sm">
+                        {accessibilityIssues.slice(0, 5).map((issue, index) => (
+                          <li key={index}>{issue}</li>
+                        ))}
+                        {accessibilityIssues.length > 5 && (
+                          <li className="text-xs text-gray-500">
+                            ... et {accessibilityIssues.length - 5} autre(s) problème(s)
+                          </li>
+                        )}
+                      </ul>
+                    </Alert>
+                  )}
+                  
                   <TextareaComponent
                     value={jsonInput}
                     onChange={(e) => {
@@ -741,15 +801,38 @@ export function ThemeVisualisationContent() {
                           const parsed = JSON.parse(e.target.value);
                           if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
                             setEditedConfig(parsed as ThemeConfig);
+                            setJsonErrors([]);
                             setError(null);
+                            
+                            // Validate the parsed config
+                            const validation = validateThemeConfig(parsed, {
+                              strictContrast: false,
+                              logWarnings: false,
+                            });
+                            
+                            if (!validation.valid) {
+                              const errors: string[] = [];
+                              if (validation.colorFormatErrors.length > 0) {
+                                validation.colorFormatErrors.forEach(error => {
+                                  errors.push(`${error.field}: ${error.message}`);
+                                });
+                              }
+                              setJsonErrors(errors);
+                            }
+                          } else {
+                            setJsonErrors(['Le JSON doit être un objet valide']);
                           }
+                        } else {
+                          setJsonErrors([]);
                         }
                       } catch (err) {
-                        // Don't show error for incomplete JSON while typing
-                        // Error will be shown when saving if JSON is invalid
+                        // Show syntax errors in real-time
+                        if (err instanceof Error) {
+                          setJsonErrors([`Erreur de syntaxe JSON: ${err.message}`]);
+                        }
                       }
                     }}
-                    className="font-mono text-sm"
+                    className={`font-mono text-sm ${jsonErrors.length > 0 ? 'border-red-500' : ''}`}
                     rows={20}
                     placeholder={`{
   "primary_color": "#3b82f6",
