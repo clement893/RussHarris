@@ -11,7 +11,7 @@ import { teamsAPI, type Team, type TeamMember, type TeamCreate, type TeamUpdate,
 import { usersAPI } from '@/lib/api';
 import { apiClient } from '@/lib/api/client';
 import { getErrorMessage } from '@/lib/errors';
-import { Plus, Edit, Trash2, Users, X, Save } from 'lucide-react';
+import { Plus, Edit, Trash2, Users, Save } from 'lucide-react';
 
 export interface TeamManagementProps {
   className?: string;
@@ -116,10 +116,13 @@ export default function TeamManagement({ className }: TeamManagementProps) {
   const loadRoles = async () => {
     try {
       const response = await apiClient.get('/v1/rbac/roles?skip=0&limit=100');
-      if (response.data && 'roles' in response.data) {
-        setRoles((response.data as { roles: Role[] }).roles);
-      } else if (response.data && Array.isArray(response.data)) {
-        setRoles(response.data as Role[]);
+      const responseData = response.data || response;
+      if (responseData && typeof responseData === 'object' && !Array.isArray(responseData)) {
+        if ('roles' in responseData) {
+          setRoles((responseData as { roles: Role[] }).roles);
+        }
+      } else if (Array.isArray(responseData)) {
+        setRoles(responseData as Role[]);
       }
     } catch (err) {
       console.error('Error loading roles:', err);
@@ -275,10 +278,6 @@ export default function TeamManagement({ className }: TeamManagementProps) {
     return user.email;
   };
 
-  const getRoleName = (roleId: number) => {
-    const role = roles.find(r => r.id === roleId);
-    return role ? role.name : `Role #${roleId}`;
-  };
 
   if (loading) {
     return (
@@ -423,7 +422,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
             value={teamForm.slug}
             onChange={(e) => setTeamForm({ ...teamForm, slug: e.target.value })}
             placeholder="Ex: equipe-marketing (généré automatiquement si vide)"
-            helpText="Identifiant unique pour l'équipe (généré automatiquement à partir du nom si vide)"
+            helperText="Identifiant unique pour l'équipe (généré automatiquement à partir du nom si vide)"
           />
           <div>
             <label className="block text-sm font-medium mb-2">
@@ -487,13 +486,11 @@ export default function TeamManagement({ className }: TeamManagementProps) {
                     value={member.role_id.toString()}
                     onChange={(e) => handleUpdateMemberRole(member, parseInt(e.target.value))}
                     className="w-48"
-                  >
-                    {roles.map((role) => (
-                      <option key={role.id} value={role.id.toString()}>
-                        {role.name}
-                      </option>
-                    ))}
-                  </Select>
+                    options={roles.map((role) => ({
+                      label: role.name,
+                      value: role.id.toString(),
+                    }))}
+                  />
                   <Button
                     size="sm"
                     variant="danger"
@@ -535,27 +532,29 @@ export default function TeamManagement({ className }: TeamManagementProps) {
             value={memberForm.user_id.toString()}
             onChange={(e) => setMemberForm({ ...memberForm, user_id: parseInt(e.target.value) })}
             required
-          >
-            <option value="0">Sélectionner un utilisateur</option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id.toString()}>
-                {getUserName(user.id)} ({user.email})
-              </option>
-            ))}
-          </Select>
+            placeholder="Sélectionner un utilisateur"
+            options={[
+              { label: 'Sélectionner un utilisateur', value: '0' },
+              ...users.map((user) => ({
+                label: `${getUserName(user.id)} (${user.email})`,
+                value: user.id.toString(),
+              })),
+            ]}
+          />
           <Select
             label="Rôle"
             value={memberForm.role_id.toString()}
             onChange={(e) => setMemberForm({ ...memberForm, role_id: parseInt(e.target.value) })}
             required
-          >
-            <option value="0">Sélectionner un rôle</option>
-            {roles.map((role) => (
-              <option key={role.id} value={role.id.toString()}>
-                {role.name}
-              </option>
-            ))}
-          </Select>
+            placeholder="Sélectionner un rôle"
+            options={[
+              { label: 'Sélectionner un rôle', value: '0' },
+              ...roles.map((role) => ({
+                label: role.name,
+                value: role.id.toString(),
+              })),
+            ]}
+          />
         </div>
       </Modal>
 
