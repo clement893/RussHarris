@@ -18,7 +18,7 @@ export default function AdminContent() {
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card title="Invitations" className="flex flex-col">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-muted-foreground mb-4">
             Gérer les invitations utilisateurs et les accès au système.
           </p>
           <Link href="/admin/invitations">
@@ -29,7 +29,7 @@ export default function AdminContent() {
         </Card>
 
         <Card title="Utilisateurs" className="flex flex-col">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-muted-foreground mb-4">
             Consulter et gérer les utilisateurs du système.
           </p>
           <Link href="/admin/users">
@@ -40,7 +40,7 @@ export default function AdminContent() {
         </Card>
 
         <Card title="Organisations" className="flex flex-col">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-muted-foreground mb-4">
             Gérer les organisations et leurs paramètres.
           </p>
           <Link href="/admin/organizations">
@@ -52,7 +52,7 @@ export default function AdminContent() {
 
 
         <Card title="Paramètres" className="flex flex-col">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-muted-foreground mb-4">
             Configuration générale du système.
           </p>
           <Link href="/admin/settings">
@@ -63,7 +63,7 @@ export default function AdminContent() {
         </Card>
 
         <Card title="Logs" className="flex flex-col">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-muted-foreground mb-4">
             Consulter les logs système et les activités.
           </p>
           <Link href="/admin/logs">
@@ -74,7 +74,7 @@ export default function AdminContent() {
         </Card>
 
         <Card title="Statistiques" className="flex flex-col">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-muted-foreground mb-4">
             Visualiser les statistiques et métriques du système.
           </p>
           <Link href="/admin/statistics">
@@ -85,7 +85,7 @@ export default function AdminContent() {
         </Card>
 
         <Card title="Visualisation du Thème" className="flex flex-col">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-muted-foreground mb-4">
             Visualiser et modifier le thème actif de la plateforme.
           </p>
           <Link href="/admin/theme-visualisation?themeId=32">
@@ -100,7 +100,7 @@ export default function AdminContent() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-sm font-medium text-foreground">
                 API Backend
               </span>
               <Badge variant="success">En ligne</Badge>
@@ -108,7 +108,7 @@ export default function AdminContent() {
           </div>
           <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-sm font-medium text-foreground">
                 Base de données
               </span>
               <Badge variant="success">Connectée</Badge>
@@ -116,7 +116,7 @@ export default function AdminContent() {
           </div>
           <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-sm font-medium text-foreground">
                 Services
               </span>
               <Badge variant="success">Opérationnels</Badge>

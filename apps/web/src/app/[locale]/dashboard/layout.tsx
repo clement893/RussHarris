@@ -84,11 +84,11 @@ function DashboardLayoutContent({
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-900 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:from-muted dark:to-muted">
       {/* Mobile/Tablet Header */}
-      <header className="xl:hidden bg-white dark:bg-gray-800 shadow border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30">
+      <header className="xl:hidden bg-background shadow border-b border-border sticky top-0 z-30">
         <div className="px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between">
-          <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate flex-1 mr-2">
+          <h1 className="text-lg sm:text-xl font-bold text-foreground truncate flex-1 mr-2">
             {pathname === '/dashboard/projects' && 'Projets'}
             {pathname === '/dashboard/become-superadmin' && 'Super Admin'}
             {pathname === '/profile' && 'Profile'}
@@ -174,9 +174,9 @@ function DashboardLayoutContent({
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-w-0 w-full">
           {/* Desktop Header */}
-          <header className="hidden xl:block bg-white dark:bg-gray-800 shadow border-b border-gray-200 dark:border-gray-700">
+          <header className="hidden xl:block bg-background shadow border-b border-border">
             <div className="px-4 md:px-6 xl:px-8 2xl:px-10 py-3 md:py-4 2xl:py-5 flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-bold text-foreground">
                 {pathname === '/dashboard/projects' && 'Projets'}
                 {pathname === '/dashboard/become-superadmin' && 'Super Admin'}
                 {pathname === '/profile' && 'Profile'}
