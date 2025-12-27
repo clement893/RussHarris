@@ -62,10 +62,10 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col">
-      <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
+    <aside className="fixed left-0 top-0 z-40 h-screen w-64 bg-background border-r border-border flex flex-col">
+      <div className="flex items-center justify-between h-16 px-6 border-b border-border">
         <Link href="/dashboard" className="flex items-center">
-          <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
+          <span className="text-xl font-bold text-primary">
             MODELE
           </span>
         </Link>
@@ -78,8 +78,8 @@ export default function Sidebar() {
             href={item.href}
             className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
               isActive(item.href)
-                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                ? 'bg-primary-50 dark:bg-primary-900/20 text-primary'
+                : 'text-foreground hover:bg-muted'
             }`}
           >
             {item.icon}
@@ -99,7 +99,7 @@ export default function Sidebar() {
             <p className="text-sm font-medium text-foreground truncate">
               {user?.name || 'Utilisateur'}
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+            <p className="text-xs text-muted-foreground truncate">
               {user?.email || ''}
             </p>
           </div>
