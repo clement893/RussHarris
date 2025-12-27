@@ -4,7 +4,7 @@
  */
 
 import { DEFAULT_THEME_CONFIG } from './default-theme-config';
-import { calculateContrastRatio, meetsWCAGAA } from './contrast-utils';
+import { meetsWCAGAA } from './contrast-utils';
 import type { ThemeConfig } from '@modele/types';
 
 /**

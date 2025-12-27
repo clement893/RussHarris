@@ -119,7 +119,7 @@ export function getValidationSummary(result: ThemeValidationResult): string {
   
   if (result.colorFormatErrors.length > 0) {
     parts.push(`\nColor Format Errors (${result.colorFormatErrors.length}):`);
-    result.colorFormatErrors.forEach(error => {
+    result.colorFormatErrors.forEach((error: ColorValidationResult['errors'][0]) => {
       parts.push(`  - ${error.field}: ${error.message}`);
     });
   }
