@@ -52,11 +52,11 @@ function ERPInvoicesContent() {
       sortable: true,
       render: (value: unknown, row: ERPInvoiceListResponse['items'][0]) => (
         <div>
-          <p className="font-medium text-gray-900 dark:text-white">
+          <p className="font-medium text-foreground">
             {(value ? String(value) : '') || row.client_email || 'N/A'}
           </p>
           {row.client_email && value ? (
-            <p className="text-xs text-gray-500 dark:text-gray-400">{String(row.client_email)}</p>
+            <p className="text-xs text-muted-foreground">{String(row.client_email)}</p>
           ) : null}
         </div>
       ),
@@ -78,7 +78,7 @@ function ERPInvoicesContent() {
               ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
               : value === 'open'
               ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300'
-              : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
+              : 'bg-muted text-foreground'
           }`}
         >
           {value as string}
@@ -101,8 +101,8 @@ function ERPInvoicesContent() {
 
   if (error) {
     return (
-      <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-        <p className="text-red-600 dark:text-red-400">
+      <div className="p-4 bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 rounded-lg">
+        <p className="text-danger-600 dark:text-danger-400">
           Failed to load invoices. Please try again later.
         </p>
       </div>
@@ -113,10 +113,10 @@ function ERPInvoicesContent() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
             All Invoices
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground">
             View and manage all invoices in the system
           </p>
         </div>
@@ -124,7 +124,7 @@ function ERPInvoicesContent() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800"
+            className="px-3 py-2 border border-border rounded-lg bg-background"
           >
             <option value="">All Status</option>
             <option value="paid">Paid</option>

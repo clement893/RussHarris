@@ -23,20 +23,20 @@ function ERPInventoryContent() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 className="text-3xl font-bold text-foreground mb-2">
           Inventory Management
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-muted-foreground">
           Manage products and stock levels
         </p>
       </div>
 
       <Card title="Coming Soon">
         <div className="text-center py-12">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-muted-foreground mb-4">
             Inventory management will be available once the Product and Inventory models are implemented.
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-500">
+          <p className="text-sm text-muted-foreground">
             This feature is planned for a future update.
           </p>
         </div>
