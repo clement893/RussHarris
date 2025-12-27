@@ -46,9 +46,12 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
         setTheme(cachedThemeResponse);
         applyThemeConfig(cachedTheme);
         logger.info('[Theme] Loaded theme from cache');
+        // Set loading to false immediately after applying cached theme
+        // Don't wait for API fetch to complete
+        setIsLoading(false);
       }
       
-      // Fetch fresh theme from backend
+      // Fetch fresh theme from backend (non-blocking)
       const activeTheme = await getActiveTheme();
       
       // Only update if theme actually changed to prevent unnecessary re-renders
@@ -63,6 +66,9 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
         // If theme ID matches but we have cached theme, still update state for consistency
         setTheme(activeTheme);
       }
+      
+      // Ensure loading is false after API fetch completes
+      setIsLoading(false);
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Failed to load theme');
       setError(error);
@@ -80,10 +86,12 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
         setTheme(cachedThemeResponse);
         applyThemeConfig(cachedTheme);
         logger.info('[Theme] Using cached theme as fallback');
+        setIsLoading(false);
+      } else {
+        // No cached theme available, set loading to false anyway
+        setIsLoading(false);
       }
       // Otherwise, the application will continue without theme customization
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -187,19 +195,13 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     // Also apply colors from nested colors object if available
+    // Note: We only set CSS variables, not body styles directly, to prevent hydration mismatches
+    // Body styles are handled via CSS in layout.tsx using these CSS variables
     if (colorsConfig.background && typeof colorsConfig.background === 'string') {
       root.style.setProperty('--color-background', colorsConfig.background);
-      // Update body background to use CSS variable to prevent overlay issues
-      if (typeof document !== 'undefined' && document.body) {
-        document.body.style.backgroundColor = 'var(--color-background)';
-      }
     }
     if (colorsConfig.foreground && typeof colorsConfig.foreground === 'string') {
       root.style.setProperty('--color-foreground', colorsConfig.foreground);
-      // Update body color to use CSS variable
-      if (typeof document !== 'undefined' && document.body) {
-        document.body.style.color = 'var(--color-foreground)';
-      }
     }
     if (colorsConfig.muted) {
       root.style.setProperty('--color-muted', colorsConfig.muted);

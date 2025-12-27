@@ -5,7 +5,7 @@
 
 'use client';
 
-import React, { useEffect, Suspense } from 'react';
+import React, { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { reportWebVitals } from '@/lib/performance';
 import { logger } from '@/lib/logger';
@@ -137,11 +137,9 @@ function AppContent({ children }: { children: React.ReactNode }) {
 }
 
 export const App = React.memo(({ children }: { children: React.ReactNode }) => {
-  return (
-    <Suspense fallback={<>{children}</>}>
-      <AppContent>{children}</AppContent>
-    </Suspense>
-  );
+  // Removed Suspense wrapper - usePathname and useSearchParams are already wrapped by Next.js
+  // This prevents unnecessary loading states and re-renders
+  return <AppContent>{children}</AppContent>;
 });
 
 App.displayName = 'App';

@@ -224,19 +224,13 @@ export const themeInlineScript = `
     }
     
     // Apply other colors from nested colors object
+    // Note: We only set CSS variables, not body styles directly, to prevent hydration mismatches
+    // Body styles are handled via CSS in layout.tsx using these CSS variables
     if (colorsConfig.background) {
       root.style.setProperty('--color-background', colorsConfig.background);
-      // Also update body background to use CSS variable to prevent overlay issues
-      if (document.body) {
-        document.body.style.backgroundColor = 'var(--color-background)';
-      }
     }
     if (colorsConfig.foreground) {
       root.style.setProperty('--color-foreground', colorsConfig.foreground);
-      // Also update body color to use CSS variable
-      if (document.body) {
-        document.body.style.color = 'var(--color-foreground)';
-      }
     }
     if (colorsConfig.muted) {
       root.style.setProperty('--color-muted', colorsConfig.muted);
@@ -336,12 +330,8 @@ export const themeInlineScript = `
       // Apply default theme immediately (synchronously)
       applyThemeConfig(defaultConfig);
       
-      // Ensure body background uses CSS variable to prevent overlay issues
-      // This must happen after applyThemeConfig sets the CSS variables
-      if (typeof document !== 'undefined' && document.body) {
-        document.body.style.backgroundColor = 'var(--color-background, #ffffff)';
-        document.body.style.color = 'var(--color-foreground, #0f172a)';
-      }
+      // Note: Body styles are handled via CSS in layout.tsx using CSS variables
+      // We don't manipulate body.style directly to prevent React hydration mismatches
     } catch (e) {
       // Silently fail
     }
