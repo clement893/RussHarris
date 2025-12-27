@@ -98,9 +98,9 @@ export default function Form({
                 rows={4}
                 className={clsx(
                   'w-full px-3 py-2 border rounded-md',
-                  'bg-white dark:bg-gray-800',
-                  'text-gray-900 dark:text-white',
-                  'border-gray-300 dark:border-gray-600',
+                  'bg-[var(--color-input)]',
+                  'text-[var(--color-foreground)]',
+                  'border-[var(--color-border)]',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent',
                   error && 'border-error-500 dark:border-error-400',
                   field.disabled && 'opacity-50 cursor-not-allowed'
@@ -115,9 +115,9 @@ export default function Form({
                 defaultValue={String(value)}
                 className={clsx(
                   'w-full px-3 py-2 border rounded-md',
-                  'bg-white dark:bg-gray-800',
-                  'text-gray-900 dark:text-white',
-                  'border-gray-300 dark:border-gray-600',
+                  'bg-[var(--color-input)]',
+                  'text-[var(--color-foreground)]',
+                  'border-[var(--color-border)]',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent',
                   error && 'border-error-500 dark:border-error-400',
                   field.disabled && 'opacity-50 cursor-not-allowed'
@@ -163,9 +163,9 @@ export default function Form({
                 defaultValue={String(value)}
                 className={clsx(
                   'w-full px-3 py-2 border rounded-md',
-                  'bg-white dark:bg-gray-800',
-                  'text-gray-900 dark:text-white',
-                  'border-gray-300 dark:border-gray-600',
+                  'bg-[var(--color-input)]',
+                  'text-[var(--color-foreground)]',
+                  'border-[var(--color-border)]',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent',
                   error && 'border-error-500 dark:border-error-400',
                   field.disabled && 'opacity-50 cursor-not-allowed'

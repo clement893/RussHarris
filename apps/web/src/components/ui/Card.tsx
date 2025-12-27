@@ -125,8 +125,8 @@ export default function Card({
     <div
       className={clsx(
         'rounded-lg border shadow-sm',
-        'bg-white dark:bg-gray-800',
-        'border-gray-200 dark:border-gray-700',
+        'bg-[var(--color-background)]',
+        'border-[var(--color-border)]',
         hover && 'transition-shadow hover:shadow-md',
         onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
         className
@@ -155,16 +155,16 @@ export default function Card({
       {...props}
     >
       {(title || subtitle || header) && (
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="px-6 py-4 border-b border-[var(--color-border)]">
           {header || (
             <>
               {title && (
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold text-[var(--color-foreground)]">
                   {title}
                 </h3>
               )}
               {subtitle && (
-                <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">
+                <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">
                   {subtitle}
                 </p>
               )}
@@ -176,7 +176,7 @@ export default function Card({
       <div className={clsx(padding && 'p-6')}>{children}</div>
 
       {cardFooter && (
-        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900/70">
+        <div className="px-6 py-4 border-t border-[var(--color-border)] bg-[var(--color-muted)]">
           {cardFooter}
         </div>
       )}

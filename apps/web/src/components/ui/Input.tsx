@@ -84,13 +84,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             className={clsx(
               'w-full px-4 py-2 border rounded-lg transition-all duration-200',
-              'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100',
+              'bg-[var(--color-input)] text-[var(--color-foreground)]',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent',
-              'disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed',
-              'placeholder:text-gray-400 dark:placeholder:text-gray-500',
+              'disabled:opacity-50 disabled:cursor-not-allowed',
+              'placeholder:text-[var(--color-muted-foreground)]',
               error
                 ? 'border-error-500 dark:border-error-400 focus:ring-error-500 dark:focus:ring-error-400'
-                : 'border-gray-300 dark:border-gray-600',
+                : 'border-[var(--color-border)]',
               leftIcon && 'pl-10',
               rightIcon && 'pr-10',
               className

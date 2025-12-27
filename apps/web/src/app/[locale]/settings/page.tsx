@@ -8,8 +8,9 @@
 
 'use client';
 
-// Note: Client Components are automatically dynamic in Next.js App Router
-// No need for export const dynamic = 'force-dynamic'
+// Force dynamic rendering to avoid static generation
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 import { useTranslations } from 'next-intl';
 import { PageHeader, PageContainer } from '@/components/layout';

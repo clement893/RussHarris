@@ -138,9 +138,10 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={selectId}
           className={clsx(
-            'block w-full rounded-md border-gray-300 dark:border-gray-600',
-            'bg-white dark:bg-gray-800',
-            'text-gray-900 dark:text-gray-100',
+            'block w-full rounded-md',
+            'bg-[var(--color-input)]',
+            'text-[var(--color-foreground)]',
+            'border-[var(--color-border)]',
             'shadow-sm focus:border-primary-500 dark:focus:border-primary-400 focus:ring-primary-500 dark:focus:ring-primary-400',
             'disabled:opacity-50 disabled:cursor-not-allowed',
             error && 'border-error-500 dark:border-error-400 focus:border-error-500 dark:focus:border-error-400 focus:ring-error-500 dark:focus:ring-error-400',

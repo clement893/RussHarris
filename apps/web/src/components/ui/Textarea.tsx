@@ -54,10 +54,11 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             ref={ref}
             id={textareaId}
             className={clsx(
-              'block w-full rounded-md border-gray-300 dark:border-gray-600',
-              'bg-white dark:bg-gray-800',
-              'text-gray-900 dark:text-gray-100',
-              'placeholder-gray-400 dark:placeholder-gray-500',
+              'block w-full rounded-md',
+              'bg-[var(--color-input)]',
+              'text-[var(--color-foreground)]',
+              'placeholder:text-[var(--color-muted-foreground)]',
+              'border-[var(--color-border)]',
               'shadow-sm focus:border-primary-500 dark:focus:border-primary-400 focus:ring-primary-500 dark:focus:ring-primary-400',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               'resize-y',
