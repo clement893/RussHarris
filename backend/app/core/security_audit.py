@@ -9,7 +9,7 @@ from enum import Enum
 from sqlalchemy import Column, DateTime, Integer, String, Text, JSON, Index, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import Base
+from app.core.database import Base, AsyncSessionLocal
 from app.core.logging import logger
 
 
@@ -97,9 +97,9 @@ class SecurityAuditLogger:
     
     @staticmethod
     async def log_event(
-        db: AsyncSession,
-        event_type: SecurityEventType,
-        description: str,
+        db: Optional[AsyncSession] = None,
+        event_type: SecurityEventType = None,
+        description: str = None,
         user_id: Optional[int] = None,
         user_email: Optional[str] = None,
         api_key_id: Optional[int] = None,
@@ -110,7 +110,7 @@ class SecurityAuditLogger:
         severity: str = "info",
         success: str = "unknown",
         metadata: Optional[Dict[str, Any]] = None,
-    ) -> SecurityAuditLog:
+    ) -> Optional[SecurityAuditLog]:
         """
         Log a security event
         
@@ -194,8 +194,15 @@ class SecurityAuditLogger:
             # Also print to console for immediate visibility
             print(error_msg, flush=True)
             
-            # Re-raise to allow caller to handle
-            raise
+            # Return None instead of raising - we don't want audit logging failures to break the app
+            return None
+        finally:
+            # Close the session if we created it
+            if use_separate_session:
+                try:
+                    await db.close()
+                except Exception:
+                    pass
     
     @staticmethod
     async def log_api_key_event(
