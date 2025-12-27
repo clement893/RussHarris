@@ -147,28 +147,46 @@ class SecurityAuditLogger:
             event_metadata=metadata or {},
         )
         
-        db.add(audit_log)
-        await db.commit()
-        await db.refresh(audit_log)
-        
-        # Also log to application logger
-        log_context = {
-            "audit_log_id": audit_log.id,
-            "event_type": event_type.value,
-            "user_id": user_id,
-            "severity": severity,
-        }
-        
-        if severity == "critical":
-            logger.critical(f"Security audit: {description}", context=log_context)
-        elif severity == "error":
-            logger.error(f"Security audit: {description}", context=log_context)
-        elif severity == "warning":
-            logger.warning(f"Security audit: {description}", context=log_context)
-        else:
-            logger.info(f"Security audit: {description}", context=log_context)
-        
-        return audit_log
+        try:
+            db.add(audit_log)
+            await db.commit()
+            await db.refresh(audit_log)
+            
+            # Also log to application logger
+            log_context = {
+                "audit_log_id": audit_log.id,
+                "event_type": event_type.value,
+                "user_id": user_id,
+                "severity": severity,
+            }
+            
+            if severity == "critical":
+                logger.critical(f"Security audit: {description}", context=log_context)
+            elif severity == "error":
+                logger.error(f"Security audit: {description}", context=log_context)
+            elif severity == "warning":
+                logger.warning(f"Security audit: {description}", context=log_context)
+            else:
+                logger.info(f"Security audit: {description}", context=log_context)
+            
+            return audit_log
+        except Exception as e:
+            # Rollback on error
+            await db.rollback()
+            # Log the error with full context
+            logger.error(
+                f"Failed to create security audit log: {e}",
+                exc_info=True,
+                context={
+                    "event_type": event_type.value,
+                    "description": description,
+                    "user_id": user_id,
+                    "user_email": user_email,
+                    "error": str(e),
+                }
+            )
+            # Re-raise to allow caller to handle
+            raise
     
     @staticmethod
     async def log_api_key_event(
