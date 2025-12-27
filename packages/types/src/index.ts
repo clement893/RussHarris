@@ -150,6 +150,7 @@ export * from './generated';
 
 // Theme types
 export * from './theme';
+export * from './theme-font';
 
 // Portal types
 export * from './portal';
