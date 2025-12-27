@@ -182,14 +182,14 @@ function SitemapPageContent() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
                   Pages d'administration
                   <Badge variant="error" className="text-xs">Admin</Badge>
                 </h3>
-                <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                <p className="text-sm text-foreground mb-2">
                   Ces pages nécessitent à la fois une authentification et des droits administrateur. Seuls les administrateurs peuvent y accéder :
                 </p>
-                <ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1 ml-4">
+                <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1 ml-4">
                   <li>Panneau d'administration</li>
                   <li>Gestion des équipes</li>
                   <li>Gestion des invitations</li>
@@ -198,8 +198,8 @@ function SitemapPageContent() {
               </div>
 
               <div className="pt-4 border-t border-blue-200 dark:border-blue-800">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  <strong className="text-gray-900 dark:text-white">Indicateurs visuels :</strong> Les pages protégées sont affichées avec des badges colorés. 
+                <p className="text-sm text-muted-foreground">
+                  <strong className="text-foreground">Indicateurs visuels :</strong> Les pages protégées sont affichées avec des badges colorés. 
                   Les pages non accessibles apparaissent en gris avec la mention "(Connexion requise)". 
                   Si vous êtes connecté et avez les permissions nécessaires, vous pouvez cliquer directement sur les liens.
                 </p>
