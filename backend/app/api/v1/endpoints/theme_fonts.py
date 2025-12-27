@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func as sql_func
 from app.schemas.theme_font import ThemeFontCreate, ThemeFontResponse, ThemeFontListResponse
 from app.models.theme_font import ThemeFont
-from app.models import User
+from app.models.user import User
 from app.core.database import get_db
 from app.dependencies import get_current_user, require_superadmin
 from app.services.s3_service import S3Service
