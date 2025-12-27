@@ -29,14 +29,15 @@ class UserBase(BaseModel):
     @field_validator('first_name', 'last_name')
     @classmethod
     def validate_name(cls, v: Optional[str]) -> Optional[str]:
-        """Validate name fields"""
+        """Validate name fields - more permissive to handle edge cases"""
         if v is not None:
+            # Handle non-string types gracefully
+            if not isinstance(v, str):
+                return None
             cleaned = v.strip()
             if cleaned and len(cleaned) > 100:
                 raise ValueError('Name cannot exceed 100 characters')
-            # Reject names with only special characters
-            if cleaned and not re.match(r'^[a-zA-ZÀ-ÿ\s\-\']+$', cleaned):
-                raise ValueError('Name can only contain letters, spaces, hyphens, and apostrophes')
+            # Return cleaned value (allow most characters to avoid blocking valid names)
             return cleaned if cleaned else None
         return v
 
@@ -86,14 +87,15 @@ class UserUpdate(BaseModel):
     @field_validator('first_name', 'last_name')
     @classmethod
     def validate_name(cls, v: Optional[str]) -> Optional[str]:
-        """Validate name fields"""
+        """Validate name fields - more permissive to handle edge cases"""
         if v is not None:
+            # Handle non-string types gracefully
+            if not isinstance(v, str):
+                return None
             cleaned = v.strip()
             if cleaned and len(cleaned) > 100:
                 raise ValueError('Name cannot exceed 100 characters')
-            # Reject names with only special characters
-            if cleaned and not re.match(r'^[a-zA-ZÀ-ÿ\s\-\']+$', cleaned):
-                raise ValueError('Name can only contain letters, spaces, hyphens, and apostrophes')
+            # Return cleaned value (allow most characters to avoid blocking valid names)
             return cleaned if cleaned else None
         return v
 
