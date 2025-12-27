@@ -57,7 +57,7 @@ function darken(color: string, percent: number): string {
 
 /**
  * Generate color shades from a base color
- * Returns an object with shades from 50 (lightest) to 900 (darkest)
+ * Returns an object with shades from 50 (lightest) to 950 (darkest)
  */
 export function generateColorShades(baseColor: string): {
   50: string;
@@ -70,6 +70,7 @@ export function generateColorShades(baseColor: string): {
   700: string;
   800: string;
   900: string;
+  950: string;
 } {
   return {
     50: lighten(baseColor, 90),
@@ -82,6 +83,7 @@ export function generateColorShades(baseColor: string): {
     700: darken(baseColor, 40),
     800: darken(baseColor, 60),
     900: darken(baseColor, 80),
+    950: darken(baseColor, 90),
   };
 }
 

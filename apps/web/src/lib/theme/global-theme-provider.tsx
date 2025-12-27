@@ -70,8 +70,15 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
       const secondaryShades = generateColorShades(config.secondary_color);
       Object.entries(secondaryShades).forEach(([shade, color]) => {
         root.style.setProperty(`--color-secondary-${shade}`, color);
+        // Also set success colors as aliases to secondary (unless success_color is explicitly set)
+        if (!config.success_color) {
+          root.style.setProperty(`--color-success-${shade}`, color);
+        }
         if (shade === '500') {
           root.style.setProperty(`--color-secondary-rgb`, generateRgb(color));
+          if (!config.success_color) {
+            root.style.setProperty(`--color-success-rgb`, generateRgb(color));
+          }
         }
       });
     }
@@ -80,8 +87,11 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
       const dangerShades = generateColorShades(config.danger_color);
       Object.entries(dangerShades).forEach(([shade, color]) => {
         root.style.setProperty(`--color-danger-${shade}`, color);
+        // Also set error colors as aliases to danger
+        root.style.setProperty(`--color-error-${shade}`, color);
         if (shade === '500') {
           root.style.setProperty(`--color-danger-rgb`, generateRgb(color));
+          root.style.setProperty(`--color-error-rgb`, generateRgb(color));
         }
       });
     }
@@ -104,7 +114,7 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     if (config.success_color) {
-      // Success colors use secondary shades, but we can also generate specific ones
+      // Success colors can be explicitly set, overriding secondary defaults
       const successShades = generateColorShades(config.success_color);
       Object.entries(successShades).forEach(([shade, color]) => {
         root.style.setProperty(`--color-success-${shade}`, color);

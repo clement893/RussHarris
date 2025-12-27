@@ -36,7 +36,7 @@ export function generateColorShades(hex: string, baseName: string): void {
   const rgb = hexToRgb(hex);
   if (!rgb) return;
 
-  // Generate shades (50-900)
+  // Generate shades (50-950)
   const shades = {
     50: { r: Math.min(255, rgb.r + 200), g: Math.min(255, rgb.g + 200), b: Math.min(255, rgb.b + 200) },
     100: { r: Math.min(255, rgb.r + 150), g: Math.min(255, rgb.g + 150), b: Math.min(255, rgb.b + 150) },
@@ -48,6 +48,7 @@ export function generateColorShades(hex: string, baseName: string): void {
     700: { r: Math.max(0, rgb.r - 50), g: Math.max(0, rgb.g - 50), b: Math.max(0, rgb.b - 50) },
     800: { r: Math.max(0, rgb.r - 100), g: Math.max(0, rgb.g - 100), b: Math.max(0, rgb.b - 100) },
     900: { r: Math.max(0, rgb.r - 150), g: Math.max(0, rgb.g - 150), b: Math.max(0, rgb.b - 150) },
+    950: { r: Math.max(0, rgb.r - 180), g: Math.max(0, rgb.g - 180), b: Math.max(0, rgb.b - 180) },
   };
 
   Object.entries(shades).forEach(([shade, color]) => {
