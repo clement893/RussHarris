@@ -37,14 +37,69 @@ async def ensure_default_theme(db: AsyncSession, created_by: int = 1) -> Theme:
     """
     Ensure TemplateTheme (ID 32) exists. Creates one if none exists.
     Always creates TemplateTheme if it doesn't exist, regardless of other themes.
+    Also updates existing theme to include comprehensive config if missing.
     Returns the TemplateTheme (or newly created one).
     """
+    from app.core.theme_defaults import DEFAULT_THEME_CONFIG
+    
     # Check if TemplateTheme exists (ID 32)
     result = await db.execute(select(Theme).where(Theme.id == 32))
     template_theme = result.scalar_one_or_none()
     
     if template_theme:
-        # TemplateTheme exists - ensure it's visible and return it
+        # TemplateTheme exists - check if it needs updating with comprehensive config
+        current_config = template_theme.config or {}
+        needs_update = False
+        
+        # Check if comprehensive fields are missing
+        if "typography" not in current_config or "colors" not in current_config or "spacing" not in current_config:
+            needs_update = True
+        
+        if needs_update:
+            # Merge existing config with comprehensive defaults
+            new_config = DEFAULT_THEME_CONFIG.copy()
+            
+            # Preserve existing values
+            if "mode" in current_config:
+                new_config["mode"] = current_config["mode"]
+            
+            # Preserve basic colors if they exist
+            for color_key in ["primary_color", "secondary_color", "danger_color", "warning_color", "info_color", "success_color"]:
+                if color_key in current_config:
+                    new_config[color_key] = current_config[color_key]
+                # Also check old format
+                elif color_key.replace("_color", "") in current_config:
+                    new_config[color_key] = current_config[color_key.replace("_color", "")]
+            
+            if "font_family" in current_config:
+                new_config["font_family"] = current_config["font_family"]
+            if "border_radius" in current_config:
+                new_config["border_radius"] = current_config["border_radius"]
+            
+            # Preserve existing nested structures if they exist
+            if "typography" in current_config:
+                new_config["typography"] = {**new_config.get("typography", {}), **current_config["typography"]}
+            if "colors" in current_config:
+                new_config["colors"] = {**new_config.get("colors", {}), **current_config["colors"]}
+            if "spacing" in current_config:
+                new_config["spacing"] = {**new_config.get("spacing", {}), **current_config["spacing"]}
+            if "borderRadius" in current_config:
+                new_config["borderRadius"] = {**new_config.get("borderRadius", {}), **current_config["borderRadius"]}
+            if "shadow" in current_config:
+                new_config["shadow"] = {**new_config.get("shadow", {}), **current_config["shadow"]}
+            if "effects" in current_config:
+                new_config["effects"] = {**new_config.get("effects", {}), **current_config["effects"]}
+            
+            # Preserve any other custom fields
+            for key, value in current_config.items():
+                if key not in new_config and key not in ["primary", "secondary", "danger", "warning", "info"]:
+                    new_config[key] = value
+            
+            # Update the theme
+            template_theme.config = new_config
+            await db.commit()
+            await db.refresh(template_theme)
+        
         # If no theme is active, activate TemplateTheme
         active_result = await db.execute(select(Theme).where(Theme.is_active == True))
         active_theme = active_result.scalar_one_or_none()
