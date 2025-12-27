@@ -32,9 +32,9 @@ export default function Loading({
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-90 z-50">
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-background/90 z-50">
         {spinner}
-        {text && <p className="mt-4 text-gray-600 dark:text-gray-300">{text}</p>}
+        {text && <p className="mt-4 text-muted-foreground">{text}</p>}
       </div>
     );
   }
@@ -42,7 +42,7 @@ export default function Loading({
   return (
     <div className="flex flex-col items-center justify-center">
       {spinner}
-      {text && <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">{text}</p>}
+      {text && <p className="mt-2 text-sm text-muted-foreground">{text}</p>}
     </div>
   );
 }

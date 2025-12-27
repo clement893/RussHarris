@@ -35,19 +35,19 @@ export default function Header() {
   }, [mobileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-            MODELE<span className="text-primary-600 dark:text-primary-400">FULLSTACK</span>
+          <Link href="/" className="text-xl sm:text-2xl font-bold text-foreground">
+            MODELE<span className="text-primary">FULLSTACK</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6" aria-label="Navigation principale">
-            <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition">
+            <Link href="/" className="text-muted-foreground hover:text-primary transition">
               Accueil
             </Link>
-            <Link href="/components" className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition">
+            <Link href="/components" className="text-muted-foreground hover:text-primary transition">
               Composants
             </Link>
           </nav>
@@ -58,7 +58,7 @@ export default function Header() {
             <ThemeToggleWithIcon />
             {isAuthenticated() ? (
               <>
-                <span className="text-sm text-gray-600 dark:text-gray-400 hidden lg:block">
+                <span className="text-sm text-muted-foreground hidden lg:block">
                   {user?.name || user?.email}
                 </span>
                 <Link href="/dashboard">
@@ -92,7 +92,7 @@ export default function Header() {
             <button
               ref={menuButtonRef}
               type="button"
-              className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-500 dark:focus:ring-gray-400 min-h-[44px]"
+              className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 text-foreground hover:bg-muted focus:ring-primary min-h-[44px]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
               aria-expanded={mobileMenuOpen}
@@ -108,7 +108,7 @@ export default function Header() {
           <div 
             ref={mobileMenuRef}
             id="mobile-menu"
-            className="md:hidden border-t border-gray-200 dark:border-gray-700 py-4"
+            className="md:hidden border-t border-border py-4"
             role="menu"
             aria-label="Menu mobile"
           >
@@ -116,7 +116,7 @@ export default function Header() {
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition px-4 py-3 min-h-[44px] flex items-center"
+                className="text-foreground hover:text-primary transition px-4 py-3 min-h-[44px] flex items-center"
               >
                 Accueil
               </Link>

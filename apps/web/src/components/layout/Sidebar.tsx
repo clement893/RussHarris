@@ -88,15 +88,15 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="border-t border-gray-200 dark:border-gray-700 p-4">
+      <div className="border-t border-border p-4">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-            <span className="text-blue-600 dark:text-blue-400 font-semibold">
+          <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+            <span className="text-primary font-semibold">
               {user?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'U'}
             </span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+            <p className="text-sm font-medium text-foreground truncate">
               {user?.name || 'Utilisateur'}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400 truncate">

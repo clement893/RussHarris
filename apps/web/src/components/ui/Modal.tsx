@@ -124,7 +124,7 @@ function Modal({
     >
       <div
         className={clsx(
-          'bg-white dark:bg-gray-800 shadow-xl',
+          'bg-background shadow-xl',
           'w-full h-full',
           'md:w-auto md:h-auto md:rounded-lg',
           sizeClasses[size],
@@ -139,14 +139,14 @@ function Modal({
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+          <div className="flex items-center justify-between p-4 md:p-6 border-b border-border flex-shrink-0">
             {title && (
-              <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white pr-2">{title}</h2>
+              <h2 className="text-lg md:text-xl font-semibold text-foreground pr-2">{title}</h2>
             )}
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="ml-auto text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center p-2 -mr-2"
+                className="ml-auto text-muted-foreground hover:text-foreground transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center p-2 -mr-2"
                 aria-label="Close"
               >
                 <svg
