@@ -214,6 +214,38 @@ export default async function LocaleLayout({
           }}
         />
         
+        {/* Apply dark class immediately from localStorage to prevent flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme');
+                  const root = document.documentElement;
+                  
+                  // Remove any existing theme classes
+                  root.classList.remove('light', 'dark');
+                  
+                  // Determine resolved theme
+                  let resolved = 'light';
+                  if (theme === 'dark') {
+                    resolved = 'dark';
+                  } else if (theme === 'system' || !theme) {
+                    // Check system preference
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    resolved = prefersDark ? 'dark' : 'light';
+                  }
+                  
+                  // Apply resolved theme class immediately
+                  root.classList.add(resolved);
+                } catch (e) {
+                  // Silently fail - ThemeProvider will handle it
+                }
+              })();
+            `,
+          }}
+        />
+        
         {/* Resource hints for performance */}
         {apiHost && (
           <>
