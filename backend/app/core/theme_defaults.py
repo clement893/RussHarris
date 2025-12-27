@@ -9,21 +9,22 @@ DEFAULT_THEME_CONFIG = {
     "mode": "system",
     
     # Basic color fields (for backward compatibility and simple usage)
-    "primary_color": "#3b82f6",
-    "secondary_color": "#8b5cf6",
-    "danger_color": "#ef4444",
-    "warning_color": "#f59e0b",
-    "info_color": "#06b6d4",
-    "success_color": "#10b981",
+    # Professional color palette - harmonious and accessible
+    "primary_color": "#2563eb",  # Deep professional blue
+    "secondary_color": "#6366f1",  # Elegant indigo (more subtle than purple)
+    "danger_color": "#dc2626",  # Refined red
+    "warning_color": "#d97706",  # Warm amber
+    "info_color": "#0891b2",  # Professional cyan
+    "success_color": "#059669",  # Professional green
     "font_family": "Inter",
     "border_radius": "8px",
     
-    # Typography configuration
+    # Typography configuration - Professional and readable
     "typography": {
-        "fontFamily": "Inter, system-ui, -apple-system, sans-serif",
-        "fontFamilyHeading": "Inter, system-ui, -apple-system, sans-serif",
-        "fontFamilySubheading": "Inter, system-ui, -apple-system, sans-serif",
-        "fontFamilyMono": "Fira Code, monospace",
+        "fontFamily": "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontFamilyHeading": "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontFamilySubheading": "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontFamilyMono": "'Fira Code', 'Courier New', monospace",
         "fontSize": {
             "xs": "12px",
             "sm": "14px",
@@ -45,35 +46,35 @@ DEFAULT_THEME_CONFIG = {
             "normal": "1.5",
             "relaxed": "1.75"
         },
-        "textHeading": "#111827",
-        "textSubheading": "#374151",
-        "textBody": "#1f2937",
-        "textSecondary": "#6b7280",
-        "textLink": "#3b82f6"
+        "textHeading": "#0f172a",  # Slate 900 - better contrast
+        "textSubheading": "#334155",  # Slate 700
+        "textBody": "#1e293b",  # Slate 800
+        "textSecondary": "#64748b",  # Slate 500
+        "textLink": "#2563eb"  # Matches primary
     },
     
-    # Color palette (expanded)
+    # Color palette (expanded) - Professional and harmonious
     "colors": {
         "background": "#ffffff",
-        "foreground": "#000000",
-        "primary": "#3b82f6",
+        "foreground": "#0f172a",  # Slate 900 for better contrast
+        "primary": "#2563eb",  # Deep professional blue
         "primaryForeground": "#ffffff",
-        "secondary": "#8b5cf6",
+        "secondary": "#6366f1",  # Elegant indigo
         "secondaryForeground": "#ffffff",
-        "accent": "#f59e0b",
+        "accent": "#f59e0b",  # Warm amber for accents
         "accentForeground": "#000000",
-        "muted": "#f3f4f6",
-        "mutedForeground": "#6b7280",
-        "border": "#e5e7eb",
+        "muted": "#f1f5f9",  # Slate 100 - softer than gray
+        "mutedForeground": "#64748b",  # Slate 500
+        "border": "#e2e8f0",  # Slate 200 - softer borders
         "input": "#ffffff",
-        "ring": "#3b82f6",
-        "destructive": "#ef4444",
+        "ring": "#2563eb",  # Matches primary
+        "destructive": "#dc2626",  # Refined red
         "destructiveForeground": "#ffffff",
-        "success": "#10b981",
+        "success": "#059669",  # Professional green
         "successForeground": "#ffffff",
-        "warning": "#f59e0b",
-        "warningForeground": "#000000",
-        "info": "#06b6d4",
+        "warning": "#d97706",  # Warm amber
+        "warningForeground": "#ffffff",  # White for better contrast on amber
+        "info": "#0891b2",  # Professional cyan
         "infoForeground": "#ffffff"
     },
     
@@ -142,7 +143,6 @@ DEFAULT_THEME_CONFIG = {
     },
     
     # Font URL for loading Google Fonts or custom fonts
-    # Example: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-    "font_url": None
+    "font_url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
 }
 

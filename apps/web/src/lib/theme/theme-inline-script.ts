@@ -208,27 +208,27 @@ export const themeInlineScript = `
   (function() {
     try {
       var defaultConfig = {
-        primary_color: '#3b82f6',
-        secondary_color: '#8b5cf6',
-        danger_color: '#ef4444',
-        warning_color: '#f59e0b',
-        info_color: '#06b6d4',
-        success_color: '#10b981',
+        primary_color: '#2563eb',  // Deep professional blue
+        secondary_color: '#6366f1',  // Elegant indigo
+        danger_color: '#dc2626',  // Refined red
+        warning_color: '#d97706',  // Warm amber
+        info_color: '#0891b2',  // Professional cyan
+        success_color: '#059669',  // Professional green
         colors: {
-          primary: '#3b82f6',
-          secondary: '#8b5cf6',
-          danger: '#ef4444',
-          destructive: '#ef4444',
-          warning: '#f59e0b',
-          info: '#06b6d4',
-          success: '#10b981',
+          primary: '#2563eb',
+          secondary: '#6366f1',
+          danger: '#dc2626',
+          destructive: '#dc2626',
+          warning: '#d97706',
+          info: '#0891b2',
+          success: '#059669',
           background: '#ffffff',
-          foreground: '#000000',
-          muted: '#f3f4f6',
-          mutedForeground: '#6b7280',
-          border: '#e5e7eb',
+          foreground: '#0f172a',  // Slate 900 for better contrast
+          muted: '#f1f5f9',  // Slate 100
+          mutedForeground: '#64748b',  // Slate 500
+          border: '#e2e8f0',  // Slate 200
           input: '#ffffff',
-          ring: '#3b82f6'
+          ring: '#2563eb'
         },
         font_family: 'Inter',
         border_radius: '8px',
