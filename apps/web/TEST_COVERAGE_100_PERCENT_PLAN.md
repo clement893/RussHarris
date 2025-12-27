@@ -1,0 +1,689 @@
+# 100% Test Coverage Plan - Batch Workflow
+
+## 🎯 Goal
+Reach 100% test coverage with a resumable, deployable workflow that allows:
+- ✅ Batch-by-batch progress
+- ✅ Testing after each batch
+- ✅ TypeScript verification
+- ✅ Git commits per batch
+- ✅ Ability to resume if interrupted
+- ✅ Safe deployment at any checkpoint
+
+## 📊 Current Status
+
+### Overall Metrics
+- **Overall Coverage**: ~20-30%
+- **Component Coverage**: ~12-14% (34-39 out of 270+ components)
+- **Tests Passing**: 649 / 841 (77%)
+- **Tests Failing**: 192 (need fixes)
+- **Current Batch**: Not Started
+- **Last Checkpoint**: Initial state
+
+### Progress Tracking
+- ✅ **Batch 0**: Setup & Planning (COMPLETED)
+  - Created ServiceTestCard.test.tsx
+  - Created DatePicker.test.tsx
+  - Created Dropdown.test.tsx
+  - Created this plan document
+
+- ✅ **Batch 1**: Critical Form Components (COMPLETED)
+  - Created TimePicker.test.tsx
+  - Created ColorPicker.test.tsx
+  - Created MultiSelect.test.tsx
+  - FileUpload and FileUploadWithPreview already had tests
+  - TypeScript check passed ✅
+  - Lint check passed ✅
+  - Tests need verification (run `pnpm test`)
+
+- ✅ **Batch 2**: Layout & Navigation Components (COMPLETED)
+  - Created Drawer.test.tsx
+  - Expanded Popover.test.tsx with additional test cases
+  - Created Sidebar.test.tsx
+  - Created Breadcrumbs.test.tsx
+  - Created ThemeToggle.test.tsx
+  - TypeScript check passed ✅
+  - Lint check passed ✅
+  - Tests need verification (run `pnpm test`)
+
+## 🔄 Batch Workflow Process
+
+Each batch follows this workflow:
+
+```
+1. Create Tests → 2. TypeScript Check → 3. Lint Check → 4. Run Tests → 
+5. Fix Issues → 6. Verify Coverage → 7. Commit & Push → 8. Update Progress
+```
+
+### Batch Checklist Template
+
+For each batch, complete these steps:
+
+- [ ] **Step 1: Create Test Files**
+  - [ ] Create test files for batch components
+  - [ ] Follow test template structure
+  - [ ] Ensure comprehensive coverage
+
+- [ ] **Step 2: TypeScript Verification**
+  ```bash
+  cd apps/web
+  pnpm type-check
+  ```
+  - [ ] No TypeScript errors
+  - [ ] Fix any type issues
+
+- [ ] **Step 3: Lint Check**
+  ```bash
+  cd apps/web
+  pnpm lint
+  ```
+  - [ ] No linting errors
+  - [ ] Fix any linting issues
+
+- [ ] **Step 4: Run Tests**
+  ```bash
+  cd apps/web
+  pnpm test
+  ```
+  - [ ] All new tests pass
+  - [ ] No regressions in existing tests
+  - [ ] Document any failures
+
+- [ ] **Step 5: Fix Issues**
+  - [ ] Fix failing tests
+  - [ ] Fix TypeScript errors
+  - [ ] Fix linting errors
+  - [ ] Re-run tests until all pass
+
+- [ ] **Step 6: Coverage Verification**
+  ```bash
+  cd apps/web
+  pnpm test:coverage
+  ```
+  - [ ] Check coverage increase
+  - [ ] Verify no coverage decrease
+  - [ ] Document coverage metrics
+
+- [ ] **Step 7: Git Commit & Push**
+  ```bash
+  git add apps/web/src/components/ui/__tests__/
+  git add apps/web/TEST_COVERAGE_100_PERCENT_PLAN.md
+  git commit -m "test: Add tests for batch X - [Component Names]
+
+  - Added tests for [list components]
+  - Coverage increased from X% to Y%
+  - All tests passing
+  - TypeScript and lint checks passed"
+  
+  git push origin [branch-name]
+  ```
+  - [ ] Commit with descriptive message
+  - [ ] Push to remote
+  - [ ] Tag checkpoint if major milestone
+
+- [ ] **Step 8: Update Progress**
+  - [ ] Update this document with batch completion
+  - [ ] Update current status section
+  - [ ] Mark components as tested
+  - [ ] Update coverage metrics
+
+## 📦 Batch Definitions
+
+### Batch 1: Critical Form Components (Priority: HIGH)
+**Status**: ✅ COMPLETED  
+**Components**:
+- [x] TimePicker ✅ (test file created)
+- [x] FileUpload ✅ (already had tests)
+- [x] FileUploadWithPreview ✅ (already had tests)
+- [x] ColorPicker ✅ (test file created)
+- [x] MultiSelect ✅ (test file created)
+
+**Estimated Time**: 10-15 hours  
+**Expected Coverage Increase**: +2-3%
+
+**Checkpoint**: After Batch 1
+- Coverage: ~22-33%
+- All form components tested
+- Can deploy with improved form testing
+
+---
+
+### Batch 2: Layout & Navigation Components (Priority: HIGH)
+**Status**: ✅ COMPLETED  
+**Components**:
+- [x] Drawer ✅ (test file created)
+- [x] Popover ✅ (expanded existing test file)
+- [x] Sidebar ✅ (test file created)
+- [x] Breadcrumbs ✅ (test file created)
+- [x] ThemeToggle ✅ (test file created)
+
+**Estimated Time**: 10-15 hours  
+**Expected Coverage Increase**: +2-3%
+
+**Checkpoint**: After Batch 2
+- Coverage: ~24-36%
+- All layout components tested
+- Navigation components fully covered
+
+---
+
+### Batch 3: Data Display - Tables & Lists (Priority: HIGH)
+**Status**: 🔴 Not Started  
+**Components**:
+- [ ] DataTableEnhanced
+- [ ] Table (expand existing)
+- [ ] TableFilters
+- [ ] TablePagination
+- [ ] TableSearchBar
+- [ ] VirtualTable
+- [ ] List (expand existing)
+
+**Estimated Time**: 15-20 hours  
+**Expected Coverage Increase**: +3-4%
+
+**Checkpoint**: After Batch 3
+- Coverage: ~27-40%
+- All table components tested
+- Data display components covered
+
+---
+
+### Batch 4: Data Display - Advanced (Priority: MEDIUM)
+**Status**: 🔴 Not Started  
+**Components**:
+- [ ] KanbanBoard
+- [ ] Timeline
+- [ ] TreeView (expand existing)
+- [ ] Calendar
+- [ ] DragDropList
+
+**Estimated Time**: 15-20 hours  
+**Expected Coverage Increase**: +3-4%
+
+**Checkpoint**: After Batch 4
+- Coverage: ~30-44%
+- Advanced data components tested
+
+---
+
+### Batch 5: Charts & Visualization (Priority: MEDIUM)
+**Status**: 🔴 Not Started  
+**Components**:
+- [ ] Chart
+- [ ] AdvancedCharts
+- [ ] StatsCard
+- [ ] StatusCard
+
+**Estimated Time**: 10-15 hours  
+**Expected Coverage Increase**: +2-3%
+
+**Checkpoint**: After Batch 5
+- Coverage: ~32-47%
+- All chart components tested
+
+---
+
+### Batch 6: Feedback & Overlays (Priority: HIGH)
+**Status**: 🔴 Not Started  
+**Components**:
+- [ ] ToastContainer
+- [ ] Toast (expand existing)
+- [ ] ErrorBoundary (fix existing)
+- [ ] Modal (expand existing)
+
+**Estimated Time**: 10-15 hours  
+**Expected Coverage Increase**: +2-3%
+
+**Checkpoint**: After Batch 6
+- Coverage: ~34-50%
+- All feedback components tested
+
+---
+
+### Batch 7: Advanced Components (Priority: MEDIUM)
+**Status**: 🔴 Not Started  
+**Components**:
+- [ ] RichTextEditor
+- [ ] VideoPlayer
+- [ ] AudioPlayer
+- [ ] FormBuilder
+- [ ] FormField
+- [ ] CRUDModal
+- [ ] ExportButton
+
+**Estimated Time**: 20-25 hours  
+**Expected Coverage Increase**: +4-5%
+
+**Checkpoint**: After Batch 7
+- Coverage: ~38-55%
+- Advanced components tested
+
+---
+
+### Batch 8: Utility Components (Priority: LOW)
+**Status**: 🔴 Not Started  
+**Components**:
+- [ ] ClientOnly
+- [ ] SearchBar (expand existing)
+- [ ] SafeHTML
+- [ ] FAQItem
+- [ ] PricingCardSimple
+- [ ] BillingPeriodToggle
+
+**Estimated Time**: 8-12 hours  
+**Expected Coverage Increase**: +1-2%
+
+**Checkpoint**: After Batch 8
+- Coverage: ~39-57%
+- Utility components tested
+
+---
+
+### Batch 9: Fix Failing Tests (Priority: CRITICAL)
+**Status**: 🔴 Not Started  
+**Failing Tests**:
+- [ ] Input.test.tsx - type attribute issues
+- [ ] ErrorBoundary.test.tsx - error handling issues
+- [ ] Popover.test.tsx - placement class issues
+- [ ] Radio.test.tsx - error message display
+- [ ] Range.test.tsx - value type issues
+- [ ] Slider.test.tsx - value type issues
+- [ ] Stepper.test.tsx - attribute issues
+- [ ] Table.test.tsx - style issues
+- [ ] ServiceTestCard.test.tsx - hover class issues
+- [ ] And ~183 more...
+
+**Estimated Time**: 20-30 hours  
+**Expected Coverage Increase**: +5-10% (from fixing existing tests)
+
+**Checkpoint**: After Batch 9
+- Coverage: ~44-67%
+- All existing tests passing
+- Solid foundation for expansion
+
+---
+
+### Batch 10: Billing Components (Priority: HIGH - Critical Path)
+**Status**: 🔴 Not Started  
+**Components**:
+- [ ] BillingDashboard
+- [ ] InvoiceList
+- [ ] InvoiceViewer
+- [ ] PaymentMethodForm
+- [ ] PaymentHistory
+- [ ] SubscriptionPlans
+- [ ] UsageMeter
+- [ ] BillingSettings
+
+**Estimated Time**: 15-20 hours  
+**Expected Coverage Increase**: +3-4%  
+**Target Coverage**: 90%+ (critical path requirement)
+
+**Checkpoint**: After Batch 10
+- Coverage: ~47-71%
+- Billing components at 90%+ coverage
+- Critical path requirement met
+
+---
+
+### Batch 11: Auth Components (Priority: HIGH - Critical Path)
+**Status**: 🔴 Not Started  
+**Components**:
+- [ ] SocialAuth
+- [ ] MFA
+- [ ] LoginForm
+- [ ] SignupForm
+- [ ] PasswordReset
+- [ ] EmailVerification
+
+**Estimated Time**: 15-20 hours  
+**Expected Coverage Increase**: +3-4%  
+**Target Coverage**: 90%+ (critical path requirement)
+
+**Checkpoint**: After Batch 11
+- Coverage: ~50-75%
+- Auth components at 90%+ coverage
+- Critical path requirement met
+
+---
+
+### Batch 12: Settings Components (Priority: MEDIUM)
+**Status**: 🔴 Not Started  
+**Components**:
+- [ ] UserSettings
+- [ ] OrganizationSettings
+- [ ] SecuritySettings
+- [ ] NotificationSettings
+- [ ] PrivacySettings
+- [ ] APIKeys
+- [ ] WebhooksSettings
+
+**Estimated Time**: 15-20 hours  
+**Expected Coverage Increase**: +3-4%
+
+**Checkpoint**: After Batch 12
+- Coverage: ~53-79%
+- Settings components tested
+
+---
+
+### Batch 13: Analytics Components (Priority: MEDIUM)
+**Status**: 🔴 Not Started  
+**Components**:
+- [ ] AnalyticsDashboard
+- [ ] ReportBuilder
+- [ ] ReportViewer
+- [ ] DataExport
+
+**Estimated Time**: 10-15 hours  
+**Expected Coverage Increase**: +2-3%
+
+**Checkpoint**: After Batch 13
+- Coverage: ~55-82%
+- Analytics components tested
+
+---
+
+### Batch 14: Monitoring & Performance (Priority: MEDIUM)
+**Status**: 🔴 Not Started  
+**Components**: All components in `/monitoring` and `/performance`
+- [ ] PerformanceDashboard
+- [ ] OfflineSupport
+- [ ] OptimisticUpdates
+- [ ] ErrorReporting
+- [ ] And more...
+
+**Estimated Time**: 15-20 hours  
+**Expected Coverage Increase**: +3-4%
+
+**Checkpoint**: After Batch 14
+- Coverage: ~58-86%
+- Monitoring components tested
+
+---
+
+### Batch 15: Remaining Feature Components (Priority: LOW)
+**Status**: 🔴 Not Started  
+**Components**: All remaining feature components
+- [ ] Activity components
+- [ ] Notification components
+- [ ] Workflow components
+- [ ] Collaboration components
+- [ ] Integration components
+- [ ] And 20+ more directories...
+
+**Estimated Time**: 40-60 hours  
+**Expected Coverage Increase**: +8-12%
+
+**Checkpoint**: After Batch 15
+- Coverage: ~66-98%
+- Most feature components tested
+
+---
+
+### Batch 16: Hooks Testing (Priority: MEDIUM)
+**Status**: 🔴 Not Started  
+**Hooks**: All hooks without tests
+- [ ] Expand existing hook tests
+- [ ] Add tests for missing hooks
+
+**Estimated Time**: 15-20 hours  
+**Expected Coverage Increase**: +2-3%
+
+**Checkpoint**: After Batch 16
+- Coverage: ~68-100%
+- All hooks tested
+
+---
+
+### Batch 17: Utilities & Libraries (Priority: MEDIUM)
+**Status**: 🔴 Not Started  
+**Utilities**: All utilities without tests
+- [ ] Expand existing utility tests
+- [ ] Add tests for missing utilities
+- [ ] API client tests expansion
+- [ ] Security utilities expansion
+
+**Estimated Time**: 20-25 hours  
+**Expected Coverage Increase**: +5-7%
+
+**Checkpoint**: After Batch 17
+- Coverage: ~73-100%
+- All utilities tested
+
+---
+
+### Batch 18: Final Verification & 100% Coverage (Priority: CRITICAL)
+**Status**: 🔴 Not Started  
+**Tasks**:
+- [ ] Identify any remaining untested code
+- [ ] Add tests for edge cases
+- [ ] Verify 100% coverage
+- [ ] Update documentation
+- [ ] Final TypeScript check
+- [ ] Final lint check
+- [ ] All tests passing
+- [ ] Coverage report generation
+
+**Estimated Time**: 10-15 hours  
+**Expected Coverage Increase**: +0-2% (final polish)
+
+**Checkpoint**: After Batch 18
+- Coverage: 100% ✅
+- All tests passing ✅
+- Ready for deployment ✅
+
+## 🛠️ Commands Reference
+
+### TypeScript Check
+```bash
+cd apps/web
+pnpm type-check
+```
+
+### Lint Check
+```bash
+cd apps/web
+pnpm lint
+```
+
+### Run Tests
+```bash
+cd apps/web
+pnpm test
+```
+
+### Run Tests with Coverage
+```bash
+cd apps/web
+pnpm test:coverage
+```
+
+### Run Tests in Watch Mode
+```bash
+cd apps/web
+pnpm test:watch
+```
+
+### Run Specific Test File
+```bash
+cd apps/web
+pnpm test DatePicker.test.tsx
+```
+
+### Git Workflow
+```bash
+# Check current status
+git status
+
+# Stage test files
+git add apps/web/src/components/ui/__tests__/
+
+# Stage plan updates
+git add apps/web/TEST_COVERAGE_100_PERCENT_PLAN.md
+
+# Commit with descriptive message
+git commit -m "test: Add tests for batch X - [Component Names]
+
+- Added tests for [list components]
+- Coverage increased from X% to Y%
+- All tests passing
+- TypeScript and lint checks passed"
+
+# Push to remote
+git push origin [branch-name]
+
+# Create checkpoint tag (for major milestones)
+git tag -a checkpoint-batch-X -m "Checkpoint: Batch X completed"
+git push origin checkpoint-batch-X
+```
+
+## 📋 Test Creation Template
+
+```tsx
+/**
+ * ComponentName Component Tests
+ * 
+ * Comprehensive test suite covering:
+ * - Rendering with different props
+ * - User interactions
+ * - Edge cases
+ * - Accessibility
+ */
+
+import React from 'react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { axe } from 'jest-axe';
+import ComponentName from '../ComponentName';
+
+describe('ComponentName Component', () => {
+  describe('Rendering', () => {
+    it('renders with required props', () => {
+      render(<ComponentName prop="value" />);
+      expect(screen.getByText('Expected Text')).toBeInTheDocument();
+    });
+  });
+
+  describe('Interactions', () => {
+    it('handles user interactions correctly', () => {
+      const handleClick = vi.fn();
+      render(<ComponentName onClick={handleClick} />);
+      fireEvent.click(screen.getByRole('button'));
+      expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Props', () => {
+    it('handles all prop variations', () => {
+      // Test different prop combinations
+    });
+  });
+
+  describe('Accessibility', () => {
+    it('has no accessibility violations', async () => {
+      const { container } = render(<ComponentName />);
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+  });
+
+  describe('Edge Cases', () => {
+    it('handles edge cases gracefully', () => {
+      // Test edge cases
+    });
+  });
+});
+```
+
+## 🚨 Safety Checks Before Each Commit
+
+Before committing each batch, verify:
+
+1. ✅ **TypeScript**: `pnpm type-check` passes
+2. ✅ **Linting**: `pnpm lint` passes
+3. ✅ **Tests**: `pnpm test` - all tests pass
+4. ✅ **Coverage**: `pnpm test:coverage` - coverage increased or maintained
+5. ✅ **No Regressions**: Existing tests still pass
+6. ✅ **Documentation**: Plan document updated
+
+## 📈 Progress Tracking
+
+### Coverage Milestones
+- [ ] 30% coverage
+- [ ] 40% coverage
+- [ ] 50% coverage
+- [ ] 60% coverage
+- [ ] 70% coverage
+- [ ] 80% coverage
+- [ ] 90% coverage
+- [ ] 95% coverage
+- [ ] 100% coverage ✅
+
+### Critical Path Milestones
+- [ ] Billing components at 90%+
+- [ ] Auth components at 90%+
+- [ ] Security utilities at 95%+
+- [ ] API library at 85%+
+
+## 🔄 Resuming After Interruption
+
+If work is interrupted, follow these steps to resume:
+
+1. **Check Current Status**
+   ```bash
+   git log --oneline -10
+   git status
+   ```
+
+2. **Review Last Checkpoint**
+   - Check this document for last completed batch
+   - Review git commits for what was done
+   - Check test coverage report
+
+3. **Verify Environment**
+   ```bash
+   cd apps/web
+   pnpm install
+   pnpm type-check
+   pnpm test
+   ```
+
+4. **Resume from Next Batch**
+   - Start with the next batch marked "Not Started"
+   - Follow the batch workflow checklist
+   - Update progress as you go
+
+5. **If Tests Fail**
+   - Review error messages
+   - Check if dependencies need updating
+   - Fix issues before proceeding
+
+## 🎯 Deployment Readiness
+
+At any checkpoint, the codebase should be:
+- ✅ TypeScript clean
+- ✅ Lint clean
+- ✅ All tests passing
+- ✅ Coverage documented
+- ✅ Git committed and pushed
+
+**Deployment Decision Points:**
+- After each batch (incremental deployment)
+- After critical path batches (Billing, Auth)
+- At major milestones (50%, 75%, 100%)
+
+## 📝 Notes
+
+- Some components may need mocking (e.g., RichTextEditor, VideoPlayer)
+- Some components may need integration test setup (e.g., components with API calls)
+- Accessibility testing is critical for all components
+- Edge cases are important for robust coverage
+- Consider creating test generators for similar components
+- Batch size can be adjusted based on complexity
+
+## 🔗 Related Documents
+
+- `COVERAGE_REPORT.md` - Detailed coverage analysis
+- `apps/web/src/components/ui/__tests__/README.md` - Test documentation
+- `apps/web/src/__tests__/README.md` - Test suite documentation
+- `vitest.config.ts` - Test configuration
