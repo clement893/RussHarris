@@ -20,7 +20,6 @@
 import { Link } from '@/i18n/routing';
 import { clsx } from 'clsx';
 import type { ButtonVariant, Size } from './types';
-import type { ComponentProps } from 'react';
 
 // Base styles - same as Button component
 const baseStyles = [
