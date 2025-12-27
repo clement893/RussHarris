@@ -408,7 +408,7 @@ export default function SurveyResults({
               <p className="text-sm text-gray-600 dark:text-gray-400">{t('total_responses') || 'Total Responses'}</p>
               <p className="text-2xl font-bold">{stats.totalResponses}</p>
             </div>
-            <Users className="h-8 w-8 text-blue-500 dark:text-blue-400" />
+            <Users className="h-8 w-8 text-primary-500 dark:text-primary-400" />
           </div>
         </Card>
 
@@ -418,7 +418,7 @@ export default function SurveyResults({
               <p className="text-sm text-gray-600 dark:text-gray-400">{t('filtered_responses') || 'Filtered Responses'}</p>
               <p className="text-2xl font-bold">{stats.filteredResponses}</p>
             </div>
-            <CheckCircle className="h-8 w-8 text-green-500 dark:text-green-400" />
+            <CheckCircle className="h-8 w-8 text-success-500 dark:text-success-400" />
           </div>
         </Card>
 
