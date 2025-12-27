@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getActiveTheme, getTheme, updateTheme } from '@/lib/api/theme';
 import { useGlobalTheme } from '@/lib/theme/global-theme-provider';
+import { DEFAULT_THEME_CONFIG } from '@/lib/theme/default-theme-config';
 import type { ThemeConfigResponse, ThemeConfig, ThemeUpdate } from '@modele/types';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -233,10 +234,16 @@ export function ThemeVisualisationContent() {
         </div>
         <div className="flex gap-2">
           {canEdit && !isEditing && (
-            <Button onClick={() => setIsEditing(true)} variant="primary" size="sm">
-              <Edit2 className="w-4 h-4 mr-2" />
-              Modifier le thème
-            </Button>
+            <>
+              <Button onClick={() => setIsEditing(true)} variant="primary" size="sm">
+                <Edit2 className="w-4 h-4 mr-2" />
+                Modifier le thème
+              </Button>
+              <Button onClick={handleResetToDefault} variant="outline" size="sm" disabled={saving}>
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Retour au thème par défaut
+              </Button>
+            </>
           )}
           <Button onClick={fetchTheme} variant="secondary" size="sm">
             <RefreshCw className="w-4 h-4 mr-2" />
