@@ -6,12 +6,15 @@ API endpoints for team management
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
+from sqlalchemy import select
 
 from app.core.database import get_db
 from app.core.cache import cached, invalidate_cache_pattern, invalidate_cache_pattern_async
 from app.dependencies import get_current_user
 from app.dependencies.rbac import require_team_permission, require_team_owner, require_team_member
 from app.models import User
+from app.models.team import TeamMember
 from app.schemas.team import (
     TeamCreate,
     TeamUpdate,
@@ -91,9 +94,42 @@ async def list_teams(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """List teams the user belongs to with pagination"""
+    """List teams the user belongs to with pagination. Superadmins see all teams."""
+    from app.dependencies import is_superadmin
+    
     team_service = TeamService(db)
-    teams = await team_service.get_user_teams(current_user.id, skip=skip, limit=limit)
+    
+    # Check if user is superadmin - if so, return all teams
+    user_is_superadmin = await is_superadmin(current_user, db)
+    
+    if user_is_superadmin:
+        # Superadmin sees all teams
+        from sqlalchemy import select
+        from app.models.team import Team
+        
+        result = await db.execute(
+            select(Team)
+            .where(Team.is_active == True)
+            .order_by(Team.created_at.desc())
+            .offset(skip)
+            .limit(limit)
+            .options(
+                selectinload(Team.owner),
+                selectinload(Team.members).selectinload(TeamMember.user),
+                selectinload(Team.members).selectinload(TeamMember.role)
+            )
+        )
+        teams = list(result.scalars().all())
+        
+        # Get total count for pagination
+        count_result = await db.execute(
+            select(Team).where(Team.is_active == True)
+        )
+        total = len(count_result.scalars().all())
+    else:
+        # Regular users see only teams they belong to
+        teams = await team_service.get_user_teams(current_user.id, skip=skip, limit=limit)
+        total = len(teams)
     
     # Convert teams to response format
     teams_response = []
@@ -118,7 +154,7 @@ async def list_teams(
         }
         teams_response.append(TeamResponse.model_validate(team_dict))
     
-    return TeamListResponse(teams=teams_response, total=len(teams_response))
+    return TeamListResponse(teams=teams_response, total=total)
 
 
 @router.get("/{team_id}", response_model=TeamResponse)

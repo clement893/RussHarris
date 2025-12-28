@@ -191,22 +191,42 @@ export const settingsAPI = {
    * Get organization settings
    */
   getOrganizationSettings: async (): Promise<{ settings: OrganizationSettings }> => {
-    const response = await apiClient.get<{ settings: OrganizationSettings }>('/v1/settings/organization');
-    if (!response.data) {
+    const response = await apiClient.get<{ settings: OrganizationSettings }>('/v1/settings/organization/');
+    // apiClient.get returns response.data from axios
+    // FastAPI returns data directly, so response might be { settings: {...} } or ApiResponse<{ settings: {...} }>
+    if (!response) {
       throw new Error('Failed to fetch organization settings: no data returned');
     }
-    return response.data;
+    // Handle ApiResponse wrapper case
+    if (typeof response === 'object' && 'data' in response && response.data) {
+      return response.data as { settings: OrganizationSettings };
+    }
+    // Handle direct FastAPI response case
+    if (typeof response === 'object' && 'settings' in response) {
+      return response as { settings: OrganizationSettings };
+    }
+    throw new Error('Failed to fetch organization settings: invalid response format');
   },
 
   /**
    * Update organization settings
    */
   updateOrganizationSettings: async (settings: OrganizationSettings): Promise<{ settings: OrganizationSettings }> => {
-    const response = await apiClient.put<{ settings: OrganizationSettings }>('/v1/settings/organization', settings);
-    if (!response.data) {
+    const response = await apiClient.put<{ settings: OrganizationSettings }>('/v1/settings/organization/', settings);
+    // apiClient.put returns response.data from axios
+    // FastAPI returns data directly, so response might be { settings: {...} } or ApiResponse<{ settings: {...} }>
+    if (!response) {
       throw new Error('Failed to update organization settings: no data returned');
     }
-    return response.data;
+    // Handle ApiResponse wrapper case
+    if (typeof response === 'object' && 'data' in response && response.data) {
+      return response.data as { settings: OrganizationSettings };
+    }
+    // Handle direct FastAPI response case
+    if (typeof response === 'object' && 'settings' in response) {
+      return response as { settings: OrganizationSettings };
+    }
+    throw new Error('Failed to update organization settings: invalid response format');
   },
 };
 

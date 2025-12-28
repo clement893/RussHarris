@@ -110,9 +110,43 @@ export function handleApiError(error: unknown): AppError {
   // Axios error - extract detailed information
   if (error instanceof AxiosError) {
     const statusCode = error.response?.status ?? 500;
-    const responseData = error.response?.data as ApiErrorResponse | undefined;
+    const responseData = error.response?.data as ApiErrorResponse | any | undefined;
     const requestUrl = error.config?.url ?? 'unknown';
     const requestMethod = error.config?.method?.toUpperCase() ?? 'UNKNOWN';
+
+    // Check for FastAPI standard validation error format (detail array)
+    // FastAPI returns 422 errors in format: { "detail": [{ "type": "...", "loc": [...], "msg": "..." }] }
+    if (statusCode === 422 && responseData?.detail && Array.isArray(responseData.detail)) {
+      console.error('[handleApiError] FastAPI standard validation format detected:', responseData);
+      
+      // Convert FastAPI format to our format
+      const validationErrors = responseData.detail.map((err: any) => ({
+        field: Array.isArray(err.loc) ? err.loc.join('.') : String(err.loc || 'unknown'),
+        message: err.msg || err.message || String(err),
+        code: err.type || 'validation_error',
+      }));
+      
+      // Extract messages
+      const validationMessages = validationErrors
+        .map((err: any) => err.message)
+        .filter((msg: string) => typeof msg === 'string' && msg.length > 0);
+      
+      if (validationMessages.length > 0) {
+        // Use the validation messages
+        const message = validationMessages.join('\n');
+        console.error('[handleApiError] Extracted messages from FastAPI detail format:', message);
+        
+        return new ValidationError(
+          message,
+          {
+            url: requestUrl,
+            method: requestMethod,
+            statusCode,
+            validationErrors,
+          }
+        );
+      }
+    }
 
     // Generate contextual error message based on status code
     let message = responseData?.error?.message ?? error.message;
@@ -219,11 +253,41 @@ export function handleApiError(error: unknown): AppError {
         message = `Validation failed for fields: ${validationFields}. ${message}`;
       }
     } else if (statusCode === 422) {
-      // If 422 but no validationErrors, log the full response for debugging
-      console.error('[handleApiError] 422 error but no validationErrors:', {
-        responseData,
-        fullResponse: JSON.stringify(responseData, null, 2),
-      });
+      // Check for FastAPI standard validation error format (detail array)
+      // FastAPI returns 422 errors in format: { "detail": [{ "type": "...", "loc": [...], "msg": "..." }] }
+      if (responseData?.detail && Array.isArray(responseData.detail)) {
+        console.error('[handleApiError] FastAPI standard validation format detected:', responseData);
+        
+        // Convert FastAPI format to our format
+        const validationErrors = responseData.detail.map((err: any) => ({
+          field: Array.isArray(err.loc) ? err.loc.join('.') : String(err.loc || 'unknown'),
+          message: err.msg || err.message || String(err),
+          code: err.type || 'validation_error',
+        }));
+        
+        details.validationErrors = validationErrors;
+        
+        // Extract messages
+        const validationMessages = validationErrors
+          .map((err: any) => err.message)
+          .filter((msg: string) => typeof msg === 'string' && msg.length > 0 && !msg.includes('Request failed'));
+        
+        if (validationMessages.length > 0) {
+          // Use the validation messages instead of generic message
+          message = validationMessages.join('\n');
+          console.error('[handleApiError] Extracted messages from FastAPI detail format:', message);
+        } else {
+          // If no messages extracted, log the full detail for debugging
+          console.error('[handleApiError] No validation messages extracted from FastAPI detail:', JSON.stringify(responseData.detail, null, 2));
+          message = `Erreur de validation. Détails: ${JSON.stringify(responseData.detail)}`;
+        }
+      } else {
+        // If 422 but no validationErrors and no detail, log the full response for debugging
+        console.error('[handleApiError] 422 error but no validationErrors or detail:', {
+          responseData,
+          fullResponse: JSON.stringify(responseData, null, 2),
+        });
+      }
     }
 
     const appError = createErrorFromStatusCode(statusCode, message, details);

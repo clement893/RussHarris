@@ -6,13 +6,37 @@ import { getErrorMessage, getErrorDetail } from '@/lib/errors';
 import { Button, Card, Badge, Alert, Input, Textarea, Loading, Modal, DataTable } from '@/components/ui';
 import type { Column } from '@/components/ui/DataTable';
 
+interface TeamSettings {
+  email?: string;
+  phone?: string;
+  website?: string;
+  address?: {
+    line1: string;
+    line2?: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  timezone?: string;
+  locale?: string;
+}
+
 interface Team extends Record<string, unknown> {
   id: string;
   name: string;
+  slug: string;
   description?: string;
   member_count: number;
   organization_id?: string;
   created_at: string;
+  settings?: TeamSettings | string;
+  owner?: {
+    id: number;
+    email: string;
+    first_name?: string;
+    last_name?: string;
+  };
 }
 
 export default function AdminOrganizationsContent() {
@@ -41,20 +65,47 @@ export default function AdminOrganizationsContent() {
         interface BackendTeam {
           id: number | string;
           name: string;
+          slug?: string;
           description?: string;
           member_count?: number;
           organization_id?: string;
           created_at: string;
+          settings?: TeamSettings | string;
+          owner?: {
+            id: number;
+            email: string;
+            first_name?: string;
+            last_name?: string;
+          };
         }
         
-        setTeams((Array.isArray(teamsData) ? teamsData : []).map((team: BackendTeam) => ({
-          id: String(team.id),
-          name: team.name,
-          description: team.description,
-          member_count: team.member_count || 0,
-          organization_id: team.organization_id || '',
-          created_at: team.created_at,
-        })));
+        setTeams((Array.isArray(teamsData) ? teamsData : []).map((team: BackendTeam) => {
+          // Parse settings if it's a string
+          let settings: TeamSettings | undefined;
+          if (team.settings) {
+            if (typeof team.settings === 'string') {
+              try {
+                settings = JSON.parse(team.settings);
+              } catch (e) {
+                // Ignore parse errors
+              }
+            } else {
+              settings = team.settings as TeamSettings;
+            }
+          }
+          
+          return {
+            id: String(team.id),
+            name: team.name,
+            slug: team.slug || '',
+            description: team.description,
+            member_count: team.member_count || 0,
+            organization_id: team.organization_id || '',
+            created_at: team.created_at,
+            settings: settings,
+            owner: team.owner,
+          };
+        }));
       }
     } catch (err: unknown) {
       if (getErrorDetail(err)?.includes('404') || getErrorDetail(err)?.includes('not found')) {
@@ -130,11 +181,50 @@ export default function AdminOrganizationsContent() {
     {
       key: 'name',
       label: 'Nom',
+      render: (_value, team) => {
+        const settings = typeof team.settings === 'string' 
+          ? (() => { try { return JSON.parse(team.settings); } catch { return null; } })()
+          : team.settings;
+        
+        return (
+          <div>
+            <div className="font-medium text-foreground">{team.name}</div>
+            {team.description && (
+              <div className="text-sm text-muted-foreground mt-1">{team.description}</div>
+            )}
+            {settings?.email && (
+              <div className="text-xs text-muted-foreground mt-1">📧 {settings.email}</div>
+            )}
+            {settings?.phone && (
+              <div className="text-xs text-muted-foreground">📞 {settings.phone}</div>
+            )}
+            {settings?.website && (
+              <div className="text-xs text-muted-foreground">
+                🌐 <a href={settings.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                  {settings.website}
+                </a>
+              </div>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      key: 'owner',
+      label: 'Propriétaire',
       render: (_value, team) => (
-        <div>
-          <div className="font-medium text-foreground">{team.name}</div>
-          {team.description && (
-            <div className="text-sm text-muted-foreground mt-1">{team.description}</div>
+        <div className="text-sm">
+          {team.owner ? (
+            <div>
+              <div className="font-medium">{team.owner.email}</div>
+              {(team.owner.first_name || team.owner.last_name) && (
+                <div className="text-muted-foreground">
+                  {[team.owner.first_name, team.owner.last_name].filter(Boolean).join(' ')}
+                </div>
+              )}
+            </div>
+          ) : (
+            <span className="text-muted-foreground">-</span>
           )}
         </div>
       ),
