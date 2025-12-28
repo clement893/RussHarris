@@ -229,5 +229,62 @@ async def delete_task(
     )
 
 
+@router.put("/content/schedule/{task_id}/toggle", response_model=TaskResponse, tags=["scheduled-tasks"])
+async def toggle_task(
+    task_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Toggle task active status (enable/disable).
+    Toggles between PENDING (enabled) and CANCELLED (disabled) states.
+    """
+    from app.dependencies import is_admin_or_superadmin
+    
+    service = ScheduledTaskService(db)
+    task = await service.get_task(task_id)
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task not found"
+        )
+    
+    # Check if user owns this task or is admin/superadmin
+    is_admin = await is_admin_or_superadmin(current_user, db)
+    if task.user_id != current_user.id and not is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to toggle this task"
+        )
+    
+    # Toggle between PENDING (enabled) and CANCELLED (disabled)
+    if task.status == TaskStatus.PENDING:
+        # Cancel the task (disable)
+        task = await service.cancel_task(task_id)
+        if not task:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Cannot toggle task status"
+            )
+    elif task.status == TaskStatus.CANCELLED:
+        # Re-enable the task by setting status back to pending
+        task.status = TaskStatus.PENDING
+        await db.commit()
+        await db.refresh(task)
+    elif task.status in [TaskStatus.RUNNING, TaskStatus.COMPLETED, TaskStatus.FAILED]:
+        # For other statuses, cannot toggle
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Cannot toggle task with status '{task.status.value}'. Only PENDING or CANCELLED tasks can be toggled."
+        )
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unknown task status: '{task.status}'"
+        )
+    
+    return TaskResponse.model_validate(task)
+
+
 
 

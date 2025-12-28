@@ -161,6 +161,124 @@ async def get_popular_tags(
     return [TagResponse.model_validate(tag) for tag in tags]
 
 
+@router.get("/tags", response_model=List[TagResponse], tags=["tags"])
+async def list_tags(
+    entity_type: Optional[str] = Query(None, description="Filter by entity type"),
+    limit: int = Query(100, ge=1, le=1000, description="Maximum number of tags to return"),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """List all tags, optionally filtered by entity type"""
+    from app.models.tag import Tag
+    from sqlalchemy import select
+    query = select(Tag)
+    
+    if entity_type:
+        query = query.where(Tag.entity_type == entity_type)
+    
+    query = query.limit(limit).order_by(Tag.usage_count.desc(), Tag.name)
+    result = await db.execute(query)
+    tags = result.scalars().all()
+    return [TagResponse.model_validate(tag) for tag in tags]
+
+
+@router.get("/tags/{tag_id}", response_model=TagResponse, tags=["tags"])
+async def get_tag(
+    tag_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get a tag by ID"""
+    from app.models.tag import Tag
+    tag = await db.get(Tag, tag_id)
+    if not tag:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Tag not found"
+        )
+    return TagResponse.model_validate(tag)
+
+
+class TagUpdate(BaseModel):
+    name: Optional[str] = Field(None, min_length=1, max_length=100)
+    color: Optional[str] = None
+    description: Optional[str] = None
+
+
+@router.put("/tags/{tag_id}", response_model=TagResponse, tags=["tags"])
+async def update_tag(
+    tag_id: int,
+    tag_data: TagUpdate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Update a tag"""
+    from app.models.tag import Tag
+    tag = await db.get(Tag, tag_id)
+    if not tag:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Tag not found"
+        )
+    
+    # Check if user owns the tag or is admin
+    from app.dependencies import is_admin_or_superadmin
+    is_admin = await is_admin_or_superadmin(current_user, db)
+    if tag.user_id != current_user.id and not is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to update this tag"
+        )
+    
+    # Update tag fields
+    updates = tag_data.model_dump(exclude_unset=True)
+    if 'name' in updates and updates['name']:
+        tag.name = updates['name']
+        tag.slug = TagService.slugify(updates['name'])
+    if 'color' in updates:
+        tag.color = updates['color']
+    if 'description' in updates:
+        tag.description = updates['description']
+    
+    await db.commit()
+    await db.refresh(tag)
+    return TagResponse.model_validate(tag)
+
+
+@router.delete("/tags/{tag_id}", tags=["tags"])
+async def delete_tag(
+    tag_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete a tag"""
+    from app.models.tag import Tag
+    tag = await db.get(Tag, tag_id)
+    if not tag:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Tag not found"
+        )
+    
+    # Check if user owns the tag or is admin
+    from app.dependencies import is_admin_or_superadmin
+    is_admin = await is_admin_or_superadmin(current_user, db)
+    if tag.user_id != current_user.id and not is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to delete this tag"
+        )
+    
+    service = TagService(db)
+    success = await service.delete_tag(tag_id)
+    if success:
+        return {"success": True, "message": "Tag deleted successfully"}
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="Failed to delete tag"
+    )
+
+
 @router.get("/tags/search", response_model=List[TagResponse], tags=["tags"])
 async def search_tags(
     q: str = Query(..., min_length=1, description="Search query"),
