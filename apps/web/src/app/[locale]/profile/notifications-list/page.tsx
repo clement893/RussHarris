@@ -11,7 +11,6 @@
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { NotificationCenterConnected } from '@/components/notifications';
@@ -50,7 +49,7 @@ export default function ProfileNotificationsListPage() {
         />
 
         <div className="mt-8">
-          <Section className="mt-6">
+          <Section title={t('list.title') || 'My Notifications'} className="mt-6">
             <NotificationCenterConnected
               initialFilters={initialFilters}
               enableWebSocket={true}
