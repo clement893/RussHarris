@@ -8,7 +8,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { usePathname, useRouter } from '@/i18n/routing';
+import { usePathname } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 import { useAuthStore } from '@/lib/store';
 import { apiClient } from '@/lib/api/client';
@@ -20,7 +20,7 @@ interface LocaleSyncProps {
 }
 
 const SYNC_KEY = 'locale_sync_checked';
-const SYNC_TIMEOUT = 5000; // 5 seconds
+const SYNC_TIMEOUT = 10000; // 10 seconds - prevent infinite loops
 
 /**
  * LocaleSync - Syncs user language preference with URL locale
@@ -34,8 +34,7 @@ const SYNC_TIMEOUT = 5000; // 5 seconds
  * Should be placed in the layout to run on every page load.
  */
 export function LocaleSync({ children }: LocaleSyncProps) {
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname = usePathname(); // This returns pathname WITHOUT locale prefix (next-intl behavior)
   const currentLocale = useLocale() as Locale;
   const { user, token } = useAuthStore();
   const hasCheckedRef = useRef<string | null>(null);
@@ -51,6 +50,7 @@ export function LocaleSync({ children }: LocaleSyncProps) {
           sessionStorage.removeItem(SYNC_KEY);
         }
         hasCheckedRef.current = null;
+        isProcessingRef.current = false;
         return;
       }
 
@@ -59,21 +59,24 @@ export function LocaleSync({ children }: LocaleSyncProps) {
         return;
       }
 
+      // Get actual URL pathname (includes locale prefix)
+      const actualPathname = typeof window !== 'undefined' ? window.location.pathname : pathname;
+      
       // Check sessionStorage to prevent infinite loops
-      const syncKey = `${SYNC_KEY}_${currentLocale}_${pathname}`;
+      const syncKey = `${SYNC_KEY}_${actualPathname}`;
       const lastSync = typeof window !== 'undefined' ? sessionStorage.getItem(syncKey) : null;
       const now = Date.now();
       
       if (lastSync) {
         const timeSinceLastSync = now - parseInt(lastSync, 10);
-        // If we checked this locale/path combination recently, skip
+        // If we checked this path recently, skip to prevent infinite loops
         if (timeSinceLastSync < SYNC_TIMEOUT) {
           return;
         }
       }
 
-      // Skip if we've already checked this exact combination
-      const checkKey = `${currentLocale}_${pathname}`;
+      // Skip if we've already checked this exact combination in this render cycle
+      const checkKey = `${currentLocale}_${actualPathname}`;
       if (hasCheckedRef.current === checkKey) {
         return;
       }
@@ -96,22 +99,35 @@ export function LocaleSync({ children }: LocaleSyncProps) {
             preferredLanguage !== currentLocale &&
             ['en', 'fr', 'ar', 'he'].includes(preferredLanguage)
           ) {
-            // Mark that we've checked this combination
-            if (typeof window !== 'undefined') {
-              sessionStorage.setItem(syncKey, now.toString());
+            // Get path without locale prefix
+            const pathWithoutLocale = actualPathname.replace(/^\/(en|fr|ar|he)(\/|$)/, '/') || '/';
+            const cleanPath = pathWithoutLocale === '/' ? '/' : pathWithoutLocale.replace(/\/$/, '') || '/';
+            
+            // Build new path with preferred locale
+            const newPath = preferredLanguage === 'en' 
+              ? cleanPath 
+              : `/${preferredLanguage}${cleanPath === '/' ? '' : cleanPath}`;
+            
+            // Only redirect if path is actually different
+            if (newPath !== actualPathname) {
+              // Mark that we've checked this path to prevent infinite loops
+              if (typeof window !== 'undefined') {
+                sessionStorage.setItem(syncKey, now.toString());
+              }
+
+              logger.info(`Locale mismatch detected, redirecting to preferred locale`, {
+                currentLocale,
+                preferredLanguage,
+                currentPath: actualPathname,
+                newPath,
+              });
+
+              // Use window.location.href for full page reload to ensure locale change
+              window.location.href = newPath;
+              return;
             }
-
-            logger.info(`Locale mismatch detected, redirecting to preferred locale`, {
-              currentLocale,
-              preferredLanguage,
-              currentPath: pathname,
-            });
-
-            // Use next-intl router for proper locale navigation
-            router.replace(pathname, { locale: preferredLanguage });
-            return;
           } else if (preferredLanguage === currentLocale) {
-            // Locale matches preference, clear any sync flags
+            // Locale matches preference, clear sync flag
             if (typeof window !== 'undefined') {
               sessionStorage.removeItem(syncKey);
             }
@@ -121,12 +137,15 @@ export function LocaleSync({ children }: LocaleSyncProps) {
         // Silently fail - don't block page load if preferences can't be loaded
         logger.debug('Could not load preferences for locale sync:', error);
       } finally {
-        isProcessingRef.current = false;
+        // Reset processing flag after a delay to allow redirect to happen
+        setTimeout(() => {
+          isProcessingRef.current = false;
+        }, 100);
       }
     };
 
     syncLocale();
-  }, [currentLocale, pathname, user, token, router]);
+  }, [currentLocale, pathname, user, token]);
 
   // Show children immediately - don't block rendering
   return <>{children}</>;
