@@ -273,7 +273,7 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
     const fontIds = (configToApply as any).typography.fontFiles as number[];
     if (fontIds.length > 0) {
       // Load fonts asynchronously (don't block rendering)
-      loadThemeFonts(fontIds).catch((error) => {
+      loadThemeFonts(fontIds).catch((error: unknown) => {
         logger.warn('[applyThemeConfigDirectly] Failed to load theme fonts', { error, fontIds });
       });
     }

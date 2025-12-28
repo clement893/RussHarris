@@ -17,6 +17,9 @@ interface ConnectionStatus {
     partial: number;
     needsIntegration: number;
     static: number;
+    error?: string;
+    message?: string;
+    note?: string;
   };
   backend?: {
     registered: number;
@@ -47,6 +50,7 @@ interface CheckResult {
     static?: number;
     registered?: number;
     unregistered?: number;
+    totalEndpoints?: number;
   };
   output?: string;
   reportPath?: string;
@@ -343,6 +347,10 @@ function APIConnectionTestContent() {
       setEndpointTests([...results]);
 
       try {
+        if (!endpoint) {
+          throw new Error('Endpoint is required');
+        }
+        
         const testMethod = method.toLowerCase();
         
         // Séparer l'URL et les paramètres de requête
@@ -350,7 +358,7 @@ function APIConnectionTestContent() {
         const params = queryString ? Object.fromEntries(new URLSearchParams(queryString)) : {};
         
         if (testMethod === 'get') {
-          await apiClient.get(urlPath, { params });
+          await apiClient.get(urlPath || endpoint, { params });
         } else if (testMethod === 'post') {
           // Pour POST, on envoie des données minimales selon le type d'endpoint
           let testData: any = {};
@@ -369,7 +377,7 @@ function APIConnectionTestContent() {
             testData = {};
           }
           
-          await apiClient.post(urlPath, testData);
+          await apiClient.post(urlPath || endpoint, testData);
         } else {
           throw new Error(`Method ${method} not supported in test`);
         }

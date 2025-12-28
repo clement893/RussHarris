@@ -229,7 +229,7 @@ export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
                   </p>
                   <div className="flex flex-wrap gap-1">
                     {fontFiles.map((fontId: number) => (
-                      <Badge key={fontId} variant="secondary" className="text-xs">
+                      <Badge key={fontId} variant="default" className="text-xs">
                         ID: {fontId}
                       </Badge>
                     ))}
