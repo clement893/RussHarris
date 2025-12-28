@@ -173,7 +173,19 @@ export function handleApiError(error: unknown): AppError {
           message = 'Validation failed. Please check your input and try again.';
           break;
         case 429:
-          message = 'Too many requests. Please wait a moment and try again.';
+          // Check if retry_after is provided in response
+          const retryAfter = responseData?.retry_after || responseData?.error?.retry_after;
+          if (retryAfter) {
+            const seconds = parseInt(String(retryAfter), 10);
+            const minutes = Math.ceil(seconds / 60);
+            if (minutes > 1) {
+              message = `Too many registration attempts. Please wait ${minutes} minutes before trying again.`;
+            } else {
+              message = `Too many registration attempts. Please wait ${seconds} seconds before trying again.`;
+            }
+          } else {
+            message = 'Too many registration attempts. Please wait a minute before trying again.';
+          }
           break;
         case 500:
           message = 'Server error occurred. Our team has been notified. Please try again later.';
