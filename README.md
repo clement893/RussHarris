@@ -437,6 +437,12 @@ docker run -p 3000:3000 your-app
 - **[Deployment Guide](./DEPLOYMENT.md)** - Production deployment instructions
 - **[Contributing](./CONTRIBUTING.md)** - How to contribute to the template
 
+### 🤖 AI Assistant Guides
+
+- **[AI Assistant Guide](./AI_ASSISTANT_GUIDE.md)** ⭐ **FOR AI ASSISTANTS** - Complete guide for AI assistants working with this template
+- **[Code Structure](./CODE_STRUCTURE.md)** - Detailed code structure and organization
+- **[Common Patterns](./COMMON_PATTERNS.md)** - Reusable code patterns and conventions
+
 ### Architecture & Design
 
 - **[Architecture Documentation](./docs/ARCHITECTURE.md)** - System architecture, diagrams, and design decisions
