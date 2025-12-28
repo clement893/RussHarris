@@ -1,8 +1,10 @@
 """File model."""
 
+import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, DateTime, String, Integer, Index, ForeignKey, func, Boolean
+from sqlalchemy import Column, DateTime, String, Integer, Index, ForeignKey, func
+from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base
@@ -15,19 +17,18 @@ class File(Base):
     __table_args__ = (
         Index("idx_files_user_id", "user_id"),
         Index("idx_files_created_at", "created_at"),
-        Index("idx_files_file_path", "file_path", unique=True),
-        Index("idx_files_storage_type", "storage_type"),
-        Index("idx_files_is_public", "is_public"),
+        Index("idx_files_file_key", "file_key", unique=True),
     )
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
-    filename = Column(String(500), nullable=False)
-    file_path = Column(String(1000), nullable=False)  # Storage path (S3 key or local path)
-    file_size = Column(Integer, nullable=False)  # File size in bytes
-    mime_type = Column(String(100), nullable=True)
-    storage_type = Column(String(50), default='local', nullable=False)  # 'local' or 's3'
-    is_public = Column(Boolean, default=False, nullable=False)
+    file_key = Column(String(500), nullable=False, unique=True)  # Storage path (S3 key or local path)
+    filename = Column(String(255), nullable=False)
+    original_filename = Column(String(255), nullable=False)
+    content_type = Column(String(100), nullable=False)
+    size = Column(Integer, nullable=False)  # File size in bytes
+    url = Column(String(1000), nullable=False)
+    folder = Column(String(100), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     updated_at = Column(
         DateTime(timezone=True),
