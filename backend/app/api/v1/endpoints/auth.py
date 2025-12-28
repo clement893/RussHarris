@@ -212,7 +212,7 @@ async def register(
     
     # Check if user already exists
     result = await db.execute(
-        User.__table__.select().where(User.email == user_data.email)
+        select(User).where(User.email == user_data.email)
     )
     existing_user = result.scalar_one_or_none()
     if existing_user:
@@ -315,7 +315,7 @@ async def login(
     
     # Get user from database
     result = await db.execute(
-        User.__table__.select().where(User.email == normalized_email)
+        select(User).where(User.email == normalized_email)
     )
     user = result.scalar_one_or_none()
 
