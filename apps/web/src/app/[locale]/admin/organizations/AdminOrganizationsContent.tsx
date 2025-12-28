@@ -323,11 +323,18 @@ export default function AdminOrganizationsContent() {
     setShowViewModal(true);
   };
 
-  const filteredTeams = teams.filter(team =>
-    team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    team.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (typeof team.settings === 'object' && team.settings?.email?.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredTeams = teams.filter(team => {
+    const nameMatch = team.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const descMatch = team.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    let settingsMatch = false;
+    if (typeof team.settings === 'object' && team.settings) {
+      const email = team.settings.email;
+      if (typeof email === 'string') {
+        settingsMatch = email.toLowerCase().includes(searchTerm.toLowerCase());
+      }
+    }
+    return nameMatch || descMatch || settingsMatch;
+  });
 
   const columns: Column<Team>[] = [
     {

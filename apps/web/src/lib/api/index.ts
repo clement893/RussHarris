@@ -40,6 +40,7 @@ export * from './theme';
 
 // Re-export theme font API
 export * from './theme-font';
+export { checkFonts } from './theme-font';
 
 // Re-export notifications API
 export { notificationsAPI } from './notifications';

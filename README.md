@@ -496,6 +496,16 @@ View interactive component documentation at `http://localhost:6006`
 - **[RBAC System](./docs/RBAC_SYSTEM.md)** - Complete Role-Based Access Control guide
 - **[API Endpoints](./backend/API_ENDPOINTS.md)** - Complete API reference including RBAC endpoints
 
+### Additional Guides
+
+- **[Pages and Features](./docs/APP_PAGES_AND_FEATURES.md)** - Complete list of all application pages and features
+- **[Quick Database Guide](./docs/QUICK_DATABASE_GUIDE.md)** - Quick reference for database operations
+- **[Railway CLI Setup](./docs/RAILWAY_CLI_SETUP.md)** - Railway deployment CLI configuration
+- **[Bootstrap Key Setup](./docs/BOOTSTRAP_KEY_SETUP.md)** - Bootstrap key configuration guide
+- **[JWT Token Guide](./docs/HOW_TO_GET_JWT_TOKEN.md)** - How to obtain JWT tokens for testing
+
+**Note:** Historical documentation (progress reports, plans, audits) has been archived in [`docs/archive/`](./docs/archive/) for reference.
+
 ---
 
 ## 🔒 Security
