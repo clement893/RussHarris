@@ -48,8 +48,8 @@ export default function PageEditPage() {
       setIsLoading(false);
     } catch (error) {
       logger.error('Failed to load page', error instanceof Error ? error : new Error(String(error)));
-      const errorMessage = handleApiError(error);
-      setError(errorMessage || t('errors.loadFailed') || 'Failed to load page. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || t('errors.loadFailed') || 'Failed to load page. Please try again.');
       setIsLoading(false);
     }
   };
@@ -70,8 +70,8 @@ export default function PageEditPage() {
       setSections(updatedSections);
     } catch (error) {
       logger.error('Failed to save page', error instanceof Error ? error : new Error(String(error)));
-      const errorMessage = handleApiError(error);
-      setError(errorMessage || 'Failed to save page. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || 'Failed to save page. Please try again.');
       throw error;
     }
   };

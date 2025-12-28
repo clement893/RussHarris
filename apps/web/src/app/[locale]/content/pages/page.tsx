@@ -16,7 +16,7 @@ import { PageHeader, PageContainer } from '@/components/layout';
 import { Loading, Alert } from '@/components/ui';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { logger } from '@/lib/logger';
-import { pagesAPI } from '@/lib/api/pages';
+import { pagesAPI, type Page as ApiPage } from '@/lib/api/pages';
 import { handleApiError } from '@/lib/errors';
 
 export default function PagesManagementPage() {
@@ -41,12 +41,13 @@ export default function PagesManagementPage() {
       setIsLoading(true);
       setError(null);
       const loadedPages = await pagesAPI.list();
-      setPages(loadedPages);
+      // Convert API Page type to component Page type (they're compatible but TypeScript sees them as different)
+      setPages(loadedPages as Page[]);
       setIsLoading(false);
     } catch (error) {
       logger.error('Failed to load pages', error instanceof Error ? error : new Error(String(error)));
-      const errorMessage = handleApiError(error);
-      setError(errorMessage || t('errors.loadFailed') || 'Failed to load pages. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || t('errors.loadFailed') || 'Failed to load pages. Please try again.');
       setIsLoading(false);
     }
   };
@@ -54,17 +55,17 @@ export default function PagesManagementPage() {
   const handlePageCreate = async (pageData: Omit<Page, 'id' | 'created_at' | 'updated_at'>) => {
     try {
       await pagesAPI.create({
-        slug: pageData.slug,
-        title: pageData.title,
-        content: pageData.content,
-        status: pageData.status,
+        slug: String(pageData.slug),
+        title: String(pageData.title),
+        content: String(pageData.content),
+        status: pageData.status as 'draft' | 'published' | 'archived' | undefined,
       });
       logger.info('Page created successfully', pageData);
       await loadPages();
     } catch (error) {
       logger.error('Failed to create page', error instanceof Error ? error : new Error(String(error)));
-      const errorMessage = handleApiError(error);
-      setError(errorMessage || 'Failed to create page. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || 'Failed to create page. Please try again.');
       throw error;
     }
   };
@@ -72,17 +73,17 @@ export default function PagesManagementPage() {
   const handlePageUpdate = async (id: number, pageData: Partial<Page>) => {
     try {
       await pagesAPI.update(id, {
-        slug: pageData.slug,
-        title: pageData.title,
-        content: pageData.content,
-        status: pageData.status,
+        slug: pageData.slug ? String(pageData.slug) : undefined,
+        title: pageData.title ? String(pageData.title) : undefined,
+        content: pageData.content ? String(pageData.content) : undefined,
+        status: pageData.status as 'draft' | 'published' | 'archived' | undefined,
       });
       logger.info('Page updated successfully', { id, pageData });
       await loadPages();
     } catch (error) {
       logger.error('Failed to update page', error instanceof Error ? error : new Error(String(error)));
-      const errorMessage = handleApiError(error);
-      setError(errorMessage || 'Failed to update page. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || 'Failed to update page. Please try again.');
       throw error;
     }
   };
@@ -94,8 +95,8 @@ export default function PagesManagementPage() {
       await loadPages();
     } catch (error) {
       logger.error('Failed to delete page', error instanceof Error ? error : new Error(String(error)));
-      const errorMessage = handleApiError(error);
-      setError(errorMessage || 'Failed to delete page. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || 'Failed to delete page. Please try again.');
       throw error;
     }
   };

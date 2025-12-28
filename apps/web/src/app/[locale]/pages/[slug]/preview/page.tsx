@@ -54,8 +54,8 @@ export default function PagePreviewPage() {
       setIsLoading(false);
     } catch (error) {
       logger.error('Failed to load page', error instanceof Error ? error : new Error(String(error)));
-      const errorMessage = handleApiError(error);
-      setError(errorMessage || t('errors.loadFailed') || 'Failed to load page. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || t('errors.loadFailed') || 'Failed to load page. Please try again.');
       setIsLoading(false);
     }
   };

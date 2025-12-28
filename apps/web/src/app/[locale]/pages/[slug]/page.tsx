@@ -7,7 +7,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Loading, Alert } from '@/components/ui';
 import { logger } from '@/lib/logger';
@@ -16,7 +16,6 @@ import { handleApiError } from '@/lib/errors';
 
 export default function DynamicPage() {
   const params = useParams();
-  const router = useRouter();
   const t = useTranslations('pages');
   const slug = params.slug as string;
 
@@ -61,8 +60,8 @@ export default function DynamicPage() {
         }
       }
 
-      const errorMessage = handleApiError(error);
-      setError(errorMessage || t('errors.loadFailed') || 'Failed to load page. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || t('errors.loadFailed') || 'Failed to load page. Please try again.');
       setIsLoading(false);
     }
   };
