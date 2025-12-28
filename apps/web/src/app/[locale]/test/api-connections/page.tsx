@@ -583,25 +583,27 @@ function APIConnectionTestContent() {
                 )}
 
                 {report.reportContent && (
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-medium mb-2">Report Preview</h3>
-                  <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg max-h-96 overflow-auto">
-                    <pre className="text-xs whitespace-pre-wrap font-mono">
-                      {report.reportContent.substring(0, 3000)}
-                    </pre>
-                    {report.reportContent.length > 3000 && (
-                      <p className="text-xs text-gray-500 mt-2">
-                        ... (truncated, use "View" or "Download" button for full report)
-                      </p>
-                    )}
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-medium mb-2">Report Preview</h3>
+                      <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg max-h-96 overflow-auto">
+                        <pre className="text-xs whitespace-pre-wrap font-mono">
+                          {report.reportContent.substring(0, 3000)}
+                        </pre>
+                        {report.reportContent.length > 3000 && (
+                          <p className="text-xs text-gray-500 mt-2">
+                            ... (truncated, use "View" or "Download" button for full report)
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex gap-2 text-sm text-gray-600">
+                      <span>📄 Report length: {report.reportContent.length.toLocaleString()} characters</span>
+                      {report.reportPath && <span>• Path: {report.reportPath}</span>}
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-2 text-sm text-gray-600">
-                  <span>📄 Report length: {report.reportContent.length.toLocaleString()} characters</span>
-                  {report.reportPath && <span>• Path: {report.reportPath}</span>}
-                </div>
-              </div>
+                )}
+              </>
             )}
           </div>
         )}

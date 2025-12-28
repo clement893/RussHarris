@@ -283,7 +283,7 @@ async def delete_page(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Delete a page"""
+    """Delete a page by slug"""
     query = select(Page).where(Page.slug == slug)
     query = apply_tenant_scope(query, Page)
     result = await db.execute(query)
@@ -322,4 +322,54 @@ async def delete_page(
         )
     except Exception:
         pass  # Don't fail request if audit logging fails
+
+
+@router.delete("/pages/id/{page_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["pages"])
+async def delete_page_by_id(
+    request: Request,
+    page_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Delete a page by ID"""
+    query = select(Page).where(Page.id == page_id)
+    query = apply_tenant_scope(query, Page)
+    result = await db.execute(query)
+    page = result.scalar_one_or_none()
+    
+    if not page:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Page not found")
+    
+    # Check ownership or admin
+    if page.user_id != current_user.id and not await is_superadmin(current_user, db):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to delete this page"
+        )
+    
+    page_title = page.title  # Save before deletion
+    page_slug = page.slug
+    await db.delete(page)
+    await db.commit()
+    
+    # Log deletion
+    try:
+        await SecurityAuditLogger.log_event(
+            db=db,
+            event_type=SecurityEventType.DATA_DELETED,
+            description=f"Page '{page_title}' deleted",
+            user_id=current_user.id,
+            user_email=current_user.email,
+            ip_address=request.client.host if request.client else None,
+            user_agent=request.headers.get("user-agent"),
+            request_method=request.method,
+            request_path=str(request.url.path),
+            severity="info",
+            success="success",
+            metadata={"resource_type": "page", "page_id": page_id, "page_slug": page_slug, "action": "deleted"}
+        )
+    except Exception:
+        pass  # Don't fail request if audit logging fails
+    
+    return None
 

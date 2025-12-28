@@ -96,10 +96,10 @@ export const pagesAPI = {
   },
 
   /**
-   * Delete a page
+   * Delete a page by ID
    */
   delete: async (id: number): Promise<void> => {
-    await apiClient.delete(`/v1/pages/${id}`);
+    await apiClient.delete(`/v1/pages/id/${id}`);
   },
 };
 
