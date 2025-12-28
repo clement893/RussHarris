@@ -10,6 +10,7 @@ import type { ThemeConfigResponse, ThemeConfig } from '@modele/types';
 import { generateColorShades, generateRgb } from './color-utils';
 import { watchDarkModePreference, getThemeConfigForMode } from './dark-mode-utils';
 import { getThemeFromCache, saveThemeToCache } from './theme-cache';
+import { checkFonts } from '@/lib/api/theme-font';
 
 interface GlobalThemeContextType {
   theme: ThemeConfigResponse | null;
@@ -292,9 +293,33 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
       // Don't modify document.body or root directly - let CSS handle it via var(--font-family)
     }
     
-    // Apply border radius
+    // Apply border radius (support both string and object formats)
     if (configToApply.border_radius) {
       root.style.setProperty('--border-radius', configToApply.border_radius);
+    }
+    
+    // Support borderRadius object format (sm, md, lg, xl, full)
+    if ((configToApply as any).borderRadius) {
+      const borderRadius = (configToApply as any).borderRadius;
+      Object.entries(borderRadius).forEach(([key, value]) => {
+        root.style.setProperty(`--border-radius-${key}`, String(value));
+      });
+    }
+    
+    // Apply typography fontSize
+    if ((configToApply as any).typography?.fontSize) {
+      const fontSize = (configToApply as any).typography.fontSize;
+      Object.entries(fontSize).forEach(([key, value]) => {
+        root.style.setProperty(`--font-size-${key}`, String(value));
+      });
+    }
+    
+    // Apply spacing
+    if ((configToApply as any).spacing) {
+      const spacing = (configToApply as any).spacing;
+      Object.entries(spacing).forEach(([key, value]) => {
+        root.style.setProperty(`--spacing-${key}`, String(value));
+      });
     }
     
     // Apply CSS effects (glassmorphism, shadows, gradients, and custom effects)
@@ -323,19 +348,27 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
         root.style.setProperty('--gradient-intensity', String(effects.gradients.intensity || 0.3));
       }
       
-      // Apply custom effects as CSS variables
+      // Apply custom effects as CSS variables (comprehensive recursive support)
       // Exclude predefined effects (glassmorphism, shadows, gradients)
       const predefinedKeys = ['glassmorphism', 'shadows', 'gradients'];
       Object.entries(effects).forEach(([key, value]) => {
-        if (!predefinedKeys.includes(key) && typeof value === 'object' && value !== null) {
-          // Convert effect properties to CSS variables
-          Object.entries(value as Record<string, any>).forEach(([propKey, propValue]) => {
-            if (propKey !== 'description' && typeof propValue === 'string') {
-              // Convert camelCase to kebab-case for CSS variables
-              const cssVarName = `--effect-${key}-${propKey.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
-              root.style.setProperty(cssVarName, propValue);
-            }
-          });
+        if (!predefinedKeys.includes(key) && typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          // Recursively convert nested effect properties to CSS variables
+          const convertEffectToCSSVars = (obj: Record<string, any>, prefix: string) => {
+            Object.entries(obj).forEach(([propKey, propValue]) => {
+              if (propKey !== 'description' && propKey !== 'enabled') {
+                if (typeof propValue === 'string' || typeof propValue === 'number') {
+                  // Convert camelCase to kebab-case for CSS variables
+                  const cssVarName = `--effect-${prefix}-${propKey.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+                  root.style.setProperty(cssVarName, String(propValue));
+                } else if (typeof propValue === 'object' && propValue !== null && !Array.isArray(propValue)) {
+                  // Recursively handle nested objects
+                  convertEffectToCSSVars(propValue as Record<string, any>, `${prefix}-${propKey}`);
+                }
+              }
+            });
+          };
+          convertEffectToCSSVars(value as Record<string, any>, key);
         }
       });
     }

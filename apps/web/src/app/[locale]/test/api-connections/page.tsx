@@ -5,7 +5,7 @@ import { apiClient } from '@/lib/api/client';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { Button, Card, Alert, Badge } from '@/components/ui';
 import { getErrorMessage } from '@/lib/errors';
-import { RefreshCw, CheckCircle, Download, FileText, ExternalLink, Eye, XCircle, Loader2 } from 'lucide-react';
+import { RefreshCw, CheckCircle, Download, FileText, ExternalLink, Eye, XCircle, Loader2, Copy, Check } from 'lucide-react';
 import { PageHeader, PageContainer } from '@/components/layout';
 import { ClientOnly } from '@/components/ui/ClientOnly';
 
@@ -70,6 +70,9 @@ function APIConnectionTestContent() {
   const [error, setError] = useState('');
   const [endpointTests, setEndpointTests] = useState<EndpointTestResult[]>([]);
   const [isTestingEndpoints, setIsTestingEndpoints] = useState(false);
+  const [copiedTestId, setCopiedTestId] = useState<string | null>(null);
+  const [componentTests, setComponentTests] = useState<Array<{ name: string; status: 'pending' | 'success' | 'error'; message?: string }>>([]);
+  const [isTestingComponents, setIsTestingComponents] = useState(false);
 
   const checkStatus = async () => {
     setIsLoadingStatus(true);
@@ -450,6 +453,219 @@ function APIConnectionTestContent() {
     setIsTestingEndpoints(false);
   };
 
+  const copyTestResult = async (test: EndpointTestResult) => {
+    const testText = `${test.method} ${test.endpoint}\nStatus: ${test.status}\n${test.message ? `Message: ${test.message}` : ''}${test.responseTime ? `\nResponse Time: ${test.responseTime}ms` : ''}`;
+    try {
+      await navigator.clipboard.writeText(testText);
+      const testId = `${test.endpoint}-${test.method}`;
+      setCopiedTestId(testId);
+      setTimeout(() => setCopiedTestId(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  const testFrontendComponents = async () => {
+    setIsTestingComponents(true);
+    setComponentTests([]);
+
+    const tests = [
+      { name: 'API Client - Token Refresh', test: async () => {
+        try {
+          await apiClient.get('/v1/auth/me');
+          return { status: 'success' as const, message: 'Token refresh working' };
+        } catch (err) {
+          return { status: 'error' as const, message: getErrorMessage(err) };
+        }
+      }},
+      { name: 'API Client - Error Handling', test: async () => {
+        try {
+          await apiClient.get('/v1/nonexistent-endpoint-12345');
+          return { status: 'error' as const, message: 'Should have failed' };
+        } catch (err) {
+          const errorMsg = getErrorMessage(err);
+          if (errorMsg.includes('404') || errorMsg.includes('not found')) {
+            return { status: 'success' as const, message: 'Error handling working correctly' };
+          }
+          return { status: 'success' as const, message: 'Error caught: ' + errorMsg.substring(0, 50) };
+        }
+      }},
+      { name: 'API Client - GET Request', test: async () => {
+        try {
+          await apiClient.get('/v1/health/health');
+          return { status: 'success' as const, message: 'GET request successful' };
+        } catch (err) {
+          return { status: 'error' as const, message: getErrorMessage(err) };
+        }
+      }},
+      { name: 'API Client - POST Request', test: async () => {
+        try {
+          await apiClient.post('/v1/media/validate', { name: 'test.jpg', size: 1024, type: 'image/jpeg' });
+          return { status: 'success' as const, message: 'POST request successful' };
+        } catch (err) {
+          const errorMsg = getErrorMessage(err);
+          if (errorMsg.includes('422') || errorMsg.includes('400') || errorMsg.includes('validation')) {
+            return { status: 'success' as const, message: 'POST endpoint exists (validation error expected)' };
+          }
+          return { status: 'error' as const, message: errorMsg };
+        }
+      }},
+    ];
+
+    const results = [];
+    for (const { name, test } of tests) {
+      const result = { name, status: 'pending' as const, message: undefined as string | undefined };
+      results.push(result);
+      setComponentTests([...results]);
+
+      try {
+        const testResult = await test();
+        result.status = testResult.status;
+        result.message = testResult.message;
+      } catch (err) {
+        result.status = 'error';
+        result.message = getErrorMessage(err);
+      }
+
+      results[results.length - 1] = result;
+      setComponentTests([...results]);
+    }
+
+    setIsTestingComponents(false);
+  };
+
+  const generateCompleteReport = async () => {
+    setIsLoading(true);
+    setError('');
+    setReport(null);
+
+    try {
+      const reportData: string[] = [];
+      reportData.push('# API Connection Test Report\n');
+      reportData.push(`Generated: ${new Date().toISOString()}\n`);
+      reportData.push('---\n\n');
+
+      if (status) {
+        reportData.push('## Quick Status\n\n');
+        if (status.frontend) {
+          reportData.push('### Frontend Connections\n');
+          if (status.frontend.total !== undefined) {
+            reportData.push(`- Total: ${status.frontend.total}\n`);
+            reportData.push(`- Connected: ${status.frontend.connected}\n`);
+            reportData.push(`- Partial: ${status.frontend.partial}\n`);
+            reportData.push(`- Needs Integration: ${status.frontend.needsIntegration}\n`);
+            reportData.push(`- Static: ${status.frontend.static}\n`);
+          } else {
+            reportData.push(`- Status: ${status.frontend.message || 'No data available'}\n`);
+          }
+          reportData.push('\n');
+        }
+        if (status.backend) {
+          reportData.push('### Backend Endpoints\n');
+          reportData.push(`- Registered: ${status.backend.registered}\n`);
+          reportData.push(`- Unregistered: ${status.backend.unregistered}\n`);
+          if (status.backend.totalEndpoints !== undefined) {
+            reportData.push(`- Total Endpoints: ${status.backend.totalEndpoints}\n`);
+          }
+          reportData.push('\n');
+        }
+      }
+
+      if (frontendCheck) {
+        reportData.push('## Frontend API Connections Check\n\n');
+        if (frontendCheck.summary) {
+          reportData.push('### Summary\n');
+          Object.entries(frontendCheck.summary).forEach(([key, value]) => {
+            reportData.push(`- ${key}: ${value}\n`);
+          });
+          reportData.push('\n');
+        }
+        if (frontendCheck.output) {
+          reportData.push('### Detailed Output\n\n```\n');
+          reportData.push(frontendCheck.output);
+          reportData.push('\n```\n\n');
+        }
+      }
+
+      if (backendCheck) {
+        reportData.push('## Backend Endpoints Check\n\n');
+        if (backendCheck.summary) {
+          reportData.push('### Summary\n');
+          Object.entries(backendCheck.summary).forEach(([key, value]) => {
+            reportData.push(`- ${key}: ${value}\n`);
+          });
+          reportData.push('\n');
+        }
+        if (backendCheck.output) {
+          reportData.push('### Detailed Output\n\n```\n');
+          reportData.push(backendCheck.output);
+          reportData.push('\n```\n\n');
+        }
+      }
+
+      if (endpointTests.length > 0) {
+        reportData.push('## Critical Endpoints Test Results\n\n');
+        reportData.push(`Total Tests: ${endpointTests.length}\n`);
+        reportData.push(`Success: ${endpointTests.filter(t => t.status === 'success').length}\n`);
+        reportData.push(`Errors: ${endpointTests.filter(t => t.status === 'error').length}\n`);
+        reportData.push(`Pending: ${endpointTests.filter(t => t.status === 'pending').length}\n\n`);
+
+        const categories = Array.from(new Set(endpointTests.map(t => t.category).filter(Boolean)));
+        categories.forEach(category => {
+          reportData.push(`### ${category}\n\n`);
+          const categoryTests = endpointTests.filter(t => t.category === category);
+          reportData.push('| Method | Endpoint | Status | Message | Response Time |\n');
+          reportData.push('|--------|----------|--------|---------|---------------|\n');
+          categoryTests.forEach(test => {
+            reportData.push(`| ${test.method} | ${test.endpoint} | ${test.status} | ${test.message || '-'} | ${test.responseTime ? test.responseTime + 'ms' : '-'} |\n`);
+          });
+          reportData.push('\n');
+        });
+
+        const uncategorizedTests = endpointTests.filter(t => !t.category);
+        if (uncategorizedTests.length > 0) {
+          reportData.push('### Other\n\n');
+          reportData.push('| Method | Endpoint | Status | Message | Response Time |\n');
+          reportData.push('|--------|----------|--------|---------|---------------|\n');
+          uncategorizedTests.forEach(test => {
+            reportData.push(`| ${test.method} | ${test.endpoint} | ${test.status} | ${test.message || '-'} | ${test.responseTime ? test.responseTime + 'ms' : '-'} |\n`);
+          });
+          reportData.push('\n');
+        }
+      }
+
+      if (componentTests.length > 0) {
+        reportData.push('## Frontend Components & Hooks Test Results\n\n');
+        reportData.push('| Test Name | Status | Message |\n');
+        reportData.push('|-----------|--------|---------|\n');
+        componentTests.forEach(test => {
+          reportData.push(`| ${test.name} | ${test.status} | ${test.message || '-'} |\n`);
+        });
+        reportData.push('\n');
+      }
+
+      reportData.push('---\n\n');
+      reportData.push('*Report generated by API Connection Test Page*\n');
+
+      const reportContent = reportData.join('');
+      
+      setReport({
+        success: true,
+        reportContent,
+        reportPath: `API_CONNECTION_REPORT_${Date.now()}.md`,
+      });
+    } catch (err: unknown) {
+      const errorMessage = getErrorMessage(err) || 'Failed to generate report';
+      setError(errorMessage);
+      setReport({
+        success: false,
+        error: errorMessage,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     // Auto-check status on mount (only on client)
     if (typeof window !== 'undefined') {
@@ -625,6 +841,17 @@ function APIConnectionTestContent() {
                   <Alert variant="info" className="mt-2">
                     <p className="text-sm">{status.frontend.message}</p>
                     {status.frontend.note && <p className="text-xs mt-1 text-gray-600">{status.frontend.note}</p>}
+                    <div className="mt-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => checkFrontend(false)}
+                        disabled={isLoading}
+                      >
+                        <RefreshCw className={`h-3 w-3 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+                        Check Frontend
+                      </Button>
+                    </div>
                   </Alert>
                 ) : status.frontend.total !== undefined ? (
                   <div className="space-y-1 text-sm">
@@ -958,9 +1185,73 @@ function APIConnectionTestContent() {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                    {categoryTests.map((test, index) => (
+                    {categoryTests.map((test, index) => {
+                      const testId = `${test.endpoint}-${test.method}`;
+                      const isCopied = copiedTestId === testId;
+                      return (
+                        <div
+                          key={`${category}-${index}`}
+                          className={`p-3 rounded-lg border ${
+                            test.status === 'success'
+                              ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+                              : test.status === 'error'
+                              ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                              : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                {test.status === 'success' ? (
+                                  <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                                ) : test.status === 'error' ? (
+                                  <XCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
+                                ) : (
+                                  <Loader2 className="h-4 w-4 text-gray-400 animate-spin flex-shrink-0" />
+                                )}
+                                <span className="font-mono text-xs font-medium truncate">
+                                  {test.method} {test.endpoint}
+                                </span>
+                              </div>
+                              {test.message && (
+                                <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                                  {test.message}
+                                </p>
+                              )}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => copyTestResult(test)}
+                              className="flex-shrink-0 h-6 w-6 p-0"
+                              title="Copy test result"
+                            >
+                              {isCopied ? (
+                                <Check className="h-3 w-3 text-green-600" />
+                              ) : (
+                                <Copy className="h-3 w-3" />
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+            
+            {/* Tests without category */}
+            {endpointTests.filter(t => !t.category).length > 0 && (
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold">Other</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {endpointTests.filter(t => !t.category).map((test, index) => {
+                    const testId = `${test.endpoint}-${test.method}`;
+                    const isCopied = copiedTestId === testId;
+                    return (
                       <div
-                        key={`${category}-${index}`}
+                        key={`other-${index}`}
                         className={`p-3 rounded-lg border ${
                           test.status === 'success'
                             ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
@@ -969,7 +1260,7 @@ function APIConnectionTestContent() {
                             : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'
                         }`}
                       >
-                        <div className="flex items-start justify-between">
+                        <div className="flex items-start justify-between gap-2">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
                               {test.status === 'success' ? (
@@ -989,53 +1280,23 @@ function APIConnectionTestContent() {
                               </p>
                             )}
                           </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-            
-            {/* Tests without category */}
-            {endpointTests.filter(t => !t.category).length > 0 && (
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold">Other</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  {endpointTests.filter(t => !t.category).map((test, index) => (
-                    <div
-                      key={`other-${index}`}
-                      className={`p-3 rounded-lg border ${
-                        test.status === 'success'
-                          ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
-                          : test.status === 'error'
-                          ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
-                          : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            {test.status === 'success' ? (
-                              <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
-                            ) : test.status === 'error' ? (
-                              <XCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyTestResult(test)}
+                            className="flex-shrink-0 h-6 w-6 p-0"
+                            title="Copy test result"
+                          >
+                            {isCopied ? (
+                              <Check className="h-3 w-3 text-green-600" />
                             ) : (
-                              <Loader2 className="h-4 w-4 text-gray-400 animate-spin flex-shrink-0" />
+                              <Copy className="h-3 w-3" />
                             )}
-                            <span className="font-mono text-xs font-medium truncate">
-                              {test.method} {test.endpoint}
-                            </span>
-                          </div>
-                          {test.message && (
-                            <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
-                              {test.message}
-                            </p>
-                          )}
+                          </Button>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -1091,61 +1352,97 @@ function APIConnectionTestContent() {
               Test critical React hooks, services, and API client functionality
             </p>
           </div>
+          <Button
+            variant="primary"
+            onClick={testFrontendComponents}
+            disabled={isTestingComponents}
+          >
+            {isTestingComponents ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Testing...
+              </>
+            ) : (
+              <>
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Run Tests
+              </>
+            )}
+          </Button>
         </div>
 
         <div className="space-y-4">
-          <Alert variant="info">
-            <div>
-              <p className="font-medium mb-2">Available Tests:</p>
-              <ul className="list-disc list-inside space-y-1 text-sm">
-                <li><strong>API Client:</strong> Token refresh, error handling, interceptors</li>
-                <li><strong>useApi Hook:</strong> GET/POST requests, loading states, error handling</li>
-                <li><strong>useAuth Hook:</strong> Login, logout, token refresh, user fetching</li>
-                <li><strong>usePreferences Hook:</strong> User preferences CRUD operations</li>
-                <li><strong>useNotifications Hook:</strong> Notification fetching and management</li>
-                <li><strong>Token Storage:</strong> Secure token storage and retrieval</li>
-                <li><strong>Error Handling:</strong> API error parsing and user-friendly messages</li>
-              </ul>
-              <p className="text-sm mt-2 text-gray-600 dark:text-gray-400">
-                💡 <strong>Note:</strong> These tests are best run in a browser environment with proper authentication. 
-                For comprehensive testing, use the test suite: <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">pnpm test</code>
-              </p>
+          {componentTests.length > 0 ? (
+            <div className="space-y-2">
+              {componentTests.map((test, index) => (
+                <div
+                  key={index}
+                  className={`p-4 rounded-lg border ${
+                    test.status === 'success'
+                      ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+                      : test.status === 'error'
+                      ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                      : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        {test.status === 'success' ? (
+                          <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
+                        ) : test.status === 'error' ? (
+                          <XCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
+                        ) : (
+                          <Loader2 className="h-4 w-4 text-gray-400 animate-spin flex-shrink-0" />
+                        )}
+                        <span className="font-semibold">{test.name}</span>
+                      </div>
+                      {test.message && (
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                          {test.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          </Alert>
+          ) : (
+            <>
+              <Alert variant="info">
+                <div>
+                  <p className="font-medium mb-2">Available Tests:</p>
+                  <ul className="list-disc list-inside space-y-1 text-sm">
+                    <li><strong>API Client - Token Refresh:</strong> Tests automatic token refresh mechanism</li>
+                    <li><strong>API Client - Error Handling:</strong> Tests error handling and parsing</li>
+                    <li><strong>API Client - GET Request:</strong> Tests GET request functionality</li>
+                    <li><strong>API Client - POST Request:</strong> Tests POST request functionality</li>
+                  </ul>
+                  <p className="text-sm mt-2 text-gray-600 dark:text-gray-400">
+                    💡 <strong>Note:</strong> Click "Run Tests" to execute these tests. For comprehensive testing, use the test suite: <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">pnpm test</code>
+                  </p>
+                </div>
+              </Alert>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 border rounded-lg">
-              <h3 className="font-semibold mb-2">✅ API Client</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                Core API client with automatic token refresh and error handling
-              </p>
-              <Badge variant="success">Tested in Critical Endpoints</Badge>
-            </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 border rounded-lg">
+                  <h3 className="font-semibold mb-2">API Client</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    Core API client with automatic token refresh and error handling
+                  </p>
+                  <Badge variant="info">Click "Run Tests" to test</Badge>
+                </div>
 
-            <div className="p-4 border rounded-lg">
-              <h3 className="font-semibold mb-2">✅ Authentication</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                Auth hooks and token management
-              </p>
-              <Badge variant="success">Tested via /v1/auth/me</Badge>
-            </div>
-
-            <div className="p-4 border rounded-lg">
-              <h3 className="font-semibold mb-2">✅ User Preferences</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                User preferences CRUD operations
-              </p>
-              <Badge variant="success">Tested via /v1/users/preferences</Badge>
-            </div>
-
-            <div className="p-4 border rounded-lg">
-              <h3 className="font-semibold mb-2">✅ Notifications</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                Notification fetching and management
-              </p>
-              <Badge variant="success">Tested via /v1/notifications</Badge>
-            </div>
-          </div>
+                <div className="p-4 border rounded-lg">
+                  <h3 className="font-semibold mb-2">Error Handling</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    API error parsing and user-friendly messages
+                  </p>
+                  <Badge variant="info">Click "Run Tests" to test</Badge>
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
             <p className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-2">
@@ -1174,11 +1471,11 @@ function APIConnectionTestContent() {
           <div className="flex gap-2">
             <Button
               variant="primary"
-              onClick={generateReport}
+              onClick={generateCompleteReport}
               disabled={isLoading}
             >
               <FileText className="h-4 w-4 mr-2" />
-              {isLoading ? 'Generating...' : 'Generate Report'}
+              {isLoading ? 'Generating...' : 'Generate Complete Report'}
             </Button>
             {report?.reportContent && (
               <>

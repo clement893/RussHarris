@@ -7,6 +7,7 @@ import { generateColorShades, generateRgb } from './color-utils';
 import { validateThemeConfig } from './theme-validator';
 import { getThemeConfigForMode, applyDarkModeClass } from './dark-mode-utils';
 import { loadThemeFonts } from './font-loader';
+import { checkFonts } from '@/lib/api/theme-font';
 import { logger } from '@/lib/logger';
 
 /**
@@ -296,17 +297,89 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
     if ((configToApply as any).typography.fontFamilySubheading) {
       root.style.setProperty('--font-family-subheading', String((configToApply as any).typography.fontFamilySubheading));
     }
+    
+    // Check if fonts exist in database and warn user if not
+    if (logWarnings && typeof window !== 'undefined') {
+      const fontsToCheck: string[] = [];
+      if ((configToApply as any).typography.fontFamily) {
+        fontsToCheck.push(String((configToApply as any).typography.fontFamily));
+      }
+      if ((configToApply as any).typography.fontFamilyHeading) {
+        fontsToCheck.push(String((configToApply as any).typography.fontFamilyHeading));
+      }
+      if ((configToApply as any).typography.fontFamilySubheading) {
+        fontsToCheck.push(String((configToApply as any).typography.fontFamilySubheading));
+      }
+      
+      // Extract font names from CSS font-family strings (e.g., "Inter, sans-serif" -> "Inter")
+      const extractFontName = (fontFamily: string): string => {
+        const cleaned = fontFamily.replace(/['"]/g, '').trim();
+        const parts = cleaned.split(',');
+        return parts[0]?.trim() || cleaned;
+      };
+      
+      const fontNames = fontsToCheck.map(extractFontName).filter(Boolean);
+      
+      if (fontNames.length > 0) {
+        checkFonts(fontNames)
+          .then((fontCheckResult) => {
+            const missingFonts = Object.entries(fontCheckResult)
+              .filter(([_, exists]) => !exists)
+              .map(([name]) => name);
+            
+            if (missingFonts.length > 0) {
+              logger.warn(
+                `[Theme] Fonts not found in database: ${missingFonts.join(', ')}. ` +
+                `Please upload these fonts to ensure they are available.`
+              );
+              // Also log to console for visibility
+              console.warn(
+                `⚠️ Theme Font Warning: The following fonts are not in the database: ${missingFonts.join(', ')}. ` +
+                `Please upload them via the theme fonts management page to ensure proper display.`
+              );
+            }
+          })
+          .catch((error) => {
+            // Don't block theme application if font check fails
+            logger.warn('[Theme] Failed to check fonts in database', error);
+          });
+      }
+    }
   }
   
-  // Apply border radius
+  // Apply border radius (support both string and object formats)
   if (configToApply.border_radius) {
     root.style.setProperty('--border-radius', configToApply.border_radius);
   }
   
-  // Apply CSS effects
+  // Support borderRadius object format (sm, md, lg, xl, full)
+  if ((configToApply as any).borderRadius) {
+    const borderRadius = (configToApply as any).borderRadius;
+    Object.entries(borderRadius).forEach(([key, value]) => {
+      root.style.setProperty(`--border-radius-${key}`, String(value));
+    });
+  }
+  
+  // Apply typography fontSize
+  if ((configToApply as any).typography?.fontSize) {
+    const fontSize = (configToApply as any).typography.fontSize;
+    Object.entries(fontSize).forEach(([key, value]) => {
+      root.style.setProperty(`--font-size-${key}`, String(value));
+    });
+  }
+  
+  // Apply spacing
+  if ((configToApply as any).spacing) {
+    const spacing = (configToApply as any).spacing;
+    Object.entries(spacing).forEach(([key, value]) => {
+      root.style.setProperty(`--spacing-${key}`, String(value));
+    });
+  }
+  
+  // Apply CSS effects (comprehensive support for all effect types)
   const effects = (configToApply as any).effects;
   if (effects) {
-    // Support both old format (glassmorphism.enabled) and new format (glassmorphism.card, etc.)
+    // Glassmorphism - Support both old format (glassmorphism.enabled) and new format (glassmorphism.card, etc.)
     if (effects.glassmorphism) {
       // New format: glassmorphism.card, glassmorphism.panel, etc.
       if (effects.glassmorphism.card) {
@@ -337,17 +410,57 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
       }
     }
     
+    // Shadows
     if (effects.shadows) {
       if (effects.shadows.sm) root.style.setProperty('--shadow-sm', effects.shadows.sm);
       if (effects.shadows.md) root.style.setProperty('--shadow-md', effects.shadows.md);
       if (effects.shadows.lg) root.style.setProperty('--shadow-lg', effects.shadows.lg);
       if (effects.shadows.xl) root.style.setProperty('--shadow-xl', effects.shadows.xl);
+      // Support for any other shadow properties
+      Object.entries(effects.shadows).forEach(([key, value]) => {
+        if (!['sm', 'md', 'lg', 'xl'].includes(key) && typeof value === 'string') {
+          root.style.setProperty(`--shadow-${key}`, value);
+        }
+      });
     }
     
-    if (effects.gradients?.enabled) {
-      root.style.setProperty('--gradient-direction', effects.gradients.direction || 'to-br');
-      root.style.setProperty('--gradient-intensity', String(effects.gradients.intensity || 0.3));
+    // Gradients
+    if (effects.gradients) {
+      if (effects.gradients.enabled) {
+        root.style.setProperty('--gradient-direction', effects.gradients.direction || 'to-br');
+        root.style.setProperty('--gradient-intensity', String(effects.gradients.intensity || 0.3));
+      }
+      // Support for gradient colors, stops, etc.
+      Object.entries(effects.gradients).forEach(([key, value]) => {
+        if (!['enabled', 'direction', 'intensity'].includes(key) && typeof value === 'string') {
+          root.style.setProperty(`--gradient-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`, value);
+        }
+      });
     }
+    
+    // Apply custom effects as CSS variables (any effect not predefined)
+    // Exclude predefined effects (glassmorphism, shadows, gradients)
+    const predefinedKeys = ['glassmorphism', 'shadows', 'gradients'];
+    Object.entries(effects).forEach(([key, value]) => {
+      if (!predefinedKeys.includes(key) && typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        // Recursively convert nested effect properties to CSS variables
+        const convertEffectToCSSVars = (obj: Record<string, any>, prefix: string) => {
+          Object.entries(obj).forEach(([propKey, propValue]) => {
+            if (propKey !== 'description' && propKey !== 'enabled') {
+              if (typeof propValue === 'string' || typeof propValue === 'number') {
+                // Convert camelCase to kebab-case for CSS variables
+                const cssVarName = `--effect-${prefix}-${propKey.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+                root.style.setProperty(cssVarName, String(propValue));
+              } else if (typeof propValue === 'object' && propValue !== null && !Array.isArray(propValue)) {
+                // Recursively handle nested objects
+                convertEffectToCSSVars(propValue as Record<string, any>, `${prefix}-${propKey}`);
+              }
+            }
+          });
+        };
+        convertEffectToCSSVars(value as Record<string, any>, key);
+      }
+    });
   }
 }
 

@@ -310,6 +310,46 @@ async def get_font(
     return ThemeFontResponse.model_validate(font)
 
 
+@router.post("/check", response_model=Dict[str, bool], tags=["theme-fonts"])
+async def check_fonts(
+    font_families: List[str] = Body(..., description="List of font family names to check"),
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Check if font families exist in the database.
+    Returns a dictionary mapping font family names to boolean (exists or not).
+    Requires authentication.
+    """
+    if not font_families:
+        return {}
+    
+    # Extract font family names from CSS font-family strings (e.g., "Inter, sans-serif" -> "Inter")
+    def extract_font_name(font_family: str) -> str:
+        # Remove quotes and extract first font name before comma
+        font_family = font_family.replace('"', '').replace("'", '').strip()
+        parts = font_family.split(',')
+        return parts[0].strip() if parts else font_family.strip()
+    
+    # Normalize font family names
+    normalized_families = [extract_font_name(f) for f in font_families]
+    
+    # Query database for existing fonts
+    result = await db.execute(
+        select(ThemeFont.font_family).where(
+            ThemeFont.font_family.in_(normalized_families)
+        ).distinct()
+    )
+    existing_fonts = {row[0] for row in result.all()}
+    
+    # Build response dictionary
+    response = {}
+    for font_family in normalized_families:
+        response[font_family] = font_family in existing_fonts
+    
+    return response
+
+
 @router.delete("/{font_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["theme-fonts"])
 async def delete_font(
     font_id: int,
