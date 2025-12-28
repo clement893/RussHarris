@@ -79,9 +79,20 @@ export interface BillingSettings {
  */
 export interface OrganizationSettings {
   name: string;
+  slug: string;
+  email?: string;
+  phone?: string;
   website?: string;
-  industry?: string;
-  size?: string;
+  address?: {
+    line1: string;
+    line2?: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  timezone?: string;
+  locale?: string;
 }
 
 /**
@@ -179,8 +190,8 @@ export const settingsAPI = {
   /**
    * Get organization settings
    */
-  getOrganizationSettings: async (): Promise<OrganizationSettings> => {
-    const response = await apiClient.get<OrganizationSettings>('/v1/settings/organization');
+  getOrganizationSettings: async (): Promise<{ settings: OrganizationSettings }> => {
+    const response = await apiClient.get<{ settings: OrganizationSettings }>('/v1/settings/organization');
     if (!response.data) {
       throw new Error('Failed to fetch organization settings: no data returned');
     }
@@ -190,8 +201,8 @@ export const settingsAPI = {
   /**
    * Update organization settings
    */
-  updateOrganizationSettings: async (settings: OrganizationSettings): Promise<OrganizationSettings> => {
-    const response = await apiClient.put<OrganizationSettings>('/v1/settings/organization', settings);
+  updateOrganizationSettings: async (settings: OrganizationSettings): Promise<{ settings: OrganizationSettings }> => {
+    const response = await apiClient.put<{ settings: OrganizationSettings }>('/v1/settings/organization', settings);
     if (!response.data) {
       throw new Error('Failed to update organization settings: no data returned');
     }

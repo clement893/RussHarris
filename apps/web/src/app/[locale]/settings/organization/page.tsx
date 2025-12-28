@@ -22,6 +22,7 @@ import { Loading, Alert } from '@/components/ui';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { logger } from '@/lib/logger';
 import { getErrorMessage } from '@/lib/errors';
+import { settingsAPI } from '@/lib/api/settings';
 
 export default function OrganizationSettingsPage() {
   const router = useRouter();
@@ -65,7 +66,19 @@ export default function OrganizationSettingsPage() {
     try {
       setIsLoading(true);
       setError(null);
-      // TODO: Load organization from API
+      const response = await settingsAPI.getOrganizationSettings();
+      const orgData = response.settings;
+      setOrganization({
+        id: '1', // Organization ID is not stored in settings, using placeholder
+        name: orgData.name,
+        slug: orgData.slug,
+        email: orgData.email,
+        phone: orgData.phone,
+        website: orgData.website,
+        address: orgData.address,
+        timezone: orgData.timezone,
+        locale: orgData.locale,
+      });
       setIsLoading(false);
     } catch (error) {
       logger.error('Failed to load organization settings', error instanceof Error ? error : new Error(String(error)));
@@ -77,11 +90,23 @@ export default function OrganizationSettingsPage() {
   const handleSave = async (data: OrganizationSettingsData) => {
     try {
       setError(null);
-      // TODO: Save organization to API
+      // Save organization settings to API
+      const response = await settingsAPI.updateOrganizationSettings(data);
+      const savedData = response.settings;
+      
+      // Update local state with saved data
       setOrganization({
         id: organization.id,
-        ...data,
+        name: savedData.name,
+        slug: savedData.slug,
+        email: savedData.email,
+        phone: savedData.phone,
+        website: savedData.website,
+        address: savedData.address,
+        timezone: savedData.timezone,
+        locale: savedData.locale,
       });
+      
       logger.info('Organization settings saved successfully');
     } catch (error: unknown) {
       logger.error('Failed to save organization settings', error instanceof Error ? error : new Error(String(error)));

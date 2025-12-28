@@ -149,11 +149,39 @@ export function parseThemeValidationErrors(error: Error): ThemeValidationError[]
                                 message.includes('contrast') ||
                                 message.includes('422');
     
-    if (isValidationMessage || message.length > 0) {
+    // Don't create a generic error if the message is just "Request failed with status code 422"
+    // This means we didn't extract the real validation message
+    const isGenericError = message.includes('Request failed with status code');
+    
+    if ((isValidationMessage || message.length > 0) && !isGenericError) {
       errors.push({
         type: 'unknown',
         message: message || 'Erreur de validation inconnue',
       });
+    } else if (isGenericError) {
+      // If we have a generic error, try to extract from AppError details
+      if (error instanceof AppError && error.details?.validationErrors) {
+        const validationErrors = error.details.validationErrors;
+        if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+          // Use the first validation error message
+          const firstError = validationErrors[0];
+          const errorMsg = firstError.message || firstError.msg || '';
+          if (errorMsg && !errorMsg.includes('Request failed')) {
+            errors.push({
+              type: 'unknown',
+              message: errorMsg,
+            });
+          }
+        }
+      }
+      
+      // If still no errors, add a helpful message
+      if (errors.length === 0) {
+        errors.push({
+          type: 'unknown',
+          message: 'Erreur de validation. Vérifiez les formats de couleur et les ratios de contraste.',
+        });
+      }
     }
   }
   
@@ -172,15 +200,38 @@ export function parseThemeError(error: unknown): ParsedThemeError {
       message: String(error),
     };
   }
-  
+
   const isValidation = isThemeValidationError(error);
-  const validationErrors = isValidation ? parseThemeValidationErrors(error) : [];
-  
+  let validationErrors: ThemeValidationError[] = [];
+  let message = error.message;
+
+  if (isValidation) {
+    // Try to extract validation message from AppError details first
+    if (error instanceof AppError && error.details?.validationErrors) {
+      const extractedMessage = extractValidationMessageFromDetails(error.details);
+      if (extractedMessage && extractedMessage !== error.message) {
+        // Use the extracted message which contains the full formatted error
+        message = extractedMessage;
+      }
+    }
+    
+    // Parse validation errors
+    validationErrors = parseThemeValidationErrors(error);
+    
+    // If no structured errors found but we have a detailed message, create an error entry
+    if (validationErrors.length === 0 && message && !message.includes('Request failed with status code')) {
+      validationErrors.push({
+        type: 'unknown',
+        message: message,
+      });
+    }
+  }
+
   return {
     isValidationError: isValidation,
     validationErrors,
     originalError: error,
-    message: error.message,
+    message: message,
   };
 }
 

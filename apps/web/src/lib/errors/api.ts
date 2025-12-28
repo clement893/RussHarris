@@ -196,8 +196,12 @@ export function handleApiError(error: unknown): AppError {
         if (validationMessages.length > 0) {
           // Always use the first validation message as it contains the detailed error from backend
           // The message from Pydantic validator contains the full formatted error
-          message = validationMessages[0];
+          // Join all messages if there are multiple (they might contain different parts of the error)
+          message = validationMessages.join('\n');
           console.log('[handleApiError] Using validation message:', message);
+        } else {
+          // If no messages extracted, log the full validationErrors for debugging
+          console.warn('[handleApiError] No validation messages extracted from:', validationErrors);
         }
       } else if (typeof validationErrors === 'object') {
         // Handle object format (legacy or other formats)

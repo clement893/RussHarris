@@ -114,9 +114,9 @@ async def validation_exception_handler(
             "message": error_msg,
             "code": error["type"],
         })
-        # Log each validation error with full details
-        logger.warning(
-            f"Validation error for field {'.'.join(str(loc) for loc in error['loc'])}: {error_msg}",
+        # Log each validation error with full details (use error level to ensure visibility)
+        logger.error(
+            f"VALIDATION ERROR - Field: {'.'.join(str(loc) for loc in error['loc'])} | Message: {error_msg}",
             context={
                 "field": ".".join(str(loc) for loc in error["loc"]),
                 "message": error_msg,
