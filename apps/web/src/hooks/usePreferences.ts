@@ -1,22 +1,27 @@
 import { useState, useEffect, useCallback } from 'react';
 import { logger } from '@/lib/logger';
 import { apiClient } from '@/lib/api/client';
+import { extractApiData } from '@/lib/api/utils';
+
+// User preferences can have various value types (string, number, boolean, object, etc.)
+export type UserPreferenceValue = string | number | boolean | object | null | undefined;
+export type UserPreferences = Record<string, UserPreferenceValue>;
 
 /**
  * Hook to manage user preferences
  */
 export function usePreferences() {
-  const [preferences, setPreferences] = useState<Record<string, any>>({});
+  const [preferences, setPreferences] = useState<UserPreferences>({});
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchPreferences = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await apiClient.get<Record<string, any>>('/v1/users/preferences');
+      const response = await apiClient.get<UserPreferences>('/v1/users/preferences');
       // FastAPI returns data directly, not wrapped in ApiResponse
       // apiClient.get returns response.data from axios, which is already the FastAPI response
       // So response is already the data, or response.data if wrapped
-      const data = (response as any).data || response;
+      const data = extractApiData<UserPreferences>(response as unknown as UserPreferences | import('@modele/types').ApiResponse<UserPreferences>);
       if (data && typeof data === 'object') {
         setPreferences(data);
       }
@@ -43,10 +48,10 @@ export function usePreferences() {
     [preferences]
   );
 
-  const setPreference = useCallback(async (key: string, value: unknown) => {
+  const setPreference = useCallback(async (key: string, value: UserPreferenceValue) => {
     try {
       await apiClient.put(`/v1/users/preferences/${key}`, { value });
-      setPreferences((prev) => ({ ...prev, [key]: value }));
+      setPreferences((prev) => ({ ...prev, [key]: value } as UserPreferences));
       return true;
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {

@@ -86,8 +86,10 @@ export function LocaleSync({ children }: LocaleSyncProps) {
 
       try {
         // Fetch user preferences
-        const response = await apiClient.get<Record<string, any>>('/v1/users/preferences');
-        const data = (response as any).data || response;
+        type UserPreferences = Record<string, string | number | boolean | object | null | undefined>;
+        const response = await apiClient.get<UserPreferences>('/v1/users/preferences');
+        const { extractApiData } = await import('@/lib/api/utils');
+        const data = extractApiData<UserPreferences>(response as unknown as UserPreferences | import('@modele/types').ApiResponse<UserPreferences>);
         
         if (data && typeof data === 'object') {
           // Get language preference (could be 'language' or 'locale')

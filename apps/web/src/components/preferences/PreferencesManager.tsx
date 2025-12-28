@@ -17,11 +17,15 @@ interface PreferencesManagerProps {
   className?: string;
 }
 
+// User preferences can have various value types (string, number, boolean, object, etc.)
+export type UserPreferenceValue = string | number | boolean | object | null | undefined | unknown;
+export type UserPreferences = Record<string, UserPreferenceValue>;
+
 export function PreferencesManager({ className = '' }: PreferencesManagerProps) {
   const pathname = usePathname();
   const currentLocale = useLocale() as Locale;
-  const [preferences, setPreferences] = useState<Record<string, any>>({});
-  const [editedPreferences, setEditedPreferences] = useState<Record<string, any>>({});
+  const [preferences, setPreferences] = useState<UserPreferences>({});
+  const [editedPreferences, setEditedPreferences] = useState<UserPreferences>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const { showToast } = useToast();
@@ -33,11 +37,12 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
   const fetchPreferences = async () => {
     setIsLoading(true);
     try {
-      const response = await apiClient.get<Record<string, any>>('/v1/users/preferences');
+      const response = await apiClient.get<UserPreferences>('/v1/users/preferences');
       // FastAPI returns data directly, not wrapped in ApiResponse
       // apiClient.get returns response.data from axios, which is already the FastAPI response
       // So response is already the data, or response.data if wrapped
-      const data = (response as any).data || response;
+      const { extractApiData } = await import('@/lib/api/utils');
+      const data = extractApiData<UserPreferences>(response as unknown as UserPreferences | import('@modele/types').ApiResponse<UserPreferences>);
       if (data && typeof data === 'object') {
         // Normalize language preference key (could be 'language' or 'locale')
         const normalizedData = { ...data };
@@ -156,7 +161,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
         <div>
           <label className="block text-sm font-medium mb-2">Theme</label>
           <select
-            value={editedPreferences.theme || 'system'}
+            value={(editedPreferences.theme as string) || 'system'}
             onChange={(e) => handleChange('theme', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
           >
@@ -170,7 +175,7 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
         <div>
           <label className="block text-sm font-medium mb-2">Language</label>
           <select
-            value={editedPreferences.language || 'en'}
+            value={(editedPreferences.language as string) || 'en'}
             onChange={(e) => handleChange('language', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
           >
