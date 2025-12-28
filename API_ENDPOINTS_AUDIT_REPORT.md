@@ -1,35 +1,36 @@
 # API Endpoints Audit Report
 
-Generated: 2025-12-28T17:48:52.605Z
+Generated: 2025-12-28T18:13:21.440Z
 
 ---
 
 ## 📊 Summary
 
-- **Backend Endpoints**: 268
-- **Frontend fetch() calls**: 20
-- **Frontend apiClient calls**: 169
-- **fetch() calls that should use apiClient**: 10
-- **apiClient calls without endpoints**: 147
+- **Backend Endpoints**: 277
+- **Frontend fetch() calls**: 15
+- **Frontend apiClient calls**: 170
+- **fetch() calls that should use apiClient**: 5
+- **apiClient calls without endpoints**: 144
 
 ## 🔧 Backend Endpoints by Method
 
-- **GET**: 129
-- **POST**: 70
-- **DELETE**: 36
-- **PUT**: 32
+- **GET**: 132
+- **POST**: 71
+- **DELETE**: 38
+- **PUT**: 35
 - **PATCH**: 1
 
 ## 📁 Backend Endpoints by File
 
 - **rbac.py**: 19 endpoints
-- **tags.py**: 11 endpoints
+- **tags.py**: 15 endpoints
 - **forms.py**: 10 endpoints
+- **scheduled_tasks.py**: 8 endpoints
+- **user_preferences.py**: 8 endpoints
 - **auth.py**: 7 endpoints
 - **documentation.py**: 7 endpoints
 - **email_templates.py**: 7 endpoints
 - **feature_flags.py**: 7 endpoints
-- **scheduled_tasks.py**: 7 endpoints
 - **shares.py**: 7 endpoints
 - **subscriptions.py**: 7 endpoints
 - **teams.py**: 7 endpoints
@@ -40,21 +41,20 @@ Generated: 2025-12-28T17:48:52.605Z
 - **health.py**: 6 endpoints
 - **integrations.py**: 6 endpoints
 - **onboarding.py**: 6 endpoints
+- **pages.py**: 6 endpoints
 - **reports.py**: 6 endpoints
 - **support_tickets.py**: 6 endpoints
 - **themes.py**: 6 endpoints
-- **user_preferences.py**: 6 endpoints
 - **versions.py**: 6 endpoints
 - **announcements.py**: 5 endpoints
 - **backups.py**: 5 endpoints
 - **invitations.py**: 5 endpoints
+- **media.py**: 5 endpoints
 - **menus.py**: 5 endpoints
-- **pages.py**: 5 endpoints
 - **posts.py**: 5 endpoints
 - **projects.py**: 5 endpoints
 - **api_connection_check.py**: 4 endpoints
 - **api_keys.py**: 4 endpoints
-- **media.py**: 4 endpoints
 - **two_factor.py**: 4 endpoints
 - **users.py**: 4 endpoints
 - **client\tickets.py**: 3 endpoints
@@ -108,6 +108,7 @@ Generated: 2025-12-28T17:48:52.605Z
 | DELETE | `/media/{media_id}` | delete_media | media.py | media |
 | DELETE | `/menus/{menu_id}` | delete_menu | menus.py | menus |
 | DELETE | `/pages/{slug}` | delete_page | pages.py | pages |
+| DELETE | `/pages/id/{page_id}` | delete_page_by_id | pages.py | pages |
 | DELETE | `/posts/{post_id}` | delete_post | posts.py | posts |
 | DELETE | `/preferences` | delete_all_preferences | user_preferences.py | user-preferences |
 | DELETE | `/preferences/{key}` | delete_preference | user_preferences.py | user-preferences |
@@ -118,6 +119,7 @@ Generated: 2025-12-28T17:48:52.605Z
 | DELETE | `/reports/{report_id}` | delete_report | reports.py | reports |
 | DELETE | `/scheduled-tasks/{task_id}` | delete_task | scheduled_tasks.py | scheduled-tasks |
 | DELETE | `/shares/{share_id}` | delete_share | shares.py | shares |
+| DELETE | `/tags/{tag_id}` | delete_tag | tags.py | tags |
 | DELETE | `/tags/{tag_id}/entities/{entity_type}/{entity_id}` | remove_tag_from_entity | tags.py | tags |
 | DELETE | `/teams/{team_id}` | delete_team | teams.py | - |
 | DELETE | `/teams/{team_id}/members/{user_id}` | remove_team_member | teams.py | - |
@@ -214,6 +216,7 @@ Generated: 2025-12-28T17:48:52.605Z
 | GET | `/posts/{slug}` | get_post_by_slug | posts.py | posts |
 | GET | `/preferences` | get_all_preferences | user_preferences.py | user-preferences |
 | GET | `/preferences/{key}` | get_preference | user_preferences.py | user-preferences |
+| GET | `/preferences/notifications` | get_notification_preferences | user_preferences.py | user-preferences |
 | GET | `/rbac/permissions` | list_permissions | rbac.py | - |
 | GET | `/rbac/roles` | list_roles | rbac.py | - |
 | GET | `/rbac/roles/{role_id}` | get_role | rbac.py | - |
@@ -240,6 +243,8 @@ Generated: 2025-12-28T17:48:52.605Z
 | GET | `/support/tickets` | list_tickets | support_tickets.py | support |
 | GET | `/support/tickets/{ticket_id}` | get_ticket | support_tickets.py | support |
 | GET | `/support/tickets/{ticket_id}/messages` | get_ticket_messages | support_tickets.py | support |
+| GET | `/tags` | list_tags | tags.py | tags |
+| GET | `/tags/{tag_id}` | get_tag | tags.py | tags |
 | GET | `/tags/entity/{entity_type}/{entity_id}` | get_entity_tags | tags.py | tags |
 | GET | `/tags/popular` | get_popular_tags | tags.py | tags |
 | GET | `/tags/search` | search_tags | tags.py | tags |
@@ -283,6 +288,7 @@ Generated: 2025-12-28T17:48:52.605Z
 | POST | `/login` | login | auth.py | - |
 | POST | `/logout` | logout | auth.py | - |
 | POST | `/media` | upload_media | media.py | media |
+| POST | `/media/validate` | validate_media | media.py | media |
 | POST | `/menus` | create_menu | menus.py | menus |
 | POST | `/onboarding/initialize` | initialize_onboarding | onboarding.py | onboarding |
 | POST | `/onboarding/steps/{step_key}/complete` | complete_step | onboarding.py | onboarding |
@@ -331,6 +337,7 @@ Generated: 2025-12-28T17:48:52.605Z
 | PUT | `/announcements/{announcement_id}` | update_announcement | announcements.py | announcements |
 | PUT | `/categories/{category_id}` | update_category | tags.py | categories |
 | PUT | `/comments/{comment_id}` | update_comment | comments.py | comments |
+| PUT | `/content/schedule/{task_id}/toggle` | toggle_task | scheduled_tasks.py | scheduled-tasks |
 | PUT | `/documentation/articles/{article_id}` | update_article | documentation.py | documentation |
 | PUT | `/email-templates/{template_id}` | update_template | email_templates.py | email-templates |
 | PUT | `/favorites/{favorite_id}` | update_favorite | favorites.py | favorites |
@@ -343,6 +350,7 @@ Generated: 2025-12-28T17:48:52.605Z
 | PUT | `/posts/{post_id}` | update_post | posts.py | posts |
 | PUT | `/preferences` | set_preferences | user_preferences.py | user-preferences |
 | PUT | `/preferences/{key}` | set_preference | user_preferences.py | user-preferences |
+| PUT | `/preferences/notifications` | update_notification_preferences | user_preferences.py | user-preferences |
 | PUT | `/rbac/roles/{role_id}` | update_role | rbac.py | - |
 | PUT | `/rbac/roles/{role_id}/permissions` | update_role_permissions | rbac.py | - |
 | PUT | `/rbac/users/{user_id}/roles` | update_user_roles | rbac.py | - |
@@ -351,6 +359,7 @@ Generated: 2025-12-28T17:48:52.605Z
 | PUT | `/seo/settings` | update_seo_settings | seo.py | seo |
 | PUT | `/shares/{share_id}` | update_share | shares.py | shares |
 | PUT | `/support/tickets/{ticket_id}` | update_ticket | support_tickets.py | support |
+| PUT | `/tags/{tag_id}` | update_tag | tags.py | tags |
 | PUT | `/teams/{team_id}` | update_team | teams.py | - |
 | PUT | `/teams/{team_id}/members/{user_id}` | update_team_member | teams.py | - |
 | PUT | `/templates/{template_id}` | update_template | templates.py | templates |
@@ -359,14 +368,9 @@ Generated: 2025-12-28T17:48:52.605Z
 
 | File | Line | Method | URL | Has Endpoint | Recommendation |
 |------|------|--------|-----|--------------|----------------|
-| app\admin\settings\AdminSettingsContent.tsx | 29 | PUT | `/api/v1/users/me` | ❌ | No corresponding endpoint found - may be incorrect |
 | app\admin\users\AdminUsersContent.tsx | 76 | DELETE | `/api/v1/users/${selectedUser.id}` | ❌ | No corresponding endpoint found - may be incorrect |
 | app\docs\page.tsx | 156 | GET | `/api/v1/users` | ❌ | No corresponding endpoint found - may be incorrect |
-| app\upload\page.tsx | 84 | POST | `/api/upload/validate` | ❌ | No corresponding endpoint found - may be incorrect |
 | app\[locale]\docs\page.tsx | 156 | GET | `/api/v1/users` | ❌ | No corresponding endpoint found - may be incorrect |
-| app\[locale]\upload\page.tsx | 85 | POST | `/api/upload/validate` | ❌ | No corresponding endpoint found - may be incorrect |
-| hooks\useCSRF.ts | 18 | GET | `/api/csrf` | ❌ | No corresponding endpoint found - may be incorrect |
-| lib\security\csrf.ts | 38 | GET | `/api/csrf-token` | ❌ | No corresponding endpoint found - may be incorrect |
 | lib\utils\rateLimiter.ts | 12 | GET | `/api/users` | ❌ | No corresponding endpoint found - may be incorrect |
 | lib\utils\rateLimiter.ts | 60 | GET | `/api/users` | ❌ | No corresponding endpoint found - may be incorrect |
 
@@ -374,13 +378,14 @@ Generated: 2025-12-28T17:48:52.605Z
 
 | File | Line | Method | URL | Recommendation |
 |------|------|--------|-----|----------------|
+| app\admin\settings\AdminSettingsContent.tsx | 30 | PUT | `/v1/users/me` | No corresponding backend endpoint found |
 | app\admin\users\AdminUsersContent.tsx | 44 | GET | `/v1/users?page=1&page_size=100` | No corresponding backend endpoint found |
 | app\[locale]\admin\statistics\AdminStatisticsContent.tsx | 32 | GET | `/v1/users?page=1&page_size=1` | No corresponding backend endpoint found |
 | app\[locale]\admin\statistics\AdminStatisticsContent.tsx | 56 | GET | `/v1/audit-trail/audit-trail?limit=1&offset=0` | No corresponding backend endpoint found |
 | app\[locale]\admin\tenancy\TenancyContent.tsx | 54 | GET | `/v1/admin/tenancy/config` | No corresponding backend endpoint found |
 | app\[locale]\admin\tenancy\TenancyContent.tsx | 79 | PUT | `/v1/admin/tenancy/config` | No corresponding backend endpoint found |
-| app\[locale]\admin\users\AdminUsersContent.tsx | 49 | GET | `/v1/users?page=1&page_size=100` | No corresponding backend endpoint found |
-| app\[locale]\admin\users\AdminUsersContent.tsx | 82 | DELETE | `/v1/users/${selectedUser.id}` | No corresponding backend endpoint found |
+| app\[locale]\admin\users\AdminUsersContent.tsx | 47 | GET | `/v1/users?page=1&page_size=100` | No corresponding backend endpoint found |
+| app\[locale]\admin\users\AdminUsersContent.tsx | 80 | DELETE | `/v1/users/${selectedUser.id}` | No corresponding backend endpoint found |
 | app\[locale]\content\categories\page.tsx | 43 | GET | `/v1/tags/categories/tree` | No corresponding backend endpoint found |
 | app\[locale]\content\categories\page.tsx | 82 | POST | `/v1/tags/categories` | No corresponding backend endpoint found |
 | app\[locale]\content\categories\page.tsx | 92 | PUT | `/v1/tags/categories/${id}` | No corresponding backend endpoint found |
@@ -396,45 +401,41 @@ Generated: 2025-12-28T17:48:52.605Z
 | app\[locale]\profile\notifications\page.tsx | 83 | GET | `/v1/users/preferences/notifications` | No corresponding backend endpoint found |
 | app\[locale]\profile\notifications\page.tsx | 205 | PUT | `/v1/users/preferences/notifications` | No corresponding backend endpoint found |
 | components\admin\TeamManagement.tsx | 119 | GET | `/v1/rbac/roles?skip=0&limit=100` | No corresponding backend endpoint found |
-| components\announcements\AnnouncementBanner.tsx | 66 | POST | `/api/v1/announcements/announcements/${announcementId}/dismiss` | No corresponding backend endpoint found |
-| components\backups\BackupManager.tsx | 80 | POST | `/api/v1/backups/backups/${backupId}/restore` | No corresponding backend endpoint found |
-| components\backups\BackupManager.tsx | 97 | DELETE | `/api/v1/backups/backups/${backupId}` | No corresponding backend endpoint found |
-| components\collaboration\CommentThread.tsx | 74 | POST | `/api/v1/comments/comments` | No corresponding backend endpoint found |
-| components\collaboration\CommentThread.tsx | 99 | PUT | `/api/v1/comments/comments/${comment.id}` | No corresponding backend endpoint found |
-| components\collaboration\CommentThread.tsx | 120 | DELETE | `/api/v1/comments/comments/${comment.id}` | No corresponding backend endpoint found |
-| components\collaboration\CommentThread.tsx | 136 | POST | `/api/v1/comments/comments/${comment.id}/reactions` | No corresponding backend endpoint found |
-| components\documentation\ArticleViewer.tsx | 65 | POST | `/api/v1/documentation/documentation/articles/${article.id}/feedback` | No corresponding backend endpoint found |
-| components\email-templates\EmailTemplateManager.tsx | 77 | PUT | `/api/v1/email-templates/email-templates/${selectedTemplate.id}` | No corresponding backend endpoint found |
-| components\email-templates\EmailTemplateManager.tsx | 104 | DELETE | `/api/v1/email-templates/email-templates/${templateId}` | No corresponding backend endpoint found |
-| components\favorites\FavoriteButton.tsx | 68 | DELETE | `/api/v1/favorites/${entityType}/${entityId}` | No corresponding backend endpoint found |
-| components\favorites\FavoriteButton.tsx | 78 | POST | `/api/v1/favorites/favorites` | No corresponding backend endpoint found |
-| components\favorites\FavoritesList.tsx | 75 | DELETE | `/api/v1/favorites/${favorite.entity_type}/${favorite.entity_id}` | No corresponding backend endpoint found |
-| components\feature-flags\FeatureFlagManager.tsx | 52 | PUT | `/api/v1/feature-flags/feature-flags/${flag.id}` | No corresponding backend endpoint found |
-| components\feature-flags\FeatureFlagManager.tsx | 74 | DELETE | `/api/v1/feature-flags/feature-flags/${flagId}` | No corresponding backend endpoint found |
+| components\announcements\AnnouncementBanner.tsx | 66 | POST | `/v1/announcements/${announcementId}/dismiss` | No corresponding backend endpoint found |
+| components\backups\BackupManager.tsx | 80 | POST | `/v1/backups/${backupId}/restore` | No corresponding backend endpoint found |
+| components\backups\BackupManager.tsx | 97 | DELETE | `/v1/backups/${backupId}` | No corresponding backend endpoint found |
+| components\collaboration\CommentThread.tsx | 99 | PUT | `/v1/comments/${comment.id}` | No corresponding backend endpoint found |
+| components\collaboration\CommentThread.tsx | 120 | DELETE | `/v1/comments/${comment.id}` | No corresponding backend endpoint found |
+| components\collaboration\CommentThread.tsx | 136 | POST | `/v1/comments/${comment.id}/reactions` | No corresponding backend endpoint found |
+| components\documentation\ArticleViewer.tsx | 65 | POST | `/v1/documentation/articles/${article.id}/feedback` | No corresponding backend endpoint found |
+| components\email-templates\EmailTemplateManager.tsx | 77 | PUT | `/v1/email-templates/${selectedTemplate.id}` | No corresponding backend endpoint found |
+| components\email-templates\EmailTemplateManager.tsx | 104 | DELETE | `/v1/email-templates/${templateId}` | No corresponding backend endpoint found |
+| components\favorites\FavoriteButton.tsx | 68 | DELETE | `/v1/favorites/${entityType}/${entityId}` | No corresponding backend endpoint found |
+| components\favorites\FavoritesList.tsx | 75 | DELETE | `/v1/favorites/${favorite.entity_type}/${favorite.entity_id}` | No corresponding backend endpoint found |
+| components\feature-flags\FeatureFlagManager.tsx | 52 | PUT | `/v1/feature-flags/${flag.id}` | No corresponding backend endpoint found |
+| components\feature-flags\FeatureFlagManager.tsx | 74 | DELETE | `/v1/feature-flags/${flagId}` | No corresponding backend endpoint found |
 | components\feedback\FeedbackForm.tsx | 47 | POST | `/api/v1/feedback/feedback` | No corresponding backend endpoint found |
-| components\onboarding\OnboardingWizard.tsx | 43 | POST | `/api/v1/onboarding/onboarding/initialize` | No corresponding backend endpoint found |
-| components\onboarding\OnboardingWizard.tsx | 72 | POST | `/api/v1/onboarding/onboarding/steps/${currentStep.key}/complete` | No corresponding backend endpoint found |
-| components\onboarding\OnboardingWizard.tsx | 97 | POST | `/api/v1/onboarding/onboarding/steps/${currentStep.key}/skip` | No corresponding backend endpoint found |
+| components\onboarding\OnboardingWizard.tsx | 72 | POST | `/v1/onboarding/steps/${currentStep.key}/complete` | No corresponding backend endpoint found |
+| components\onboarding\OnboardingWizard.tsx | 97 | POST | `/v1/onboarding/steps/${currentStep.key}/skip` | No corresponding backend endpoint found |
 | components\preferences\PreferencesManager.tsx | 75 | PUT | `/v1/users/preferences` | No corresponding backend endpoint found |
-| components\scheduled-tasks\TaskManager.tsx | 71 | POST | `/api/v1/scheduled-tasks/scheduled-tasks/${taskId}/cancel` | No corresponding backend endpoint found |
-| components\scheduled-tasks\TaskManager.tsx | 89 | DELETE | `/api/v1/scheduled-tasks/scheduled-tasks/${taskId}` | No corresponding backend endpoint found |
-| components\sharing\ShareDialog.tsx | 56 | POST | `/api/v1/shares/shares` | No corresponding backend endpoint found |
-| components\sharing\ShareList.tsx | 62 | DELETE | `/api/v1/shares/shares/${shareId}` | No corresponding backend endpoint found |
-| components\tags\TagInput.tsx | 80 | POST | `/api/v1/tags/${tag.id}/entities/${entityType}/${entityId}` | No corresponding backend endpoint found |
-| components\tags\TagInput.tsx | 130 | DELETE | `/api/v1/tags/${tagId}/entities/${entityType}/${entityId}` | No corresponding backend endpoint found |
-| components\tags\TagManager.tsx | 61 | DELETE | `/api/v1/tags/tags/${tagId}` | No corresponding backend endpoint found |
-| components\templates\TemplateEditor.tsx | 47 | PUT | `/api/v1/templates/templates/${templateId}` | No corresponding backend endpoint found |
-| components\templates\TemplateManager.tsx | 74 | POST | `/api/v1/templates/templates/${template.id}/duplicate` | No corresponding backend endpoint found |
-| components\templates\TemplateManager.tsx | 101 | DELETE | `/api/v1/templates/templates/${templateId}` | No corresponding backend endpoint found |
-| components\versions\VersionHistory.tsx | 73 | POST | `/api/v1/versions/versions/${version.id}/restore` | No corresponding backend endpoint found |
-| components\versions\VersionHistory.tsx | 98 | GET | `/api/v1/versions/versions/${entityType}/${entityId}/compare` | No corresponding backend endpoint found |
+| components\scheduled-tasks\TaskManager.tsx | 71 | POST | `/v1/scheduled-tasks/${taskId}/cancel` | No corresponding backend endpoint found |
+| components\scheduled-tasks\TaskManager.tsx | 89 | DELETE | `/v1/scheduled-tasks/${taskId}` | No corresponding backend endpoint found |
+| components\sharing\ShareList.tsx | 62 | DELETE | `/v1/shares/${shareId}` | No corresponding backend endpoint found |
+| components\tags\TagInput.tsx | 80 | POST | `/v1/tags/${tag.id}/entities/${entityType}/${entityId}` | No corresponding backend endpoint found |
+| components\tags\TagInput.tsx | 130 | DELETE | `/v1/tags/${tagId}/entities/${entityType}/${entityId}` | No corresponding backend endpoint found |
+| components\tags\TagManager.tsx | 61 | DELETE | `/v1/tags/${tagId}` | No corresponding backend endpoint found |
+| components\templates\TemplateEditor.tsx | 47 | PUT | `/v1/templates/${templateId}` | No corresponding backend endpoint found |
+| components\templates\TemplateManager.tsx | 74 | POST | `/v1/templates/${template.id}/duplicate` | No corresponding backend endpoint found |
+| components\templates\TemplateManager.tsx | 101 | DELETE | `/v1/templates/${templateId}` | No corresponding backend endpoint found |
+| components\versions\VersionHistory.tsx | 73 | POST | `/v1/versions/${version.id}/restore` | No corresponding backend endpoint found |
+| components\versions\VersionHistory.tsx | 98 | GET | `/v1/versions/${entityType}/${entityId}/compare` | No corresponding backend endpoint found |
 | hooks\usePreferences.ts | 53 | PUT | `/v1/users/preferences/${key}` | No corresponding backend endpoint found |
 | hooks\usePreferences.ts | 66 | PUT | `/v1/users/preferences` | No corresponding backend endpoint found |
 | lib\api\admin.ts | 243 | GET | `/v1/admin/check-superadmin/${encodeURIComponent(email)}` | No corresponding backend endpoint found |
 | lib\api\admin.ts | 254 | GET | `/v1/admin/check-superadmin/${encodeURIComponent(email)}` | No corresponding backend endpoint found |
 | lib\api\media.ts | 94 | DELETE | `/v1/media/${id}` | No corresponding backend endpoint found |
 | lib\api\notifications.ts | 116 | DELETE | `/v1/notifications/${notificationId}` | No corresponding backend endpoint found |
-| lib\api\pages.ts | 102 | DELETE | `/v1/pages/${id}` | No corresponding backend endpoint found |
+| lib\api\pages.ts | 102 | DELETE | `/v1/pages/id/${id}` | No corresponding backend endpoint found |
 | lib\api\posts.ts | 131 | DELETE | `/v1/posts/${id}` | No corresponding backend endpoint found |
 | lib\api\rbac.ts | 135 | DELETE | `/v1/rbac/roles/${roleId}` | No corresponding backend endpoint found |
 | lib\api\rbac.ts | 178 | DELETE | `/v1/rbac/roles/${roleId}/permissions/${permissionId}` | No corresponding backend endpoint found |
@@ -526,16 +527,12 @@ Generated: 2025-12-28T17:48:52.605Z
 
 | File | Line | Method | URL |
 |------|------|--------|-----|
-| app\admin\settings\AdminSettingsContent.tsx | 29 | PUT | `/api/v1/users/me` |
 | app\admin\users\AdminUsersContent.tsx | 76 | DELETE | `/api/v1/users/${selectedUser.id}` |
 | app\api\themes\route.ts | 57 | GET | `${API_URL}/api/v1/themes/active` |
 | app\docs\page.tsx | 156 | GET | `/api/v1/users` |
-| app\upload\page.tsx | 84 | POST | `/api/upload/validate` |
 | app\[locale]\admin\settings\AdminSettingsContent.tsx | 37 | PUT | `${getApiUrl()}/api/v1/admin/settings` |
 | app\[locale]\docs\page.tsx | 156 | GET | `/api/v1/users` |
 | app\[locale]\examples\api-fetching\page.tsx | 61 | GET | `https://jsonplaceholder.typicode.com/posts` |
-| app\[locale]\upload\page.tsx | 85 | POST | `/api/upload/validate` |
-| hooks\useCSRF.ts | 18 | GET | `/api/csrf` |
 | lib\api\admin.ts | 36 | POST | `${API_URL}/api/v1/admin/bootstrap-superadmin` |
 | lib\api\admin.ts | 75 | POST | `${API_URL}/api/v1/admin/make-superadmin` |
 | lib\auth\config.ts | 110 | POST | `${process.env.NEXTAUTH_URL}/api/auth/refresh` |
@@ -543,7 +540,6 @@ Generated: 2025-12-28T17:48:52.605Z
 | lib\auth\secureCookieStorage.ts | 111 | GET | `${TOKEN_API_ENDPOINT}/session` |
 | lib\auth\secureCookieStorage.ts | 168 | POST | `${TOKEN_API_ENDPOINT}/refresh` |
 | lib\performance\preloading.ts | 106 | GET | `//${apiHost}` |
-| lib\security\csrf.ts | 38 | GET | `/api/csrf-token` |
 | lib\utils\rateLimiter.ts | 12 | GET | `/api/users` |
 | lib\utils\rateLimiter.ts | 60 | GET | `/api/users` |
 
@@ -551,13 +547,14 @@ Generated: 2025-12-28T17:48:52.605Z
 
 | File | Line | Method | URL |
 |------|------|--------|-----|
+| app\admin\settings\AdminSettingsContent.tsx | 30 | PUT | `/v1/users/me` |
 | app\admin\users\AdminUsersContent.tsx | 44 | GET | `/v1/users?page=1&page_size=100` |
 | app\[locale]\admin\statistics\AdminStatisticsContent.tsx | 32 | GET | `/v1/users?page=1&page_size=1` |
 | app\[locale]\admin\statistics\AdminStatisticsContent.tsx | 56 | GET | `/v1/audit-trail/audit-trail?limit=1&offset=0` |
 | app\[locale]\admin\tenancy\TenancyContent.tsx | 54 | GET | `/v1/admin/tenancy/config` |
 | app\[locale]\admin\tenancy\TenancyContent.tsx | 79 | PUT | `/v1/admin/tenancy/config` |
-| app\[locale]\admin\users\AdminUsersContent.tsx | 49 | GET | `/v1/users?page=1&page_size=100` |
-| app\[locale]\admin\users\AdminUsersContent.tsx | 82 | DELETE | `/v1/users/${selectedUser.id}` |
+| app\[locale]\admin\users\AdminUsersContent.tsx | 47 | GET | `/v1/users?page=1&page_size=100` |
+| app\[locale]\admin\users\AdminUsersContent.tsx | 80 | DELETE | `/v1/users/${selectedUser.id}` |
 | app\[locale]\content\categories\page.tsx | 43 | GET | `/v1/tags/categories/tree` |
 | app\[locale]\content\categories\page.tsx | 82 | POST | `/v1/tags/categories` |
 | app\[locale]\content\categories\page.tsx | 92 | PUT | `/v1/tags/categories/${id}` |
@@ -578,45 +575,45 @@ Generated: 2025-12-28T17:48:52.605Z
 | app\[locale]\profile\notifications\page.tsx | 83 | GET | `/v1/users/preferences/notifications` |
 | app\[locale]\profile\notifications\page.tsx | 205 | PUT | `/v1/users/preferences/notifications` |
 | components\admin\TeamManagement.tsx | 119 | GET | `/v1/rbac/roles?skip=0&limit=100` |
-| components\announcements\AnnouncementBanner.tsx | 66 | POST | `/api/v1/announcements/announcements/${announcementId}/dismiss` |
-| components\backups\BackupManager.tsx | 80 | POST | `/api/v1/backups/backups/${backupId}/restore` |
-| components\backups\BackupManager.tsx | 97 | DELETE | `/api/v1/backups/backups/${backupId}` |
-| components\collaboration\CommentThread.tsx | 74 | POST | `/api/v1/comments/comments` |
-| components\collaboration\CommentThread.tsx | 99 | PUT | `/api/v1/comments/comments/${comment.id}` |
-| components\collaboration\CommentThread.tsx | 120 | DELETE | `/api/v1/comments/comments/${comment.id}` |
-| components\collaboration\CommentThread.tsx | 136 | POST | `/api/v1/comments/comments/${comment.id}/reactions` |
-| components\documentation\ArticleViewer.tsx | 65 | POST | `/api/v1/documentation/documentation/articles/${article.id}/feedback` |
-| components\email-templates\EmailTemplateManager.tsx | 77 | PUT | `/api/v1/email-templates/email-templates/${selectedTemplate.id}` |
-| components\email-templates\EmailTemplateManager.tsx | 104 | DELETE | `/api/v1/email-templates/email-templates/${templateId}` |
-| components\favorites\FavoriteButton.tsx | 68 | DELETE | `/api/v1/favorites/${entityType}/${entityId}` |
-| components\favorites\FavoriteButton.tsx | 78 | POST | `/api/v1/favorites/favorites` |
-| components\favorites\FavoritesList.tsx | 75 | DELETE | `/api/v1/favorites/${favorite.entity_type}/${favorite.entity_id}` |
-| components\feature-flags\FeatureFlagManager.tsx | 52 | PUT | `/api/v1/feature-flags/feature-flags/${flag.id}` |
-| components\feature-flags\FeatureFlagManager.tsx | 74 | DELETE | `/api/v1/feature-flags/feature-flags/${flagId}` |
+| components\announcements\AnnouncementBanner.tsx | 66 | POST | `/v1/announcements/${announcementId}/dismiss` |
+| components\backups\BackupManager.tsx | 80 | POST | `/v1/backups/${backupId}/restore` |
+| components\backups\BackupManager.tsx | 97 | DELETE | `/v1/backups/${backupId}` |
+| components\collaboration\CommentThread.tsx | 74 | POST | `/v1/comments` |
+| components\collaboration\CommentThread.tsx | 99 | PUT | `/v1/comments/${comment.id}` |
+| components\collaboration\CommentThread.tsx | 120 | DELETE | `/v1/comments/${comment.id}` |
+| components\collaboration\CommentThread.tsx | 136 | POST | `/v1/comments/${comment.id}/reactions` |
+| components\documentation\ArticleViewer.tsx | 65 | POST | `/v1/documentation/articles/${article.id}/feedback` |
+| components\email-templates\EmailTemplateManager.tsx | 77 | PUT | `/v1/email-templates/${selectedTemplate.id}` |
+| components\email-templates\EmailTemplateManager.tsx | 104 | DELETE | `/v1/email-templates/${templateId}` |
+| components\favorites\FavoriteButton.tsx | 68 | DELETE | `/v1/favorites/${entityType}/${entityId}` |
+| components\favorites\FavoriteButton.tsx | 78 | POST | `/v1/favorites` |
+| components\favorites\FavoritesList.tsx | 75 | DELETE | `/v1/favorites/${favorite.entity_type}/${favorite.entity_id}` |
+| components\feature-flags\FeatureFlagManager.tsx | 52 | PUT | `/v1/feature-flags/${flag.id}` |
+| components\feature-flags\FeatureFlagManager.tsx | 74 | DELETE | `/v1/feature-flags/${flagId}` |
 | components\feedback\FeedbackForm.tsx | 47 | POST | `/api/v1/feedback/feedback` |
-| components\onboarding\OnboardingWizard.tsx | 43 | POST | `/api/v1/onboarding/onboarding/initialize` |
-| components\onboarding\OnboardingWizard.tsx | 72 | POST | `/api/v1/onboarding/onboarding/steps/${currentStep.key}/complete` |
-| components\onboarding\OnboardingWizard.tsx | 97 | POST | `/api/v1/onboarding/onboarding/steps/${currentStep.key}/skip` |
+| components\onboarding\OnboardingWizard.tsx | 43 | POST | `/v1/onboarding/initialize` |
+| components\onboarding\OnboardingWizard.tsx | 72 | POST | `/v1/onboarding/steps/${currentStep.key}/complete` |
+| components\onboarding\OnboardingWizard.tsx | 97 | POST | `/v1/onboarding/steps/${currentStep.key}/skip` |
 | components\preferences\PreferencesManager.tsx | 75 | PUT | `/v1/users/preferences` |
-| components\scheduled-tasks\TaskManager.tsx | 71 | POST | `/api/v1/scheduled-tasks/scheduled-tasks/${taskId}/cancel` |
-| components\scheduled-tasks\TaskManager.tsx | 89 | DELETE | `/api/v1/scheduled-tasks/scheduled-tasks/${taskId}` |
-| components\sharing\ShareDialog.tsx | 56 | POST | `/api/v1/shares/shares` |
-| components\sharing\ShareList.tsx | 62 | DELETE | `/api/v1/shares/shares/${shareId}` |
-| components\tags\TagInput.tsx | 80 | POST | `/api/v1/tags/${tag.id}/entities/${entityType}/${entityId}` |
-| components\tags\TagInput.tsx | 130 | DELETE | `/api/v1/tags/${tagId}/entities/${entityType}/${entityId}` |
-| components\tags\TagManager.tsx | 61 | DELETE | `/api/v1/tags/tags/${tagId}` |
-| components\templates\TemplateEditor.tsx | 47 | PUT | `/api/v1/templates/templates/${templateId}` |
-| components\templates\TemplateManager.tsx | 74 | POST | `/api/v1/templates/templates/${template.id}/duplicate` |
-| components\templates\TemplateManager.tsx | 101 | DELETE | `/api/v1/templates/templates/${templateId}` |
-| components\versions\VersionHistory.tsx | 73 | POST | `/api/v1/versions/versions/${version.id}/restore` |
-| components\versions\VersionHistory.tsx | 98 | GET | `/api/v1/versions/versions/${entityType}/${entityId}/compare` |
+| components\scheduled-tasks\TaskManager.tsx | 71 | POST | `/v1/scheduled-tasks/${taskId}/cancel` |
+| components\scheduled-tasks\TaskManager.tsx | 89 | DELETE | `/v1/scheduled-tasks/${taskId}` |
+| components\sharing\ShareDialog.tsx | 56 | POST | `/v1/shares` |
+| components\sharing\ShareList.tsx | 62 | DELETE | `/v1/shares/${shareId}` |
+| components\tags\TagInput.tsx | 80 | POST | `/v1/tags/${tag.id}/entities/${entityType}/${entityId}` |
+| components\tags\TagInput.tsx | 130 | DELETE | `/v1/tags/${tagId}/entities/${entityType}/${entityId}` |
+| components\tags\TagManager.tsx | 61 | DELETE | `/v1/tags/${tagId}` |
+| components\templates\TemplateEditor.tsx | 47 | PUT | `/v1/templates/${templateId}` |
+| components\templates\TemplateManager.tsx | 74 | POST | `/v1/templates/${template.id}/duplicate` |
+| components\templates\TemplateManager.tsx | 101 | DELETE | `/v1/templates/${templateId}` |
+| components\versions\VersionHistory.tsx | 73 | POST | `/v1/versions/${version.id}/restore` |
+| components\versions\VersionHistory.tsx | 98 | GET | `/v1/versions/${entityType}/${entityId}/compare` |
 | hooks\usePreferences.ts | 53 | PUT | `/v1/users/preferences/${key}` |
 | hooks\usePreferences.ts | 66 | PUT | `/v1/users/preferences` |
 | lib\api\admin.ts | 243 | GET | `/v1/admin/check-superadmin/${encodeURIComponent(email)}` |
 | lib\api\admin.ts | 254 | GET | `/v1/admin/check-superadmin/${encodeURIComponent(email)}` |
 | lib\api\media.ts | 94 | DELETE | `/v1/media/${id}` |
 | lib\api\notifications.ts | 116 | DELETE | `/v1/notifications/${notificationId}` |
-| lib\api\pages.ts | 102 | DELETE | `/v1/pages/${id}` |
+| lib\api\pages.ts | 102 | DELETE | `/v1/pages/id/${id}` |
 | lib\api\posts.ts | 131 | DELETE | `/v1/posts/${id}` |
 | lib\api\rbac.ts | 135 | DELETE | `/v1/rbac/roles/${roleId}` |
 | lib\api\rbac.ts | 178 | DELETE | `/v1/rbac/roles/${roleId}/permissions/${permissionId}` |
