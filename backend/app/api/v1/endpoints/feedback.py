@@ -3,7 +3,8 @@ Feedback API Endpoints
 """
 
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File
+from fastapi import Request
 from pydantic import BaseModel, Field
 
 from app.services.feedback_service import FeedbackService
