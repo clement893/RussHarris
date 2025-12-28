@@ -136,15 +136,20 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
       setError(null);
 
       // Use current config from state (which may have been updated from JSON or form)
+      // Spread state.config FIRST to preserve all complex structures (colors, typography, effects, spacing, etc.)
+      // Then add fallbacks for required color fields to ensure compatibility with form tab and old format
       const config: ThemeConfig = {
-        primary_color: state.config.primary_color || formData.primary_color,
-        secondary_color: state.config.secondary_color || formData.secondary_color,
-        danger_color: state.config.danger_color || formData.danger_color,
-        warning_color: state.config.warning_color || formData.warning_color,
-        info_color: state.config.info_color || formData.info_color,
-        success_color: state.config.success_color || formData.success_color,
-        font_family: (state.config as any).font_family || formData.font_family || undefined,
-        border_radius: (state.config as any).border_radius || formData.border_radius || undefined,
+        ...state.config, // Preserve ALL complex structures (glassmorphism, nested objects, etc.)
+        // Ensure required color fields exist (support both formats: primary_color and primary)
+        primary_color: state.config.primary_color || (state.config as any).primary || formData.primary_color,
+        secondary_color: state.config.secondary_color || (state.config as any).secondary || formData.secondary_color,
+        danger_color: state.config.danger_color || (state.config as any).danger || formData.danger_color,
+        warning_color: state.config.warning_color || (state.config as any).warning || formData.warning_color,
+        info_color: state.config.info_color || (state.config as any).info || formData.info_color,
+        success_color: state.config.success_color || (state.config as any).success || formData.success_color,
+        // Optional fields with fallbacks
+        font_family: (state.config as any).font_family || (state.config as any).typography?.fontFamily || formData.font_family || undefined,
+        border_radius: (state.config as any).border_radius || (state.config as any).borderRadius || formData.border_radius || undefined,
       } as ThemeConfig;
 
       await onSave(config, formData);
