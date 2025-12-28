@@ -7,13 +7,23 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosR
 import { handleApiError } from '@/lib/errors';
 import { logger } from '@/lib/logger';
 import type { ApiResponse } from '@modele/types';
-import { getApiUrl } from '../api';
 import { TokenStorage } from '../auth/tokenStorage';
+
+// Lazy import getApiUrl to avoid circular dependency
+function getApiUrlLazy(): string {
+  // Dynamic import to break circular dependency
+  const { getApiUrl } = require('../api');
+  return getApiUrl();
+}
 
 class ApiClient {
   private client: AxiosInstance;
 
-  constructor(baseURL: string = `${getApiUrl().replace(/\/$/, '')}/api`) {
+  constructor(baseURL?: string) {
+    // Lazy evaluation of baseURL to avoid circular dependency
+    if (!baseURL) {
+      baseURL = `${getApiUrlLazy().replace(/\/$/, '')}/api`;
+    }
     this.client = axios.create({
       baseURL,
       timeout: 30000,
@@ -204,4 +214,31 @@ class ApiClient {
 }
 
 export { ApiClient };
-export const apiClient = new ApiClient();
+
+// Lazy initialization to avoid circular dependency issues
+// Use a getter function instead of direct instantiation
+let _apiClientInstance: ApiClient | null = null;
+
+function getApiClient(): ApiClient {
+  if (!_apiClientInstance) {
+    _apiClientInstance = new ApiClient();
+  }
+  return _apiClientInstance;
+}
+
+// Export as a Proxy to maintain the same API while using lazy initialization
+export const apiClient = new Proxy({} as ApiClient, {
+  get(_target, prop) {
+    const instance = getApiClient();
+    const value = (instance as any)[prop];
+    if (typeof value === 'function') {
+      return value.bind(instance);
+    }
+    return value;
+  },
+  set(_target, prop, value) {
+    const instance = getApiClient();
+    (instance as any)[prop] = value;
+    return true;
+  }
+});

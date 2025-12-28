@@ -106,6 +106,16 @@ if [ -n "$DATABASE_URL" ]; then
     if [ "$MIGRATION_STATUS" = "success" ]; then
         echo "✅ Database migrations completed successfully"
         
+        # Verify avatar column migration was applied
+        echo "=========================================="
+        echo "Verifying avatar column migration..."
+        echo "=========================================="
+        if command -v timeout >/dev/null 2>&1; then
+            timeout 30 python scripts/ensure_avatar_migration.py 2>&1 || echo "⚠️  Avatar column verification skipped (will be created by auto-migration if needed)"
+        else
+            python scripts/ensure_avatar_migration.py 2>&1 || echo "⚠️  Avatar column verification skipped (will be created by auto-migration if needed)"
+        fi
+        
         # Ensure default theme exists after migrations (with timeout)
         echo "=========================================="
         echo "Ensuring default theme exists..."
