@@ -29,20 +29,34 @@ async def run_node_script(script_path: str, args: List[str] = None) -> Dict[str,
         current_file = Path(__file__)
         
         # Try different possible project root locations
+        # In production, backend is typically at /app, and scripts might be at various locations
         possible_roots = [
+            Path("/app"),  # Docker default - backend root
+            Path("/app").parent,  # Project root if whole project is copied
             current_file.parent.parent.parent.parent.parent,  # backend/app/api/v1/endpoints -> root
             current_file.parent.parent.parent.parent.parent.parent,  # if backend is nested
-            Path("/app"),  # Docker default
             Path("/app/backend").parent,  # If backend is in /app/backend
+        ]
+        
+        # Also try scripts directly in various locations
+        script_name = Path(script_path).name
+        possible_script_paths = [
+            Path("/app/scripts") / script_name,  # If scripts copied to /app/scripts
+            Path("/app") / script_path,  # Relative to /app
+            Path("/app") / "scripts" / script_name,  # scripts/ subdirectory
         ]
         
         project_root = None
         script_full_path = None
         
-        # First, try direct paths
+        # First, try direct script paths
         for script_path_test in possible_script_paths:
             if script_path_test.exists():
-                project_root = script_path_test.parent.parent  # Assume scripts/ is at root
+                # Determine project root from script location
+                if "scripts" in str(script_path_test):
+                    project_root = script_path_test.parent.parent  # scripts/ is at root
+                else:
+                    project_root = script_path_test.parent
                 script_full_path = script_path_test
                 break
         
@@ -74,9 +88,12 @@ async def run_node_script(script_path: str, args: List[str] = None) -> Dict[str,
                 script_full_path = direct_script
         
         if not script_full_path or not script_full_path.exists():
+            # Return helpful error with all searched paths
+            searched_paths = [str(p) for p in possible_script_paths] + [str(r / script_path) for r in possible_roots]
             return {
                 "success": False,
-                "error": f"Script not found: {script_path}. Searched in {[str(r) for r in possible_roots]}",
+                "error": f"Script not found: {script_path}. Searched in: {', '.join(searched_paths[:5])}",
+                "hint": "Make sure scripts are copied to the container. Check Dockerfile COPY commands.",
             }
         
         # Check if node is available
