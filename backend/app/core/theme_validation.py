@@ -435,7 +435,9 @@ def validate_theme_contrast(config: Dict[str, Any], strict: bool = False) -> Tup
                     meets_aa = meets_wcag_aa(fg_hex, bg_hex, is_large_text=False)
                     
                     if not meets_aa:
-                        level = 'AA Large' if ratio >= 3.0 else 'fail'
+                        # All contrast issues are warnings (non-blocking)
+                        # User can choose to ignore them if they want
+                        level = 'AA Large' if ratio >= 3.0 else 'warning'
                         issues.append({
                             'type': 'text',
                             'element': element,

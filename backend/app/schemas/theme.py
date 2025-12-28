@@ -42,12 +42,9 @@ class ThemeBase(BaseModel):
                 for error in color_errors:
                     error_parts.append(f"  - {error['field']}: {error['message']}")
             
-            # Only include critical contrast issues (fail level)
-            critical_contrast_issues = [issue for issue in contrast_issues if issue.get('level') == 'fail']
-            if critical_contrast_issues:
-                error_parts.append("Critical contrast issues:")
-                for issue in critical_contrast_issues:
-                    error_parts.append(f"  - {issue['element']}: {issue['message']}")
+            # Contrast issues are now warnings only (non-blocking)
+            # Don't include them in error message - they're just warnings
+            # User can choose to ignore them
             
             if error_parts:
                 raise ValueError('\n'.join(error_parts))
@@ -89,12 +86,9 @@ class ThemeUpdate(BaseModel):
                 for error in color_errors:
                     error_parts.append(f"  - {error['field']}: {error['message']}")
             
-            # Only include critical contrast issues (fail level)
-            critical_contrast_issues = [issue for issue in contrast_issues if issue.get('level') == 'fail']
-            if critical_contrast_issues:
-                error_parts.append("Critical contrast issues:")
-                for issue in critical_contrast_issues:
-                    error_parts.append(f"  - {issue['element']}: {issue['message']}")
+            # Contrast issues are now warnings only (non-blocking)
+            # Don't include them in error message - they're just warnings
+            # User can choose to ignore them
             
             if error_parts:
                 raise ValueError('\n'.join(error_parts))
