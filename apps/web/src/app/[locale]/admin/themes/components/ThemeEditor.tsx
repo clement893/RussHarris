@@ -150,18 +150,33 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
     } catch (err) {
       let errorMessage = 'Erreur lors de la sauvegarde';
       
+      // Log error for debugging
+      console.error('[ThemeEditor] Save error:', err);
+      
       if (err instanceof Error) {
         errorMessage = err.message;
         
         // If it's a ThemeValidationError, it already has formatted messages
         // Otherwise, try to extract more details
-        if (err.name === 'ThemeValidationError') {
+        if (err.name === 'ThemeValidationError' || err.constructor.name === 'ThemeValidationError') {
           // The error message should already contain formatted validation errors
           errorMessage = err.message;
-        } else if (err.message.includes('Validation failed') || err.message.includes('422')) {
+          console.log('[ThemeEditor] ThemeValidationError message:', errorMessage);
+        } else if (err.message.includes('Validation failed') || err.message.includes('422') || err.message.includes('Color format') || err.message.includes('contrast')) {
           // Try to extract more details from the error
           errorMessage = err.message || 'Erreur de validation. Vérifiez les formats de couleur et les ratios de contraste.';
+          console.log('[ThemeEditor] Validation error message:', errorMessage);
+        } else {
+          // For other errors, try to extract more info
+          console.log('[ThemeEditor] Other error:', {
+            message: err.message,
+            name: err.name,
+            constructor: err.constructor.name,
+            stack: err.stack,
+          });
         }
+      } else {
+        console.error('[ThemeEditor] Unknown error type:', err);
       }
       
       setError(errorMessage);

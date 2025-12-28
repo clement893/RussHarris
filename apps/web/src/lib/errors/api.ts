@@ -165,6 +165,13 @@ export function handleApiError(error: unknown): AppError {
       const validationErrors = responseData.error.validationErrors;
       details.validationErrors = validationErrors;
       
+      // Debug logging to help diagnose issues
+      console.log('[handleApiError] Validation errors received:', {
+        validationErrors,
+        responseData,
+        statusCode,
+      });
+      
       // FastAPI returns validationErrors as an array of {field, message, code}
       // Extract field names and messages for better error message
       if (Array.isArray(validationErrors) && validationErrors.length > 0) {
@@ -175,8 +182,10 @@ export function handleApiError(error: unknown): AppError {
         
         // Extract the actual validation messages (they contain detailed info)
         const validationMessages = validationErrors
-          .map((err: any) => err.message)
+          .map((err: any) => err.message || err.msg || '')
           .filter((msg: any) => typeof msg === 'string' && msg.length > 0);
+        
+        console.log('[handleApiError] Extracted validation messages:', validationMessages);
         
         if (fields) {
           message = `Validation failed for fields: ${fields}. ${message}`;
@@ -184,13 +193,11 @@ export function handleApiError(error: unknown): AppError {
         
         // If we have detailed validation messages, use the first one as the main message
         // (it contains the formatted error details from Pydantic)
-        if (validationMessages.length > 0 && (validationMessages[0].includes('Color format') || validationMessages[0].includes('contrast') || validationMessages[0].includes('Invalid color'))) {
-          // Use the detailed message from backend
+        if (validationMessages.length > 0) {
+          // Always use the first validation message as it contains the detailed error from backend
+          // The message from Pydantic validator contains the full formatted error
           message = validationMessages[0];
-        } else if (validationMessages.length > 0) {
-          // Use the first validation message even if it doesn't match the pattern
-          // It might contain useful information
-          message = validationMessages[0];
+          console.log('[handleApiError] Using validation message:', message);
         }
       } else if (typeof validationErrors === 'object') {
         // Handle object format (legacy or other formats)

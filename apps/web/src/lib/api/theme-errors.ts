@@ -82,14 +82,16 @@ export function parseThemeValidationErrors(error: Error): ThemeValidationError[]
     }
   }
   
-  // Debug: log the message to help diagnose issues
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[parseThemeValidationErrors] Parsing error:', {
-      message,
-      hasDetails: error instanceof AppError && !!error.details,
-      details: error instanceof AppError ? error.details : null,
-    });
-  }
+  // Debug: log the message to help diagnose issues (always log in production for debugging)
+  console.log('[parseThemeValidationErrors] Parsing error:', {
+    message,
+    errorMessage: error.message,
+    hasDetails: error instanceof AppError && !!error.details,
+    details: error instanceof AppError ? error.details : null,
+    errorType: error.constructor.name,
+    isAppError: error instanceof AppError,
+    statusCode: error instanceof AppError ? error.statusCode : undefined,
+  });
   
   // Parse color format errors
   if (message.includes('Color format errors:')) {

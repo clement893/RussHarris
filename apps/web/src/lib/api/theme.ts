@@ -235,9 +235,18 @@ export async function updateTheme(
     const response = await apiClient.put<Theme>(`/v1/themes/${themeId}`, themeData);
     return extractFastApiData<Theme>(response);
   } catch (error) {
+    console.log('[updateTheme] Error caught:', error);
     const parsed = parseThemeError(error);
+    console.log('[updateTheme] Parsed error:', parsed);
+    
     if (parsed.isValidationError) {
-      throw new ThemeValidationError(parsed, formatValidationErrors(parsed.validationErrors).join('\n'));
+      const formattedErrors = formatValidationErrors(parsed.validationErrors);
+      const errorMessage = formattedErrors.length > 0 
+        ? formattedErrors.join('\n')
+        : parsed.message || 'Erreur de validation';
+      
+      console.log('[updateTheme] Throwing ThemeValidationError with message:', errorMessage);
+      throw new ThemeValidationError(parsed, errorMessage);
     }
     throw error;
   }

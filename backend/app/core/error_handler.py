@@ -108,11 +108,23 @@ async def validation_exception_handler(
     """Handle Pydantic validation errors"""
     errors = []
     for error in exc.errors():
+        error_msg = error["msg"]
         errors.append({
             "field": ".".join(str(loc) for loc in error["loc"]),
-            "message": error["msg"],
+            "message": error_msg,
             "code": error["type"],
         })
+        # Log each validation error with full details
+        logger.warning(
+            f"Validation error for field {'.'.join(str(loc) for loc in error['loc'])}: {error_msg}",
+            context={
+                "field": ".".join(str(loc) for loc in error["loc"]),
+                "message": error_msg,
+                "code": error["type"],
+                "path": request.url.path,
+                "method": request.method,
+            },
+        )
 
     context = sanitize_log_data({
         "errors": errors,
