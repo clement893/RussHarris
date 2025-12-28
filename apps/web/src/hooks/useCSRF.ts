@@ -15,9 +15,17 @@ export function useCSRF() {
   useEffect(() => {
     async function fetchCSRFToken() {
       try {
-        const response = await fetch('/api/csrf');
-        const data = await response.json();
-        setCsrfToken(data.csrfToken);
+        // Note: CSRF endpoint doesn't exist - application uses JWT Bearer tokens
+        // CSRF protection is not needed with JWT authentication
+        // If CSRF is needed in the future, create endpoint /v1/csrf-token
+        // For now, try to get token from meta tag or cookie
+        const metaTag = document.querySelector('meta[name="csrf-token"]');
+        if (metaTag) {
+          const token = metaTag.getAttribute('content');
+          if (token) {
+            setCsrfToken(token);
+          }
+        }
       } catch (error) {
         logger.error('Failed to fetch CSRF token', error instanceof Error ? error : new Error(String(error)), {
           type: 'csrf',

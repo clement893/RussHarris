@@ -28,6 +28,10 @@ export function getCsrfToken(): string | null {
 
 /**
  * Get CSRF token from API endpoint
+ * 
+ * Note: CSRF endpoint doesn't exist - application uses JWT Bearer tokens
+ * CSRF protection is not needed with JWT authentication
+ * If CSRF is needed in the future, create endpoint /v1/csrf-token
  */
 export async function fetchCsrfToken(): Promise<string | null> {
   if (typeof window === 'undefined') {
@@ -35,17 +39,18 @@ export async function fetchCsrfToken(): Promise<string | null> {
   }
 
   try {
-    const response = await fetch('/api/csrf-token', {
-      method: 'GET',
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      return null;
+    // Try to get token from meta tag first (set by server if needed)
+    const metaTag = document.querySelector('meta[name="csrf-token"]');
+    if (metaTag) {
+      const token = metaTag.getAttribute('content');
+      if (token) {
+        return token;
+      }
     }
 
-    const data = await response.json();
-    return data.csrfToken || null;
+    // If meta tag doesn't exist, CSRF is not needed (JWT authentication)
+    // Return null to indicate CSRF is not required
+    return null;
   } catch (error) {
     logger.error('Failed to fetch CSRF token', error instanceof Error ? error : new Error(String(error)));
     return null;

@@ -10,7 +10,7 @@ import Input from '@/components/ui/Input';
 import { getErrorMessage } from '@/lib/errors';
 
 export default function AdminSettingsContent() {
-  const { user, token, setUser } = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -26,20 +26,9 @@ export default function AdminSettingsContent() {
     setSuccess(false);
 
     try {
-      const response = await fetch('/api/v1/users/me', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update settings');
-      }
-
-      const updatedUser = await response.json();
+      const { apiClient } = await import('@/lib/api');
+      const response = await apiClient.put('/v1/users/me', formData);
+      const updatedUser = response.data;
       setUser(updatedUser);
       setSuccess(true);
     } catch (err) {
