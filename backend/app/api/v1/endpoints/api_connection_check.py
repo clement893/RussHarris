@@ -245,9 +245,13 @@ async def check_backend_endpoints(
     
     result = await run_node_script("scripts/check-api-connections-backend.js")
     
-    # Check if script execution failed (not just non-zero exit code)
-    # The script may return non-zero exit code if it finds issues, but that's OK
-    if result.get("error") or (result.get("returncode") != 0 and not result.get("stdout")):
+    # Check if script execution actually failed (not just non-zero exit code)
+    # The script may return non-zero exit code if it finds issues (unregistered modules), but that's OK
+    # We only treat it as an error if there's no stdout (script didn't run) or there's an actual error
+    has_output = bool(result.get("stdout", "").strip())
+    has_error = bool(result.get("error"))
+    
+    if has_error or (not has_output and result.get("returncode") != 0):
         # If script not found or execution failed, return a helpful message
         error_msg = result.get('error', result.get('stderr', 'Unknown error'))
         if "Script not found" in error_msg or "not found" in error_msg.lower() or "ENOENT" in error_msg:
