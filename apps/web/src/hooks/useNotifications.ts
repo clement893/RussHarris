@@ -28,8 +28,12 @@
  * ```
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { notificationsAPI } from '@/lib/api/notifications';
+import {
+  connectNotificationSocket,
+  disconnectNotificationSocket,
+} from '@/lib/websocket/notificationSocket';
 import type {
   Notification,
   NotificationFilters,
@@ -43,6 +47,8 @@ interface UseNotificationsOptions {
   pollInterval?: number;
   /** Auto-fetch on mount */
   autoFetch?: boolean;
+  /** Enable WebSocket for real-time updates */
+  enableWebSocket?: boolean;
 }
 
 interface UseNotificationsReturn {
@@ -82,6 +88,7 @@ export function useNotifications(
     initialFilters = { skip: 0, limit: 100 },
     pollInterval,
     autoFetch = true,
+    enableWebSocket = true,
   } = options;
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -90,6 +97,7 @@ export function useNotifications(
   const [total, setTotal] = useState<number>(0);
   const [unreadCount, setUnreadCount] = useState<number>(0);
   const [filters, setFilters] = useState<NotificationFilters>(initialFilters);
+  const wsConnectedRef = useRef<boolean>(false);
 
   const fetchNotifications = useCallback(
     async (newFilters?: NotificationFilters) => {
@@ -189,6 +197,66 @@ export function useNotifications(
   const clearError = useCallback(() => {
     setError(null);
   }, []);
+
+  // Handle WebSocket connection for real-time updates
+  useEffect(() => {
+    if (!enableWebSocket || typeof window === 'undefined') {
+      return;
+    }
+
+    const handleNotification = (notification: Notification) => {
+      // Add new notification to the list if it matches current filters
+      setNotifications((prev) => {
+        // Check if notification matches current filters
+        const matchesReadFilter =
+          filters.read === undefined || filters.read === notification.read;
+        const matchesTypeFilter =
+          !filters.notification_type ||
+          filters.notification_type === notification.notification_type;
+
+        if (matchesReadFilter && matchesTypeFilter) {
+          // Add to beginning of list (most recent first)
+          return [notification, ...prev];
+        }
+        return prev;
+      });
+
+      // Update unread count if notification is unread
+      if (!notification.read) {
+        setUnreadCount((prev) => prev + 1);
+        setTotal((prev) => prev + 1);
+      }
+    };
+
+    const handleConnected = () => {
+      wsConnectedRef.current = true;
+      logger.debug('[useNotifications] WebSocket connected');
+    };
+
+    const handleDisconnected = () => {
+      wsConnectedRef.current = false;
+      logger.debug('[useNotifications] WebSocket disconnected');
+    };
+
+    const handleError = (error: Error) => {
+      logger.error('[useNotifications] WebSocket error', error);
+      setError(error.message);
+    };
+
+    // Connect to WebSocket
+    connectNotificationSocket({
+      onNotification: handleNotification,
+      onConnected: handleConnected,
+      onDisconnected: handleDisconnected,
+      onError: handleError,
+    });
+
+    // Cleanup on unmount
+    return () => {
+      disconnectNotificationSocket();
+      wsConnectedRef.current = false;
+    };
+  }, [enableWebSocket, filters.read, filters.notification_type]);
 
   // Auto-fetch on mount
   useEffect(() => {
