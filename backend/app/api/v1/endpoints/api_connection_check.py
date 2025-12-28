@@ -424,13 +424,20 @@ async def get_connection_status(
                 current_user=current_user,
                 db=db
             )
-            # If the result indicates scripts are not available, extract that info
-            if not frontend_result.get("success") and "not available" in str(frontend_result.get("error", "")).lower():
+            # If the result indicates scripts are not available or frontend files are not accessible
+            if not frontend_result.get("success"):
                 frontend_result = {
                     "success": False,
                     "error": frontend_result.get("error", "Scripts not available"),
                     "message": frontend_result.get("message", "Node.js scripts required"),
                     "summary": {}
+                }
+            # If success but no summary (frontend files not available in backend container)
+            elif not frontend_result.get("summary") or not frontend_result.get("summary", {}):
+                frontend_result = {
+                    "success": True,
+                    "message": "Frontend files are not available in backend container. This is normal in production.",
+                    "summary": frontend_result.get("summary", {}) or {}
                 }
         except HTTPException as e:
             frontend_result = {

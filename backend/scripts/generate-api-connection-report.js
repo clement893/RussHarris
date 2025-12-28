@@ -193,7 +193,7 @@ function main() {
   console.log('📊 Generating report...');
   
   // Determine output path - use absolute path if in Docker, relative otherwise
-  const isDocker = process.env.DOCKER === 'true' || fs.existsSync('/.dockerenv') || __dirname.startsWith('/app');
+  // Reuse isDocker variable declared above
   const finalOutputPath = isDocker && !path.isAbsolute(outputPath)
     ? path.join('/app', outputPath)  // In Docker, save to /app
     : path.isAbsolute(outputPath)
