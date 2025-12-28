@@ -84,20 +84,30 @@ async def run_node_script(script_path: str, args: List[str] = None) -> Dict[str,
                         script_full_path = test_path
                         break
         
-        # Also try scripts directly in /app/scripts
+        # Also try scripts directly in /app/scripts (Dockerfile copies them here)
         if not script_full_path:
             direct_script = Path("/app/scripts") / Path(script_path).name
             if direct_script.exists():
                 project_root = Path("/app")
                 script_full_path = direct_script
         
+        # Try backend/scripts as fallback (if backend is at /app)
+        if not script_full_path:
+            backend_scripts = Path("/app/backend/scripts") / Path(script_path).name
+            if backend_scripts.exists():
+                project_root = Path("/app")
+                script_full_path = backend_scripts
+        
         if not script_full_path or not script_full_path.exists():
             # Return helpful error with all searched paths
             searched_paths = [str(p) for p in possible_script_paths] + [str(r / script_path) for r in possible_roots]
+            # Add /app/scripts to searched paths for clarity
+            searched_paths.append(str(Path("/app/scripts") / Path(script_path).name))
             return {
                 "success": False,
-                "error": f"Script not found: {script_path}. Searched in: {', '.join(searched_paths[:5])}",
-                "hint": "Make sure scripts are copied to the container. Check Dockerfile COPY commands.",
+                "error": f"Script not found: {script_path}",
+                "message": f"Searched in: {', '.join(searched_paths[:8])}",
+                "hint": "Make sure scripts are copied to the container. Check Dockerfile COPY commands. Scripts should be at /app/scripts/ in production.",
             }
         
         # Check if node is available

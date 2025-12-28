@@ -7,8 +7,7 @@ import { useRoles, usePermissions } from '@/hooks/useRBAC';
 import { useTranslations } from 'next-intl';
 import { getErrorMessage } from '@/lib/errors';
 import { logger } from '@/lib/logger';
-import { rbacAPI } from '@/lib/api/rbac';
-import type { Role, Permission } from '@modele/types';
+import { rbacAPI, type Permission } from '@/lib/api/rbac';
 
 interface RoleDefaultPermissionsEditorProps {
   onUpdate?: () => void;
@@ -16,8 +15,8 @@ interface RoleDefaultPermissionsEditorProps {
 
 export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPermissionsEditorProps) {
   const t = useTranslations('Admin.Users.RoleDefaultPermissions');
-  const { roles, loading: loadingRoles, error: rolesError, fetchRoles } = useRoles();
-  const { permissions, loading: loadingPermissions, error: permissionsError, fetchPermissions } = usePermissions();
+  const { roles, loading: loadingRoles, error: rolesError, loadRoles } = useRoles();
+  const { permissions, loading: loadingPermissions, error: permissionsError } = usePermissions();
 
   const [selectedRoleId, setSelectedRoleId] = useState<number | null>(null);
   const [rolePermissions, setRolePermissions] = useState<Map<number, Set<number>>>(new Map());
@@ -70,33 +69,6 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
     return permissions.filter(p => p.resource === 'permissions');
   }, [permissions]);
 
-  // Get current tab permissions
-  const currentTabPermissions = useMemo(() => {
-    switch (activeTab) {
-      case 'admin':
-        return adminPermissions;
-      case 'users':
-        return userPermissions;
-      case 'roles':
-        return rolePermissionsList;
-      case 'permissions':
-        return permissionPermissions;
-      default:
-        return [];
-    }
-  }, [activeTab, adminPermissions, userPermissions, rolePermissionsList, permissionPermissions]);
-
-  // Filter permissions by search term
-  const filteredPermissions = useMemo(() => {
-    return currentTabPermissions.filter(perm => {
-      const matchesSearch = perm.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           perm.resource.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           perm.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           perm.description?.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesSearch;
-    });
-  }, [currentTabPermissions, searchTerm]);
-
   const selectedRole = useMemo(() => {
     return roles.find(r => r.id === selectedRoleId) || null;
   }, [roles, selectedRoleId]);
@@ -135,7 +107,7 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
       await rbacAPI.updateRolePermissions(selectedRoleId, permissionIds);
       
       // Refresh roles to get updated permissions
-      await fetchRoles();
+      await loadRoles();
       
       // Reload permissions for this role
       const updatedRole = await rbacAPI.getRole(selectedRoleId);
@@ -202,7 +174,8 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
                   <Checkbox
                     id={`perm-${perm.id}`}
                     checked={isChecked}
-                    onCheckedChange={(checked) => {
+                    onChange={(e) => {
+                      const checked = e.target.checked;
                       if (isAdminWildcard && checked) {
                         // If admin:* is checked, uncheck all other permissions
                         setRolePermissions(prev => {
@@ -222,7 +195,7 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
                         }
                         handlePermissionToggle(perm.id, true);
                       } else {
-                        handlePermissionToggle(perm.id, Boolean(checked));
+                        handlePermissionToggle(perm.id, checked);
                       }
                     }}
                     disabled={isSaving || (selectedRole?.is_system && selectedRole?.slug === 'superadmin')}
@@ -243,9 +216,9 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
                         )}
                       </div>
                       {isAdminWildcard && (
-                        <Badge variant="primary" className="ml-2 text-xs">{t('allPermissions')}</Badge>
+                        <Badge variant="info" className="ml-2 text-xs">{t('allPermissions')}</Badge>
                       )}
-                      <Badge variant="secondary" className="ml-2 text-xs">
+                      <Badge variant="default" className="ml-2 text-xs">
                         {perm.resource}:{perm.action}
                       </Badge>
                     </div>
@@ -258,7 +231,7 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
         <div className="flex justify-end">
           <Button
             onClick={handleSave}
-            isLoading={isSaving}
+            loading={isSaving}
             disabled={!hasChanges || (selectedRole?.is_system && selectedRole?.slug === 'superadmin')}
           >
             {t('saveChangesButton')}
