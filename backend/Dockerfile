@@ -37,15 +37,9 @@ COPY --from=deps /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.
 COPY --from=deps /usr/local/bin /usr/local/bin
 COPY . .
 
-# Copy Node.js scripts for API connection checking
-# Scripts are in backend/scripts/ directory
-RUN mkdir -p /app/scripts
-COPY backend/scripts/check-api-connections.js /app/scripts/check-api-connections.js
-COPY backend/scripts/check-api-connections-backend.js /app/scripts/check-api-connections-backend.js
-COPY backend/scripts/generate-api-connection-report.js /app/scripts/generate-api-connection-report.js
-
-# Make scripts executable
-RUN chmod +x /app/scripts/*.js
+# Ensure scripts directory exists and make scripts executable
+RUN mkdir -p /app/scripts && \
+    chmod +x /app/scripts/*.js 2>/dev/null || true
 
 # Change ownership
 RUN chown -R appuser:appuser /app
