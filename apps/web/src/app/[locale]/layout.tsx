@@ -21,6 +21,7 @@ import { GoogleAnalytics } from '@/components/marketing/GoogleAnalytics';
 import RTLProvider from '@/components/i18n/RTLProvider';
 import SkipLink from '@/components/ui/SkipLink';
 import type { Locale } from '@/i18n/routing';
+import { themeCacheInlineScript } from '@/lib/theme/theme-inline-cache-script';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -97,6 +98,13 @@ export default async function LocaleLayout({
                 font-family: var(--font-family, Inter, system-ui, sans-serif);
               }
             `,
+          }}
+        />
+        
+        {/* Apply cached theme IMMEDIATELY before first paint to prevent color flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: themeCacheInlineScript,
           }}
         />
         
