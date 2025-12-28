@@ -7,6 +7,7 @@ import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { checkMySuperAdminStatus } from '@/lib/api/admin';
 import { logger } from '@/lib/logger';
 import { getErrorStatus } from '@/lib/errors';
+import { useHydrated } from '@/hooks/useHydrated';
 
 /**
  * Protected Route Component
@@ -39,6 +40,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
   const router = useRouter();
   const pathname = usePathname();
   const { user, token, setUser } = useAuthStore();
+  const isHydrated = useHydrated();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
   const checkingRef = useRef(false);
@@ -46,6 +48,11 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
   const lastTokenRef = useRef(token);
 
   useEffect(() => {
+    // Wait for hydration to complete before checking auth
+    if (!isHydrated) {
+      return;
+    }
+
     // If user or token changed, update refs but only reset if going from authenticated to unauthenticated
     const userChanged = lastUserRef.current !== user;
     const tokenChanged = lastTokenRef.current !== token;
@@ -80,17 +87,6 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
     const checkAuth = async () => {
       checkingRef.current = true;
       setIsChecking(true);
-      
-      // Wait longer for Zustand persist to hydrate (up to 500ms)
-      // Check multiple times to ensure hydration is complete
-      for (let i = 0; i < 5; i++) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        const storeState = useAuthStore.getState();
-        if (storeState.user || storeState.token) {
-          // Store has been hydrated, break early
-          break;
-        }
-      }
       
       // Check authentication - prioritize sessionStorage if store not hydrated yet
       const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
@@ -266,8 +262,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
 
     // Check immediately
     checkAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, token, requireAdmin, pathname]);
+  }, [isHydrated, user, token, requireAdmin, pathname, isAuthorized]);
 
   // Show loader during verification
   if (isChecking || !isAuthorized) {

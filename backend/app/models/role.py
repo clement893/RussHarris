@@ -108,3 +108,24 @@ class UserRole(Base):
     def __repr__(self) -> str:
         return f"<UserRole(user_id={self.user_id}, role_id={self.role_id})>"
 
+
+class UserPermission(Base):
+    """Many-to-many relationship between users and permissions (custom permissions)"""
+    __tablename__ = "user_permissions"
+    __table_args__ = (
+        Index("idx_user_permissions_user", "user_id"),
+        Index("idx_user_permissions_permission", "permission_id"),
+        Index("idx_user_permissions_unique", "user_id", "permission_id", unique=True),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    permission_id = Column(Integer, ForeignKey("permissions.id", ondelete="CASCADE"), nullable=False, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+    # Relationships
+    user = relationship("User", back_populates="custom_permissions")
+    permission = relationship("Permission", back_populates="user_permissions")
+
+    def __repr__(self) -> str:
+        return f"<UserPermission(user_id={self.user_id}, permission_id={self.permission_id})>"

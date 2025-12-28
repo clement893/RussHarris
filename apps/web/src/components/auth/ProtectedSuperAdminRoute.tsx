@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, useRef, type ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
@@ -9,6 +9,7 @@ import { logger } from '@/lib/logger';
 import { Card } from '@/components/ui';
 import { AlertCircle } from 'lucide-react';
 import { getErrorStatus } from '@/lib/errors';
+import { useHydrated } from '@/hooks/useHydrated';
 
 interface ProtectedSuperAdminRouteProps {
   children: ReactNode;
@@ -23,14 +24,42 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
   const router = useRouter();
   const pathname = usePathname();
   const { user, isAuthenticated, token } = useAuthStore();
+  const isHydrated = useHydrated();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const checkingRef = useRef(false);
+  const lastUserEmailRef = useRef<string | undefined>(user?.email);
+  const lastTokenRef = useRef<string | null>(token);
 
   useEffect(() => {
+    // Wait for hydration to complete
+    if (!isHydrated) {
+      return;
+    }
+
+    // Prevent multiple simultaneous checks
+    if (checkingRef.current) {
+      return;
+    }
+
+    // Check if user email or token actually changed (not just hydration)
+    const userEmailChanged = lastUserEmailRef.current !== user?.email;
+    const tokenChanged = lastTokenRef.current !== token;
+    
+    // If already authorized and nothing changed, skip check
+    if (isAuthorized && !userEmailChanged && !tokenChanged) {
+      setIsChecking(false);
+      return;
+    }
+
+    // Update refs
+    lastUserEmailRef.current = user?.email;
+    lastTokenRef.current = token;
+
     const checkAuth = async () => {
-      // Wait a bit for Zustand persist to hydrate
-      await new Promise(resolve => setTimeout(resolve, 100));
+      checkingRef.current = true;
+      setIsChecking(true);
       
       // Check authentication - also check token in sessionStorage as fallback
       const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
@@ -153,12 +182,12 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
       // Authorize access
       setIsAuthorized(true);
       setIsChecking(false);
+      checkingRef.current = false;
     };
 
     // Check immediately
     checkAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.email, user?.is_admin, token, router, pathname]);
+  }, [isHydrated, user?.email, token, isAuthorized, router, pathname]);
 
   // Show loader during verification
   if (isChecking || !isAuthorized) {

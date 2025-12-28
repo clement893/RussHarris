@@ -13,6 +13,7 @@ import { useLocale } from 'next-intl';
 import { useAuthStore } from '@/lib/store';
 import { apiClient } from '@/lib/api/client';
 import { logger } from '@/lib/logger';
+import { useHydrated } from '@/hooks/useHydrated';
 import type { Locale } from '@/i18n/routing';
 
 interface LocaleSyncProps {
@@ -37,10 +38,18 @@ export function LocaleSync({ children }: LocaleSyncProps) {
   const pathname = usePathname(); // This returns pathname WITHOUT locale prefix (next-intl behavior)
   const currentLocale = useLocale() as Locale;
   const { user, token } = useAuthStore();
+  const isHydrated = useHydrated();
   const hasCheckedRef = useRef<string | null>(null);
   const isProcessingRef = useRef(false);
+  const lastUserRef = useRef(user);
+  const lastTokenRef = useRef(token);
 
   useEffect(() => {
+    // Wait for hydration to complete before syncing locale
+    if (!isHydrated) {
+      return;
+    }
+
     const syncLocale = async () => {
       // Skip if not authenticated
       const isAuth = !!(user && token);
@@ -56,6 +65,19 @@ export function LocaleSync({ children }: LocaleSyncProps) {
 
       // Skip if already processing
       if (isProcessingRef.current) {
+        return;
+      }
+
+      // Check if user or token actually changed (not just hydration)
+      const userChanged = lastUserRef.current !== user;
+      const tokenChanged = lastTokenRef.current !== token;
+      
+      // Update refs
+      lastUserRef.current = user;
+      lastTokenRef.current = token;
+
+      // Skip if nothing changed (avoid re-checking on every render)
+      if (!userChanged && !tokenChanged && hasCheckedRef.current) {
         return;
       }
 
@@ -152,7 +174,7 @@ export function LocaleSync({ children }: LocaleSyncProps) {
     };
 
     syncLocale();
-  }, [currentLocale, pathname, user, token]);
+  }, [isHydrated, currentLocale, pathname, user, token]);
 
   // Show children immediately - don't block rendering
   return <>{children}</>;
