@@ -20,6 +20,7 @@ import { SchemaMarkup } from '@/components/seo';
 import { GoogleAnalytics } from '@/components/marketing/GoogleAnalytics';
 import RTLProvider from '@/components/i18n/RTLProvider';
 import SkipLink from '@/components/ui/SkipLink';
+import { LocaleSync } from '@/components/preferences/LocaleSync';
 import type { Locale } from '@/i18n/routing';
 import { themeCacheInlineScript } from '@/lib/theme/theme-inline-cache-script';
 
@@ -170,9 +171,11 @@ export default async function LocaleLayout({
             <ResourceHints />
             <ErrorBoundary>
               <AppProviders>
-                <App>
-                  {children}
-                </App>
+                <LocaleSync>
+                  <App>
+                    {children}
+                  </App>
+                </LocaleSync>
               </AppProviders>
             </ErrorBoundary>
             <WebVitalsReporter />
