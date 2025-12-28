@@ -1,7 +1,7 @@
 /**
  * Admin API client for administrative operations.
  */
-import { apiClient } from '../api';
+import { apiClient } from './client';
 import { getApiUrl } from '../api';
 
 const API_URL = getApiUrl().replace(/\/$/, '');

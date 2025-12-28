@@ -7,8 +7,16 @@ import { useAuthStore } from '@/lib/store';
 import { bootstrapSuperAdmin, makeSuperAdmin, checkSuperAdminStatus } from '@/lib/api/admin';
 import { Shield, Key, Mail, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
+// Force dynamic rendering - disable static generation
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
+
+// Disable static generation for this route
+export function generateStaticParams() {
+  return [];
+}
 
 function BecomeSuperAdminContent() {
   const { user } = useAuthStore();
