@@ -62,14 +62,9 @@ export default function UserPermissionsEditor({ userId, onUpdate }: UserPermissi
   };
 
   const customPermissionIds = new Set(customPermissions.map(p => p.permission_id));
-  const rolePermissionIds = new Set(
-    allPermissions
-      .filter(p => !customPermissionIds.has(
-        availablePermissions.find(ap => ap.name === p)?.id || -1
-      ))
-      .map(p => availablePermissions.find(ap => ap.name === p)?.id || -1)
-      .filter(id => id !== -1)
-  );
+  
+  // Create a set of permission names from roles (allPermissions contains permission names as strings)
+  const rolePermissionNames = new Set(allPermissions);
 
   const filteredPermissions = availablePermissions.filter(perm => {
     const matchesSearch = searchTerm === '' || 
@@ -80,9 +75,11 @@ export default function UserPermissionsEditor({ userId, onUpdate }: UserPermissi
     
     const matchesResource = resourceFilter === '' || perm.resource === resourceFilter;
     
-    // Don't show permissions that are already granted via roles (unless they're custom)
+    // Show permissions that are:
+    // 1. Already custom (to allow removal)
+    // 2. Not already granted via roles (to allow adding as custom)
     const isCustom = customPermissionIds.has(perm.id);
-    const isFromRole = rolePermissionIds.has(perm.id);
+    const isFromRole = rolePermissionNames.has(perm.name);
     
     return matchesSearch && matchesResource && (isCustom || !isFromRole);
   });

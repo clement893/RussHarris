@@ -37,10 +37,15 @@ COPY --from=deps /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.
 COPY --from=deps /usr/local/bin /usr/local/bin
 COPY . .
 
-# Copy scripts directory from project root (for API connection check)
-# Note: This assumes Dockerfile is run from project root with context including scripts/
-# If scripts are not available, the endpoint will handle gracefully
-RUN mkdir -p /app/scripts || true
+# Copy Node.js scripts for API connection checking
+# Scripts are copied to backend/scripts before build
+RUN mkdir -p /app/scripts
+COPY scripts/check-api-connections.js /app/scripts/check-api-connections.js
+COPY scripts/check-api-connections-backend.js /app/scripts/check-api-connections-backend.js
+COPY scripts/generate-api-connection-report.js /app/scripts/generate-api-connection-report.js
+
+# Make scripts executable
+RUN chmod +x /app/scripts/*.js
 
 # Change ownership
 RUN chown -R appuser:appuser /app
