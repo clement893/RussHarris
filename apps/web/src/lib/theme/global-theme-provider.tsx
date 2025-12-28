@@ -326,11 +326,13 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
                   `[Theme] Fonts not found in database: ${missingFonts.join(', ')}. ` +
                   `Please upload these fonts to ensure they are available.`
                 );
-                // Also log to console for visibility
-                console.warn(
-                  `⚠️ Theme Font Warning: The following fonts are not in the database: ${missingFonts.join(', ')}. ` +
-                  `Please upload them via the theme fonts management page to ensure proper display.`
-                );
+                // Theme warnings are non-critical, only log in development
+                if (process.env.NODE_ENV === 'development') {
+                  console.warn(
+                    `⚠️ Theme Font Warning: The following fonts are not in the database: ${missingFonts.join(', ')}. ` +
+                    `Please upload them via the theme fonts management page to ensure proper display.`
+                  );
+                }
               }
             })
             .catch((error: unknown) => {

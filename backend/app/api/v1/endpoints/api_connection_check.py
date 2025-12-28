@@ -16,6 +16,7 @@ import subprocess
 import json
 import asyncio
 import logging
+import re
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -137,18 +138,32 @@ async def run_node_script(script_path: str, args: List[str] = None) -> Dict[str,
                 "error": "Node.js is not installed. Please install Node.js in the container.",
             }
         
-        # Build command
+        # Build command with sanitized arguments
         cmd = ["node", str(script_full_path)]
         if args:
-            cmd.extend(args)
+            # Sanitize arguments to prevent command injection
+            # Only allow safe characters: alphanumeric, hyphens, underscores, dots, slashes, equals
+            safe_args = []
+            for arg in args:
+                # Validate argument contains only safe characters
+                if not re.match(r'^[a-zA-Z0-9_\-./=]+$', arg):
+                    logger.warning(f"Rejected unsafe argument: {arg[:50]}...")
+                    continue
+                # Additional check: ensure no shell metacharacters
+                if any(char in arg for char in [';', '&', '|', '`', '$', '(', ')', '<', '>', '\n', '\r']):
+                    logger.warning(f"Rejected argument with shell metacharacters: {arg[:50]}...")
+                    continue
+                safe_args.append(arg)
+            cmd.extend(safe_args)
         
-        # Run script
+        # Run script with sanitized command
         result = subprocess.run(
             cmd,
             cwd=str(project_root),
             capture_output=True,
             text=True,
-            timeout=60  # 60 second timeout
+            timeout=60,  # 60 second timeout
+            shell=False,  # Explicitly disable shell to prevent injection
         )
         
         return {

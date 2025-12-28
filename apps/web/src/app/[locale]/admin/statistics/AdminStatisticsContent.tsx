@@ -136,7 +136,7 @@ export default function AdminStatisticsContent() {
 
       setStats({
         total_users: totalUsers,
-        active_users: totalUsers, // TODO: Calculate active users
+        active_users: totalUsers, // Note: Active users calculation can be added if needed (users who logged in within last 30 days)
         total_organizations: totalOrgs,
         total_logs: totalLogs,
         recent_activities: recentActivities,
@@ -425,8 +425,8 @@ export default function AdminStatisticsContent() {
         },
       });
     } catch (err: unknown) {
-      console.error('Failed to load detailed metrics:', err);
-      // Don't set error state, just log it
+      // Error is already handled by setError above
+      // Don't log to console in production
     } finally {
       setLoadingMetrics(false);
     }

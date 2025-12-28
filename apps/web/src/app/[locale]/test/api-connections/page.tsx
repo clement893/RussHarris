@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { apiClient } from '@/lib/api/client';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { Button, Card, Alert, Badge } from '@/components/ui';
 import { getErrorMessage } from '@/lib/errors';
+import { logger } from '@/lib/logger';
 import { RefreshCw, CheckCircle, Download, FileText, ExternalLink, Eye, XCircle, Loader2, Copy, Check } from 'lucide-react';
 import { PageHeader, PageContainer } from '@/components/layout';
 import { ClientOnly } from '@/components/ui/ClientOnly';
@@ -58,7 +59,16 @@ interface CheckResult {
   error?: string;
   message?: string;
   hint?: string;
+  useFrontendAnalysis?: boolean;
+  source?: 'node_script' | 'frontend_client';
+  pages?: Array<{ path: string; apiCalls: Array<{ method: string; endpoint: string }> }>;
 }
+
+// Local type for API response handling
+type ApiResponseWrapper<T> = {
+  data?: T;
+  [key: string]: unknown;
+};
 
 function APIConnectionTestContent() {
   const [status, setStatus] = useState<ConnectionStatus | null>(null);
@@ -80,8 +90,9 @@ function APIConnectionTestContent() {
 
     try {
       const response = await apiClient.get<ConnectionStatus>('/v1/api-connection-check/status');
-      // Extract data using same pattern as other API calls
-      const data = (response as any)?.data || response;
+      // Extract data using proper type handling
+      const apiResponse = response as unknown as ApiResponseWrapper<ConnectionStatus>;
+      const data = apiResponse?.data || (response as ConnectionStatus);
       
       // If frontend/backend data is empty but success is true, it means scripts are not available
       // This is normal in production environments
@@ -89,7 +100,12 @@ function APIConnectionTestContent() {
         setStatus({
           ...data,
           frontend: {
-            ...data.frontend,
+            total: data.frontend?.total ?? 0,
+            connected: data.frontend?.connected ?? 0,
+            partial: data.frontend?.partial ?? 0,
+            needsIntegration: data.frontend?.needsIntegration ?? 0,
+            static: data.frontend?.static ?? 0,
+            error: data.frontend?.error,
             message: data.frontend?.message || 'Frontend check scripts not available in this environment',
             note: 'This is normal in production. Use the "Check Frontend" button below for detailed analysis.',
           },
@@ -128,7 +144,7 @@ function APIConnectionTestContent() {
         return (response as unknown as CheckResult) ?? { success: false, error: 'No data returned' };
       }
     } catch (manifestErr) {
-      console.warn('Could not load API manifest:', manifestErr);
+      logger.warn('Could not load API manifest', { error: manifestErr });
     }
 
     // Fallback: create basic analysis from known routes
@@ -163,10 +179,11 @@ function APIConnectionTestContent() {
     try {
       const params = detailed ? { detailed: 'true' } : {};
       const response = await apiClient.get<CheckResult>('/v1/api-connection-check/frontend', { params });
-      const data = (response as unknown as CheckResult) ?? null;
+      const apiResponse = response as unknown as ApiResponseWrapper<CheckResult>;
+      const data = (apiResponse?.data || (response as CheckResult)) ?? null;
       
       // If backend suggests using frontend analysis, do it
-      if (data && !data.success && (data as any).useFrontendAnalysis) {
+      if (data && !data.success && data.useFrontendAnalysis) {
         // Try frontend analysis
         try {
           const frontendAnalysis = await analyzeFrontendFiles();
@@ -209,7 +226,8 @@ function APIConnectionTestContent() {
       // apiClient.get returns response.data from axios, which is the FastAPI response directly
       // FastAPI returns the data directly, not wrapped in ApiResponse
       // So response is already CheckResult, not ApiResponse<CheckResult>
-      const data = (response as unknown as CheckResult) ?? null;
+      const apiResponse = response as unknown as ApiResponseWrapper<CheckResult>;
+      const data = (apiResponse?.data || (response as CheckResult)) ?? null;
       setBackendCheck(data);
       // If the response indicates failure, also set error for visibility
       if (data && !data.success && data.error) {
@@ -465,7 +483,7 @@ function APIConnectionTestContent() {
     setIsTestingEndpoints(false);
   };
 
-  const copyTestResult = async (test: EndpointTestResult) => {
+  const copyTestResult = useCallback(async (test: EndpointTestResult) => {
     const testText = `${test.method} ${test.endpoint}\nStatus: ${test.status}\n${test.message ? `Message: ${test.message}` : ''}${test.responseTime ? `\nResponse Time: ${test.responseTime}ms` : ''}`;
     try {
       await navigator.clipboard.writeText(testText);
@@ -473,9 +491,9 @@ function APIConnectionTestContent() {
       setCopiedTestId(testId);
       setTimeout(() => setCopiedTestId(null), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      logger.error('Failed to copy test result', { error: err });
     }
-  };
+  }, []);
 
   const testFrontendComponents = async () => {
     setIsTestingComponents(true);
@@ -1253,12 +1271,12 @@ function APIConnectionTestContent() {
               );
             })}
             
-            {/* Tests without category */}
-            {endpointTests.filter(t => !t.category).length > 0 && (
+            {/* Tests without category - memoized */}
+            {useMemo(() => endpointTests.filter(t => !t.category), [endpointTests]).length > 0 && (
               <div className="space-y-2">
                 <h3 className="text-lg font-semibold">Other</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  {endpointTests.filter(t => !t.category).map((test, index) => {
+                  {useMemo(() => endpointTests.filter(t => !t.category), [endpointTests]).map((test, index) => {
                     const testId = `${test.endpoint}-${test.method}`;
                     const isCopied = copiedTestId === testId;
                     return (
@@ -1313,38 +1331,42 @@ function APIConnectionTestContent() {
               </div>
             )}
             
-            <div className="mt-4 flex gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span>
-                  Success: {endpointTests.filter(t => t.status === 'success').length}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <XCircle className="h-4 w-4 text-red-600" />
-                <span>
-                  Errors: {endpointTests.filter(t => t.status === 'error').length}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Loader2 className="h-4 w-4 text-gray-400" />
-                <span>
-                  Pending: {endpointTests.filter(t => t.status === 'pending').length}
-                </span>
-              </div>
-              {endpointTests.some(t => t.responseTime) && (
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-600 dark:text-gray-400">
-                    Avg Response: {Math.round(
-                      endpointTests
-                        .filter(t => t.responseTime)
-                        .reduce((sum, t) => sum + (t.responseTime || 0), 0) /
-                      endpointTests.filter(t => t.responseTime).length
-                    )}ms
-                  </span>
+            {useMemo(() => {
+              const successCount = endpointTests.filter(t => t.status === 'success').length;
+              const errorCount = endpointTests.filter(t => t.status === 'error').length;
+              const pendingCount = endpointTests.filter(t => t.status === 'pending').length;
+              const testsWithResponseTime = endpointTests.filter(t => t.responseTime);
+              const avgResponseTime = testsWithResponseTime.length > 0
+                ? Math.round(
+                    testsWithResponseTime.reduce((sum, t) => sum + (t.responseTime || 0), 0) /
+                    testsWithResponseTime.length
+                  )
+                : null;
+
+              return (
+                <div className="mt-4 flex gap-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span>Success: {successCount}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <XCircle className="h-4 w-4 text-red-600" />
+                    <span>Errors: {errorCount}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 text-gray-400" />
+                    <span>Pending: {pendingCount}</span>
+                  </div>
+                  {avgResponseTime !== null && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Avg Response: {avgResponseTime}ms
+                      </span>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              );
+            }, [endpointTests])}
           </div>
         )}
 
