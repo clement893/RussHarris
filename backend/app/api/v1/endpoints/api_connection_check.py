@@ -313,22 +313,73 @@ async def get_connection_status(
     
     Requires authentication
     """
-    # Run both checks
-    frontend_result = await check_frontend_connections(
-        detailed=False,
-        current_user=current_user,
-        db=db
-    )
-    
-    backend_result = await check_backend_endpoints(
-        current_user=current_user,
-        db=db
-    )
-    
-    return {
-        "success": True,
-        "frontend": frontend_result.get("summary", {}),
-        "backend": backend_result.get("summary", {}),
-        "timestamp": asyncio.get_event_loop().time(),
-    }
+    try:
+        # Check if user is admin or superadmin (with error handling)
+        is_admin = False
+        try:
+            is_admin = bool(current_user.is_superadmin or current_user.is_admin)
+        except Exception as e:
+            # If we can't check admin status, log but don't fail
+            logger.warning(f"Could not check admin status: {e}")
+        
+        # If not admin, return basic status without running checks
+        if not is_admin:
+            return {
+                "success": True,
+                "frontend": {
+                    "message": "Admin privileges required for detailed checks"
+                },
+                "backend": {
+                    "message": "Admin privileges required for detailed checks"
+                },
+                "timestamp": asyncio.get_event_loop().time(),
+            }
+        
+        # Run both checks with error handling
+        frontend_result = {}
+        backend_result = {}
+        
+        try:
+            frontend_result = await check_frontend_connections(
+                detailed=False,
+                current_user=current_user,
+                db=db
+            )
+        except Exception as e:
+            frontend_result = {
+                "success": False,
+                "error": str(e),
+                "summary": {}
+            }
+        
+        try:
+            backend_result = await check_backend_endpoints(
+                current_user=current_user,
+                db=db
+            )
+        except Exception as e:
+            backend_result = {
+                "success": False,
+                "error": str(e),
+                "summary": {}
+            }
+        
+        return {
+            "success": True,
+            "frontend": frontend_result.get("summary", {}),
+            "backend": backend_result.get("summary", {}),
+            "timestamp": asyncio.get_event_loop().time(),
+        }
+    except Exception as e:
+        # Catch any database or other errors
+        logger.error(f"Error in get_connection_status: {e}", exc_info=True)
+        
+        # Return a more informative error response
+        return {
+            "success": False,
+            "error": f"A database error occurred: {str(e)}",
+            "frontend": {},
+            "backend": {},
+            "timestamp": asyncio.get_event_loop().time(),
+        }
 
