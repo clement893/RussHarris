@@ -6,6 +6,7 @@ import type { ThemeConfig } from '@modele/types';
 import { generateColorShades, generateRgb } from './color-utils';
 import { validateThemeConfig } from './theme-validator';
 import { getThemeConfigForMode, applyDarkModeClass } from './dark-mode-utils';
+import { loadThemeFonts } from './font-loader';
 import { logger } from '@/lib/logger';
 
 /**
@@ -265,6 +266,17 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
     link.href = fontUrl;
     link.setAttribute('data-theme-font', 'true');
     document.head.appendChild(link);
+  }
+  
+  // Load theme fonts from S3 if fontFiles are specified
+  if ((configToApply as any).typography?.fontFiles && Array.isArray((configToApply as any).typography.fontFiles)) {
+    const fontIds = (configToApply as any).typography.fontFiles as number[];
+    if (fontIds.length > 0) {
+      // Load fonts asynchronously (don't block rendering)
+      loadThemeFonts(fontIds).catch((error) => {
+        logger.warn('[applyThemeConfigDirectly] Failed to load theme fonts', { error, fontIds });
+      });
+    }
   }
   
   // Apply fonts

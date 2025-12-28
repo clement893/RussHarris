@@ -126,6 +126,15 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
       font_family: (newConfig as any).font_family || prev.font_family,
       border_radius: (newConfig as any).border_radius || prev.border_radius,
     }));
+    
+    // Sync fontFiles from JSON to selectedFontIds
+    const fontFiles = (newConfig as any)?.typography?.fontFiles;
+    if (Array.isArray(fontFiles)) {
+      setSelectedFontIds(fontFiles);
+    } else if (fontFiles === undefined || fontFiles === null) {
+      // Only clear if explicitly removed, not if just missing
+      // This preserves selection when editing other parts of JSON
+    }
   };
 
   const handleJSONValidationChange = (isValid: boolean, error: string | null) => {
@@ -159,10 +168,11 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
         // Optional fields with fallbacks
         font_family: (state.config as any).font_family || (state.config as any).typography?.fontFamily || formData.font_family || undefined,
         border_radius: (state.config as any).border_radius || (state.config as any).borderRadius || formData.border_radius || undefined,
-        // Add typography with fontFiles if fonts are selected
+        // Add typography with fontFiles
+        // Prefer fontFiles from config (if edited in JSON), otherwise use selectedFontIds (from fonts tab)
         typography: {
           ...((state.config as any).typography || {}),
-          ...(selectedFontIds.length > 0 ? { fontFiles: selectedFontIds } : {}),
+          fontFiles: (state.config as any)?.typography?.fontFiles ?? (selectedFontIds.length > 0 ? selectedFontIds : undefined),
         },
       } as ThemeConfig;
 
@@ -247,7 +257,7 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
 
         <div className="mt-6">
           {state.activeTab === 'form' && (
-            <ThemeForm formData={formData} onChange={handleFormChange} />
+            <ThemeForm formData={formData} onChange={handleFormChange} config={state.config} />
           )}
 
           {state.activeTab === 'json' && (

@@ -5,15 +5,21 @@
  * Form for editing theme basic properties
  */
 
-import { Input, Textarea } from '@/components/ui';
+import { Input, Textarea, Badge } from '@/components/ui';
 import type { ThemeFormData } from '../types';
+import type { ThemeConfig } from '@modele/types';
+import { Type, Info } from 'lucide-react';
 
 interface ThemeFormProps {
   formData: ThemeFormData;
   onChange: (field: keyof ThemeFormData, value: string) => void;
+  config?: ThemeConfig; // Optional config to show selected fonts
 }
 
-export function ThemeForm({ formData, onChange }: ThemeFormProps) {
+export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
+  // Extract font IDs from config if present
+  const fontFiles = (config as any)?.typography?.fontFiles;
+  const hasSelectedFonts = Array.isArray(fontFiles) && fontFiles.length > 0;
   return (
     <div className="space-y-6">
       <div>
@@ -213,6 +219,29 @@ export function ThemeForm({ formData, onChange }: ThemeFormProps) {
             onChange={(e) => onChange('font_family', e.target.value)}
             placeholder="Inter, sans-serif"
           />
+          {hasSelectedFonts && (
+            <div className="mt-2 p-3 bg-muted rounded-md border border-border">
+              <div className="flex items-start gap-2">
+                <Type className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-foreground mb-1">
+                    Polices personnalisées sélectionnées
+                  </p>
+                  <div className="flex flex-wrap gap-1">
+                    {fontFiles.map((fontId: number) => (
+                      <Badge key={fontId} variant="secondary" className="text-xs">
+                        ID: {fontId}
+                      </Badge>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
+                    <Info className="w-3 h-3" />
+                    Gérer les polices dans l'onglet "Polices"
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div>

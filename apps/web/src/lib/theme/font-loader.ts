@@ -4,6 +4,8 @@
  */
 
 import { logger } from '@/lib/logger';
+import { getFont, listFonts } from '@/lib/api/theme-font';
+import type { ThemeFont } from '@modele/types';
 
 interface FontLoadOptions {
   display?: 'auto' | 'block' | 'swap' | 'fallback' | 'optional';

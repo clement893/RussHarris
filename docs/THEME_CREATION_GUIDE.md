@@ -78,7 +78,8 @@ Le champ `config` est un objet JSON qui contient toutes les propriétés visuell
     "textSubheading": "#374151",
     "textBody": "#1f2937",
     "textSecondary": "#6b7280",
-    "textLink": "#3b82f6"
+    "textLink": "#3b82f6",
+    "fontFiles": [1, 2, 3]
   },
   
   "spacing": {
@@ -91,6 +92,32 @@ Le champ `config` est un objet JSON qui contient toutes les propriétés visuell
     "lg": "0.5rem",
     "xl": "0.75rem",
     "full": "9999px"
+  },
+  
+  "effects": {
+    "glassmorphism": {
+      "card": {
+        "background": "rgba(255, 255, 255, 0.1)",
+        "backdropBlur": "10px",
+        "border": "1px solid rgba(255, 255, 255, 0.2)"
+      },
+      "panel": {
+        "background": "rgba(255, 255, 255, 0.05)",
+        "backdropBlur": "8px",
+        "border": "1px solid rgba(255, 255, 255, 0.1)"
+      }
+    },
+    "shadows": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
+    },
+    "gradients": {
+      "enabled": true,
+      "direction": "to-br",
+      "intensity": 0.3
+    }
   }
 }
 ```
@@ -149,6 +176,14 @@ Définit le mode du thème :
 - **`fontFamilySubheading`** : Police pour les sous-titres
   - Exemple : `"Inter, sans-serif"`
 
+#### Polices Personnalisées (`typography.fontFiles`)
+
+- **`fontFiles`** : Tableau d'IDs de polices personnalisées uploadées
+  - Format : `[1, 2, 3]` (IDs de polices dans la base de données)
+  - Les polices sont chargées automatiquement depuis S3
+  - Les `@font-face` sont créés dynamiquement
+  - Voir [Gestion des Polices Personnalisées](#polices-personnalisées) pour plus de détails
+
 #### Tailles de Police (`typography.fontSize`)
 
 - **`base`** : Taille de base (généralement 16px)
@@ -178,15 +213,90 @@ Définit le mode du thème :
 - **`xl`** : Très grand rayon (0.75rem)
 - **`full`** : Cercle complet (9999px)
 
-## 📝 Exemple Complet
+### Effets (`effects`)
 
-### Thème Moderne Sombre
+Les effets permettent d'ajouter des propriétés CSS complexes au thème. Voir [THEME_EFFECTS_GUIDE.md](./THEME_EFFECTS_GUIDE.md) pour plus de détails.
+
+#### Glassmorphism (`effects.glassmorphism`)
+
+- **`card`** : Effet glassmorphism pour les cartes
+  - `background` : Couleur de fond avec transparence
+  - `backdropBlur` : Flou d'arrière-plan
+  - `border` : Bordure avec transparence
+
+- **`panel`** : Effet glassmorphism pour les panneaux
+  - Même structure que `card`
+
+#### Ombres (`effects.shadows`)
+
+- **`sm`** : Petite ombre
+- **`md`** : Ombre moyenne
+- **`lg`** : Grande ombre
+- **`xl`** : Très grande ombre
+
+#### Dégradés (`effects.gradients`)
+
+- **`enabled`** : Active/désactive les dégradés
+- **`direction`** : Direction du dégradé (ex: `"to-br"`)
+- **`intensity`** : Intensité du dégradé (0-1)
+
+## 🎨 Structures Complexes
+
+### Polices Personnalisées
+
+Vous pouvez uploader des polices personnalisées et les utiliser dans vos thèmes :
+
+1. **Uploader une police** :
+   - Allez dans l'éditeur de thème, onglet "Polices"
+   - Cliquez sur "Télécharger une police"
+   - Sélectionnez un fichier (.woff2, .woff, .ttf, .otf)
+   - La police est uploadée sur S3 et enregistrée dans la base de données
+
+2. **Sélectionner des polices pour un thème** :
+   - Dans l'onglet "Polices", cochez les polices à utiliser
+   - Les IDs sont automatiquement ajoutés à `config.typography.fontFiles`
+   - Les polices sont chargées automatiquement lors de l'application du thème
+
+3. **Format dans le JSON** :
+```json
+{
+  "typography": {
+    "fontFamily": "Custom Font, sans-serif",
+    "fontFiles": [1, 2, 3]
+  }
+}
+```
+
+Les polices sont chargées dynamiquement depuis S3 et les `@font-face` sont créés automatiquement.
+
+### Effets CSS Avancés
+
+Les effets permettent d'ajouter des propriétés CSS complexes directement dans le JSON du thème. Voir [THEME_EFFECTS_GUIDE.md](./THEME_EFFECTS_GUIDE.md) pour la documentation complète.
+
+**Exemple avec Glassmorphism** :
+```json
+{
+  "effects": {
+    "glassmorphism": {
+      "card": {
+        "background": "rgba(255, 255, 255, 0.1)",
+        "backdropBlur": "10px",
+        "border": "1px solid rgba(255, 255, 255, 0.2)"
+      }
+    }
+  }
+}
+```
+
+## 📝 Exemples Complets
+
+### Thème Moderne Sombre avec Glassmorphism et Polices Personnalisées
 
 ```json
 {
   "name": "modern-dark",
   "display_name": "Modern Dark",
-  "description": "Thème sombre moderne avec accents bleus",
+  "description": "Thème sombre moderne avec accents bleus, glassmorphism et polices personnalisées",
   "is_active": false,
   "config": {
     "mode": "dark",
@@ -205,17 +315,44 @@ Définit le mode du thème :
       "accent": "#3b82f6"
     },
     "typography": {
-      "fontFamily": "Inter, sans-serif",
-      "fontFamilyHeading": "Inter, sans-serif",
+      "fontFamily": "Custom Font, Inter, sans-serif",
+      "fontFamilyHeading": "Custom Font Bold, Inter, sans-serif",
+      "fontFamilySubheading": "Custom Font, Inter, sans-serif",
       "textHeading": "#f1f5f9",
       "textSubheading": "#cbd5e1",
       "textBody": "#e2e8f0",
       "textSecondary": "#94a3b8",
-      "textLink": "#60a5fa"
+      "textLink": "#60a5fa",
+      "fontFiles": [1, 2]
     },
     "borderRadius": {
       "md": "0.5rem",
       "lg": "0.75rem"
+    },
+    "effects": {
+      "glassmorphism": {
+        "card": {
+          "background": "rgba(59, 130, 246, 0.1)",
+          "backdropBlur": "10px",
+          "border": "1px solid rgba(59, 130, 246, 0.2)"
+        },
+        "panel": {
+          "background": "rgba(15, 23, 42, 0.5)",
+          "backdropBlur": "8px",
+          "border": "1px solid rgba(255, 255, 255, 0.1)"
+        }
+      },
+      "shadows": {
+        "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.3)",
+        "md": "0 4px 6px -1px rgba(0, 0, 0, 0.4)",
+        "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.5)",
+        "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.6)"
+      },
+      "gradients": {
+        "enabled": true,
+        "direction": "to-br",
+        "intensity": 0.2
+      }
     }
   }
 }
@@ -315,10 +452,22 @@ Content-Type: application/json
 3. **Mode système** : Utilisez `"mode": "system"` pour supporter automatiquement le mode sombre/clair
 4. **Couleurs accessibles** : Respectez les ratios de contraste WCAG AA (4.5:1 pour le texte normal)
 5. **Cohérence** : Gardez une palette de couleurs cohérente dans tout le thème
+6. **Polices personnalisées** : Uploader vos polices dans l'onglet "Polices" avant de les référencer dans `fontFiles`
+7. **Structures complexes** : Le JSONEditor préserve toutes les structures complexes (effects, typography, etc.)
+8. **Performance** : Les polices sont chargées de manière asynchrone et mises en cache pour éviter les rechargements
 
 ## 🎨 Outils Utiles
 
 - **Générateur de palette** : [Coolors.co](https://coolors.co)
 - **Contraste de couleurs** : [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 - **Validateur JSON** : [JSONLint](https://jsonlint.com/)
+- **Polices** : [Google Fonts](https://fonts.google.com/), [Font Squirrel](https://www.fontsquirrel.com/)
+- **Effets CSS** : Voir [THEME_EFFECTS_GUIDE.md](./THEME_EFFECTS_GUIDE.md) pour des exemples
+
+## 📚 Documentation Complémentaire
+
+- **[THEME_MANAGEMENT.md](./THEME_MANAGEMENT.md)** : Gestion des thèmes globaux
+- **[THEME_EFFECTS_GUIDE.md](./THEME_EFFECTS_GUIDE.md)** : Guide complet des effets CSS
+- **[THEME_CSS_VARIABLES.md](./THEME_CSS_VARIABLES.md)** : Variables CSS disponibles
+- **[THEME_VALIDATION_GUIDE.md](./THEME_VALIDATION_GUIDE.md)** : Validation des thèmes
 

@@ -809,40 +809,92 @@ function APIConnectionTestContent() {
                 <div>
                   <p className="font-medium">{backendCheck.error || 'Check failed'}</p>
                   {backendCheck.message && <p className="text-sm mt-1">{backendCheck.message}</p>}
-                  {backendCheck.hint && <p className="text-sm mt-1 text-gray-600">{backendCheck.hint}</p>}
+                  {backendCheck.hint && (
+                    <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-800">
+                      <p className="text-sm font-medium text-blue-900 dark:text-blue-200">💡 Hint:</p>
+                      <p className="text-sm text-blue-800 dark:text-blue-300 mt-1">{backendCheck.hint}</p>
+                    </div>
+                  )}
                 </div>
               </Alert>
             ) : backendCheck.summary && Object.keys(backendCheck.summary).length > 0 ? (
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <div className="text-3xl font-bold text-green-600">
-                    {backendCheck.summary.registered}
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {backendCheck.summary.totalEndpoints !== undefined && (
+                    <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                      <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                        {backendCheck.summary.totalEndpoints}
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total Endpoints</div>
+                    </div>
+                  )}
+                  <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                    <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+                      {backendCheck.summary.registered}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">✅ Registered Modules</div>
+                    {backendCheck.summary.registered !== undefined && backendCheck.summary.unregistered !== undefined && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        {Math.round((backendCheck.summary.registered / (backendCheck.summary.registered + backendCheck.summary.unregistered)) * 100)}% coverage
+                      </div>
+                    )}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">✅ Registered Modules</div>
-                </div>
-                <div className={`text-center p-4 rounded-lg ${
-                  (backendCheck.summary.unregistered || 0) > 0
-                    ? 'bg-red-50 dark:bg-red-900/20'
-                    : 'bg-gray-50 dark:bg-gray-800'
-                }`}>
-                  <div className={`text-3xl font-bold ${
-                    (backendCheck.summary.unregistered || 0) > 0 ? 'text-red-600' : 'text-gray-600'
+                  <div className={`text-center p-4 rounded-lg border ${
+                    (backendCheck.summary.unregistered || 0) > 0
+                      ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                      : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'
                   }`}>
-                    {backendCheck.summary.unregistered || 0}
+                    <div className={`text-3xl font-bold ${
+                      (backendCheck.summary.unregistered || 0) > 0 
+                        ? 'text-red-600 dark:text-red-400' 
+                        : 'text-gray-600 dark:text-gray-400'
+                    }`}>
+                      {backendCheck.summary.unregistered || 0}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">❌ Unregistered Modules</div>
+                    {backendCheck.summary.registered !== undefined && backendCheck.summary.unregistered !== undefined && (backendCheck.summary.unregistered || 0) > 0 && (
+                      <div className="text-xs text-red-600 dark:text-red-400 mt-1">
+                        {Math.round((backendCheck.summary.unregistered / (backendCheck.summary.registered + backendCheck.summary.unregistered)) * 100)}% missing
+                      </div>
+                    )}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">❌ Unregistered Modules</div>
                 </div>
-              </div>
+                
+                {(backendCheck.summary.unregistered || 0) > 0 && (
+                  <Alert variant="error" className="mt-4">
+                    <p className="font-medium">
+                      {backendCheck.summary.unregistered} module{(backendCheck.summary.unregistered || 0) > 1 ? 's' : ''} not registered
+                    </p>
+                    <p className="text-sm mt-1">
+                      Some backend modules are not registered in the API router. Check the detailed output below to see which modules need to be added to <code className="text-xs bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">backend/app/api/v1/router.py</code>.
+                    </p>
+                  </Alert>
+                )}
+                
+                {(backendCheck.summary.unregistered || 0) === 0 && backendCheck.summary.registered !== undefined && backendCheck.summary.registered > 0 && (
+                  <Alert variant="success" className="mt-4">
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    <p className="font-medium">All modules are properly registered!</p>
+                    <p className="text-sm mt-1">
+                      All {backendCheck.summary.registered} backend module{backendCheck.summary.registered > 1 ? 's' : ''} {backendCheck.summary.registered > 1 ? 'are' : 'is'} registered in the API router.
+                    </p>
+                  </Alert>
+                )}
+              </>
             ) : backendCheck.success ? (
               <Alert variant="info">
                 <p>Check completed successfully, but no summary data available.</p>
+                {backendCheck.message && <p className="text-sm mt-1">{backendCheck.message}</p>}
               </Alert>
             ) : null}
 
             {backendCheck.output && (
               <div className="mt-4">
-                <h3 className="font-medium mb-2">Detailed Output</h3>
-                <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg text-xs overflow-auto max-h-96">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-medium">Detailed Output</h3>
+                  <Badge variant="info">{backendCheck.output.length} characters</Badge>
+                </div>
+                <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg text-xs overflow-auto max-h-96 border border-gray-200 dark:border-gray-700">
                   {backendCheck.output}
                 </pre>
               </div>
