@@ -73,7 +73,11 @@ function APIConnectionTestContent() {
 
     try {
       const response = await apiClient.get<ConnectionStatus>('/v1/api-connection-check/status');
-      setStatus(response.data ?? null);
+      // apiClient.get returns response.data from axios, which is the FastAPI response directly
+      // FastAPI returns the data directly, not wrapped in ApiResponse
+      // So response is already ConnectionStatus, not ApiResponse<ConnectionStatus>
+      const data = (response as unknown as ConnectionStatus) ?? null;
+      setStatus(data);
     } catch (err: unknown) {
       const errorMessage = getErrorMessage(err) || 'Failed to check API connection status';
       setError(errorMessage);
