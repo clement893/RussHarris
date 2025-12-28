@@ -83,7 +83,7 @@ export default function OrganizationSettingsPage() {
       }
       // Handle direct TeamListResponse case
       else if (typeof teamsResponse === 'object' && 'teams' in teamsResponse) {
-        teamsData = (teamsResponse as TeamListResponse).teams || [];
+        teamsData = (teamsResponse as unknown as TeamListResponse).teams || [];
       }
       // Handle array case (fallback)
       else if (Array.isArray(teamsResponse)) {
@@ -217,7 +217,7 @@ export default function OrganizationSettingsPage() {
       if (typeof currentTeamResponse === 'object' && 'data' in currentTeamResponse && currentTeamResponse.data) {
         currentTeam = currentTeamResponse.data as Team;
       } else if (typeof currentTeamResponse === 'object' && 'id' in currentTeamResponse) {
-        currentTeam = currentTeamResponse as Team;
+        currentTeam = currentTeamResponse as unknown as Team;
       } else {
         logger.warn('Unexpected current team response format', currentTeamResponse);
         throw new Error('Failed to parse current team response: unexpected format');
@@ -240,7 +240,7 @@ export default function OrganizationSettingsPage() {
       if (typeof response === 'object' && 'data' in response && response.data) {
         updatedTeam = response.data as Team;
       } else if (typeof response === 'object' && 'id' in response) {
-        updatedTeam = response as Team;
+        updatedTeam = response as unknown as Team;
       } else {
         logger.warn('Unexpected update team response format', response);
         throw new Error('Failed to parse update team response: unexpected format');
