@@ -11,6 +11,7 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { logger } from '@/lib/logger';
 import { surveysAPI } from '@/lib/api';
 import { formToSurvey } from '@/utils/surveyUtils';
+import { handleApiError } from '@/lib/errors';
 
 export default function SurveyResultsPage() {
   const t = useTranslations('surveys.results');
@@ -63,7 +64,8 @@ export default function SurveyResultsPage() {
       }
     } catch (error) {
       logger.error('Failed to load survey results', error instanceof Error ? error : new Error(String(error)));
-      setError(t('errors.loadFailed') || 'Failed to load survey results. Please try again.');
+      const errorMessage = handleApiError(error);
+      setError(errorMessage || t('errors.loadFailed') || 'Failed to load survey results. Please try again.');
     } finally {
       setIsLoading(false);
     }

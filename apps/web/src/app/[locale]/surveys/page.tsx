@@ -11,6 +11,7 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { logger } from '@/lib/logger';
 import { surveysAPI } from '@/lib/api';
 import { formToSurvey, surveyToForm } from '@/utils/surveyUtils';
+import { handleApiError } from '@/lib/errors';
 import { Plus } from 'lucide-react';
 
 export default function SurveysPage() {
@@ -37,7 +38,8 @@ export default function SurveysPage() {
       }
     } catch (error) {
       logger.error('Failed to load surveys', error instanceof Error ? error : new Error(String(error)));
-      setError(t('errors.loadFailed') || 'Failed to load surveys. Please try again.');
+      const errorMessage = handleApiError(error);
+      setError(errorMessage || t('errors.loadFailed') || 'Failed to load surveys. Please try again.');
     } finally {
       setIsLoading(false);
     }

@@ -10,6 +10,7 @@ import { Loading, Alert } from '@/components/ui';
 import { logger } from '@/lib/logger';
 import { surveysAPI } from '@/lib/api';
 import { formToSurvey } from '@/utils/surveyUtils';
+import { handleApiError } from '@/lib/errors';
 
 export default function SurveyPreviewPage() {
   const t = useTranslations('surveys.preview');
@@ -38,7 +39,8 @@ export default function SurveyPreviewPage() {
       }
     } catch (error) {
       logger.error('Failed to load survey', error instanceof Error ? error : new Error(String(error)));
-      setError(t('errors.loadFailed') || 'Failed to load survey. Please try again.');
+      const errorMessage = handleApiError(error);
+      setError(errorMessage || t('errors.loadFailed') || 'Failed to load survey. Please try again.');
     } finally {
       setIsLoading(false);
     }
