@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { logger } from '@/lib/logger';
 import { Settings, Save, X } from 'lucide-react';
 import Button from '@/components/ui/Button';
@@ -9,12 +11,16 @@ import Input from '@/components/ui/Input';
 import { apiClient } from '@/lib/api/client';
 import { useToast } from '@/components/ui';
 import { getErrorMessage } from '@/lib/errors';
+import type { Locale } from '@/i18n/routing';
 
 interface PreferencesManagerProps {
   className?: string;
 }
 
 export function PreferencesManager({ className = '' }: PreferencesManagerProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const currentLocale = useLocale() as Locale;
   const [preferences, setPreferences] = useState<Record<string, any>>({});
   const [editedPreferences, setEditedPreferences] = useState<Record<string, any>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -59,10 +65,36 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
     try {
       await apiClient.put('/v1/users/preferences', editedPreferences);
       setPreferences(editedPreferences);
-      showToast({
-        message: 'Preferences saved successfully',
-        type: 'success',
-      });
+      
+      // Check if language changed and redirect to new locale
+      const newLanguage = editedPreferences.language as string;
+      const oldLanguage = preferences.language as string;
+      
+      if (newLanguage && newLanguage !== oldLanguage && newLanguage !== currentLocale) {
+        // Get path without locale prefix
+        const pathWithoutLocale = pathname.replace(/^\/(en|fr|ar|he)/, '') || '/';
+        
+        // Build new path with new locale
+        const newPath = newLanguage === 'en' 
+          ? pathWithoutLocale 
+          : `/${newLanguage}${pathWithoutLocale}`;
+        
+        // Show success message and redirect
+        showToast({
+          message: 'Preferences saved successfully. Redirecting...',
+          type: 'success',
+        });
+        
+        // Small delay to show toast, then redirect
+        setTimeout(() => {
+          window.location.href = newPath;
+        }, 500);
+      } else {
+        showToast({
+          message: 'Preferences saved successfully',
+          type: 'success',
+        });
+      }
     } catch (error: unknown) {
       showToast({
         message: getErrorMessage(error) || 'Failed to save preferences',
