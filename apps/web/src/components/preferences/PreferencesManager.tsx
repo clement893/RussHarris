@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { logger } from '@/lib/logger';
 import { Settings, Save, X } from 'lucide-react';
@@ -18,7 +18,6 @@ interface PreferencesManagerProps {
 }
 
 export function PreferencesManager({ className = '' }: PreferencesManagerProps) {
-  const router = useRouter();
   const pathname = usePathname();
   const currentLocale = useLocale() as Locale;
   const [preferences, setPreferences] = useState<Record<string, any>>({});
