@@ -1,6 +1,6 @@
 /**
  * Notification Bell Component (Connected)
- * Connected version that uses useNotifications and useNotificationCount hooks
+ * Connected version that uses useNotifications hook
  */
 
 'use client';
