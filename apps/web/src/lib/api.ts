@@ -647,6 +647,7 @@ export const supportTicketsAPI = {
     return apiClient.get(`/v1/support/tickets/${ticketId}`);
   },
   create: (data: {
+    email: string;
     subject: string;
     category: 'technical' | 'billing' | 'feature' | 'general' | 'bug';
     priority?: 'low' | 'medium' | 'high' | 'urgent';

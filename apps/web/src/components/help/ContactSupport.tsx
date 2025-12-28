@@ -31,7 +31,7 @@ import { Card, Input, Textarea, Button, Select, Alert } from '@/components/ui';
 import { Send, Mail, MessageSquare } from 'lucide-react';
 
 export interface ContactSupportProps {
-  onSubmit?: (data: { subject: string; message: string; category: string; priority: string }) => Promise<void>;
+  onSubmit?: (data: { email: string; subject: string; message: string; category: string; priority: string }) => Promise<void>;
   className?: string;
 }
 
@@ -45,6 +45,7 @@ export default function ContactSupport({
   className,
 }: ContactSupportProps) {
   const [formData, setFormData] = useState({
+    email: '',
     subject: '',
     message: '',
     category: '',
@@ -66,6 +67,7 @@ export default function ContactSupport({
       }
       setSuccess(true);
       setFormData({
+        email: '',
         subject: '',
         message: '',
         category: '',
@@ -101,6 +103,19 @@ export default function ContactSupport({
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Email *
+                </label>
+                <Input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="your.email@example.com"
+                  required
+                />
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Category *

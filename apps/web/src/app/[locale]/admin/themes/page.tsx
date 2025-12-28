@@ -19,6 +19,7 @@ import type { ThemeFormData } from './types';
 function ThemesPageContent() {
   const [editingTheme, setEditingTheme] = useState<Theme | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const { refreshTheme } = useGlobalTheme();
 
   const handleCreateTheme = () => {
@@ -86,8 +87,8 @@ function ThemesPageContent() {
       setEditingTheme(null);
       setIsCreating(false);
       
-      // Reload page to refresh theme list
-      window.location.reload();
+      // Trigger refresh of theme list without reloading the page
+      setRefreshKey(prev => prev + 1);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la sauvegarde';
       throw new Error(errorMessage);
@@ -122,6 +123,7 @@ function ThemesPageContent() {
           />
         ) : (
           <ThemeList
+            key={refreshKey}
             onCreateTheme={handleCreateTheme}
             onEditTheme={handleEditTheme}
             onDeleteTheme={handleDeleteTheme}
