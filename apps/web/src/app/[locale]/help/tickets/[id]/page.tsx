@@ -16,6 +16,8 @@ import { PageHeader, PageContainer } from '@/components/layout';
 import { Loading, Alert } from '@/components/ui';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { logger } from '@/lib/logger';
+import { handleApiError } from '@/lib/errors';
+import { supportTicketsAPI } from '@/lib/api';
 
 export default function TicketDetailsPage() {
   const params = useParams();
@@ -43,39 +45,56 @@ export default function TicketDetailsPage() {
       setIsLoading(true);
       setError(null);
       
-      // TODO: Replace with actual support ticket API endpoint when available
-      // const response = await apiClient.get(`/v1/support/tickets/${ticketId}`);
-      // setTicket(response.data.ticket);
-      // setMessages(response.data.messages);
+      const ticketIdNum = parseInt(ticketId, 10);
+      if (isNaN(ticketIdNum)) {
+        throw new Error('Invalid ticket ID');
+      }
       
-      // Mock data for now
+      // Load ticket details
+      const ticketResponse = await supportTicketsAPI.get(ticketIdNum);
+      const ticketData = (ticketResponse as any).data || ticketResponse;
+      
+      // Load ticket messages
+      const messagesResponse = await supportTicketsAPI.getMessages(ticketIdNum);
+      const messagesData = (messagesResponse as any).data || messagesResponse;
+      
       setTicket({
-        id: parseInt(ticketId),
-        subject: 'Sample Ticket',
-        category: 'technical',
-        status: 'open',
-        priority: 'medium',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
+        id: ticketData.id,
+        subject: ticketData.subject,
+        category: ticketData.category,
+        status: ticketData.status,
+        priority: ticketData.priority,
+        created_at: ticketData.created_at,
+        updated_at: ticketData.updated_at,
       });
-      setMessages([]);
-      setIsLoading(false);
-    } catch (error) {
+      
+      setMessages(Array.isArray(messagesData) ? messagesData : []);
+    } catch (error: unknown) {
       logger.error('Failed to load ticket', error instanceof Error ? error : new Error(String(error)));
-      setError(t('errors.loadFailed') || 'Failed to load ticket. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || t('errors.loadFailed') || 'Failed to load ticket. Please try again.');
+      setTicket(null);
+    } finally {
       setIsLoading(false);
     }
   }, [ticketId, t]);
 
   const handleReply = useCallback(async (message: string) => {
     try {
-      // TODO: Replace with actual API endpoint when available
-      // await apiClient.post(`/v1/support/tickets/${ticketId}/messages`, { message });
-      logger.info('Sending reply', { ticketId, message });
-      // Reload messages
+      const ticketIdNum = parseInt(ticketId, 10);
+      if (isNaN(ticketIdNum)) {
+        throw new Error('Invalid ticket ID');
+      }
+      
+      await supportTicketsAPI.addMessage(ticketIdNum, message);
+      logger.info('Reply sent successfully', { ticketId });
+      
+      // Reload ticket and messages
       await loadTicket();
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('Failed to send reply', error instanceof Error ? error : new Error(String(error)));
+      const appError = handleApiError(error);
+      setError(appError.message || 'Failed to send reply. Please try again.');
       throw error;
     }
   }, [ticketId, loadTicket]);
