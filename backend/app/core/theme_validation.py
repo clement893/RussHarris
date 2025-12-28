@@ -469,13 +469,9 @@ def validate_theme_contrast(config: Dict[str, Any], strict: bool = False) -> Tup
                     meets_aa = meets_wcag_aa(fg_hex, bg_hex, is_ui_component=True)
                     
                     if not meets_aa:
-                        # Classify issues by severity:
-                        # - 'warning': ratio >= 2.0 but < 3.0 (close to threshold, allow with warning)
-                        # - 'fail': ratio < 2.0 (too low, block)
-                        if ratio >= 2.0:
-                            level = 'warning'
-                        else:
-                            level = 'fail'
+                        # All contrast issues are warnings (non-blocking)
+                        # User can choose to ignore them if they want
+                        level = 'warning'
                         issues.append({
                             'type': 'ui',
                             'element': element,
@@ -494,9 +490,10 @@ def validate_theme_contrast(config: Dict[str, Any], strict: bool = False) -> Tup
     if strict:
         is_valid = len(issues) == 0
     else:
-        # Only fail on critical issues (level == 'fail')
-        critical_issues = [issue for issue in issues if issue.get('level') == 'fail']
-        is_valid = len(critical_issues) == 0
+        # In non-strict mode, all contrast issues are warnings (non-blocking)
+        # Only fail on critical issues if they exist, but we've changed all to warnings
+        # So this will always return True in non-strict mode
+        is_valid = True
     
     return (is_valid, issues)
 
