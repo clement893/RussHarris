@@ -68,15 +68,24 @@ export default function RegisterPage() {
       
       // Handle rate limit error (429) with specific message
       if (statusCode === 429) {
-        const retryAfter = axiosError.response?.data?.retry_after;
+        const responseData = axiosError.response?.data;
+        // Try multiple possible locations for retry_after
+        const retryAfter = responseData?.retry_after || 
+                          responseData?.error?.retry_after ||
+                          axiosError.response?.headers?.['retry-after'];
+        
         let errorMessage = 'Too many registration attempts. ';
         if (retryAfter) {
           const seconds = parseInt(String(retryAfter), 10);
-          const minutes = Math.ceil(seconds / 60);
-          if (minutes > 1) {
-            errorMessage += `Please wait ${minutes} minutes before trying again.`;
+          if (!isNaN(seconds) && seconds > 0) {
+            const minutes = Math.ceil(seconds / 60);
+            if (minutes > 1) {
+              errorMessage += `Please wait ${minutes} minutes before trying again.`;
+            } else {
+              errorMessage += `Please wait ${seconds} seconds before trying again.`;
+            }
           } else {
-            errorMessage += `Please wait ${seconds} seconds before trying again.`;
+            errorMessage += 'Please wait a minute before trying again.';
           }
         } else {
           errorMessage += 'Please wait a minute before trying again.';
