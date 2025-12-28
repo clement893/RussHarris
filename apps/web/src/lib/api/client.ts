@@ -51,7 +51,7 @@ class ApiClient {
       }
     );
 
-    // Response interceptor
+    // Response interceptor with automatic token refresh
     this.client.interceptors.response.use(
       (response) => {
         logger.debug('API response', {
@@ -60,10 +60,64 @@ class ApiClient {
         });
         return response;
       },
-      (error) => {
+      async (error) => {
         const appError = handleApiError(error);
         const status = error.response?.status;
         const url = error.config?.url;
+        const originalRequest = error.config;
+        
+        // Handle 401 Unauthorized - try to refresh token
+        if (status === 401 && originalRequest && !originalRequest._retry) {
+          // Mark request as retried to prevent infinite loop
+          originalRequest._retry = true;
+          
+          const refreshToken = TokenStorage.getRefreshToken();
+          
+          if (refreshToken && typeof window !== 'undefined') {
+            try {
+              // Try to refresh the token
+              const refreshResponse = await axios.post(
+                `${this.client.defaults.baseURL}/v1/auth/refresh`,
+                { refresh_token: refreshToken },
+                { withCredentials: true }
+              );
+              
+              const { access_token } = refreshResponse.data;
+              
+              if (access_token) {
+                // Update token in storage
+                await TokenStorage.setToken(access_token, refreshToken);
+                
+                // Update authorization header
+                originalRequest.headers = originalRequest.headers || {};
+                originalRequest.headers.Authorization = `Bearer ${access_token}`;
+                
+                // Retry the original request
+                return this.client.request(originalRequest);
+              }
+            } catch (refreshError) {
+              // Refresh failed, clear tokens and redirect to login
+              logger.warn('Token refresh failed', refreshError);
+              await TokenStorage.removeTokens();
+              
+              if (typeof window !== 'undefined') {
+                window.location.href = '/auth/login?error=session_expired';
+              }
+              
+              return Promise.reject(appError);
+            }
+          } else {
+            // No refresh token available, clear tokens and redirect
+            logger.warn('No refresh token available for 401 error');
+            await TokenStorage.removeTokens();
+            
+            if (typeof window !== 'undefined') {
+              window.location.href = '/auth/login?error=unauthorized';
+            }
+            
+            return Promise.reject(appError);
+          }
+        }
         
         // Don't log 401 errors as critical - they're expected for unauthorized users
         // Log them as warnings instead
