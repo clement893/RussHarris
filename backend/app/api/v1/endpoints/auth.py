@@ -9,7 +9,7 @@ from urllib.parse import urlencode
 import httpx
 import bcrypt
 from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request, Response, status
-from fastapi.responses import RedirectResponse, JSONResponse
+from fastapi.responses import RedirectResponse, JSONResponse, HTMLResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -936,14 +936,21 @@ async def google_oauth_callback(
             frontend_base = None
             if settings.CORS_ORIGINS and isinstance(settings.CORS_ORIGINS, list) and len(settings.CORS_ORIGINS) > 0:
                 frontend_base = settings.CORS_ORIGINS[0].rstrip("/")
+                logger.info(f"Using frontend base from CORS_ORIGINS list: {frontend_base}")
             elif isinstance(settings.CORS_ORIGINS, str) and settings.CORS_ORIGINS.strip():
                 frontend_base = settings.CORS_ORIGINS.strip().rstrip("/")
+                logger.info(f"Using frontend base from CORS_ORIGINS string: {frontend_base}")
             
             if not frontend_base:
-                frontend_base = os.getenv("FRONTEND_URL") or os.getenv("NEXT_PUBLIC_APP_URL") or "http://localhost:3000"
-                frontend_base = frontend_base.rstrip("/")
+                frontend_base = os.getenv("FRONTEND_URL") or os.getenv("NEXT_PUBLIC_APP_URL")
+                if frontend_base:
+                    frontend_base = frontend_base.rstrip("/")
+                    logger.info(f"Using frontend base from environment variable: {frontend_base}")
+                else:
+                    frontend_base = "http://localhost:3000"
+                    logger.warning(f"Frontend base not configured, using fallback: {frontend_base}")
             
-            logger.info(f"Using frontend base URL: {frontend_base}")
+            logger.info(f"Final frontend base URL: {frontend_base}, state: {state}")
             
             if state and state.startswith(("http://", "https://")):
                 # State is already a full URL, use it directly
@@ -961,7 +968,28 @@ async def google_oauth_callback(
             
             logger.info(f"Google OAuth successful for user {email}, redirecting to {redirect_url}")
             
-            return RedirectResponse(url=redirect_url)
+            # Use HTML redirect page to ensure redirect works reliably
+            # This is more reliable for OAuth callbacks, especially in production
+            # where HTTP redirects might be blocked or not work as expected
+            html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <meta http-equiv="refresh" content="0;url={redirect_url}">
+    <script>
+        // Immediate JavaScript redirect as primary method
+        window.location.href = {repr(redirect_url)};
+    </script>
+</head>
+<body>
+    <p>Redirecting to application...</p>
+    <p>If you are not redirected automatically, <a href="{redirect_url}">click here</a>.</p>
+</body>
+</html>
+"""
+            return HTMLResponse(content=html_content, status_code=200)
             
     except HTTPException:
         raise

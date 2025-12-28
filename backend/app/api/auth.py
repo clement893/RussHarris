@@ -13,6 +13,7 @@ from app.database import get_db
 from app.schemas.user import UserCreate, UserLogin, TokenResponse, UserResponse, RefreshTokenRequest
 from app.services.user_service import UserService
 from app.core.security import create_access_token, create_refresh_token, decode_token
+from app.core.config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -58,7 +59,7 @@ async def login(
 
     access_token = create_access_token(
         data={"sub": str(user.id)},
-        expires_delta=timedelta(minutes=30),
+        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
     )
     
     refresh_token = create_refresh_token(
@@ -114,7 +115,7 @@ async def refresh_token(
     # Create new access token
     access_token = create_access_token(
         data={"sub": str(user.id)},
-        expires_delta=timedelta(minutes=30),
+        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
     )
     
     # Create new refresh token
@@ -223,7 +224,7 @@ async def google_callback(
             # Create JWT tokens
             access_token_jwt = create_access_token(
                 data={"sub": str(user.id)},
-                expires_delta=timedelta(minutes=30),
+                expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
             )
             
             refresh_token_jwt = create_refresh_token(
