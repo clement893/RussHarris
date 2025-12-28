@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { PageHeader, PageContainer, Section } from '@/components/layout';
 import { apiClient } from '@/lib/api';
-import { rbacAPI, type Role, type Permission } from '@/lib/api/rbac';
+import { rbacAPI } from '@/lib/api/rbac';
 import { getErrorMessage } from '@/lib/errors';
 import { Card, Badge, Alert, Loading } from '@/components/ui';
 
@@ -241,8 +241,8 @@ export default function AdminStatisticsContent() {
         logs.forEach((log: any) => {
           if (log.timestamp) {
             const logDate = new Date(log.timestamp).toISOString().split('T')[0];
-            if (dayCounts[logDate] !== undefined) {
-              dayCounts[logDate]++;
+            if (logDate && dayCounts[logDate] !== undefined) {
+              dayCounts[logDate] = (dayCounts[logDate] || 0) + 1;
             }
           }
         });
@@ -320,9 +320,9 @@ export default function AdminStatisticsContent() {
       
       try {
         // Try to get subscriptions - this might not be available
-        const subscriptionsResponse = await apiClient.get('/v1/subscriptions/plans?limit=1000').catch(() => null);
         // Note: We can't easily get all subscriptions without an admin endpoint
         // This is a placeholder for when such an endpoint exists
+        await apiClient.get('/v1/subscriptions/plans?limit=1000').catch(() => null);
       } catch (e) {
         // Ignore if subscriptions API fails
       }

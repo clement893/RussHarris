@@ -11,7 +11,6 @@ import { clsx } from 'clsx';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
-import Textarea from '@/components/ui/Textarea';
 import Select from '@/components/ui/Select';
 import type { SelectOption } from '@/components/ui/Select';
 import { Save, Building2, Globe, MapPin, Mail } from 'lucide-react';
@@ -21,6 +20,7 @@ export interface OrganizationSettingsProps {
     id: string;
     name: string;
     slug: string;
+    description?: string;
     email?: string;
     phone?: string;
     website?: string;

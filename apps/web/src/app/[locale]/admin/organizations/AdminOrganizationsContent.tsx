@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { PageHeader, PageContainer } from '@/components/layout';
 import { getErrorMessage, getErrorDetail } from '@/lib/errors';
-import { Button, Card, Badge, Alert, Input, Textarea, Loading, Modal, DataTable } from '@/components/ui';
+import { Button, Card, Badge, Alert, Input, Loading, Modal, DataTable } from '@/components/ui';
 import type { Column } from '@/components/ui/DataTable';
 import { Edit2, Trash2, Eye, Plus } from 'lucide-react';
 import OrganizationSettings, { type OrganizationSettingsData } from '@/components/settings/OrganizationSettings';
@@ -167,7 +167,7 @@ export default function AdminOrganizationsContent() {
       const { teamsAPI } = await import('@/lib/api/teams');
       
       // Prepare settings object
-      const settings: TeamSettings = {};
+      const settings: Record<string, any> = {};
       if (data.email) settings.email = data.email;
       if (data.phone) settings.phone = data.phone;
       if (data.website) settings.website = data.website;
@@ -186,7 +186,7 @@ export default function AdminOrganizationsContent() {
         name: data.name.trim(),
         slug: slug,
         description: data.description || undefined,
-        settings: Object.keys(settings).length > 0 ? settings : undefined,
+        settings: Object.keys(settings).length > 0 ? (settings as TeamSettings) : undefined,
       });
       
       await loadTeams();
@@ -216,7 +216,7 @@ export default function AdminOrganizationsContent() {
       const { teamsAPI } = await import('@/lib/api/teams');
       
       // Prepare settings object
-      const settings: TeamSettings = {};
+      const settings: Record<string, any> = {};
       if (data.email) settings.email = data.email;
       if (data.phone) settings.phone = data.phone;
       if (data.website) settings.website = data.website;
@@ -234,7 +234,7 @@ export default function AdminOrganizationsContent() {
       await teamsAPI.updateTeam(Number(editingTeam.id), {
         name: data.name.trim(),
         description: data.description || undefined,
-        settings: Object.keys(settings).length > 0 ? settings : undefined,
+        settings: Object.keys(settings).length > 0 ? (settings as TeamSettings) : undefined,
       });
       
       await loadTeams();
