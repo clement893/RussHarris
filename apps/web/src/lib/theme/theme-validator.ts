@@ -4,6 +4,7 @@
  */
 
 import { getContrastIssues, ContrastIssue } from './contrast-utils';
+import { logger } from '@/lib/logger';
 
 /**
  * Color validation result

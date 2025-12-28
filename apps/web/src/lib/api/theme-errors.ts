@@ -4,6 +4,7 @@
  */
 
 import { AppError } from '@/lib/errors/AppError';
+import { logger } from '@/lib/logger';
 
 export interface ThemeValidationErrorData {
   type: 'color_format' | 'contrast' | 'unknown';
@@ -83,7 +84,7 @@ export function parseThemeValidationErrors(error: Error): ThemeValidationErrorDa
   }
   
   // Debug: log the message to help diagnose issues (always log in production for debugging)
-  console.log('[parseThemeValidationErrors] Parsing error:', {
+  logger.debug('[parseThemeValidationErrors] Parsing error', {
     message,
     errorMessage: error.message,
     hasDetails: error instanceof AppError && !!error.details,

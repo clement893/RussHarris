@@ -15,6 +15,7 @@ import { Card, Button, Alert } from '@/components/ui';
 import type { Theme, ThemeConfig } from '@modele/types';
 import type { ThemeFormData } from '../types';
 import { X, Save } from 'lucide-react';
+import { logger } from '@/lib/logger';
 
 interface ThemeEditorProps {
   theme: Theme | null;
@@ -151,7 +152,9 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
       let errorMessage = 'Erreur lors de la sauvegarde';
       
       // Log error for debugging
-      console.error('[ThemeEditor] Save error:', err);
+      logger.error('[ThemeEditor] Save error', err instanceof Error ? err : new Error(String(err)), {
+        context: 'ThemeEditor.save',
+      });
       
       if (err instanceof Error) {
         errorMessage = err.message;
@@ -161,14 +164,14 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
         if (err.name === 'ThemeValidationError' || err.constructor.name === 'ThemeValidationError') {
           // The error message should already contain formatted validation errors
           errorMessage = err.message;
-          console.log('[ThemeEditor] ThemeValidationError message:', errorMessage);
+          logger.debug('[ThemeEditor] ThemeValidationError message', { message: errorMessage });
         } else if (err.message.includes('Validation failed') || err.message.includes('422') || err.message.includes('Color format') || err.message.includes('contrast')) {
           // Try to extract more details from the error
           errorMessage = err.message || 'Erreur de validation. Vérifiez les formats de couleur et les ratios de contraste.';
-          console.log('[ThemeEditor] Validation error message:', errorMessage);
+          logger.debug('[ThemeEditor] Validation error message', { message: errorMessage });
         } else {
           // For other errors, try to extract more info
-          console.log('[ThemeEditor] Other error:', {
+          logger.debug('[ThemeEditor] Other error', {
             message: err.message,
             name: err.name,
             constructor: err.constructor.name,
@@ -176,7 +179,7 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
           });
         }
       } else {
-        console.error('[ThemeEditor] Unknown error type:', err);
+        logger.error('[ThemeEditor] Unknown error type', new Error(String(err)), { err });
       }
       
       setError(errorMessage);

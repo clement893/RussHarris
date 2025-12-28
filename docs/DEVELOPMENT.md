@@ -81,110 +81,129 @@ MODELE-NEXTJS-FULLSTACK/
 ### Développement
 
 ```bash
-# Démarrer frontend + backend
-pnpm dev:full
+# Démarrer le frontend (Next.js)
+pnpm dev
 
-# Frontend uniquement
-pnpm dev:frontend
+# Démarrer Storybook (depuis apps/web)
+cd apps/web && pnpm storybook
 
-# Backend uniquement
-pnpm dev:backend
+# Démarrer le backend (depuis backend/)
+cd backend && pnpm dev
 ```
 
-### Génération de Code
-
-```bash
-# Générer un composant
-pnpm generate:component ComponentName
-
-# Générer une page
-pnpm generate:page page-name
-
-# Générer une route API
-pnpm generate:api route-name
-
-# Générer les types TypeScript depuis Pydantic
-pnpm generate:types
-```
+**Note:** Pour démarrer frontend et backend simultanément, utilisez deux terminaux ou un gestionnaire de processus comme `concurrently`.
 
 ### Tests
 
 ```bash
-# Tous les tests
+# Tous les tests (frontend + backend)
 pnpm test
 
-# Tests frontend
-pnpm test:web
+# Tests frontend avec watch mode
+cd apps/web && pnpm test:watch
+
+# Tests E2E avec Playwright
+cd apps/web && pnpm test:e2e
+
+# Tests avec couverture
+cd apps/web && pnpm test:coverage
 
 # Tests backend
-pnpm test:backend
-
-# Avec couverture
-pnpm test:coverage
+cd backend && pnpm test
 ```
 
 ### Qualité de Code
 
 ```bash
-# Linter
+# Linter (récursif)
 pnpm lint
-pnpm lint:fix
 
-# Vérification TypeScript
+# Vérification TypeScript (récursif)
 pnpm type-check
 
 # Formater le code
 pnpm format
 ```
 
-### Base de Données
+### Sécurité
 
 ```bash
+# Audit de sécurité
+pnpm security:audit
+
+# Scan de sécurité complet
+pnpm security:check
+```
+
+### Validation d'Environnement
+
+```bash
+# Valider les variables d'environnement frontend
+pnpm validate:env:frontend
+
+# Valider les variables d'environnement backend
+pnpm validate:env:backend
+```
+
+### Base de Données (Backend)
+
+```bash
+cd backend
+
 # Créer une migration
-pnpm migrate create MigrationName
+pnpm migrate:create MigrationName
 
 # Appliquer les migrations
-pnpm migrate upgrade
+pnpm migrate:upgrade
 
 # Rollback
-pnpm migrate downgrade
+pnpm migrate:downgrade
+
+# Voir la version actuelle
+pnpm migrate:current
+
+# Voir l'historique
+pnpm migrate:history
+```
+
+### Analyse (Frontend)
+
+```bash
+cd apps/web
+
+# Analyse de bundle
+pnpm analyze
+
+# Analyse serveur uniquement
+pnpm analyze:server
+
+# Analyse navigateur uniquement
+pnpm analyze:browser
 ```
 
 ---
 
 ## 🎯 Génération de Code
 
-Le projet inclut des générateurs de code pour accélérer le développement :
+> **Note:** Les générateurs de code mentionnés dans la documentation ne sont pas encore implémentés dans le package.json racine. Pour l'instant, créez les fichiers manuellement en suivant la structure existante du projet.
 
-### Composant React
+### Structure des Composants
 
-```bash
-pnpm generate:component Button
-```
+Les composants React suivent cette structure :
+- `apps/web/src/components/[category]/ComponentName.tsx` - Composant principal
+- `apps/web/src/components/[category]/ComponentName.stories.tsx` - Storybook (optionnel)
+- `apps/web/src/components/[category]/__tests__/ComponentName.test.tsx` - Tests (optionnel)
 
-Génère :
-- `apps/web/src/components/ui/Button.tsx`
-- `apps/web/src/components/ui/Button.test.tsx`
-- `apps/web/src/components/ui/Button.stories.tsx`
+### Structure des Pages
 
-### Page Next.js
+Les pages Next.js suivent cette structure :
+- `apps/web/src/app/[locale]/[route]/page.tsx` - Page principale
 
-```bash
-pnpm generate:page dashboard
-```
+### Structure des Routes API
 
-Génère :
-- `apps/web/src/app/dashboard/page.tsx`
-
-### Route API
-
-```bash
-pnpm generate:api users
-```
-
-Génère :
-- `backend/app/api/v1/endpoints/users.py`
-- `backend/app/schemas/users.py`
+Les routes API backend suivent cette structure :
+- `backend/app/api/v1/endpoints/[endpoint].py` - Endpoint API
+- `backend/app/schemas/[schema].py` - Schémas Pydantic
 
 ---
 

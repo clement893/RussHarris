@@ -34,17 +34,17 @@ function ThemesPageContent() {
 
   const handleDeleteTheme = (theme: Theme) => {
     // Already handled in ThemeList with modal
-    console.log('Delete theme:', theme);
+    // No action needed here
   };
 
   const handleActivateTheme = (theme: Theme) => {
     // Already handled in ThemeList with modal
-    console.log('Activate theme:', theme);
+    // No action needed here
   };
 
   const handleDuplicateTheme = (theme: Theme) => {
     // Will be implemented in Batch 14
-    console.log('Duplicate theme:', theme);
+    // No action needed here
   };
 
   const handleSave = async (config: ThemeConfig, formData: ThemeFormData) => {

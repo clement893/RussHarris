@@ -232,7 +232,7 @@ export async function updateTheme(
     }
     
     // Log what we're sending for debugging
-    console.error('[updateTheme] Sending theme data:', {
+    logger.debug('[updateTheme] Sending theme data', {
       themeId,
       themeData: JSON.stringify(themeData, null, 2),
       config: themeData.config ? JSON.stringify(themeData.config, null, 2) : 'no config',
@@ -242,13 +242,15 @@ export async function updateTheme(
     const response = await apiClient.put<Theme>(`/v1/themes/${themeId}`, themeData);
     return extractFastApiData<Theme>(response);
   } catch (error) {
-    // Always log errors for debugging (use console.error for visibility)
-    console.error('[updateTheme] Error caught:', error);
+    // Always log errors for debugging
+    logger.error('[updateTheme] Error caught', error instanceof Error ? error : new Error(String(error)), {
+      context: 'updateTheme',
+    });
     
     // If it's an AxiosError, log the full response
     if (error && typeof error === 'object' && 'response' in error) {
       const axiosError = error as any;
-      console.error('[updateTheme] Axios error response:', {
+      logger.error('[updateTheme] Axios error response', new Error('Axios error'), {
         status: axiosError.response?.status,
         data: axiosError.response?.data,
         fullResponse: JSON.stringify(axiosError.response?.data, null, 2),
@@ -256,11 +258,10 @@ export async function updateTheme(
     }
     
     const parsed = parseThemeError(error);
-    console.error('[updateTheme] Parsed error:', {
+    logger.error('[updateTheme] Parsed error', parsed.originalError, {
       isValidationError: parsed.isValidationError,
       message: parsed.message,
       validationErrors: parsed.validationErrors,
-      originalError: parsed.originalError,
     });
     
     if (parsed.isValidationError) {
@@ -289,7 +290,9 @@ export async function updateTheme(
           : 'Erreur de validation. Vérifiez les formats de couleur et les ratios de contraste.';
       }
       
-      console.error('[updateTheme] Throwing ThemeValidationError with message:', errorMessage);
+      logger.error('[updateTheme] Throwing ThemeValidationError', new Error(errorMessage), {
+        message: errorMessage,
+      });
       throw new ThemeValidationError(parsed, errorMessage);
     }
     throw error;

@@ -5,6 +5,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { z } from 'zod';
+import { logger } from '@/lib/logger';
 
 export interface FormField<T> {
   name: keyof T;
@@ -114,7 +115,7 @@ export function useForm<T extends Record<string, unknown>>(
       // Fallback for any unexpected errors - this should never happen with safeParse
       // but we catch it just in case
       if (error instanceof Error) {
-        console.error('Unexpected validation error:', error.message);
+        logger.error('Unexpected validation error', error);
       }
       return {};
     }
@@ -131,7 +132,7 @@ export function useForm<T extends Record<string, unknown>>(
       return Object.keys(validationErrors).length === 0;
     } catch (error) {
       // Fallback to false if validation fails unexpectedly
-      console.error('Error computing isValid:', error);
+      logger.error('Error computing isValid', error instanceof Error ? error : new Error(String(error)));
       return false;
     }
   }, [validateAll, validationSchema, errors]);

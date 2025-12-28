@@ -21,6 +21,7 @@ import {
 } from './AppError';
 import { ErrorCode, type ApiErrorResponse } from './types';
 import { captureException } from '@/lib/sentry/client';
+import { logger } from '@/lib/logger';
 
 /**
  * Convert HTTP status code to ErrorCode
@@ -134,7 +135,7 @@ export function handleApiError(error: unknown): AppError {
       if (validationMessages.length > 0) {
         // Use the validation messages
         const message = validationMessages.join('\n');
-        console.error('[handleApiError] Extracted messages from FastAPI detail format:', message);
+        logger.debug('[handleApiError] Extracted messages from FastAPI detail format', { message });
         
         return new ValidationError(
           message,
@@ -212,7 +213,7 @@ export function handleApiError(error: unknown): AppError {
       details.validationErrors = validationErrors;
       
       // Debug logging to help diagnose issues (always log, even in production for debugging)
-      console.error('[handleApiError] Validation errors received:', {
+      logger.error('[handleApiError] Validation errors received', new Error('Validation error'), {
         validationErrors,
         responseData,
         statusCode,
@@ -230,17 +231,17 @@ export function handleApiError(error: unknown): AppError {
           })
           .filter((msg: any) => typeof msg === 'string' && msg.length > 0 && !msg.includes('Request failed'));
         
-        console.error('[handleApiError] Extracted validation messages:', validationMessages);
+        logger.debug('[handleApiError] Extracted validation messages', { validationMessages });
         
         // If we have detailed validation messages, ALWAYS use them instead of generic message
         if (validationMessages.length > 0) {
           // Join all messages - they contain the formatted error details from Pydantic
           // The message from Pydantic validator contains the full formatted error with all details
           message = validationMessages.join('\n');
-          console.error('[handleApiError] Using validation message:', message);
+          logger.debug('[handleApiError] Using validation message', { message });
         } else {
           // If no messages extracted, try to extract from the error object itself
-          console.warn('[handleApiError] No validation messages extracted, trying alternative extraction');
+          logger.warn('[handleApiError] No validation messages extracted, trying alternative extraction');
           const alternativeMessages = validationErrors
             .map((err: any) => {
               // Try to stringify the whole error object
@@ -255,7 +256,7 @@ export function handleApiError(error: unknown): AppError {
             message = alternativeMessages.join('\n');
           } else {
             // Last resort: log the full validationErrors for debugging
-            console.error('[handleApiError] No validation messages extracted from:', JSON.stringify(validationErrors, null, 2));
+            logger.error('[handleApiError] No validation messages extracted', new Error('Validation extraction failed'), { validationErrors: JSON.stringify(validationErrors, null, 2) });
             message = `Erreur de validation. Détails: ${JSON.stringify(validationErrors)}`;
           }
         }
@@ -268,7 +269,7 @@ export function handleApiError(error: unknown): AppError {
       // Check for FastAPI standard validation error format (detail array)
       // FastAPI returns 422 errors in format: { "detail": [{ "type": "...", "loc": [...], "msg": "..." }] }
       if (responseData?.detail && Array.isArray(responseData.detail)) {
-        console.error('[handleApiError] FastAPI standard validation format detected:', responseData);
+        logger.error('[handleApiError] FastAPI standard validation format detected', new Error('Validation error'), { responseData });
         
         // Convert FastAPI format to our format
         const validationErrors = responseData.detail.map((err: any) => ({
@@ -287,15 +288,15 @@ export function handleApiError(error: unknown): AppError {
         if (validationMessages.length > 0) {
           // Use the validation messages instead of generic message
           message = validationMessages.join('\n');
-          console.error('[handleApiError] Extracted messages from FastAPI detail format:', message);
+          logger.debug('[handleApiError] Extracted messages from FastAPI detail format', { message });
         } else {
           // If no messages extracted, log the full detail for debugging
-          console.error('[handleApiError] No validation messages extracted from FastAPI detail:', JSON.stringify(responseData.detail, null, 2));
+          logger.error('[handleApiError] No validation messages extracted from FastAPI detail', new Error('Validation extraction failed'), { detail: JSON.stringify(responseData.detail, null, 2) });
           message = `Erreur de validation. Détails: ${JSON.stringify(responseData.detail)}`;
         }
       } else {
         // If 422 but no validationErrors and no detail, log the full response for debugging
-        console.error('[handleApiError] 422 error but no validationErrors or detail:', {
+        logger.error('[handleApiError] 422 error but no validationErrors or detail', new Error('Validation error format unknown'), {
           responseData,
           fullResponse: JSON.stringify(responseData, null, 2),
         });

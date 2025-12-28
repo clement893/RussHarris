@@ -4,6 +4,7 @@
  */
 
 import type { ThemeConfig } from '@modele/types';
+import { logger } from '@/lib/logger';
 
 const THEME_CACHE_KEY = 'modele_theme_cache';
 const THEME_CACHE_VERSION = '1.0.0';
@@ -38,7 +39,7 @@ export function saveThemeToCache(config: ThemeConfig, themeId?: number): void {
     localStorage.setItem(THEME_CACHE_KEY, JSON.stringify(cached));
   } catch (error) {
     // Silently fail if localStorage is full or unavailable
-    console.warn('[Theme Cache] Failed to save theme to cache:', error);
+    logger.warn('[Theme Cache] Failed to save theme to cache', { error });
   }
 }
 
@@ -99,7 +100,7 @@ export function clearThemeCache(): void {
   try {
     localStorage.removeItem(THEME_CACHE_KEY);
   } catch (error) {
-    console.warn('[Theme Cache] Failed to clear theme cache:', error);
+    logger.warn('[Theme Cache] Failed to clear theme cache', { error });
   }
 }
 

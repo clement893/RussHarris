@@ -3,6 +3,8 @@
  * Functions to preload fonts and prevent FOUT (Flash of Unstyled Text)
  */
 
+import { logger } from '@/lib/logger';
+
 interface FontLoadOptions {
   display?: 'auto' | 'block' | 'swap' | 'fallback' | 'optional';
   preload?: boolean;

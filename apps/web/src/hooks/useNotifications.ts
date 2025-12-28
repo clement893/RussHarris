@@ -118,7 +118,7 @@ export function useNotifications(
         const errorMessage =
           err instanceof Error ? err.message : 'Failed to fetch notifications';
         setError(errorMessage);
-        console.error('Error fetching notifications:', err);
+        logger.error('Error fetching notifications', err instanceof Error ? err : new Error(String(err)));
       } finally {
         setLoading(false);
       }

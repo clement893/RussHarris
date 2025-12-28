@@ -41,7 +41,7 @@ export default function MyPage() {
 
 ## 📁 Component Organization
 
-Components are organized into **32 categories**:
+Components are organized into **50+ categories**:
 
 ### Core UI Components (`/ui`)
 Foundation components used throughout the application:

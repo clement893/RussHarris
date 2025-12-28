@@ -22,6 +22,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { notificationsAPI } from '@/lib/api/notifications';
+import { logger } from '@/lib/logger';
 
 interface UseNotificationCountOptions {
   /** Enable automatic polling (in milliseconds) */
@@ -63,7 +64,7 @@ export function useNotificationCount(
       const errorMessage =
         err instanceof Error ? err.message : 'Failed to fetch unread count';
       setError(errorMessage);
-      console.error('Error fetching unread count:', err);
+      logger.error('Error fetching unread count', err instanceof Error ? err : new Error(String(err)));
     } finally {
       setLoading(false);
     }

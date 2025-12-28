@@ -14,7 +14,7 @@ git clone https://github.com/clement893/MODELE-NEXTJS-FULLSTACK.git your-project
 cd your-project-name
 
 # 2. Run interactive setup
-pnpm quick-start
+node scripts/quick-start.js
 ```
 
 The `quick-start` script will:

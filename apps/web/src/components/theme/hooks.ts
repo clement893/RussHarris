@@ -10,6 +10,7 @@
 import { useState, useEffect } from 'react';
 import type { ThemeConfig } from './types';
 import { defaultTheme } from './presets';
+import { logger } from '@/lib/logger';
 
 export type { ThemeConfig };
 
@@ -31,21 +32,21 @@ export function useThemeManager() {
   const updateColor = (_key: keyof ThemeConfig, _value: string) => {
     // No-op: Theme colors are managed by API via GlobalThemeProvider
     if (process.env.NODE_ENV === 'development') {
-      console.warn('useThemeManager.updateColor is deprecated. Theme is managed by API via GlobalThemeProvider.');
+      logger.warn('useThemeManager.updateColor is deprecated. Theme is managed by API via GlobalThemeProvider.');
     }
   };
 
   const resetTheme = () => {
     // No-op: Theme reset should be done via API
     if (process.env.NODE_ENV === 'development') {
-      console.warn('useThemeManager.resetTheme is deprecated. Theme is managed by API via GlobalThemeProvider.');
+      logger.warn('useThemeManager.resetTheme is deprecated. Theme is managed by API via GlobalThemeProvider.');
     }
   };
 
   const updateTheme = (_newTheme: Partial<ThemeConfig>) => {
     // No-op: Theme updates should be done via API
     if (process.env.NODE_ENV === 'development') {
-      console.warn('useThemeManager.updateTheme is deprecated. Theme is managed by API via GlobalThemeProvider.');
+      logger.warn('useThemeManager.updateTheme is deprecated. Theme is managed by API via GlobalThemeProvider.');
     }
   };
 
@@ -53,7 +54,7 @@ export function useThemeManager() {
     theme: defaultTheme, // Return default for backward compatibility
     setTheme: () => {
       if (process.env.NODE_ENV === 'development') {
-        console.warn('useThemeManager.setTheme is deprecated. Theme is managed by API via GlobalThemeProvider.');
+        logger.warn('useThemeManager.setTheme is deprecated. Theme is managed by API via GlobalThemeProvider.');
       }
     },
     updateTheme,

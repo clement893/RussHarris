@@ -49,9 +49,9 @@ graph LR
 ### Step-by-Step Process
 
 1. **Modify SQLAlchemy Models** (`backend/app/models/`)
-2. **Generate Migration** (`pnpm migrate create MigrationName`)
+2. **Generate Migration** (`cd backend && pnpm migrate:create MigrationName`)
 3. **Review Migration File** (`backend/alembic/versions/`)
-4. **Test Locally** (`pnpm migrate upgrade`)
+4. **Test Locally** (`cd backend && pnpm migrate:upgrade`)
 5. **Commit to Git**
 6. **Deploy to Production**
 7. **Run Migrations** (automatically or manually)
@@ -65,11 +65,11 @@ graph LR
 **Recommended**: Let Alembic auto-detect changes from your models.
 
 ```bash
-# From project root
-pnpm migrate create AddUserTable
+# From backend directory
+cd backend
+pnpm migrate:create AddUserTable
 
 # Or directly with Alembic
-cd backend
 alembic revision --autogenerate -m "AddUserTable"
 ```
 
@@ -83,7 +83,7 @@ alembic revision --autogenerate -m "AddUserTable"
 For complex migrations or data transformations:
 
 ```bash
-pnpm migrate create ManualMigrationName
+cd backend && pnpm migrate:create ManualMigrationName
 ```
 
 Then edit the generated file in `backend/alembic/versions/`:
@@ -131,27 +131,27 @@ def downgrade():
 
 ```bash
 # View current revision
-pnpm migrate current
+cd backend && pnpm migrate:current
 
 # View migration history
-pnpm migrate history
+cd backend && pnpm migrate:history
 ```
 
 ### Apply All Pending Migrations
 
 ```bash
 # Apply all migrations up to head
-pnpm migrate upgrade
+cd backend && pnpm migrate:upgrade
 
 # Or specify target revision
-pnpm migrate upgrade abc123
+cd backend && pnpm migrate:upgrade abc123
 ```
 
 ### Apply Single Migration
 
 ```bash
 # Apply next migration only
-pnpm migrate upgrade +1
+cd backend && pnpm migrate:upgrade +1
 
 # Or use Alembic directly
 cd backend
@@ -194,27 +194,27 @@ Rollbacks allow you to undo migrations. **⚠️ Warning**: Data loss may occur 
 
 ```bash
 # Rollback last migration
-pnpm migrate downgrade
+cd backend && pnpm migrate:downgrade
 
 # Or explicitly
-pnpm migrate downgrade -1
+cd backend && pnpm migrate:downgrade -1
 ```
 
 #### Rollback Multiple Migrations
 
 ```bash
 # Rollback 3 migrations
-pnpm migrate downgrade -3
+cd backend && pnpm migrate:downgrade -3
 
 # Rollback to specific revision
-pnpm migrate downgrade abc123
+cd backend && pnpm migrate:downgrade abc123
 ```
 
 #### Rollback to Base (⚠️ DANGEROUS)
 
 ```bash
 # Rollback all migrations
-pnpm migrate downgrade base
+cd backend && pnpm migrate:downgrade base
 ```
 
 **⚠️ Warning**: This will remove all tables and data!
@@ -225,19 +225,19 @@ pnpm migrate downgrade base
 
 ```bash
 # 1. Identify failed migration
-pnpm migrate current
+cd backend && pnpm migrate:current
 
 # 2. Rollback failed migration
-pnpm migrate downgrade -1
+cd backend && pnpm migrate:downgrade -1
 
 # 3. Fix migration file
 # Edit backend/alembic/versions/xxx_failed_migration.py
 
 # 4. Test locally
-pnpm migrate upgrade
+cd backend && pnpm migrate:upgrade
 
 # 5. Redeploy and apply
-pnpm migrate upgrade
+cd backend && pnpm migrate:upgrade
 ```
 
 #### Scenario 2: Data Corruption After Migration
@@ -247,7 +247,7 @@ pnpm migrate upgrade
 pg_dump $DATABASE_URL > backup.sql
 
 # 2. Rollback migration
-pnpm migrate downgrade -1
+cd backend && pnpm migrate:downgrade -1
 
 # 3. Restore data if needed
 psql $DATABASE_URL < backup.sql
@@ -259,15 +259,15 @@ psql $DATABASE_URL < backup.sql
 
 ```bash
 # 1. Rollback to previous stable version
-pnpm migrate downgrade stable_revision_id
+cd backend && pnpm migrate:downgrade stable_revision_id
 
 # 2. Fix issues in code/migration
 
 # 3. Create new migration or fix existing
-pnpm migrate create FixIssue
+cd backend && pnpm migrate:create FixIssue
 
 # 4. Apply fixed migration
-pnpm migrate upgrade
+cd backend && pnpm migrate:upgrade
 ```
 
 ### Safe Rollback Checklist
@@ -411,13 +411,13 @@ depends_on = ('abc123', 'xyz789')  # Multiple dependencies
 
 ```bash
 # Test upgrade
-pnpm migrate upgrade head
+cd backend && pnpm migrate:upgrade head
 
 # Test downgrade
-pnpm migrate downgrade -1
+cd backend && pnpm migrate:downgrade -1
 
 # Test upgrade again
-pnpm migrate upgrade head
+cd backend && pnpm migrate:upgrade head
 
 # Verify schema
 psql $DATABASE_URL -c "\d users"
@@ -444,7 +444,7 @@ alembic merge -m "Merge heads" head1 head2
 **Solution**:
 ```bash
 # Check migration history
-pnpm migrate history
+cd backend && pnpm migrate:history
 
 # Verify migration file exists
 ls backend/alembic/versions/
@@ -459,13 +459,13 @@ ls backend/alembic/versions/
 **Solution**:
 ```bash
 # Check current revision
-pnpm migrate current
+cd backend && pnpm migrate:current
 
 # Stamp database to match code
-pnpm migrate stamp head
+cd backend && alembic stamp head
 
 # Or create new migration to sync
-pnpm migrate create SyncSchema
+cd backend && pnpm migrate:create SyncSchema
 ```
 
 ### Migration Fails Midway
@@ -475,18 +475,18 @@ pnpm migrate create SyncSchema
 **Solution**:
 ```bash
 # 1. Check current state
-pnpm migrate current
+cd backend && pnpm migrate:current
 
 # 2. Manually fix database if needed
 psql $DATABASE_URL
 
 # 3. Stamp to correct revision
-pnpm migrate stamp revision_id
+cd backend && alembic stamp revision_id
 
 # 4. Continue or rollback
-pnpm migrate upgrade
+cd backend && pnpm migrate:upgrade
 # or
-pnpm migrate downgrade -1
+cd backend && pnpm migrate:downgrade -1
 ```
 
 ### Foreign Key Violations
@@ -523,24 +523,24 @@ def downgrade():
 
 ```bash
 # Create migration
-pnpm migrate create MigrationName
+cd backend && pnpm migrate:create MigrationName
 
 # Apply migrations
-pnpm migrate upgrade          # Apply all
-pnpm migrate upgrade +1      # Apply one
-pnpm migrate upgrade abc123  # Apply to revision
+cd backend && pnpm migrate:upgrade          # Apply all
+cd backend && pnpm migrate:upgrade +1      # Apply one
+cd backend && pnpm migrate:upgrade abc123  # Apply to revision
 
 # Rollback migrations
-pnpm migrate downgrade       # Rollback one
-pnpm migrate downgrade -3    # Rollback three
-pnpm migrate downgrade abc123 # Rollback to revision
+cd backend && pnpm migrate:downgrade       # Rollback one
+cd backend && pnpm migrate:downgrade -3    # Rollback three
+cd backend && pnpm migrate:downgrade abc123 # Rollback to revision
 
 # Check status
-pnpm migrate current         # Current revision
-pnpm migrate history         # Migration history
+cd backend && pnpm migrate:current         # Current revision
+cd backend && pnpm migrate:history         # Migration history
 
 # Stamp database
-pnpm migrate stamp abc123    # Mark database at revision
+cd backend && alembic stamp abc123    # Mark database at revision
 ```
 
 ### Alembic Direct Commands

@@ -12,8 +12,8 @@
 
 ```
 1. Edit Model      → backend/app/models/your_model.py
-2. Create Migration → pnpm migrate create MigrationName
-3. Test Locally    → pnpm migrate upgrade
+2. Create Migration → cd backend && pnpm migrate:create MigrationName
+3. Test Locally    → cd backend && pnpm migrate:upgrade
 4. Push to Git     → git push
 5. Auto-Deploy     → Railway runs migrations automatically
 ```
@@ -53,7 +53,8 @@ from app.models import product  # noqa: F401
 
 **4. Create Migration:**
 ```bash
-pnpm migrate create AddProductsTable
+cd backend
+pnpm migrate:create AddProductsTable
 ```
 
 **5. Review & Test:**
@@ -62,7 +63,7 @@ pnpm migrate create AddProductsTable
 cat backend/alembic/versions/xxx_add_products_table.py
 
 # Test locally
-pnpm migrate upgrade
+pnpm migrate:upgrade
 ```
 
 **6. Deploy:**
@@ -88,7 +89,7 @@ class User(Base):
 
 **2. Create Migration:**
 ```bash
-pnpm migrate create AddBioToUsers
+cd backend && pnpm migrate:create AddBioToUsers
 ```
 
 **3. Deploy:**
@@ -102,19 +103,19 @@ git push
 
 ```bash
 # Create migration (auto-detect changes)
-pnpm migrate create MigrationName
+cd backend && pnpm migrate:create MigrationName
 
 # Apply migrations
-pnpm migrate upgrade
+cd backend && pnpm migrate:upgrade
 
 # Rollback one migration
-pnpm migrate downgrade
+cd backend && pnpm migrate:downgrade
 
 # Check current status
-pnpm migrate current
+cd backend && pnpm migrate:current
 
 # View migration history
-pnpm migrate history
+cd backend && pnpm migrate:history
 ```
 
 ---

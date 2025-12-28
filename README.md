@@ -20,7 +20,7 @@ A production-ready, comprehensive full-stack template for building modern SaaS a
 ### 🎨 UI & Styling
 - ✅ **Tailwind CSS** - Utility-first CSS framework
 - ✅ **270+ Components** - Complete component library (96 UI components + 171 feature components)
-- ✅ **32 Component Categories** - Organized by feature (UI, Auth, Billing, Analytics, Feature Flags, Preferences, etc.)
+- ✅ **50+ Component Categories** - Organized by feature (UI, Auth, Billing, Analytics, Feature Flags, Preferences, etc.)
 - ✅ **Dark Mode** - Built-in theme support with persistence
 - ✅ **Theme System** - Customizable color palettes and presets
 - ✅ **Responsive Design** - Mobile-first, accessible components
@@ -80,7 +80,7 @@ A production-ready, comprehensive full-stack template for building modern SaaS a
 ```bash
 git clone https://github.com/clement893/MODELE-NEXTJS-FULLSTACK.git your-project-name
 cd your-project-name
-pnpm quick-start
+node scripts/quick-start.js
 ```
 
 The interactive script will guide you through:
@@ -142,7 +142,7 @@ MODELE-NEXTJS-FULLSTACK/
 │       │   │   ├── components/   # Component showcase pages
 │       │   │   ├── examples/    # SaaS example pages
 │       │   │   └── ...
-│       │   ├── components/       # React components (255+ components)
+│       │   ├── components/       # React components (270+ components)
 │       │   │   ├── ui/          # UI component library (96 components)
 │       │   │   ├── auth/        # Authentication components
 │       │   │   ├── billing/     # Billing and subscription components
@@ -187,54 +187,68 @@ MODELE-NEXTJS-FULLSTACK/
 
 ### Development
 ```bash
-pnpm dev              # Start all development servers (frontend + backend)
-pnpm dev:frontend     # Frontend only
-pnpm dev:backend      # Backend only
-pnpm storybook        # Start Storybook for component development
+pnpm dev              # Start frontend development server (Next.js)
+pnpm storybook        # Start Storybook for component development (from apps/web)
 ```
+
+**Note:** Backend runs separately. See [Development Guide](./docs/DEVELOPMENT.md) for running both frontend and backend.
 
 ### Build
 ```bash
-pnpm build            # Build all packages
-pnpm build:web        # Build frontend only
-pnpm build:optimized  # Optimized production build
+pnpm build            # Build frontend application
 ```
 
 ### Testing
 ```bash
-pnpm test             # Run all tests
-pnpm test:watch       # Watch mode
-pnpm test:e2e         # E2E tests with Playwright
-pnpm test:coverage    # Coverage report
+pnpm test             # Run all tests (frontend + backend)
+pnpm test:watch       # Watch mode (from apps/web)
+pnpm test:e2e         # E2E tests with Playwright (from apps/web)
+pnpm test:coverage    # Coverage report (from apps/web)
 ```
 
 ### Code Quality
 ```bash
-pnpm lint             # Lint code
-pnpm lint:fix         # Auto-fix linting issues
+pnpm lint             # Lint code (recursive)
 pnpm format           # Format with Prettier
-pnpm type-check       # TypeScript type checking
-pnpm check            # Run all checks (lint + format + type-check)
+pnpm type-check       # TypeScript type checking (recursive)
 ```
 
-### Code Generation
+### Security
 ```bash
-pnpm generate:component ComponentName    # Generate React component
-pnpm generate:page page-name              # Generate Next.js page
-pnpm generate:api route-name              # Generate API route
-pnpm generate:types                       # Generate TypeScript types from Pydantic
+pnpm security:audit   # Security audit (npm audit + Python safety)
+pnpm security:check   # Full security scan
 ```
 
-### Database
+### API Connection Testing
 ```bash
-pnpm migrate          # Run database migrations
-pnpm seed             # Seed database with sample data
+pnpm api:check        # Check API connections
+pnpm api:check:detailed  # Detailed API connection check
+pnpm api:report       # Generate API connection report
 ```
 
-### Analysis
+### Environment Validation
 ```bash
-pnpm analyze         # Bundle size analysis
-pnpm audit:security  # Security audit
+pnpm validate:env           # Validate frontend environment
+pnpm validate:env:backend  # Validate backend environment
+pnpm validate:env:frontend # Validate frontend environment
+```
+
+### Database Migrations (Backend)
+```bash
+cd backend
+pnpm migrate:create    # Create a new migration
+pnpm migrate:upgrade   # Apply migrations
+pnpm migrate:downgrade # Rollback last migration
+pnpm migrate:current   # Show current migration version
+pnpm migrate:history   # Show migration history
+```
+
+### Analysis (Frontend)
+```bash
+cd apps/web
+pnpm analyze          # Bundle size analysis
+pnpm analyze:server   # Server bundle analysis
+pnpm analyze:browser  # Browser bundle analysis
 ```
 
 ---
@@ -564,7 +578,7 @@ Built with amazing open-source projects:
 
 - [ ] Enhanced i18n support (more locales)
 - [ ] Additional payment providers (PayPal, etc.)
-- [ ] Real-time features (WebSockets)
+- [x] Real-time features (WebSockets) - ✅ **Implemented**
 - [ ] Advanced analytics dashboard
 - [ ] More SaaS templates (CRM, ERP modules)
 - [ ] Enhanced testing utilities
