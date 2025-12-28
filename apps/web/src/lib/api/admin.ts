@@ -240,8 +240,15 @@ export async function checkSuperAdminStatus(
       const originalToken = TokenStorage.getToken();
       await TokenStorage.setToken(token); // Set token for this request
       try {
-        const response = await apiClient.get(`/v1/admin/check-superadmin/${encodeURIComponent(email)}`);
-        return response.data;
+        const response = await apiClient.get<{ is_superadmin: boolean }>(`/v1/admin/check-superadmin/${encodeURIComponent(email)}`);
+        // Handle both direct response and wrapped response.data
+        if (response && typeof response === 'object' && 'is_superadmin' in response) {
+          return { is_superadmin: (response as { is_superadmin: boolean }).is_superadmin };
+        }
+        if (response && typeof response === 'object' && 'data' in response && response.data && typeof response.data === 'object' && 'is_superadmin' in response.data) {
+          return { is_superadmin: (response.data as { is_superadmin: boolean }).is_superadmin };
+        }
+        throw new Error(`Unexpected response format: ${JSON.stringify(response)}`);
       } finally {
         // Restore original token if it was different
         if (originalToken) {
@@ -251,8 +258,15 @@ export async function checkSuperAdminStatus(
     }
     
     // Use apiClient which automatically handles token refresh on 401
-    const response = await apiClient.get(`/v1/admin/check-superadmin/${encodeURIComponent(email)}`);
-    return response.data;
+    const response = await apiClient.get<{ is_superadmin: boolean }>(`/v1/admin/check-superadmin/${encodeURIComponent(email)}`);
+    // Handle both direct response and wrapped response.data
+    if (response && typeof response === 'object' && 'is_superadmin' in response) {
+      return { is_superadmin: (response as { is_superadmin: boolean }).is_superadmin };
+    }
+    if (response && typeof response === 'object' && 'data' in response && response.data && typeof response.data === 'object' && 'is_superadmin' in response.data) {
+      return { is_superadmin: (response.data as { is_superadmin: boolean }).is_superadmin };
+    }
+    throw new Error(`Unexpected response format: ${JSON.stringify(response)}`);
   } catch (error: unknown) {
     // Handle network errors
     if (error instanceof Error && (error.name === 'AbortError' || error.message.includes('Failed to fetch'))) {
