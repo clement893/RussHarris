@@ -28,11 +28,13 @@ A production-ready, comprehensive full-stack template for building modern SaaS a
 
 ### 🔐 Authentication & Security
 - ✅ **JWT Authentication** - Secure token-based auth with httpOnly cookies
+- ✅ **Refresh Tokens** - Automatic token refresh for seamless user experience
 - ✅ **OAuth Integration** - Google, GitHub, Microsoft social login
 - ✅ **Multi-Factor Authentication (MFA)** - TOTP-based 2FA support
 - ✅ **Role-Based Access Control (RBAC)** - Flexible permission system
 - ✅ **Security Headers** - CSP, HSTS, X-Frame-Options, and more
 - ✅ **Input Sanitization** - XSS protection built-in
+- ✅ **User Data Transformation** - Centralized transformation between API and store formats
 
 ### 💼 SaaS Features
 - ✅ **Subscription Management** - Stripe integration ready
@@ -407,6 +409,7 @@ docker run -p 3000:3000 your-app
 - **[Architecture Documentation](./docs/ARCHITECTURE.md)** - System architecture, diagrams, and design decisions
 - **[Troubleshooting Guide](./docs/TROUBLESHOOTING.md)** - Common issues, solutions, and debugging tips
 - **[Quick Start Guide](./docs/QUICK_START.md)** - Quick reference for common tasks
+- **[Authentication Implementation](./docs/AUTHENTICATION_IMPLEMENTATION.md)** - Complete authentication system guide
 
 ### Database Documentation
 
