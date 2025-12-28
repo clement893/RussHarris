@@ -22,7 +22,7 @@ export interface ThemeEditorState {
   config: ThemeConfig;
   isEditing: boolean;
   isDirty: boolean;
-  activeTab: 'form' | 'json' | 'preview';
+  activeTab: 'form' | 'json' | 'preview' | 'fonts';
   errors: {
     json?: string;
     validation?: string[];

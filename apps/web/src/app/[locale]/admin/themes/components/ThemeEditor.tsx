@@ -11,6 +11,7 @@ import { ThemeTabs } from './ThemeTabs';
 import { ThemeForm } from './ThemeForm';
 import { JSONEditor } from './JSONEditor';
 import { ThemePreview } from './ThemePreview';
+import { FontUploader } from '@/components/theme/FontUploader';
 import { Card, Button, Alert } from '@/components/ui';
 import type { Theme, ThemeConfig } from '@modele/types';
 import type { ThemeFormData } from '../types';
@@ -51,6 +52,7 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
   const [error, setError] = useState<string | null>(null);
   const [jsonValidationError, setJsonValidationError] = useState<string | null>(null);
   const [isJSONValid, setIsJSONValid] = useState(true);
+  const [selectedFontIds, setSelectedFontIds] = useState<number[]>([]);
 
   useEffect(() => {
     if (theme) {
@@ -69,6 +71,12 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
         border_radius: (theme.config as any)?.border_radius || '',
         mode: (theme.config as any)?.mode || 'system',
       });
+      
+      // Extract font IDs from config if present
+      const fontFiles = (theme.config as any)?.typography?.fontFiles;
+      if (Array.isArray(fontFiles)) {
+        setSelectedFontIds(fontFiles);
+      }
     } else {
       // Reset form data for new theme
       setFormData({
@@ -85,6 +93,7 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
         border_radius: '',
         mode: 'system',
       });
+      setSelectedFontIds([]);
     }
   }, [theme]);
 
@@ -150,6 +159,11 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
         // Optional fields with fallbacks
         font_family: (state.config as any).font_family || (state.config as any).typography?.fontFamily || formData.font_family || undefined,
         border_radius: (state.config as any).border_radius || (state.config as any).borderRadius || formData.border_radius || undefined,
+        // Add typography with fontFiles if fonts are selected
+        typography: {
+          ...((state.config as any).typography || {}),
+          ...(selectedFontIds.length > 0 ? { fontFiles: selectedFontIds } : {}),
+        },
       } as ThemeConfig;
 
       await onSave(config, formData);
@@ -241,6 +255,14 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
               config={state.config}
               onChange={handleJSONChange}
               onValidationChange={handleJSONValidationChange}
+            />
+          )}
+
+          {state.activeTab === 'fonts' && (
+            <FontUploader
+              selectedFontIds={selectedFontIds}
+              onFontSelectionChange={setSelectedFontIds}
+              showSelection={true}
             />
           )}
 

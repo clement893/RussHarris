@@ -5,9 +5,9 @@
  * Manages tabs for theme editor (Form, JSON, Preview)
  */
 
-import { FileText, Code, Eye } from 'lucide-react';
+import { FileText, Code, Eye, Type } from 'lucide-react';
 
-export type ThemeTab = 'form' | 'json' | 'preview';
+export type ThemeTab = 'form' | 'json' | 'preview' | 'fonts';
 
 interface ThemeTabsProps {
   activeTab: ThemeTab;
@@ -18,6 +18,7 @@ export function ThemeTabs({ activeTab, onTabChange }: ThemeTabsProps) {
   const tabs: { id: ThemeTab; label: string; icon: React.ReactNode }[] = [
     { id: 'form', label: 'Formulaire', icon: <FileText className="w-4 h-4" /> },
     { id: 'json', label: 'JSON', icon: <Code className="w-4 h-4" /> },
+    { id: 'fonts', label: 'Polices', icon: <Type className="w-4 h-4" /> },
     { id: 'preview', label: 'Prévisualisation', icon: <Eye className="w-4 h-4" /> },
   ];
 

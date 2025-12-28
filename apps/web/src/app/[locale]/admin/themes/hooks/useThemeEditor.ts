@@ -13,7 +13,7 @@ export function useThemeEditor(initialTheme: Theme | null = null) {
     config: initialTheme?.config || ({} as ThemeConfig),
     isEditing: !!initialTheme,
     isDirty: false,
-    activeTab: 'form',
+    activeTab: 'form' as 'form' | 'json' | 'preview' | 'fonts',
     errors: {},
   });
 
@@ -25,7 +25,7 @@ export function useThemeEditor(initialTheme: Theme | null = null) {
     }));
   }, []);
 
-  const setActiveTab = useCallback((tab: 'form' | 'json' | 'preview') => {
+  const setActiveTab = useCallback((tab: 'form' | 'json' | 'preview' | 'fonts') => {
     setState((prev) => ({ ...prev, activeTab: tab }));
   }, []);
 
@@ -35,7 +35,7 @@ export function useThemeEditor(initialTheme: Theme | null = null) {
       config: initialTheme?.config || ({} as ThemeConfig),
       isEditing: !!initialTheme,
       isDirty: false,
-      activeTab: 'form',
+      activeTab: 'form' as 'form' | 'json' | 'preview' | 'fonts',
       errors: {},
     });
   }, [initialTheme]);
