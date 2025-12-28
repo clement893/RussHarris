@@ -60,28 +60,32 @@ export default function InvitationsPage() {
       const { invitationsAPI } = await import('@/lib/api');
       const response = await invitationsAPI.list();
       
-      if (response.data) {
-        setInvitations(response.data.map((invitation: {
+      if (response.data && response.data.invitations) {
+        setInvitations(response.data.invitations.map((invitation: {
           id: string | number;
           email: string;
-          role: string;
-          organization_id?: string;
-          organization_name?: string;
+          role?: string;
+          role_id?: number;
+          team_id?: number;
           status: string;
-          invited_by?: string;
-          invited_at: string;
+          invited_by_id?: number;
+          invited_by?: any;
           expires_at: string;
+          created_at: string;
+          team?: any;
         }) => ({
           id: String(invitation.id),
           email: invitation.email,
-          role: invitation.role,
-          organization_id: invitation.organization_id || '',
-          organization_name: invitation.organization_name || 'Unknown Organization',
+          role: invitation.role || (invitation.role_id ? String(invitation.role_id) : 'user'),
+          organization_id: invitation.team_id ? String(invitation.team_id) : '',
+          organization_name: invitation.team?.name || 'Unknown Organization',
           status: invitation.status as 'pending' | 'accepted' | 'expired' | 'cancelled',
-          invited_by: invitation.invited_by || 'Unknown',
-          invited_at: invitation.invited_at,
+          invited_by: invitation.invited_by?.email || invitation.invited_by_id ? String(invitation.invited_by_id) : 'Unknown',
+          invited_at: invitation.created_at,
           expires_at: invitation.expires_at,
         })));
+      } else {
+        setInvitations([]);
       }
     } catch (err: unknown) {
       // If API returns 404 or endpoint doesn't exist yet, use empty array
