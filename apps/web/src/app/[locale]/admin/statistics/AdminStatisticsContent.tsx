@@ -235,7 +235,7 @@ export default function AdminStatisticsContent() {
           const date = new Date();
           date.setDate(date.getDate() - i);
           const dateStr = date.toISOString().split('T')[0];
-          if (dateStr) {
+          if (dateStr && typeof dateStr === 'string') {
             dayCounts[dateStr] = 0;
           }
         }

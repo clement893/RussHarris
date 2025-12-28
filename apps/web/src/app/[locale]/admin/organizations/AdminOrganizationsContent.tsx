@@ -188,7 +188,7 @@ export default function AdminOrganizationsContent() {
         name: data.name.trim(),
         slug: slug,
         description: data.description || undefined,
-        settings: Object.keys(settings).length > 0 ? (settings as TeamSettings) : undefined,
+        settings: Object.keys(settings).length > 0 ? (settings as unknown as TeamSettings) : undefined,
       });
       
       await loadTeams();
@@ -236,7 +236,7 @@ export default function AdminOrganizationsContent() {
       await teamsAPI.updateTeam(Number(editingTeam.id), {
         name: data.name.trim(),
         description: data.description || undefined,
-        settings: Object.keys(settings).length > 0 ? (settings as TeamSettings) : undefined,
+        settings: Object.keys(settings).length > 0 ? (settings as unknown as TeamSettings) : undefined,
       });
       
       await loadTeams();

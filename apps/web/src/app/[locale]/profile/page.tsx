@@ -98,7 +98,7 @@ export default function ProfilePage() {
       if (data.email !== undefined) {
         updateData.email = sanitizeInput(data.email, { maxLength: 255, trim: true }).toLowerCase();
       }
-      if (data.avatar !== undefined && data.avatar !== user.avatar) {
+      if (data.avatar !== undefined && user && data.avatar !== user.avatar) {
         // Only update avatar if it's a URL (not a data URL from preview)
         if (data.avatar.startsWith('http://') || data.avatar.startsWith('https://')) {
           updateData.avatar = data.avatar;
