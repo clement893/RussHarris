@@ -5,6 +5,7 @@ Project Management Endpoints
 from typing import Annotated, List
 
 from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
+from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_
 
@@ -57,7 +58,12 @@ async def get_projects(
     result = await db.execute(query)
     projects = result.scalars().all()
     
-    return list(projects)
+    # Convert to JSONResponse for slowapi compatibility
+    project_schemas = [ProjectSchema.model_validate(project) for project in projects]
+    return JSONResponse(
+        content=[project.model_dump(mode='json') for project in project_schemas],
+        status_code=200
+    )
 
 
 @router.get("/{project_id}", response_model=ProjectSchema)

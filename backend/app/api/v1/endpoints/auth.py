@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 
 import httpx
 import bcrypt
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request, Response, status
 from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -23,6 +23,7 @@ from app.core.logging import logger
 from app.core.security_audit import SecurityAuditLogger, SecurityEventType
 from app.models.user import User
 from app.schemas.auth import Token, TokenData, UserCreate, UserResponse, RefreshTokenRequest
+from pydantic import BaseModel, EmailStr
 
 router = APIRouter()
 
@@ -233,31 +234,79 @@ async def register(
     await db.commit()
     await db.refresh(new_user)
 
-    # Convert to response model
-    user_response = UserResponse.model_validate(new_user)
+    # Convert to response model - convert datetime to ISO string format
+    user_dict = {
+        "id": new_user.id,
+        "email": new_user.email,
+        "first_name": new_user.first_name,
+        "last_name": new_user.last_name,
+        "is_active": new_user.is_active,
+        "created_at": new_user.created_at.isoformat() if new_user.created_at else "",
+        "updated_at": new_user.updated_at.isoformat() if new_user.updated_at else "",
+    }
+    user_response = UserResponse.model_validate(user_dict)
     return user_response
+
+
+class LoginRequest(BaseModel):
+    """Login request schema for JSON body"""
+    email: EmailStr
+    password: str
 
 
 @router.post("/login", response_model=Token)
 @rate_limit_decorator("5/minute")
 async def login(
     request: Request,
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> Token:
     """
-    Login endpoint
+    Login endpoint - accepts both form-data (OAuth2) and JSON
     
     Args:
-        form_data: OAuth2 password form data
+        request: FastAPI request object
         db: Database session
         
     Returns:
         Access token
     """
+    # Determine if request is JSON or form-data
+    content_type = request.headers.get("content-type", "")
+    
+    if "application/json" in content_type:
+        # JSON request - parse body manually
+        try:
+            body = await request.json()
+            login_data = LoginRequest(**body)
+            email = login_data.email
+            password = login_data.password
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"Invalid JSON data: {str(e)}",
+            )
+    else:
+        # Form-data request (OAuth2 standard) - parse form manually
+        try:
+            form = await request.form()
+            email = form.get("username")  # OAuth2 uses 'username' field for email
+            password = form.get("password")
+            if not email or not password:
+                raise HTTPException(
+                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                    detail="Form data required with 'username' and 'password' fields",
+                )
+        except HTTPException:
+            raise
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"Invalid form data: {str(e)}",
+            )
+    
     # Get user from database
     result = await db.execute(
-        User.__table__.select().where(User.email == form_data.username)
+        User.__table__.select().where(User.email == email)
     )
     user = result.scalar_one_or_none()
 
@@ -265,16 +314,16 @@ async def login(
     client_ip = request.client.host if request.client else None
     user_agent = request.headers.get("user-agent")
 
-    if not user or not verify_password(form_data.password, user.hashed_password):
+    if not user or not verify_password(password, user.hashed_password):
         # Log failed login attempt
         # Use separate session (db=None) to ensure log is saved even if exception is raised
-        logger.info(f"Login failure detected for email: {form_data.username}")
+        logger.info(f"Login failure detected for email: {email}")
         try:
             audit_log = await SecurityAuditLogger.log_authentication_event(
                 db=None,  # Create separate session to ensure persistence
                 event_type=SecurityEventType.LOGIN_FAILURE,
-                description=f"Failed login attempt for email: {form_data.username}",
-                user_email=form_data.username if user else None,
+                description=f"Failed login attempt for email: {email}",
+                user_email=email if user else None,
                 user_id=user.id if user else None,
                 ip_address=client_ip,
                 user_agent=user_agent,
@@ -291,7 +340,7 @@ async def login(
             # Don't fail the request if audit logging fails, but log prominently
             error_msg = (
                 f"❌ FAILED TO LOG LOGIN FAILURE EVENT: {e}\n"
-                f"   Email: {form_data.username}\n"
+                f"   Email: {email}\n"
                 f"   IP: {client_ip}\n"
                 f"   Error Type: {type(e).__name__}\n"
                 f"   Error Details: {str(e)}"

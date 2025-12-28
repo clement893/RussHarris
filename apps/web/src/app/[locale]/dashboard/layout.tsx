@@ -14,6 +14,7 @@ import Sidebar from '@/components/ui/Sidebar';
 import Button from '@/components/ui/Button';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
 import DashboardFooter from '@/components/layout/DashboardFooter';
+import NotificationBellConnected from '@/components/notifications/NotificationBellConnected';
 import { 
   LayoutDashboard, 
   FolderKanban, 
@@ -104,6 +105,7 @@ function DashboardLayoutContent({
             >
               <Home className="w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
+            <NotificationBellConnected />
             <ThemeToggleWithIcon />
             <Button
               variant="ghost"
@@ -191,6 +193,7 @@ function DashboardLayoutContent({
                   <Home className="w-5 h-5 mr-2" />
                   Accueil
                 </Button>
+                <NotificationBellConnected />
                 <ThemeToggleWithIcon />
                 <Button variant="danger" onClick={logout}>
                   <LogOut className="w-4 h-4 mr-2" />

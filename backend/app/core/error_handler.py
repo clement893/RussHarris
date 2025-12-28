@@ -120,7 +120,7 @@ async def validation_exception_handler(
             f"VALIDATION ERROR - Path: {request.url.path} | Field: {field_path} | Message: {error_msg} | Type: {error['type']}",
             context={
                 "field": field_path,
-                "message": error_msg,
+                "error_message": error_msg,  # Use 'error_message' instead of 'message' to avoid conflict
                 "code": error["type"],
                 "path": request.url.path,
                 "method": request.method,

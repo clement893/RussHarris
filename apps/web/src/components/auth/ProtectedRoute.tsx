@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, useRef, type ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
@@ -38,30 +38,67 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, isAuthenticated, token } = useAuthStore();
+  const { user, token } = useAuthStore();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
+  const checkingRef = useRef(false);
+  const lastUserRef = useRef(user);
+  const lastTokenRef = useRef(token);
 
   useEffect(() => {
+    // If user or token changed, reset authorization state
+    const userChanged = lastUserRef.current !== user;
+    const tokenChanged = lastTokenRef.current !== token;
+    
+    if (userChanged || tokenChanged) {
+      lastUserRef.current = user;
+      lastTokenRef.current = token;
+      setIsAuthorized(false);
+      setIsChecking(true);
+      checkingRef.current = false;
+    }
+
+    // Prevent multiple simultaneous checks
+    if (checkingRef.current) {
+      return;
+    }
+
+    // If already authorized and nothing changed, don't check again
+    if (isAuthorized && !userChanged && !tokenChanged) {
+      setIsChecking(false);
+      return;
+    }
+
     const checkAuth = async () => {
+      checkingRef.current = true;
+      setIsChecking(true);
+      
       // Wait a bit for Zustand persist to hydrate
       await new Promise(resolve => setTimeout(resolve, 100));
       
-      // Check authentication - also check token in sessionStorage as fallback
+      // Check authentication - use user and token directly instead of isAuthenticated function
       const tokenFromStorage = typeof window !== 'undefined' ? TokenStorage.getToken() : null;
-      const isAuth = isAuthenticated() || (tokenFromStorage && user);
+      const currentToken = token || tokenFromStorage;
+      const hasUser = !!user;
+      const hasToken = !!currentToken;
+      const isAuth = hasUser && hasToken;
       
       if (process.env.NODE_ENV === 'development') {
         logger.debug('ProtectedRoute auth check', {
-          isAuthenticated: isAuthenticated(),
           hasToken: !!tokenFromStorage,
+          hasTokenFromStore: !!token,
           hasUser: !!user,
-          isAuth
+          isAuth,
+          pathname,
+          isAuthorized
         });
       }
       
       if (!isAuth) {
         logger.debug('Not authenticated, redirecting to login', { pathname });
+        checkingRef.current = false;
+        setIsChecking(false);
+        setIsAuthorized(false);
         router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
         return;
       }
@@ -73,7 +110,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
         
         // If not admin, check if user is superadmin
         if (!isAdmin) {
-          const authToken = tokenFromStorage || token;
+          const authToken = currentToken;
           try {
             if (authToken) {
               logger.debug('Checking superadmin status', {
@@ -117,11 +154,17 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
                   }
                 } catch (retryErr: unknown) {
                   logger.warn('Retry also failed, redirecting to login', { error: retryErr instanceof Error ? retryErr.message : String(retryErr) });
+                  checkingRef.current = false;
+                  setIsChecking(false);
+                  setIsAuthorized(false);
                   router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}&error=unauthorized`);
                   return;
                 }
               } else {
                 logger.warn('No valid token available, redirecting to login');
+                checkingRef.current = false;
+                setIsChecking(false);
+                setIsAuthorized(false);
                 router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}&error=unauthorized`);
                 return;
               }
@@ -133,6 +176,9 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
         }
         
         if (!isAdmin) {
+          checkingRef.current = false;
+          setIsChecking(false);
+          setIsAuthorized(false);
           router.replace('/dashboard?error=unauthorized');
           return;
         }
@@ -140,13 +186,14 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
 
       // Authorize access
       setIsAuthorized(true);
+      checkingRef.current = false;
       setIsChecking(false);
     };
 
     // Check immediately
     checkAuth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.is_admin, requireAdmin, router, pathname]);
+  }, [user, token, requireAdmin, pathname]);
 
   // Show loader during verification
   if (isChecking || !isAuthorized) {

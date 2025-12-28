@@ -44,15 +44,31 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
     }
 
     try {
-      const parsed = JSON.parse(value) as ThemeConfig;
+      const parsed = JSON.parse(value);
       
       // Basic validation
       if (typeof parsed !== 'object' || parsed === null) {
         return { isValid: false, error: 'Le JSON doit être un objet', parsed: null };
       }
 
+      // Check if this is a full theme object (with name, display_name, config) or just a config
+      // If it's a full theme object, extract the config
+      let configObj: any;
+      let themeConfig: ThemeConfig;
+      
+      if ((parsed as any).config && typeof (parsed as any).config === 'object') {
+        // Full theme object: extract config
+        configObj = (parsed as any).config;
+        themeConfig = configObj as ThemeConfig;
+      } else {
+        // Just config object
+        configObj = parsed;
+        themeConfig = parsed as ThemeConfig;
+      }
+
       // Validate required color fields
       // Support both formats: primary_color or primary (short format)
+      // Also support nested config structure: config.primary, config.colors.primary, etc.
       const colorMappings = {
         primary: ['primary_color', 'primary'],
         secondary: ['secondary_color', 'secondary'],
@@ -71,22 +87,22 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
         
         // Check if any of the possible keys exists
         for (const key of possibleKeys) {
-          // Check in root level
-          if (parsed[key] && typeof parsed[key] === 'string') {
-            colorValue = parsed[key];
-            colorField = key;
+          // Check in root level of configObj
+          if (configObj[key] && typeof configObj[key] === 'string') {
+            colorValue = configObj[key];
+            colorField = (parsed as any).config ? `config.${key}` : key;
             break;
           }
           // Check in colors object
-          if ((parsed as any).colors && (parsed as any).colors[key] && typeof (parsed as any).colors[key] === 'string') {
-            colorValue = (parsed as any).colors[key];
-            colorField = `colors.${key}`;
+          if (configObj.colors && configObj.colors[key] && typeof configObj.colors[key] === 'string') {
+            colorValue = configObj.colors[key];
+            colorField = (parsed as any).config ? `config.colors.${key}` : `colors.${key}`;
             break;
           }
           // Check in colors object with colorName (e.g., colors.primary)
-          if ((parsed as any).colors && (parsed as any).colors[colorName] && typeof (parsed as any).colors[colorName] === 'string') {
-            colorValue = (parsed as any).colors[colorName];
-            colorField = `colors.${colorName}`;
+          if (configObj.colors && configObj.colors[colorName] && typeof configObj.colors[colorName] === 'string') {
+            colorValue = configObj.colors[colorName];
+            colorField = (parsed as any).config ? `config.colors.${colorName}` : `colors.${colorName}`;
             break;
           }
         }
@@ -98,10 +114,10 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
         }
       }
 
-      // Check for invalid color formats in other fields
+      // Check for invalid color formats in other fields (only in configObj, not in full theme object)
       const otherColorFields = ['font_family', 'border_radius'];
       for (const field of otherColorFields) {
-        const value = (parsed as any)[field];
+        const value = configObj[field];
         if (value && typeof value === 'string' && value.trim() !== '') {
           // These fields are optional, but if provided they should be valid strings
           // (not color validation needed for these)
@@ -128,7 +144,8 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
         };
       }
 
-      return { isValid: true, error: null, parsed };
+      // Return the config object (extracted if it was nested in a full theme object)
+      return { isValid: true, error: null, parsed: themeConfig };
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur de syntaxe JSON';
       return { isValid: false, error: errorMessage, parsed: null };
@@ -151,12 +168,26 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
     // If valid, update parent config
     if (validation.isValid && validation.parsed) {
       onChange(validation.parsed);
+      
+      // If the parsed JSON was a full theme object (with config property),
+      // update the textarea to show only the config for better UX
+      try {
+        const parsed = JSON.parse(value);
+        if (parsed.config && typeof parsed.config === 'object' && !parsed.config.name) {
+          // It's a full theme object, extract and display only config
+          const configOnly = JSON.stringify(parsed.config, null, 2);
+          setJsonValue(configOnly);
+        }
+      } catch {
+        // Ignore parsing errors, keep the original value
+      }
     }
   };
 
   const handleFormat = () => {
     const validation = validateJSON(jsonValue);
     if (validation.isValid && validation.parsed) {
+      // Format the config object (extracted if it was nested)
       const formatted = JSON.stringify(validation.parsed, null, 2);
       setJsonValue(formatted);
       setIsDirty(true);

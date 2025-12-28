@@ -75,13 +75,20 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
       const oldLanguage = preferences.language as string;
       
       if (newLanguage && newLanguage !== oldLanguage && newLanguage !== currentLocale) {
-        // Get path without locale prefix
-        const pathWithoutLocale = pathname.replace(/^\/(en|fr|ar|he)/, '') || '/';
+        // Get the actual URL pathname (includes locale prefix if present)
+        const actualPathname = typeof window !== 'undefined' ? window.location.pathname : pathname;
+        
+        // Get path without locale prefix from actual URL
+        // Remove any locale prefix (en, fr, ar, he) from the beginning
+        const pathWithoutLocale = actualPathname.replace(/^\/(en|fr|ar|he)(\/|$)/, '/') || '/';
+        // Ensure it starts with / and doesn't end with / unless it's root
+        const cleanPath = pathWithoutLocale === '/' ? '/' : pathWithoutLocale.replace(/\/$/, '') || '/';
         
         // Build new path with new locale
+        // English has no prefix, other locales have /{locale} prefix
         const newPath = newLanguage === 'en' 
-          ? pathWithoutLocale 
-          : `/${newLanguage}${pathWithoutLocale}`;
+          ? cleanPath 
+          : `/${newLanguage}${cleanPath === '/' ? '' : cleanPath}`;
         
         // Show success message and redirect
         showToast({

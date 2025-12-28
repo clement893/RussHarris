@@ -12,6 +12,7 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Sidebar from '@/components/ui/Sidebar';
 import Button from '@/components/ui/Button';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
+import NotificationBellConnected from '@/components/notifications/NotificationBellConnected';
 import { 
   LayoutDashboard, 
   FolderKanban, 
@@ -90,6 +91,7 @@ function DashboardLayoutContent({
             >
               <Home className="w-5 h-5" />
             </Button>
+            <NotificationBellConnected />
             <ThemeToggleWithIcon />
             <Button
               variant="ghost"
@@ -164,6 +166,7 @@ function DashboardLayoutContent({
                   <Home className="w-5 h-5 mr-2" />
                   Accueil
                 </Button>
+                <NotificationBellConnected />
                 <ThemeToggleWithIcon />
                 <Button variant="danger" onClick={handleLogout}>
                   <LogOut className="w-4 h-4 mr-2" />
