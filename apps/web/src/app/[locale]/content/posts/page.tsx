@@ -16,6 +16,8 @@ import { PageHeader, PageContainer } from '@/components/layout';
 import { Loading, Alert } from '@/components/ui';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { logger } from '@/lib/logger';
+import { handleApiError } from '@/lib/errors';
+import { postsAPI } from '@/lib/api/posts';
 
 export default function PostsManagementPage() {
   const router = useRouter();
@@ -38,46 +40,91 @@ export default function PostsManagementPage() {
     try {
       setIsLoading(true);
       setError(null);
-      // TODO: Load posts from API when backend endpoints are ready
-      // For now, use empty array
-      setPosts([]);
-      setIsLoading(false);
-    } catch (error) {
+      
+      const postsList = await postsAPI.list();
+      setPosts(postsList);
+    } catch (error: unknown) {
       logger.error('Failed to load posts', error instanceof Error ? error : new Error(String(error)));
-      setError(t('errors.loadFailed') || 'Failed to load posts. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || t('errors.loadFailed') || 'Failed to load posts. Please try again.');
+    } finally {
       setIsLoading(false);
     }
   };
 
   const handlePostCreate = async (postData: Omit<BlogPost, 'id' | 'created_at' | 'updated_at'>) => {
     try {
-      // TODO: Create post via API
-      logger.info('Creating post', postData);
+      setError(null);
+      await postsAPI.create({
+        title: String(postData.title || ''),
+        slug: String(postData.slug || ''),
+        excerpt: postData.excerpt ? String(postData.excerpt) : undefined,
+        content: String(postData.content || ''),
+        content_html: postData.content_html ? String(postData.content_html) : undefined,
+        status: (postData.status || 'draft') as 'draft' | 'published' | 'archived',
+        category_id: typeof postData.category_id === 'number' ? postData.category_id : undefined,
+        tags: Array.isArray(postData.tags) ? postData.tags.map(t => String(t)) : undefined,
+        meta_title: postData.meta_title ? String(postData.meta_title) : undefined,
+        meta_description: postData.meta_description ? String(postData.meta_description) : undefined,
+        meta_keywords: postData.meta_keywords ? String(postData.meta_keywords) : undefined,
+      });
       await loadPosts();
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('Failed to create post', error instanceof Error ? error : new Error(String(error)));
+      const appError = handleApiError(error);
+      setError(appError.message || 'Failed to create post. Please try again.');
       throw error;
     }
   };
 
   const handlePostUpdate = async (id: number, postData: Partial<BlogPost>) => {
     try {
-      // TODO: Update post via API
-      logger.info('Updating post', { id, postData });
+      setError(null);
+      const updateData: {
+        title?: string;
+        slug?: string;
+        excerpt?: string;
+        content?: string;
+        content_html?: string;
+        status?: 'draft' | 'published' | 'archived';
+        category_id?: number;
+        tags?: string[];
+        meta_title?: string;
+        meta_description?: string;
+        meta_keywords?: string;
+      } = {};
+      
+      if (postData.title !== undefined) updateData.title = String(postData.title);
+      if (postData.slug !== undefined) updateData.slug = String(postData.slug);
+      if (postData.excerpt !== undefined) updateData.excerpt = postData.excerpt ? String(postData.excerpt) : undefined;
+      if (postData.content !== undefined) updateData.content = String(postData.content);
+      if (postData.content_html !== undefined) updateData.content_html = postData.content_html ? String(postData.content_html) : undefined;
+      if (postData.status !== undefined) updateData.status = postData.status as 'draft' | 'published' | 'archived';
+      if (postData.category_id !== undefined) updateData.category_id = typeof postData.category_id === 'number' ? postData.category_id : undefined;
+      if (postData.tags !== undefined) updateData.tags = Array.isArray(postData.tags) ? postData.tags.map(t => String(t)) : undefined;
+      if (postData.meta_title !== undefined) updateData.meta_title = postData.meta_title ? String(postData.meta_title) : undefined;
+      if (postData.meta_description !== undefined) updateData.meta_description = postData.meta_description ? String(postData.meta_description) : undefined;
+      if (postData.meta_keywords !== undefined) updateData.meta_keywords = postData.meta_keywords ? String(postData.meta_keywords) : undefined;
+      
+      await postsAPI.update(id, updateData);
       await loadPosts();
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('Failed to update post', error instanceof Error ? error : new Error(String(error)));
+      const appError = handleApiError(error);
+      setError(appError.message || 'Failed to update post. Please try again.');
       throw error;
     }
   };
 
   const handlePostDelete = async (id: number) => {
     try {
-      // TODO: Delete post via API
-      logger.info('Deleting post', { id });
+      setError(null);
+      await postsAPI.delete(id);
       await loadPosts();
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('Failed to delete post', error instanceof Error ? error : new Error(String(error)));
+      const appError = handleApiError(error);
+      setError(appError.message || 'Failed to delete post. Please try again.');
       throw error;
     }
   };

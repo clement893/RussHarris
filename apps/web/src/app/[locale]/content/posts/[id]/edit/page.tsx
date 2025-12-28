@@ -16,6 +16,8 @@ import { Card, Input, Textarea, Button, Select, Alert } from '@/components/ui';
 import { Save, Eye, ArrowLeft } from 'lucide-react';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { logger } from '@/lib/logger';
+import { handleApiError } from '@/lib/errors';
+import { postsAPI } from '@/lib/api/posts';
 import { Link } from '@/i18n/routing';
 import type { BlogPost } from '@/components/content';
 
@@ -58,17 +60,33 @@ export default function BlogPostEditPage() {
       setIsLoading(true);
       setError(null);
       
-      // TODO: Replace with actual blog post API endpoint when available
-      // const response = await apiClient.get(`/v1/blog/posts/${postId}`);
-      // setPost(response.data);
+      const postIdNum = parseInt(postId, 10);
+      if (isNaN(postIdNum)) {
+        throw new Error('Invalid post ID');
+      }
       
-      setIsLoading(false);
-    } catch (error) {
+      const postData = await postsAPI.get(postIdNum);
+      setPost({
+        title: postData.title,
+        slug: postData.slug,
+        excerpt: postData.excerpt || '',
+        content: postData.content,
+        content_html: postData.content_html || '',
+        status: postData.status,
+        category_id: postData.category_id,
+        tags: postData.tags,
+        meta_title: postData.meta_title,
+        meta_description: postData.meta_description,
+        meta_keywords: postData.meta_keywords,
+      });
+    } catch (error: unknown) {
       logger.error('Failed to load blog post', error instanceof Error ? error : new Error(String(error)));
-      setError(t('errors.loadFailed') || 'Failed to load blog post. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || t('errors.loadFailed') || 'Failed to load blog post. Please try again.');
+    } finally {
       setIsLoading(false);
     }
-  }, [postId, t]);
+  }, [postId, isNew, t]);
 
   const handleSave = async (publish: boolean = false) => {
     try {
@@ -76,24 +94,36 @@ export default function BlogPostEditPage() {
       setError(null);
 
       const postData = {
-        ...post,
-        status: publish ? 'published' : post.status,
+        title: post.title || '',
+        slug: post.slug || generateSlug(post.title || ''),
+        excerpt: typeof post.excerpt === 'string' ? post.excerpt : undefined,
+        content: post.content || '',
+        content_html: typeof post.content_html === 'string' ? post.content_html : undefined,
+        status: publish ? 'published' : (post.status || 'draft'),
+        category_id: typeof post.category_id === 'number' ? post.category_id : undefined,
+        tags: Array.isArray(post.tags) ? post.tags : undefined,
+        meta_title: typeof post.meta_title === 'string' ? post.meta_title : undefined,
+        meta_description: typeof post.meta_description === 'string' ? post.meta_description : undefined,
+        meta_keywords: typeof post.meta_keywords === 'string' ? post.meta_keywords : undefined,
       };
 
       if (isNew) {
-        // TODO: Create post via API
-        // await apiClient.post('/v1/blog/posts', postData);
-        logger.info('Creating post', postData);
+        await postsAPI.create(postData);
+        logger.info('Post created successfully');
       } else {
-        // TODO: Update post via API
-        // await apiClient.put(`/v1/blog/posts/${postId}`, postData);
-        logger.info('Updating post', { id: postId, data: postData });
+        const postIdNum = parseInt(postId, 10);
+        if (isNaN(postIdNum)) {
+          throw new Error('Invalid post ID');
+        }
+        await postsAPI.update(postIdNum, postData);
+        logger.info('Post updated successfully');
       }
 
       router.push('/content/posts');
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('Failed to save blog post', error instanceof Error ? error : new Error(String(error)));
-      setError(t('errors.saveFailed') || 'Failed to save blog post. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || t('errors.saveFailed') || 'Failed to save blog post. Please try again.');
     } finally {
       setIsSaving(false);
     }

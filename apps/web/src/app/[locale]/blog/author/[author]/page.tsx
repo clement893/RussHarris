@@ -13,6 +13,8 @@ import { BlogListing } from '@/components/blog';
 import { PageHeader, PageContainer } from '@/components/layout';
 import { Alert } from '@/components/ui';
 import { logger } from '@/lib/logger';
+import { handleApiError } from '@/lib/errors';
+import { postsAPI } from '@/lib/api/posts';
 import type { BlogPost } from '@/components/content';
 
 export default function BlogAuthorArchivePage() {
@@ -40,17 +42,23 @@ export default function BlogAuthorArchivePage() {
       setIsLoading(true);
       setError(null);
       
-      // TODO: Replace with actual blog posts API endpoint when available
-      // Example: const response = await apiClient.get('/v1/blog/posts', { params: { author: authorSlug, page: currentPage, pageSize: 12, status: 'published' } });
+      const pageSize = 12;
+      const skip = (currentPage - 1) * pageSize;
       
-      // Placeholder: Empty array for now
-      setPosts([]);
-      setTotalPages(1);
+      const postsList = await postsAPI.list({
+        skip,
+        limit: pageSize,
+        status: 'published',
+        author_slug: authorSlug,
+      });
       
-      setIsLoading(false);
-    } catch (error) {
+      setPosts(postsList);
+      setTotalPages(Math.max(1, Math.ceil(postsList.length / pageSize)));
+    } catch (error: unknown) {
       logger.error('Failed to load blog posts by author', error instanceof Error ? error : new Error(String(error)));
-      setError(t('errors.loadFailed') || 'Failed to load blog posts. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || t('errors.loadFailed') || 'Failed to load blog posts. Please try again.');
+    } finally {
       setIsLoading(false);
     }
   }, [authorSlug, currentPage, t]);

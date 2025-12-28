@@ -13,6 +13,8 @@ import { BlogPost } from '@/components/blog';
 import { PageContainer } from '@/components/layout';
 import { Loading, Alert } from '@/components/ui';
 import { logger } from '@/lib/logger';
+import { handleApiError } from '@/lib/errors';
+import { postsAPI } from '@/lib/api/posts';
 import type { BlogPost as BlogPostType } from '@/components/content';
 
 export default function BlogPostPage() {
@@ -28,16 +30,22 @@ export default function BlogPostPage() {
       setIsLoading(true);
       setError(null);
       
-      // TODO: Replace with actual blog post API endpoint when available
-      // Example: const response = await apiClient.get(`/v1/blog/posts/${_postSlug}`);
+      const postData = await postsAPI.getBySlug(_postSlug);
       
-      // Placeholder: null for now
-      setPost(null);
+      // Only show published posts on public blog page
+      if (postData.status !== 'published') {
+        setPost(null);
+        setError('Post not found');
+        return;
+      }
       
-      setIsLoading(false);
-    } catch (error) {
+      setPost(postData);
+    } catch (error: unknown) {
       logger.error('Failed to load blog post', error instanceof Error ? error : new Error(String(error)));
-      setError(t('errors.loadFailed') || 'Failed to load blog post. Please try again.');
+      const appError = handleApiError(error);
+      setError(appError.message || t('errors.loadFailed') || 'Failed to load blog post. Please try again.');
+      setPost(null);
+    } finally {
       setIsLoading(false);
     }
   }, [t]);
