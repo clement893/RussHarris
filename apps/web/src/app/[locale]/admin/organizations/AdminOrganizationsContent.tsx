@@ -23,6 +23,7 @@ interface LocalTeamSettings {
   };
   timezone?: string;
   locale?: string;
+  [key: string]: string | number | boolean | null | undefined | { [key: string]: unknown };
 }
 
 interface Team extends Record<string, unknown> {
