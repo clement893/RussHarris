@@ -128,7 +128,20 @@ class ScheduledTaskService:
         elif task.recurrence == 'monthly':
             # Simple monthly: add 30 days
             next_scheduled = task.scheduled_at + timedelta(days=30)
-        # TODO: Handle cron expressions
+        elif task.recurrence == 'cron':
+            # Handle cron expressions
+            # NOTE: To fully implement cron expressions, install croniter:
+            # pip install croniter
+            # Then use: from croniter import croniter
+            # cron = croniter(task.recurrence_config.get('expression', '0 0 * * *'), task.scheduled_at)
+            # next_scheduled = cron.get_next(datetime)
+            # For now, we'll log a warning and skip scheduling
+            logger.warning(
+                f"Cron expressions not yet fully implemented for task {task.id}. "
+                "Install croniter and update this code to parse cron expressions."
+            )
+            # Fallback: don't schedule next occurrence
+            return
         
         if next_scheduled:
             # Create new task instance for next occurrence

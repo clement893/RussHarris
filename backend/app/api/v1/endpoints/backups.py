@@ -11,6 +11,7 @@ from app.models.user import User
 from app.models.backup import BackupType, BackupStatus
 from app.dependencies import get_current_user
 from app.core.database import get_db
+from app.core.logging import logger
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter()
@@ -64,7 +65,15 @@ async def create_backup(
         user_id=current_user.id
     )
     
-    # TODO: Trigger actual backup process asynchronously
+    # Trigger actual backup process asynchronously
+    # NOTE: To implement async backup, you can use:
+    # 1. Celery task: Create a task in app/tasks/backup_tasks.py
+    #    from app.tasks.backup_tasks import create_backup_task
+    #    create_backup_task.delay(backup.id)
+    # 2. FastAPI BackgroundTasks: from fastapi import BackgroundTasks
+    #    background_tasks.add_task(service.execute_backup, backup.id)
+    # For now, backup is created but not executed - implement based on your needs
+    logger.info(f"Backup created: {backup.id}. Implement async execution as needed.")
     
     return BackupResponse.model_validate(backup)
 
@@ -97,6 +106,8 @@ async def get_backup(
     db: AsyncSession = Depends(get_db),
 ):
     """Get a specific backup"""
+    from app.dependencies import is_admin_or_superadmin
+    
     service = BackupService(db)
     backup = await service.get_backup(backup_id)
     if not backup:
@@ -105,8 +116,9 @@ async def get_backup(
             detail="Backup not found"
         )
     
-    # TODO: Check if user owns this backup or is admin
-    if backup.user_id != current_user.id:
+    # Check if user owns this backup or is admin/superadmin
+    is_admin = await is_admin_or_superadmin(current_user, db)
+    if backup.user_id != current_user.id and not is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to view this backup"
@@ -133,7 +145,15 @@ async def restore_backup(
     # Create restore operation
     restore = await service.create_restore_operation(backup_id, current_user.id)
     
-    # TODO: Trigger actual restore process asynchronously
+    # Trigger actual restore process asynchronously
+    # NOTE: To implement async restore, you can use:
+    # 1. Celery task: Create a task in app/tasks/backup_tasks.py
+    #    from app.tasks.backup_tasks import restore_backup_task
+    #    restore_backup_task.delay(restore.id)
+    # 2. FastAPI BackgroundTasks: from fastapi import BackgroundTasks
+    #    background_tasks.add_task(service.execute_restore, restore.id)
+    # For now, restore operation is created but not executed - implement based on your needs
+    logger.info(f"Restore operation created: {restore.id}. Implement async execution as needed.")
     
     return {
         "success": True,

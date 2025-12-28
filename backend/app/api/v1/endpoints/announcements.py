@@ -112,9 +112,19 @@ async def get_announcements(
     """Get active announcements for the current user"""
     service = AnnouncementService(db)
     
+    from app.services.rbac_service import RBACService
+    from app.core.tenancy import get_user_tenant_id
+    
     user_id = current_user.id if current_user else None
-    user_team_id = None  # TODO: Get from user context
-    user_roles = None  # TODO: Get from user context
+    # Get user team_id from tenancy context
+    user_team_id = await get_user_tenant_id(current_user.id, db) if current_user else None
+    # Get user roles from RBAC service
+    if current_user:
+        rbac_service = RBACService(db)
+        user_roles_objects = await rbac_service.get_user_roles(current_user.id)
+        user_roles = [role.slug for role in user_roles_objects] if user_roles_objects else None
+    else:
+        user_roles = None
     
     announcements = await service.get_active_announcements(
         user_id=user_id,

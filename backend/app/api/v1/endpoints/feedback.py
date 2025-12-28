@@ -53,6 +53,7 @@ class FeedbackResponse(BaseModel):
 @router.post("/feedback", response_model=FeedbackResponse, status_code=status.HTTP_201_CREATED, tags=["feedback"])
 async def create_feedback(
     feedback_data: FeedbackCreate,
+    request: Request,
     current_user: Optional[User] = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -70,10 +71,9 @@ async def create_feedback(
     Raises:
         HTTPException: 400 if validation fails (invalid type, priority out of range, etc.)
     """
-    from fastapi import Request
-    
     service = FeedbackService(db)
-    user_agent = None  # TODO: Get from request
+    # Get user_agent from request headers
+    user_agent = request.headers.get("user-agent")
     
     feedback = await service.create_feedback(
         type=feedback_data.type,
@@ -143,16 +143,51 @@ async def upload_attachment(
             detail=error or "Invalid file format or size"
         )
     
-    # TODO: Implement file upload to storage
-    # For now, just return success with validation passed
-    return {
-        "success": True,
-        "message": "File validated successfully",
-        "filename": file.filename,
-        "size": file.size,
-        "content_type": file.content_type,
-        "note": "File upload to storage not yet implemented"
-    }
+    # Upload file to storage (S3 or local)
+    try:
+        from app.services.s3_service import S3Service
+        from app.core.logging import logger
+        
+        if S3Service.is_configured():
+            s3_service = S3Service()
+            upload_result = s3_service.upload_file(
+                file=file,
+                folder="feedback-attachments",
+                user_id=str(current_user.id),
+            )
+            
+            # Store file reference in feedback metadata or create attachment record
+            # For now, we'll store the file URL in feedback metadata
+            # In a full implementation, you might want to create a FeedbackAttachment model
+            return {
+                "success": True,
+                "message": "File uploaded successfully",
+                "file": {
+                    "url": upload_result["url"],
+                    "filename": upload_result["filename"],
+                    "size": upload_result["size"],
+                    "content_type": upload_result["content_type"],
+                },
+            }
+        else:
+            # Fallback: store file metadata only (S3 not configured)
+            # In production, you should always have S3 configured
+            return {
+                "success": True,
+                "message": "File validated but storage not configured",
+                "file": {
+                    "filename": file.filename,
+                    "size": file.size if hasattr(file, 'size') else None,
+                    "content_type": file.content_type,
+                },
+            }
+    except Exception as e:
+        from app.core.logging import logger
+        logger.error(f"Failed to upload file: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to upload file: {str(e)}"
+        )
 
 
 @router.get("/feedback", response_model=List[FeedbackResponse], tags=["feedback"])

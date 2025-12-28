@@ -44,10 +44,14 @@ async def get_onboarding_steps(
     db: AsyncSession = Depends(get_db),
 ):
     """Get active onboarding steps for the current user"""
+    from app.services.rbac_service import RBACService
+    
     service = OnboardingService(db)
-    # TODO: Get user roles
-    user_roles = None
-    steps = await service.get_active_steps(user_roles=user_roles)
+    rbac_service = RBACService(db)
+    user_roles = await rbac_service.get_user_roles(current_user.id)
+    # Convert roles to list of role slugs for the service
+    user_role_slugs = [role.slug for role in user_roles] if user_roles else None
+    steps = await service.get_active_steps(user_roles=user_role_slugs)
     return [OnboardingStepResponse.model_validate(s) for s in steps]
 
 
@@ -83,10 +87,14 @@ async def initialize_onboarding(
     db: AsyncSession = Depends(get_db),
 ):
     """Initialize onboarding for the current user"""
+    from app.services.rbac_service import RBACService
+    
     service = OnboardingService(db)
-    # TODO: Get user roles
-    user_roles = None
-    onboarding = await service.initialize_onboarding(current_user.id, user_roles=user_roles)
+    rbac_service = RBACService(db)
+    user_roles = await rbac_service.get_user_roles(current_user.id)
+    # Convert roles to list of role slugs for the service
+    user_role_slugs = [role.slug for role in user_roles] if user_roles else None
+    onboarding = await service.initialize_onboarding(current_user.id, user_roles=user_role_slugs)
     return {"success": True, "message": "Onboarding initialized"}
 
 

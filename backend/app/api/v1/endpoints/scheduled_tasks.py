@@ -112,6 +112,8 @@ async def get_task(
     db: AsyncSession = Depends(get_db),
 ):
     """Get a specific scheduled task"""
+    from app.dependencies import is_admin_or_superadmin
+    
     service = ScheduledTaskService(db)
     task = await service.get_task(task_id)
     if not task:
@@ -120,8 +122,9 @@ async def get_task(
             detail="Task not found"
         )
     
-    # TODO: Check if user owns this task or is admin
-    if task.user_id != current_user.id:
+    # Check if user owns this task or is admin/superadmin
+    is_admin = await is_admin_or_superadmin(current_user, db)
+    if task.user_id != current_user.id and not is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to view this task"
