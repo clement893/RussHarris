@@ -7,6 +7,30 @@ et ce projet adhère à [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [1.3.0] - 2025-01-28
+
+### Added
+- **API Endpoints Alignment** - Fixed API endpoint discrepancies between frontend and backend
+- **New Backend Endpoints** - Created 9 new endpoints (user preferences, tenancy config, media validation, tags CRUD, scheduled tasks toggle, pages DELETE by ID)
+- **API Client Standardization** - Converted 5 `fetch()` calls to `apiClient` for consistency
+- **API Path Normalization** - Fixed 15 files with duplicate API path prefixes
+
+### Changed
+- **API Calls** - Standardized all API calls to use `apiClient` instead of raw `fetch()`
+- **API Paths** - Removed duplicate prefixes from API paths (e.g., `/api/v1/announcements/announcements` → `/v1/announcements`)
+
+### Fixed
+- **API Endpoint Mismatches** - Fixed discrepancies between frontend API calls and backend endpoints
+- **Duplicate Path Prefixes** - Removed redundant prefixes in API paths across 15 files
+- **Missing Endpoints** - Created missing backend endpoints identified in audit
+
+### Documentation
+- **API_ENDPOINTS_FIX_PLAN.md** - Comprehensive plan for API endpoint fixes
+- **API_ENDPOINTS_AUDIT_REPORT.md** - Detailed audit report of all API endpoints
+- **PROGRESS_API_FIX_BATCH_*.md** - Progress reports for each batch (1-9)
+
+---
+
 ## [1.2.0] - 2025-01-28
 
 ### Added

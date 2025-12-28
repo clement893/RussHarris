@@ -243,6 +243,64 @@ Health check failures on Railway deployment causing deployment issues.
 
 ---
 
+## 🎯 API Endpoints Alignment (2025-01-28)
+
+**Objective:** Fix API endpoint discrepancies between frontend and backend
+
+### Changes
+- ✅ Created 9 new backend endpoints to match frontend requirements
+- ✅ Converted 5 `fetch()` calls to `apiClient` for consistency
+- ✅ Fixed 15 files with duplicate API path prefixes
+- ✅ Verified all authentication and RBAC endpoints
+
+### New Endpoints Created
+
+**Batch 3:**
+- GET `/v1/users/preferences/notifications`
+- PUT `/v1/users/preferences/notifications`
+- GET `/v1/admin/tenancy/config`
+- PUT `/v1/admin/tenancy/config`
+- POST `/v1/media/validate`
+
+**Batch 4:**
+- GET `/v1/tags/` (list tags)
+- PUT `/v1/tags/{id}` (update tag)
+- DELETE `/v1/tags/{id}` (delete tag)
+- PUT `/v1/scheduled-tasks/{task_id}/toggle`
+
+**Batch 6:**
+- DELETE `/v1/pages/id/{page_id}` (delete page by ID)
+
+### Files Modified
+
+**Frontend (Batch 1-2):**
+- `apps/web/src/app/[locale]/admin/settings/AdminSettingsContent.tsx` - Converted fetch to apiClient
+- `apps/web/src/app/[locale]/upload/page.tsx` - Converted fetch to apiClient
+- `apps/web/src/hooks/useCSRF.ts` - Commented out CSRF fetch (not needed with JWT)
+- `apps/web/src/lib/security/csrf.ts` - Commented out CSRF fetch
+- 15 component files - Fixed duplicate API path prefixes
+
+**Backend (Batch 3-6):**
+- `backend/app/api/v1/endpoints/user_preferences.py` - Added preference endpoints
+- `backend/app/api/v1/endpoints/admin.py` - Added tenancy config endpoints
+- `backend/app/api/v1/endpoints/media.py` - Added validation endpoint
+- `backend/app/api/v1/endpoints/tags.py` - Added tags CRUD endpoints
+- `backend/app/api/v1/endpoints/scheduled_tasks.py` - Added toggle endpoint
+- `backend/app/api/v1/endpoints/pages.py` - Added DELETE by ID endpoint
+
+### Impact
+- Consistent API usage across the codebase
+- Better error handling with centralized apiClient
+- Improved type safety with apiClient
+- All critical endpoints now available
+
+### Documentation
+- **API_ENDPOINTS_FIX_PLAN.md** - Comprehensive plan for API endpoint fixes
+- **API_ENDPOINTS_AUDIT_REPORT.md** - Detailed audit report
+- **PROGRESS_API_FIX_BATCH_*.md** - Progress reports for batches 1-9
+
+---
+
 ## 📊 Summary Statistics
 
 ### Code Quality

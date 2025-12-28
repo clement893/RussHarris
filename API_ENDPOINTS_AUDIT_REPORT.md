@@ -1,6 +1,53 @@
 # API Endpoints Audit Report
 
-Generated: 2025-12-28T18:13:21.440Z
+Generated: 2025-12-28T18:13:21.440Z  
+Last Updated: 2025-01-28
+
+---
+
+## 📋 Corrections Appliquées
+
+### Endpoints Créés (9 nouveaux endpoints)
+
+1. **User Preferences:**
+   - GET `/v1/users/preferences/notifications`
+   - PUT `/v1/users/preferences/notifications`
+
+2. **Admin/Tenancy:**
+   - GET `/v1/admin/tenancy/config`
+   - PUT `/v1/admin/tenancy/config`
+
+3. **Media:**
+   - POST `/v1/media/validate`
+
+4. **Tags:**
+   - GET `/v1/tags/` (list)
+   - PUT `/v1/tags/{id}` (update)
+   - DELETE `/v1/tags/{id}` (delete)
+
+5. **Scheduled Tasks:**
+   - PUT `/v1/scheduled-tasks/{task_id}/toggle`
+
+6. **Pages:**
+   - DELETE `/v1/pages/id/{page_id}` (delete by ID)
+
+### Corrections de Chemins (15 fichiers)
+
+- Suppression des préfixes dupliqués dans les chemins API
+- Exemples: `/api/v1/announcements/announcements` → `/v1/announcements`
+
+### Conversions fetch() → apiClient (5 appels)
+
+- `AdminSettingsContent.tsx` - PUT `/v1/users/me`
+- `UploadContent.tsx` - POST `/v1/media/validate`
+- Exemples dans `docs/page.tsx` - Commentés (code d'exemple)
+- `rateLimiter.ts` - Commentés (exemples dans commentaires)
+
+### Vérifications Effectuées
+
+- ✅ Tous les endpoints d'authentification vérifiés (Batch 5)
+- ✅ Tous les endpoints RBAC vérifiés (Batch 7)
+- ✅ Tous les endpoints DELETE vérifiés (Batch 6)
 
 ---
 

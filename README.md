@@ -85,6 +85,7 @@ This template has been continuously improved with the following enhancements:
 - ✅ **Backend TODOs Fixed** - Resolved critical backend TODOs (user roles, admin checks, file uploads)
 - ✅ **Health Checks Fixed** - Improved deployment reliability with better health check endpoints
 - ✅ **Hydration Issues Fixed** - Resolved frontend hydration problems with `useHydrated` hook
+- ✅ **API Endpoints Aligned** - Fixed API endpoint discrepancies between frontend and backend (9 new endpoints created, 5 fetch() calls converted to apiClient, 15 files with duplicate prefixes corrected)
 
 ### Code Quality Improvements
 
@@ -96,6 +97,17 @@ This template has been continuously improved with the following enhancements:
 - **Batch 7:** Added comprehensive frontend tests (error components, hooks)
 - **Batch 8:** Added comprehensive backend tests (endpoints, services)
 - **Batch 9:** Analyzed and documented migration chain
+
+### API Endpoints Improvements (2025-01-28)
+
+- **Batch 1:** Converted 5 `fetch()` calls to `apiClient` for consistency
+- **Batch 2:** Fixed 15 files with duplicate API path prefixes (e.g., `/api/v1/announcements/announcements` → `/v1/announcements`)
+- **Batch 3:** Created 5 critical backend endpoints (user preferences, tenancy config, media validation)
+- **Batch 4:** Created 4 backend endpoints (tags CRUD, scheduled tasks toggle)
+- **Batch 5:** Verified all authentication endpoints (all correct)
+- **Batch 6:** Added DELETE endpoint for pages by ID
+- **Batch 7:** Verified all RBAC endpoints (all correct)
+- **Batch 8:** Final verification and testing (277 endpoints total)
 
 See [TEMPLATE_UPDATES.md](./TEMPLATE_UPDATES.md) for detailed information about all improvements.
 
