@@ -40,8 +40,13 @@ export function PreferencesManager({ className = '' }: PreferencesManagerProps) 
       // So response is already the data, or response.data if wrapped
       const data = (response as any).data || response;
       if (data && typeof data === 'object') {
-        setPreferences(data);
-        setEditedPreferences(data);
+        // Normalize language preference key (could be 'language' or 'locale')
+        const normalizedData = { ...data };
+        if (data.locale && !data.language) {
+          normalizedData.language = data.locale;
+        }
+        setPreferences(normalizedData);
+        setEditedPreferences(normalizedData);
       }
     } catch (error) {
       logger.error('', 'Failed to fetch preferences:', error);
