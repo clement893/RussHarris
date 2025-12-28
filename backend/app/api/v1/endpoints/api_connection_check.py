@@ -245,10 +245,12 @@ async def check_backend_endpoints(
     
     result = await run_node_script("scripts/check-api-connections-backend.js")
     
-    if not result.get("success"):
-        # If script not found, return a helpful message instead of 500 error
+    # Check if script execution failed (not just non-zero exit code)
+    # The script may return non-zero exit code if it finds issues, but that's OK
+    if result.get("error") or (result.get("returncode") != 0 and not result.get("stdout")):
+        # If script not found or execution failed, return a helpful message
         error_msg = result.get('error', result.get('stderr', 'Unknown error'))
-        if "Script not found" in error_msg or "not found" in error_msg.lower():
+        if "Script not found" in error_msg or "not found" in error_msg.lower() or "ENOENT" in error_msg:
             return {
                 "success": False,
                 "error": "API connection check scripts are not available in this environment.",
@@ -264,8 +266,9 @@ async def check_backend_endpoints(
     output = result.get("stdout", "")
     
     # Parse the output to extract structured data
+    # The script may return non-zero exit code if it finds unregistered modules, but that's OK
     summary = {}
-    if "Summary:" in output:
+    if "Summary:" in output or "Registered modules:" in output or "Unregistered modules:" in output:
         import re
         registered_match = re.search(r"Registered modules: (\d+)", output)
         unregistered_match = re.search(r"Unregistered modules: (\d+)", output)
@@ -274,6 +277,11 @@ async def check_backend_endpoints(
             "registered": int(registered_match.group(1)) if registered_match else 0,
             "unregistered": int(unregistered_match.group(1)) if unregistered_match else 0,
         }
+    
+    # Also try to extract endpoint count if available
+    endpoints_match = re.search(r"Found (\d+) endpoints", output)
+    if endpoints_match:
+        summary["totalEndpoints"] = int(endpoints_match.group(1))
     
     return {
         "success": True,
