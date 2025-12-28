@@ -1,374 +1,267 @@
 # Notification System - Testing Guide
 
-## 📋 Vue d'Ensemble
+## 📋 Overview
 
-Ce guide décrit comment tester le système de notifications après chaque lot d'implémentation.
+This guide provides comprehensive testing instructions for the notification system.
 
----
+## 🧪 Testing Checklist
 
-## 🧪 Tests par Lot
+### Backend Tests
 
-### Batch 1: Modèle de Base de Données
+- [ ] Database migration runs successfully
+- [ ] Notification model creates correctly
+- [ ] NotificationService CRUD operations work
+- [ ] API endpoints return correct responses
+- [ ] Authentication required for all endpoints
+- [ ] Users can only access their own notifications
+- [ ] WebSocket connection works with authentication
+- [ ] Celery tasks create notifications correctly
 
-#### Test Migration
+### Frontend Tests
+
+- [ ] NotificationBell displays correctly
+- [ ] Badge shows correct unread count
+- [ ] Dropdown opens and closes correctly
+- [ ] NotificationCenter displays notifications
+- [ ] Mark as read works
+- [ ] Mark all as read works
+- [ ] Delete notification works
+- [ ] WebSocket receives new notifications
+- [ ] Filters work correctly
+- [ ] Pagination works correctly
+
+### Integration Tests
+
+- [ ] Create notification via API → appears in UI
+- [ ] Mark as read → badge count updates
+- [ ] WebSocket notification → appears instantly
+- [ ] Email notification → email sent (if configured)
+
+## 🚀 Quick Test
+
+### 1. Setup
+
 ```bash
+# Backend
 cd backend
-# Créer migration
-alembic revision --autogenerate -m "add_notifications_table"
-
-# Appliquer migration
 alembic upgrade head
+uvicorn app.main:app --reload
 
-# Vérifier dans la DB
-psql -d your_database -c "\d notifications"
+# Frontend (new terminal)
+cd apps/web
+npm run dev
 ```
 
-#### Test Modèle
-```python
-# Dans Python shell
-from app.core.database import SessionLocal
-from app.models.notification import Notification
-from app.models.user import User
+### 2. Create Test Notification
 
-db = SessionLocal()
-# Créer une notification de test
-user = db.query(User).first()
-notification = Notification(
-    user_id=user.id,
-    title="Test Notification",
-    message="This is a test",
-    notification_type="info"
-)
-db.add(notification)
-db.commit()
-print(f"Created notification: {notification.id}")
-```
-
-**Résultat attendu:** Notification créée avec succès, ID généré.
-
----
-
-### Batch 2: Schémas et Service
-
-#### Test Schémas
-```python
-from app.schemas.notification import NotificationCreate, NotificationResponse
-
-# Test création
-data = NotificationCreate(
-    title="Test",
-    message="Test message",
-    notification_type="info"
-)
-print(data.dict())
-
-# Test réponse
-response = NotificationResponse(
-    id=1,
-    user_id=1,
-    title="Test",
-    message="Test",
-    notification_type="info",
-    read=False,
-    created_at="2025-01-01T00:00:00Z"
-)
-print(response.dict())
-```
-
-#### Test Service
-```python
-from app.services.notification_service import NotificationService
-from app.core.database import SessionLocal
-
-db = SessionLocal()
-service = NotificationService(db)
-
-# Créer notification
-notification = service.create_notification(
-    user_id=1,
-    title="Test",
-    message="Test message",
-    notification_type="info"
-)
-print(f"Created: {notification.id}")
-
-# Récupérer notifications
-notifications = service.get_user_notifications(user_id=1)
-print(f"Count: {len(notifications)}")
-
-# Marquer comme lue
-service.mark_as_read(notification.id, user_id=1)
-print("Marked as read")
-```
-
-**Résultat attendu:** Toutes les opérations réussissent sans erreur.
-
----
-
-### Batch 3: API Endpoints
-
-#### Test avec curl
 ```bash
-# Obtenir token d'authentification d'abord
+# Get auth token first (login via frontend or API)
 TOKEN="your_jwt_token"
 
-# Lister les notifications
-curl -X GET "http://localhost:8000/api/v1/notifications" \
-  -H "Authorization: Bearer $TOKEN"
-
-# Obtenir le nombre de non lues
-curl -X GET "http://localhost:8000/api/v1/notifications/unread-count" \
-  -H "Authorization: Bearer $TOKEN"
-
-# Marquer comme lue
-curl -X PATCH "http://localhost:8000/api/v1/notifications/1/read" \
-  -H "Authorization: Bearer $TOKEN"
-
-# Marquer toutes comme lues
-curl -X PATCH "http://localhost:8000/api/v1/notifications/read-all" \
-  -H "Authorization: Bearer $TOKEN"
-
-# Supprimer
-curl -X DELETE "http://localhost:8000/api/v1/notifications/1" \
-  -H "Authorization: Bearer $TOKEN"
+curl -X POST http://localhost:8000/api/v1/notifications \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": 1,
+    "title": "Test Notification",
+    "message": "This is a test notification",
+    "notification_type": "info",
+    "action_url": "/dashboard",
+    "action_label": "Go to Dashboard"
+  }'
 ```
 
-#### Test avec Swagger UI
-1. Démarrer le serveur: `cd backend && uvicorn app.main:app --reload`
-2. Ouvrir `http://localhost:8000/docs`
-3. Tester chaque endpoint dans l'interface Swagger
+### 3. Verify in Frontend
 
-**Résultat attendu:** Tous les endpoints répondent correctement, codes HTTP appropriés.
+1. Login to application
+2. Check notification bell in header (should show badge)
+3. Click bell to see dropdown
+4. Navigate to `/profile/notifications-list` for full list
 
----
+### 4. Test WebSocket
 
-### Batch 4: Tasks Celery
+1. Open browser console
+2. Create notification via API
+3. Should see notification appear instantly (no refresh needed)
 
-#### Test Task
-```python
-from app.tasks.notification_tasks import send_notification_task
+## 📝 Manual Test Cases
 
-# Envoyer notification
-result = send_notification_task.delay(
-    user_id="1",
-    title="Test Task",
-    message="Test message from Celery",
-    notification_type="info",
-    email_notification=False
-)
+### Test Case 1: Create Notification
 
-# Attendre résultat
-print(result.get(timeout=10))
-```
+**Steps:**
+1. Login as user
+2. Create notification via API
+3. Check notification appears in bell dropdown
+4. Check notification appears in notification center
 
-#### Vérifier en DB
-```python
-from app.core.database import SessionLocal
-from app.models.notification import Notification
+**Expected:**
+- Notification appears immediately
+- Badge count increases
+- Notification shows correct type, title, message
 
-db = SessionLocal()
-notifications = db.query(Notification).filter_by(user_id=1).all()
-print(f"Notifications: {len(notifications)}")
-```
+### Test Case 2: Mark as Read
 
-**Résultat attendu:** Notification créée en DB après exécution de la task.
+**Steps:**
+1. Create unread notification
+2. Click "Mark as read" in dropdown
+3. Check badge count decreases
+4. Check notification shows as read in center
 
----
+**Expected:**
+- Badge count decreases
+- Notification marked as read
+- `read_at` timestamp set
 
-### Batch 5-6: Types TypeScript et API Client
+### Test Case 3: Mark All as Read
 
-#### Test TypeScript
-```bash
-cd apps/web
-npm run type-check
-```
+**Steps:**
+1. Create multiple unread notifications
+2. Click "Mark all as read"
+3. Check all notifications marked as read
+4. Check badge count is 0
 
-#### Test API Client (dans console navigateur)
-```typescript
-import { notificationsAPI } from '@/lib/api/notifications';
+**Expected:**
+- All notifications marked as read
+- Badge count is 0
+- All `read_at` timestamps set
 
-// Tester les fonctions
-const notifications = await notificationsAPI.getNotifications();
-console.log('Notifications:', notifications);
+### Test Case 4: Delete Notification
 
-const count = await notificationsAPI.getUnreadCount();
-console.log('Unread count:', count);
-```
+**Steps:**
+1. Create notification
+2. Click delete button
+3. Check notification removed from list
+4. Check badge count decreases
 
-**Résultat attendu:** Pas d'erreurs TypeScript, fonctions exportées correctement.
+**Expected:**
+- Notification removed from list
+- Badge count decreases
+- Notification deleted from database
 
----
+### Test Case 5: WebSocket Real-Time
 
-### Batch 7: Hook React
+**Steps:**
+1. Open application in browser
+2. Open browser console
+3. Create notification via API (different terminal)
+4. Check notification appears instantly
 
-#### Test Hook (dans composant de test)
-```tsx
-import { useNotifications } from '@/hooks/useNotifications';
+**Expected:**
+- Notification appears without page refresh
+- Badge count updates automatically
+- WebSocket connection logs visible in console
 
-function TestComponent() {
-  const { 
-    notifications, 
-    loading, 
-    error,
-    markAsRead,
-    markAllAsRead,
-    deleteNotification 
-  } = useNotifications();
+### Test Case 6: Filtering
 
-  return (
-    <div>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      <p>Count: {notifications.length}</p>
-    </div>
-  );
-}
-```
+**Steps:**
+1. Create notifications of different types
+2. Navigate to `/profile/notifications-list?filter=unread`
+3. Check only unread shown
+4. Navigate to `/profile/notifications-list?type=info`
+5. Check only info notifications shown
 
-**Résultat attendu:** Hook fonctionne, données chargées, pas d'erreurs.
+**Expected:**
+- Filters work correctly
+- URL params update correctly
+- Correct notifications displayed
 
----
+### Test Case 7: Pagination
 
-### Batch 8: WebSocket
+**Steps:**
+1. Create more than 100 notifications
+2. Navigate to notification center
+3. Check pagination controls
+4. Navigate through pages
 
-#### Test Connexion WebSocket
-```javascript
-// Dans console navigateur
-const ws = new WebSocket('ws://localhost:8000/api/v1/ws/notifications?token=YOUR_TOKEN');
+**Expected:**
+- Pagination works correctly
+- Correct number of notifications per page
+- Navigation between pages works
 
-ws.onopen = () => {
-  console.log('Connected');
-  ws.send(JSON.stringify({ type: 'ping' }));
-};
+## 🔧 Automated Tests
 
-ws.onmessage = (event) => {
-  const data = JSON.parse(event.data);
-  console.log('Received:', data);
-};
+### Backend Tests
 
-ws.onerror = (error) => {
-  console.error('Error:', error);
-};
-```
-
-#### Test Notification Temps Réel
-1. Ouvrir deux onglets du navigateur
-2. Se connecter au WebSocket dans les deux
-3. Créer une notification via API
-4. Vérifier que les deux clients reçoivent la notification
-
-**Résultat attendu:** Connexion réussie, messages reçus en temps réel.
-
----
-
-### Batch 9-10: Composants et Pages
-
-#### Test Composants
-1. Démarrer le serveur de développement: `npm run dev`
-2. Naviguer vers `/profile/notifications`
-3. Vérifier que NotificationCenter s'affiche
-4. Tester les interactions:
-   - Marquer comme lue
-   - Supprimer
-   - Marquer toutes comme lues
-
-#### Test NotificationBell
-1. Vérifier que le badge s'affiche dans le navbar
-2. Cliquer sur la cloche
-3. Vérifier que le dropdown s'ouvre
-4. Tester les interactions
-
-**Résultat attendu:** UI fonctionnelle, toutes les interactions marchent.
-
----
-
-### Batch 11-12: Tests Automatisés
-
-#### Tests Backend
 ```bash
 cd backend
-pytest tests/test_notification_model.py -v
-pytest tests/test_notification_service.py -v
-pytest tests/test_notification_api.py -v
+pytest tests/test_notifications.py -v
 ```
 
-#### Tests Frontend
+### Frontend Tests
+
 ```bash
 cd apps/web
-npm run test -- NotificationCenter
-npm run test -- NotificationBell
-npm run test -- useNotifications
+npm run test notifications
 ```
 
-**Résultat attendu:** Tous les tests passent.
+## 🐛 Common Issues
+
+### Issue: Notifications not appearing
+
+**Check:**
+- Database migration ran: `alembic upgrade head`
+- User is authenticated
+- API endpoint returns 200
+- WebSocket connected (check console)
+
+### Issue: WebSocket not connecting
+
+**Check:**
+- Token is valid
+- WebSocket URL correct (ws://localhost:8000/api/v1/ws/notifications)
+- Backend WebSocket endpoint running
+- CORS configured correctly
+
+### Issue: Badge count incorrect
+
+**Check:**
+- `useNotificationCount` hook is used
+- Query key matches
+- Cache invalidation working
+- API returns correct count
+
+### Issue: Email notifications not sending
+
+**Check:**
+- Celery worker running
+- Email service configured
+- SMTP settings correct
+- Email templates exist
+
+## 📊 Performance Testing
+
+### Load Test
+
+```bash
+# Create 1000 notifications
+for i in {1..1000}; do
+  curl -X POST http://localhost:8000/api/v1/notifications \
+    -H "Authorization: Bearer $TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "{\"user_id\": 1, \"title\": \"Test $i\", \"message\": \"Test\", \"notification_type\": \"info\"}"
+done
+```
+
+### Check Performance
+
+- Page load time with 1000 notifications
+- Filter performance
+- WebSocket message handling speed
+- Database query performance
+
+## ✅ Acceptance Criteria
+
+- [ ] All notifications persist in database
+- [ ] Real-time updates work via WebSocket
+- [ ] Badge count is accurate
+- [ ] All CRUD operations work
+- [ ] Filters and pagination work
+- [ ] Email notifications send (if configured)
+- [ ] Performance is acceptable (< 500ms for list)
+- [ ] No memory leaks
+- [ ] WebSocket reconnects on disconnect
 
 ---
 
-## 🔍 Tests d'Intégration Complets
-
-### Scénario 1: Création et Affichage
-1. Créer une notification via API backend
-2. Vérifier qu'elle apparaît dans le frontend
-3. Vérifier que le badge de compteur se met à jour
-4. Vérifier que WebSocket envoie la notification
-
-### Scénario 2: Marquer comme Lue
-1. Créer une notification non lue
-2. Cliquer sur "Mark as read" dans l'UI
-3. Vérifier que l'API est appelée
-4. Vérifier que la notification disparaît de la liste "unread"
-5. Vérifier que le compteur diminue
-
-### Scénario 3: Suppression
-1. Créer une notification
-2. Cliquer sur "Delete"
-3. Vérifier que l'API est appelée
-4. Vérifier que la notification disparaît de la liste
-
-### Scénario 4: Temps Réel
-1. Ouvrir l'application dans deux navigateurs
-2. Se connecter avec le même utilisateur
-3. Créer une notification via API
-4. Vérifier que les deux navigateurs reçoivent la notification en temps réel
-
----
-
-## 🐛 Tests de Gestion d'Erreurs
-
-### Test Connexion API Échouée
-1. Arrêter le serveur backend
-2. Essayer de charger les notifications
-3. Vérifier que l'erreur est gérée gracieusement
-
-### Test WebSocket Déconnecté
-1. Se connecter au WebSocket
-2. Déconnecter le serveur
-3. Vérifier que la reconnexion automatique fonctionne
-
-### Test Données Invalides
-1. Envoyer des données invalides à l'API
-2. Vérifier que les erreurs de validation sont retournées
-
----
-
-## ✅ Checklist de Test Finale
-
-- [ ] Migration Alembic fonctionne
-- [ ] Modèle peut créer/lire notifications
-- [ ] Service fonctionne correctement
-- [ ] Tous les endpoints API fonctionnent
-- [ ] Tasks Celery créent des notifications
-- [ ] Types TypeScript corrects
-- [ ] API client fonctionne
-- [ ] Hook React fonctionne
-- [ ] WebSocket se connecte et reçoit des messages
-- [ ] Composants UI fonctionnent
-- [ ] Pages se chargent correctement
-- [ ] Tests automatisés passent
-- [ ] Gestion d'erreurs fonctionne
-- [ ] Performance acceptable (< 500ms pour API calls)
-
----
-
-**Dernière mise à jour:** [DATE]
-
+**Last Updated:** January 2025  
+**Status:** ✅ Ready for Testing

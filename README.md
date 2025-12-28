@@ -40,6 +40,7 @@ A production-ready, comprehensive full-stack template for building modern SaaS a
 - ✅ **User Invitations** - Email-based invitation system
 - ✅ **Payment History** - Transaction tracking and management
 - ✅ **Customer Portal** - Self-service portal for users
+- ✅ **Notification System** - Real-time in-app notifications with WebSocket support
 
 ### 🛠️ Developer Experience
 - ✅ **Code Generation** - CLI tools for components, pages, API routes
@@ -61,6 +62,12 @@ A production-ready, comprehensive full-stack template for building modern SaaS a
 ### 🌍 Internationalization
 - ✅ **i18n Support** - next-intl configured (FR/EN included)
 - ✅ **Locale Routing** - Automatic locale detection and routing
+
+### 🔔 Real-Time Features
+- ✅ **WebSocket Support** - Real-time communication for notifications
+- ✅ **Notification System** - In-app notifications with read/unread tracking
+- ✅ **Notification Bell** - Badge indicator in navbar
+- ✅ **Notification Center** - Full notification management UI
 
 ---
 
