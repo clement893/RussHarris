@@ -25,6 +25,7 @@ Authorization: Bearer <access_token>
 - [Project Endpoints](#project-endpoints)
 - [Theme Endpoints](#theme-endpoints)
 - [Admin Endpoints](#admin-endpoints)
+- [RBAC Endpoints](#rbac-endpoints)
 - [2FA Endpoints](#2fa-endpoints)
 - [API Keys Endpoints](#api-keys-endpoints)
 - [Email Endpoints](#email-endpoints)

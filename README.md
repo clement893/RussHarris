@@ -481,6 +481,8 @@ View interactive component documentation at `http://localhost:6006`
 
 - **Swagger UI**: `http://localhost:8000/docs` (when backend is running)
 - **ReDoc**: `http://localhost:8000/redoc`
+- **[RBAC System](./docs/RBAC_SYSTEM.md)** - Complete Role-Based Access Control guide
+- **[API Endpoints](./backend/API_ENDPOINTS.md)** - Complete API reference including RBAC endpoints
 
 ---
 
