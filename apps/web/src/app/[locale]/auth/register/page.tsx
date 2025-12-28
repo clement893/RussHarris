@@ -37,10 +37,24 @@ export default function RegisterPage() {
       return;
     }
 
+    // Validate password strength (matching backend requirements)
+    if (!/[A-Z]/.test(password)) {
+      setLocalError('Password must contain at least one uppercase letter');
+      return;
+    }
+    if (!/[a-z]/.test(password)) {
+      setLocalError('Password must contain at least one lowercase letter');
+      return;
+    }
+    if (!/[0-9]/.test(password)) {
+      setLocalError('Password must contain at least one digit');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      await authAPI.register(email, name, password);
+      await authAPI.register(email, password, name);
       const loginResponse = await authAPI.login(email, password);
       const { access_token, user } = loginResponse.data;
 
