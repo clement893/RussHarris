@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 
 import httpx
 import bcrypt
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
 from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -192,13 +192,15 @@ async def register(
     request: Request,
     user_data: UserCreate,
     db: Annotated[AsyncSession, Depends(get_db)],
-) -> User:
+    response: Response,
+) -> UserResponse:
     """
     Register a new user
     
     Args:
         user_data: User registration data
         db: Database session
+        response: FastAPI response object (for rate limit headers)
         
     Returns:
         Created user
@@ -227,7 +229,9 @@ async def register(
     await db.commit()
     await db.refresh(new_user)
 
-    return new_user
+    # Convert to response model
+    user_response = UserResponse.model_validate(new_user)
+    return user_response
 
 
 @router.post("/login", response_model=Token)
