@@ -7,7 +7,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { useAuthStore } from '@/lib/store';
@@ -34,23 +34,30 @@ export function LocaleSync({ children }: LocaleSyncProps) {
   const pathname = usePathname();
   const currentLocale = useLocale() as Locale;
   const { isAuthenticated } = useAuthStore();
-  const [_isChecking, setIsChecking] = useState(true);
-  const [hasRedirected, setHasRedirected] = useState(false);
+  const hasCheckedRef = useRef<string | null>(null); // Track which pathname we've already checked
+  const isRedirectingRef = useRef(false); // Prevent multiple redirects
 
   useEffect(() => {
     const syncLocale = async () => {
       // Skip if not authenticated
       if (!isAuthenticated()) {
-        setIsChecking(false);
         return;
       }
 
-      // Reset redirect flag when pathname changes (new page navigation)
-      if (hasRedirected) {
-        setHasRedirected(false);
+      // Skip if we've already checked this exact pathname
+      if (hasCheckedRef.current === pathname) {
+        return;
+      }
+
+      // Skip if already redirecting
+      if (isRedirectingRef.current) {
+        return;
       }
 
       try {
+        // Mark this pathname as checked
+        hasCheckedRef.current = pathname;
+
         // Fetch user preferences
         const response = await apiClient.get<Record<string, any>>('/v1/users/preferences');
         const data = (response as any).data || response;
@@ -68,8 +75,8 @@ export function LocaleSync({ children }: LocaleSyncProps) {
               ? pathWithoutLocale 
               : `/${preferredLanguage}${pathWithoutLocale}`;
             
-            // Only redirect if path is different and we haven't redirected yet
-            if (newPath !== pathname && !hasRedirected) {
+            // Only redirect if path is different
+            if (newPath !== pathname) {
               logger.info(`Redirecting to preferred locale: ${preferredLanguage}`, {
                 currentLocale,
                 preferredLanguage,
@@ -77,7 +84,7 @@ export function LocaleSync({ children }: LocaleSyncProps) {
                 newPath,
               });
               
-              setHasRedirected(true);
+              isRedirectingRef.current = true;
               window.location.href = newPath;
               return;
             }
@@ -86,8 +93,6 @@ export function LocaleSync({ children }: LocaleSyncProps) {
       } catch (error) {
         // Silently fail - don't block page load if preferences can't be loaded
         logger.debug('Could not load preferences for locale sync:', error);
-      } finally {
-        setIsChecking(false);
       }
     };
 
