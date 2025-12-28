@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { useAuthStore } from '@/lib/store';
 import { useAuth } from '@/hooks/useAuth';
 import Button from '../ui/Button';
