@@ -10,14 +10,6 @@ import { useState, useEffect, useCallback } from 'react';
 type ThemeMode = 'light' | 'dark' | 'system';
 
 /**
- * Get current dark mode state from DOM
- */
-function getIsDark(): boolean {
-  if (typeof window === 'undefined') return false;
-  return document.documentElement.classList.contains('dark');
-}
-
-/**
  * Get current theme mode from localStorage (user preference)
  */
 function getThemeMode(): ThemeMode {

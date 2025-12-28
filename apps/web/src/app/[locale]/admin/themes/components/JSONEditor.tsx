@@ -9,6 +9,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Textarea, Alert, Button } from '@/components/ui';
 import { Code, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
 import type { ThemeConfig } from '@modele/types';
+import { isValidColor } from '@/lib/theme/color-validation';
 
 interface JSONEditorProps {
   config: ThemeConfig;
@@ -62,34 +63,67 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
       };
       
       const missingColors: string[] = [];
+      const invalidColorFormats: Array<{ field: string; value: string }> = [];
       
       for (const [colorName, possibleKeys] of Object.entries(colorMappings)) {
+        let colorValue: string | undefined;
+        let colorField: string | undefined;
+        
         // Check if any of the possible keys exists
-        const hasColor = possibleKeys.some(key => {
+        for (const key of possibleKeys) {
           // Check in root level
           if (parsed[key] && typeof parsed[key] === 'string') {
-            return true;
+            colorValue = parsed[key];
+            colorField = key;
+            break;
           }
           // Check in colors object
           if ((parsed as any).colors && (parsed as any).colors[key] && typeof (parsed as any).colors[key] === 'string') {
-            return true;
+            colorValue = (parsed as any).colors[key];
+            colorField = `colors.${key}`;
+            break;
           }
           // Check in colors object with colorName (e.g., colors.primary)
           if ((parsed as any).colors && (parsed as any).colors[colorName] && typeof (parsed as any).colors[colorName] === 'string') {
-            return true;
+            colorValue = (parsed as any).colors[colorName];
+            colorField = `colors.${colorName}`;
+            break;
           }
-          return false;
-        });
+        }
         
-        if (!hasColor) {
+        if (!colorValue) {
           missingColors.push(colorName);
+        } else if (!isValidColor(colorValue)) {
+          invalidColorFormats.push({ field: colorField || colorName, value: colorValue });
         }
       }
 
+      // Check for invalid color formats in other fields
+      const otherColorFields = ['font_family', 'border_radius'];
+      for (const field of otherColorFields) {
+        const value = (parsed as any)[field];
+        if (value && typeof value === 'string' && value.trim() !== '') {
+          // These fields are optional, but if provided they should be valid strings
+          // (not color validation needed for these)
+        }
+      }
+
+      // Build error message
+      const errors: string[] = [];
       if (missingColors.length > 0) {
+        errors.push(`Couleurs manquantes: ${missingColors.map(c => `${c}_color ou ${c}`).join(', ')}`);
+      }
+      if (invalidColorFormats.length > 0) {
+        const formatErrors = invalidColorFormats.map(
+          ({ field, value }) => `${field}: "${value}" n'est pas un format de couleur valide (hex, rgb, hsl)`
+        );
+        errors.push(`Formats de couleur invalides:\n  ${formatErrors.join('\n  ')}`);
+      }
+
+      if (errors.length > 0) {
         return {
           isValid: false,
-          error: `Couleurs manquantes: ${missingColors.map(c => `${c}_color ou ${c}`).join(', ')}`,
+          error: errors.join('\n\n'),
           parsed: null,
         };
       }

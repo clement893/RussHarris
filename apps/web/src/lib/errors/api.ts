@@ -162,10 +162,37 @@ export function handleApiError(error: unknown): AppError {
 
     // Add validation errors if present (for 422 errors)
     if (responseData?.error?.validationErrors) {
-      details.validationErrors = responseData.error.validationErrors;
-      // Enhance validation error message
-      const validationFields = Object.keys(responseData.error.validationErrors).join(', ');
-      message = `Validation failed for fields: ${validationFields}. ${message}`;
+      const validationErrors = responseData.error.validationErrors;
+      details.validationErrors = validationErrors;
+      
+      // FastAPI returns validationErrors as an array of {field, message, code}
+      // Extract field names and messages for better error message
+      if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+        const fields = validationErrors
+          .map((err: any) => err.field)
+          .filter((field: any) => field)
+          .join(', ');
+        
+        // Extract the actual validation messages (they contain detailed info)
+        const validationMessages = validationErrors
+          .map((err: any) => err.message)
+          .filter((msg: any) => typeof msg === 'string' && msg.length > 0);
+        
+        if (fields) {
+          message = `Validation failed for fields: ${fields}. ${message}`;
+        }
+        
+        // If we have detailed validation messages, use the first one as the main message
+        // (it contains the formatted error details from Pydantic)
+        if (validationMessages.length > 0 && validationMessages[0].includes('Color format') || validationMessages[0].includes('contrast')) {
+          // Use the detailed message from backend
+          message = validationMessages[0];
+        }
+      } else if (typeof validationErrors === 'object') {
+        // Handle object format (legacy or other formats)
+        const validationFields = Object.keys(validationErrors).join(', ');
+        message = `Validation failed for fields: ${validationFields}. ${message}`;
+      }
     }
 
     const appError = createErrorFromStatusCode(statusCode, message, details);

@@ -3,6 +3,8 @@
  * Parses and structures validation errors from the backend
  */
 
+import { AppError } from '@/lib/errors/AppError';
+
 export interface ThemeValidationError {
   type: 'color_format' | 'contrast' | 'unknown';
   field?: string;
@@ -24,6 +26,11 @@ export function isThemeValidationError(error: unknown): boolean {
     return false;
   }
   
+  // Check if it's a ValidationError (422 status)
+  if (error instanceof AppError && error.statusCode === 422) {
+    return true;
+  }
+  
   const message = error.message.toLowerCase();
   return (
     message.includes('color format') ||
@@ -34,11 +41,41 @@ export function isThemeValidationError(error: unknown): boolean {
 }
 
 /**
+ * Extract validation message from backend validationErrors array
+ */
+function extractValidationMessageFromDetails(details: Record<string, unknown>): string | null {
+  const validationErrors = details.validationErrors;
+  
+  if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+    // FastAPI returns validationErrors as array of {field, message, code}
+    // The actual validation message is in the message field
+    const messages = validationErrors
+      .map((err: any) => err.message)
+      .filter((msg: any) => typeof msg === 'string' && msg.length > 0);
+    
+    if (messages.length > 0) {
+      // Join all messages - they contain the formatted error details
+      return messages.join('\n');
+    }
+  }
+  
+  return null;
+}
+
+/**
  * Parse validation errors from backend error message
  */
 export function parseThemeValidationErrors(error: Error): ThemeValidationError[] {
   const errors: ThemeValidationError[] = [];
-  const message = error.message;
+  let message = error.message;
+  
+  // If it's an AppError with details, extract validation message from details
+  if (error instanceof AppError && error.details) {
+    const extractedMessage = extractValidationMessageFromDetails(error.details);
+    if (extractedMessage) {
+      message = extractedMessage;
+    }
+  }
   
   // Parse color format errors
   if (message.includes('Color format errors:')) {

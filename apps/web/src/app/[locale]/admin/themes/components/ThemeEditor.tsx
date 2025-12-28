@@ -148,7 +148,22 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
 
       await onSave(config, formData);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la sauvegarde';
+      let errorMessage = 'Erreur lors de la sauvegarde';
+      
+      if (err instanceof Error) {
+        errorMessage = err.message;
+        
+        // If it's a ThemeValidationError, it already has formatted messages
+        // Otherwise, try to extract more details
+        if (err.name === 'ThemeValidationError') {
+          // The error message should already contain formatted validation errors
+          errorMessage = err.message;
+        } else if (err.message.includes('Validation failed') || err.message.includes('422')) {
+          // Try to extract more details from the error
+          errorMessage = err.message || 'Erreur de validation. Vérifiez les formats de couleur et les ratios de contraste.';
+        }
+      }
+      
       setError(errorMessage);
     } finally {
       setSaving(false);
@@ -175,7 +190,7 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
 
         {error && (
           <Alert variant="error" title="Erreur" className="mb-4">
-            {error}
+            <div className="whitespace-pre-wrap text-sm">{error}</div>
           </Alert>
         )}
 
