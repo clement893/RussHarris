@@ -13,6 +13,9 @@ import Loading from '@/components/ui/Loading';
 import Modal from '@/components/ui/Modal';
 import DataTable from '@/components/ui/DataTable';
 import { Column } from '@/components/ui/DataTable';
+import UserRolesEditor from '@/components/admin/UserRolesEditor';
+import UserPermissionsEditor from '@/components/admin/UserPermissionsEditor';
+import { useUserRoles } from '@/hooks/useRBAC';
 
 interface User extends Record<string, unknown> {
   id: string;
@@ -31,6 +34,8 @@ export default function AdminUsersContent() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [rolesModalOpen, setRolesModalOpen] = useState(false);
+  const [permissionsModalOpen, setPermissionsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -118,19 +123,38 @@ export default function AdminUsersContent() {
       ),
     },
     {
-      key: 'is_admin',
-      label: 'Rôle',
-      render: (value) => (
-        <Badge variant={value ? 'error' : 'default'}>
-          {value ? 'Admin' : 'Utilisateur'}
-        </Badge>
-      ),
+      key: 'roles',
+      label: 'Rôles',
+      render: (_value, row) => {
+        // This will be populated by UserRolesDisplay component
+        return <UserRolesDisplay userId={parseInt(row.id)} />;
+      },
     },
     {
       key: 'actions',
       label: 'Actions',
       render: (_value, row) => (
         <div className="flex gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              setSelectedUser(row);
+              setRolesModalOpen(true);
+            }}
+          >
+            Rôles
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              setSelectedUser(row);
+              setPermissionsModalOpen(true);
+            }}
+          >
+            Permissions
+          </Button>
           <Button
             size="sm"
             variant="danger"
