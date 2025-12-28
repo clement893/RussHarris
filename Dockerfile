@@ -50,6 +50,8 @@ RUN test -f packages/types/dist/theme.d.ts || (echo "ERROR: theme.d.ts not found
 # Copy only what's needed for build (apps/web and shared packages)
 COPY apps/web ./apps/web
 COPY packages ./packages
+# Copy scripts directory (needed for api:manifest script)
+COPY scripts ./scripts
 
 # Reinstall to ensure workspace links are correct after types package build
 # Railway caches .pnpm-store automatically via railway.json, so pnpm will reuse cached packages
