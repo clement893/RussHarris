@@ -14,6 +14,17 @@
 
 The page is functional and provides comprehensive API testing capabilities, but has several UX, performance, and architectural issues that should be addressed.
 
+### 🎯 Vision Mise à Jour
+
+**Nouvel Objectif:** Transformer cette page en **Dashboard de Santé Complet du Template** pour:
+- ✅ Tester le template au complet
+- ✅ Identifier toutes les problématiques frontend/backend
+- ✅ Vérifier les connexions entre chaque partie
+- ✅ Afficher l'état de toutes les features
+- ✅ Fournir des métriques de santé globale
+
+**Plan d'amélioration détaillé:** Voir [TEMPLATE_HEALTH_DASHBOARD_PLAN.md](./TEMPLATE_HEALTH_DASHBOARD_PLAN.md)
+
 ---
 
 ## 🔴 Critical Issues
