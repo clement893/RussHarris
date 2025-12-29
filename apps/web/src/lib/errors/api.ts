@@ -19,7 +19,7 @@ import {
   UnauthorizedError,
   ValidationError,
 } from './AppError';
-import { ErrorCode, type ApiErrorResponse } from './types';
+import { ErrorCode, type ApiErrorResponse, type FastAPIValidationError, type FastAPIErrorResponse, type ValidationErrorDetail } from './types';
 import { captureException } from '@/lib/sentry/client';
 import { logger } from '@/lib/logger';
 
@@ -121,7 +121,8 @@ export function handleApiError(error: unknown): AppError {
       logger.error('[handleApiError] FastAPI standard validation format detected', new Error('Validation error'), { responseData });
       
       // Convert FastAPI format to our format
-      const validationErrors = responseData.detail.map((err: any) => ({
+      const fastApiErrors = (responseData as FastAPIErrorResponse).detail;
+      const validationErrors: ValidationErrorDetail[] = fastApiErrors.map((err: FastAPIValidationError) => ({
         field: Array.isArray(err.loc) ? err.loc.join('.') : String(err.loc || 'unknown'),
         message: err.msg || err.message || String(err),
         code: err.type || 'validation_error',
@@ -129,7 +130,7 @@ export function handleApiError(error: unknown): AppError {
       
       // Extract messages
       const validationMessages = validationErrors
-        .map((err: any) => err.message)
+        .map((err: ValidationErrorDetail) => err.message)
         .filter((msg: string) => typeof msg === 'string' && msg.length > 0);
       
       if (validationMessages.length > 0) {
@@ -225,11 +226,20 @@ export function handleApiError(error: unknown): AppError {
       if (Array.isArray(validationErrors) && validationErrors.length > 0) {
         // Extract the actual validation messages (they contain detailed info)
         const validationMessages = validationErrors
-          .map((err: any) => {
-            // Try multiple possible fields for the message
-            return err.message || err.msg || err.detail || String(err) || '';
+          .map((err: ValidationErrorDetail | Record<string, unknown>) => {
+            // Handle both ValidationErrorDetail and unknown formats
+            if ('message' in err && typeof err.message === 'string') {
+              return err.message;
+            }
+            if ('msg' in err && typeof err.msg === 'string') {
+              return err.msg;
+            }
+            if ('detail' in err && typeof err.detail === 'string') {
+              return err.detail;
+            }
+            return String(err);
           })
-          .filter((msg: any) => typeof msg === 'string' && msg.length > 0 && !msg.includes('Request failed'));
+          .filter((msg: string) => typeof msg === 'string' && msg.length > 0 && !msg.includes('Request failed'));
         
         logger.debug('[handleApiError] Extracted validation messages', { validationMessages });
         
@@ -243,7 +253,7 @@ export function handleApiError(error: unknown): AppError {
           // If no messages extracted, try to extract from the error object itself
           logger.warn('[handleApiError] No validation messages extracted, trying alternative extraction');
           const alternativeMessages = validationErrors
-            .map((err: any) => {
+            .map((err: ValidationErrorDetail | Record<string, unknown>) => {
               // Try to stringify the whole error object
               if (typeof err === 'object' && err !== null) {
                 return JSON.stringify(err);
@@ -272,7 +282,8 @@ export function handleApiError(error: unknown): AppError {
         logger.error('[handleApiError] FastAPI standard validation format detected', new Error('Validation error'), { responseData });
         
         // Convert FastAPI format to our format
-        const validationErrors = responseData.detail.map((err: any) => ({
+        const fastApiErrors = (responseData as FastAPIErrorResponse).detail;
+        const validationErrors: ValidationErrorDetail[] = fastApiErrors.map((err: FastAPIValidationError) => ({
           field: Array.isArray(err.loc) ? err.loc.join('.') : String(err.loc || 'unknown'),
           message: err.msg || err.message || String(err),
           code: err.type || 'validation_error',
@@ -282,7 +293,7 @@ export function handleApiError(error: unknown): AppError {
         
         // Extract messages
         const validationMessages = validationErrors
-          .map((err: any) => err.message)
+          .map((err: ValidationErrorDetail) => err.message)
           .filter((msg: string) => typeof msg === 'string' && msg.length > 0 && !msg.includes('Request failed'));
         
         if (validationMessages.length > 0) {

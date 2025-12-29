@@ -44,6 +44,22 @@ export interface ValidationErrorDetail {
   code: string;
 }
 
+/**
+ * FastAPI validation error structure
+ * FastAPI returns 422 errors in format: { "detail": [{ "type": "...", "loc": [...], "msg": "..." }] }
+ */
+export interface FastAPIValidationError {
+  type: string;
+  loc: (string | number)[];
+  msg: string;
+  input?: unknown;
+  ctx?: Record<string, unknown>;
+}
+
+export interface FastAPIErrorResponse {
+  detail: FastAPIValidationError[];
+}
+
 export interface ApiErrorResponse {
   success: false;
   error: {

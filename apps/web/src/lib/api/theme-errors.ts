@@ -51,11 +51,11 @@ function extractValidationMessageFromDetails(details: Record<string, unknown>): 
     // FastAPI returns validationErrors as array of {field, message, code}
     // The actual validation message is in the message field
     const messages = validationErrors
-      .map((err: any) => {
+      .map((err: { message?: string; msg?: string }) => {
         // Handle both formats: err.message or err.msg (Pydantic format)
         return err.message || err.msg || '';
       })
-      .filter((msg: any) => typeof msg === 'string' && msg.length > 0);
+      .filter((msg: string) => typeof msg === 'string' && msg.length > 0);
     
     if (messages.length > 0) {
       // Join all messages - they contain the formatted error details
