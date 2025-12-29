@@ -139,7 +139,7 @@ export default function AdminContent() {
               <p className="text-sm text-muted-foreground">Test and verify the configuration of integrated services</p>
             </div>
           </div>
-          <Grid columns={{ mobile: 1, tablet: 2, desktop: 3 }} gap="normal">
+          <Grid columns={{ mobile: 1, tablet: 3, desktop: 3 }} gap="normal">
             <ServiceTestCard
               href="/ai/testing"
               title="AI Test"
