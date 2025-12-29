@@ -7,6 +7,9 @@ import { apiClient } from './client';
 import type { BlogPost } from '@/components/content';
 import { extractApiData } from './utils';
 
+// Re-export BlogPost type for convenience
+export type { BlogPost };
+
 export interface PostListResponse {
   items: BlogPost[];
   total: number;
