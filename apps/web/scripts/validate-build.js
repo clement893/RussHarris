@@ -31,11 +31,6 @@ if (!skipTypeCheck) {
     execSync(`pnpm ${typeCheckScript}`, {
       stdio: 'inherit',
       cwd: webDir,
-      env: {
-        ...process.env,
-        // Force type checking even if SKIP_TYPE_CHECK is set
-        SKIP_TYPE_CHECK: undefined,
-      },
     });
     console.log('✅ TypeScript check passed\n');
   } catch (error) {
