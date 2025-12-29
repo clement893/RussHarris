@@ -1,42 +1,36 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import Toast, { ToastProps } from './Toast';
+import Toast from './Toast';
+import { useToastStore } from '@/lib/toast';
 
-export interface ToastData {
-  message: string;
-  type?: 'success' | 'error' | 'warning' | 'info';
-  duration?: number;
-}
+/**
+ * ToastContainer Component
+ * 
+ * Global container for toast notifications.
+ * Uses Zustand store for centralized state management.
+ * Automatically renders all active toasts.
+ */
+export function ToastContainer() {
+  const toasts = useToastStore((state) => state.toasts);
+  const removeToast = useToastStore((state) => state.removeToast);
 
-export function useToast() {
-  const [toasts, setToasts] = useState<ToastProps[]>([]);
+  if (toasts.length === 0) {
+    return null;
+  }
 
-  const showToast = useCallback((toast: ToastData) => {
-    const id = Math.random().toString(36).substring(7);
-    const newToast: ToastProps = {
-      id,
-      ...toast,
-      onClose: (id: string) => {
-        setToasts((prev) => prev.filter((t) => t.id !== id));
-      },
-    };
-
-    setToasts((prev) => [...prev, newToast]);
-  }, []);
-
-  const removeToast = useCallback((id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  }, []);
-
-  return { toasts, showToast, removeToast };
-}
-
-export function ToastContainer({ toasts }: { toasts: ToastProps[] }) {
   return (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
+    <div className="fixed top-4 right-4 z-50 space-y-3 pointer-events-none">
       {toasts.map((toast) => (
-        <Toast key={toast.id} {...toast} />
+        <div key={toast.id} className="pointer-events-auto">
+          <Toast
+            id={toast.id}
+            message={toast.message}
+            type={toast.type}
+            duration={toast.duration}
+            icon={toast.icon}
+            onClose={removeToast}
+          />
+        </div>
       ))}
     </div>
   );
