@@ -249,7 +249,7 @@ export async function updateTheme(
     
     // If it's an AxiosError, log the full response
     if (error && typeof error === 'object' && 'response' in error) {
-      const axiosError = error as any;
+      const axiosError = error as { response?: { status?: number; data?: unknown } };
       logger.error('[updateTheme] Axios error response', new Error('Axios error'), {
         status: axiosError.response?.status,
         data: axiosError.response?.data,

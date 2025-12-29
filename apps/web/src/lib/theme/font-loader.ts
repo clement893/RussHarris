@@ -128,7 +128,7 @@ export function isFontLoaded(fontFamily: string): boolean {
   
   // Use FontFace API if available
   if ('fonts' in document) {
-    const fontFaceSet = (document as any).fonts;
+    const fontFaceSet = (document as { fonts?: { check?: (font: string) => boolean } }).fonts;
     if (fontFaceSet && fontFaceSet.check) {
       return fontFaceSet.check(`12px "${fontFamily}"`);
     }

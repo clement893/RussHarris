@@ -175,7 +175,7 @@ export async function testEndpoint(
       await apiClient.get(urlPath || endpoint.endpoint, { params, signal });
     } else if (testMethod === 'post') {
       // For POST, send minimal data based on endpoint type
-      let testData: any = {};
+      let testData: Record<string, unknown> = {};
 
       if (endpoint.endpoint.includes('validate')) {
         testData = { name: 'test.jpg', size: 1024, type: 'image/jpeg' };

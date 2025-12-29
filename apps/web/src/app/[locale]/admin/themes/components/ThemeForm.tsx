@@ -18,7 +18,7 @@ interface ThemeFormProps {
 
 export function ThemeForm({ formData, onChange, config }: ThemeFormProps) {
   // Extract font IDs from config if present
-  const fontFiles = (config as any)?.typography?.fontFiles;
+  const fontFiles = config.typography && 'fontFiles' in config.typography ? (config.typography as { fontFiles?: number[] }).fontFiles : undefined;
   const hasSelectedFonts = Array.isArray(fontFiles) && fontFiles.length > 0;
   return (
     <div className="space-y-6">

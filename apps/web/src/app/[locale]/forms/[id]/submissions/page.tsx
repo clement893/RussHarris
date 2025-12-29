@@ -46,7 +46,7 @@ export default function FormSubmissionsPage() {
       // apiClient.get returns ApiResponse<T>, extractApiData handles both ApiResponse<T> and T
       // Type assertion needed because formsAPI.getSubmissions return type is not properly inferred
       const data = extractApiData<FormSubmission[] | { items: FormSubmission[] } | { submissions: FormSubmission[] }>(
-        response as any
+        response
       );
       
       // Handle both array and paginated response formats

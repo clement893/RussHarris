@@ -53,12 +53,14 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
 
       // Check if this is a full theme object (with name, display_name, config) or just a config
       // If it's a full theme object, extract the config
-      let configObj: any;
+      type ParsedTheme = { config?: ThemeConfig } & Record<string, unknown>;
+      const parsedTheme = parsed as ParsedTheme;
+      let configObj: ThemeConfig & Record<string, unknown>;
       let themeConfig: ThemeConfig;
       
-      if ((parsed as any).config && typeof (parsed as any).config === 'object') {
+      if (parsedTheme.config && typeof parsedTheme.config === 'object') {
         // Full theme object: extract config
-        configObj = (parsed as any).config;
+        configObj = parsedTheme.config as ThemeConfig & Record<string, unknown>;
         themeConfig = configObj as ThemeConfig;
       } else {
         // Just config object
@@ -90,19 +92,19 @@ export function JSONEditor({ config, onChange, onValidationChange }: JSONEditorP
           // Check in root level of configObj
           if (configObj[key] && typeof configObj[key] === 'string') {
             colorValue = configObj[key];
-            colorField = (parsed as any).config ? `config.${key}` : key;
+            colorField = parsedTheme.config ? `config.${key}` : key;
             break;
           }
           // Check in colors object
           if (configObj.colors && configObj.colors[key] && typeof configObj.colors[key] === 'string') {
             colorValue = configObj.colors[key];
-            colorField = (parsed as any).config ? `config.colors.${key}` : `colors.${key}`;
+            colorField = parsedTheme.config ? `config.colors.${key}` : `colors.${key}`;
             break;
           }
           // Check in colors object with colorName (e.g., colors.primary)
           if (configObj.colors && configObj.colors[colorName] && typeof configObj.colors[colorName] === 'string') {
             colorValue = configObj.colors[colorName];
-            colorField = (parsed as any).config ? `config.colors.${colorName}` : `colors.${colorName}`;
+            colorField = parsedTheme.config ? `config.colors.${colorName}` : `colors.${colorName}`;
             break;
           }
         }

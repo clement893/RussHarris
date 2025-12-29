@@ -13,7 +13,7 @@ import { JSONEditor } from './JSONEditor';
 import { ThemePreview } from './ThemePreview';
 import { FontUploader } from '@/components/theme/FontUploader';
 import { Card, Button, Alert } from '@/components/ui';
-import type { Theme, ThemeConfig } from '@modele/types';
+import type { Theme, ThemeConfig, ThemeConfigAccessor, TypographyConfig } from '@modele/types';
 import type { ThemeFormData } from '../types';
 import { X, Save, RotateCcw } from 'lucide-react';
 import { logger } from '@/lib/logger';
@@ -40,15 +40,15 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
     name: theme?.name || '',
     display_name: theme?.display_name || '',
     description: theme?.description || '',
-    primary_color: (theme?.config as any)?.primary_color || '#2563eb',
-    secondary_color: (theme?.config as any)?.secondary_color || '#6366f1',
-    danger_color: (theme?.config as any)?.danger_color || '#dc2626',
-    warning_color: (theme?.config as any)?.warning_color || '#d97706',
-    info_color: (theme?.config as any)?.info_color || '#0891b2',
-    success_color: (theme?.config as any)?.success_color || '#059669',
-    font_family: (theme?.config as any)?.font_family || '',
-    border_radius: (theme?.config as any)?.border_radius || '',
-    mode: (theme?.config as any)?.mode || 'system',
+    primary_color: theme?.config?.primary_color || '#2563eb',
+    secondary_color: theme?.config?.secondary_color || '#6366f1',
+    danger_color: theme?.config?.danger_color || '#dc2626',
+    warning_color: theme?.config?.warning_color || '#d97706',
+    info_color: theme?.config?.info_color || '#0891b2',
+    success_color: theme?.config?.success_color || '#059669',
+    font_family: theme?.config?.font_family || '',
+    border_radius: theme?.config?.border_radius || '',
+    mode: theme?.config?.mode || 'system',
   });
 
   const [saving, setSaving] = useState(false);
@@ -65,19 +65,19 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
         name: theme.name,
         display_name: theme.display_name,
         description: theme.description || '',
-        primary_color: (theme.config as any)?.primary_color || '#2563eb',
-        secondary_color: (theme.config as any)?.secondary_color || '#6366f1',
-        danger_color: (theme.config as any)?.danger_color || '#dc2626',
-        warning_color: (theme.config as any)?.warning_color || '#d97706',
-        info_color: (theme.config as any)?.info_color || '#0891b2',
-        success_color: (theme.config as any)?.success_color || '#059669',
-        font_family: (theme.config as any)?.font_family || '',
-        border_radius: (theme.config as any)?.border_radius || '',
-        mode: (theme.config as any)?.mode || 'system',
+        primary_color: theme.config?.primary_color || '#2563eb',
+        secondary_color: theme.config?.secondary_color || '#6366f1',
+        danger_color: theme.config?.danger_color || '#dc2626',
+        warning_color: theme.config?.warning_color || '#d97706',
+        info_color: theme.config?.info_color || '#0891b2',
+        success_color: theme.config?.success_color || '#059669',
+        font_family: theme.config?.font_family || '',
+        border_radius: theme.config?.border_radius || '',
+        mode: theme.config?.mode || 'system',
       });
       
       // Extract font IDs from config if present
-      const fontFiles = (theme.config as any)?.typography?.fontFiles;
+      const fontFiles = theme.config?.typography && 'fontFiles' in theme.config.typography ? (theme.config.typography as { fontFiles?: number[] }).fontFiles : undefined;
       if (Array.isArray(fontFiles)) {
         setSelectedFontIds(fontFiles);
       }
@@ -127,12 +127,12 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
       warning_color: newConfig.warning_color || prev.warning_color,
       info_color: newConfig.info_color || prev.info_color,
       success_color: newConfig.success_color || prev.success_color,
-      font_family: (newConfig as any).font_family || prev.font_family,
-      border_radius: (newConfig as any).border_radius || prev.border_radius,
+      font_family: newConfig.font_family || prev.font_family,
+      border_radius: newConfig.border_radius || prev.border_radius,
     }));
     
     // Sync fontFiles from JSON to selectedFontIds
-    const fontFiles = (newConfig as any)?.typography?.fontFiles;
+    const fontFiles = newConfig.typography && 'fontFiles' in newConfig.typography ? (newConfig.typography as { fontFiles?: number[] }).fontFiles : undefined;
     if (Array.isArray(fontFiles)) {
       setSelectedFontIds(fontFiles);
     } else if (fontFiles === undefined || fontFiles === null) {
@@ -217,20 +217,20 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
       const config: ThemeConfig = {
         ...state.config, // Preserve ALL complex structures (glassmorphism, nested objects, etc.)
         // Ensure required color fields exist (support both formats: primary_color and primary)
-        primary_color: state.config.primary_color || (state.config as any).primary || formData.primary_color,
-        secondary_color: state.config.secondary_color || (state.config as any).secondary || formData.secondary_color,
-        danger_color: state.config.danger_color || (state.config as any).danger || formData.danger_color,
-        warning_color: state.config.warning_color || (state.config as any).warning || formData.warning_color,
-        info_color: state.config.info_color || (state.config as any).info || formData.info_color,
-        success_color: state.config.success_color || (state.config as any).success || formData.success_color,
+        primary_color: state.config.primary_color || (state.config as ThemeConfigAccessor).primary || formData.primary_color,
+        secondary_color: state.config.secondary_color || (state.config as ThemeConfigAccessor).secondary || formData.secondary_color,
+        danger_color: state.config.danger_color || (state.config as ThemeConfigAccessor).danger || formData.danger_color,
+        warning_color: state.config.warning_color || (state.config as ThemeConfigAccessor).warning || formData.warning_color,
+        info_color: state.config.info_color || (state.config as ThemeConfigAccessor).info || formData.info_color,
+        success_color: state.config.success_color || (state.config as ThemeConfigAccessor).success || formData.success_color,
         // Optional fields with fallbacks
-        font_family: (state.config as any).font_family || (state.config as any).typography?.fontFamily || formData.font_family || undefined,
-        border_radius: (state.config as any).border_radius || (state.config as any).borderRadius || formData.border_radius || undefined,
+        font_family: state.config.font_family || (state.config.typography as TypographyConfig | undefined)?.fontFamily || formData.font_family || undefined,
+        border_radius: state.config.border_radius || state.config.borderRadius || formData.border_radius || undefined,
         // Add typography with fontFiles
         // Prefer fontFiles from config (if edited in JSON), otherwise use selectedFontIds (from fonts tab)
         typography: {
-          ...((state.config as any).typography || {}),
-          fontFiles: (state.config as any)?.typography?.fontFiles ?? (selectedFontIds.length > 0 ? selectedFontIds : undefined),
+          ...(state.config.typography as TypographyConfig | undefined || {}),
+          fontFiles: (state.config.typography as TypographyConfig | undefined)?.fontFiles ?? (selectedFontIds.length > 0 ? selectedFontIds : undefined),
         },
       } as ThemeConfig;
 

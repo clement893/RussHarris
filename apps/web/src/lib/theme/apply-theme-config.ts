@@ -2,7 +2,7 @@
  * Utility function to apply theme config directly to the DOM
  * This can be used to apply theme changes immediately without fetching from backend
  */
-import type { ThemeConfig } from '@modele/types';
+import type { ThemeConfig, ThemeConfigAccessor, TypographyConfig } from '@modele/types';
 import { generateColorShades, generateRgb } from './color-utils';
 import { validateThemeConfig } from './theme-validator';
 import { getThemeConfigForMode, applyDarkModeClass } from './dark-mode-utils';
@@ -66,7 +66,7 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   
   logger.info('[applyThemeConfigDirectly] Début de l\'application du thème', {
     bypassDarkModeProtection,
-    hasColors: !!(config as any).colors,
+    hasColors: !!config.colors,
   });
   
   // If bypassDarkModeProtection is true, mark manual theme as active to prevent GlobalThemeProvider from overriding
@@ -80,7 +80,7 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   const modeConfig = bypassDarkModeProtection ? config : getThemeConfigForMode(config);
   
   // Apply dark mode class if needed
-  const mode = (config as any).mode || 'system';
+  const mode = config.mode || 'system';
   if (mode === 'dark' || (mode === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     applyDarkModeClass(true);
   } else {
@@ -89,7 +89,7 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   
   // Validate theme configuration if requested
   if (validateContrast) {
-    const validation = validateThemeConfig(modeConfig as any, { 
+    const validation = validateThemeConfig(modeConfig, { 
       strictContrast: false, 
       logWarnings 
     });
@@ -117,16 +117,18 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   // 1. Flat format: primary_color, secondary_color, etc.
   // 2. Short format: primary, secondary, etc. (directly in config)
   // 3. Nested format: colors.primary, colors.secondary, etc.
-  const colorsConfig = (configToApply as any).colors || {};
+  const configAccessor = configToApply as ThemeConfigAccessor;
   // If bypassDarkModeProtection, also check original config for theme colors
   const originalConfig = bypassDarkModeProtection ? config : configToApply;
-  const originalColorsConfig = (originalConfig as any).colors || {};
-  const primaryColor = (configToApply as any).primary || configToApply.primary_color || colorsConfig.primary_color || colorsConfig.primary || originalColorsConfig.primary_color || originalColorsConfig.primary;
-  const secondaryColor = (configToApply as any).secondary || configToApply.secondary_color || colorsConfig.secondary_color || colorsConfig.secondary || originalColorsConfig.secondary_color || originalColorsConfig.secondary;
-  const dangerColor = (configToApply as any).danger || configToApply.danger_color || colorsConfig.danger_color || colorsConfig.destructive || colorsConfig.danger || originalColorsConfig.danger_color || originalColorsConfig.destructive || originalColorsConfig.danger;
-  const warningColor = (configToApply as any).warning || configToApply.warning_color || colorsConfig.warning_color || colorsConfig.warning || originalColorsConfig.warning_color || originalColorsConfig.warning;
-  const infoColor = (configToApply as any).info || configToApply.info_color || colorsConfig.info_color || colorsConfig.info || originalColorsConfig.info_color || originalColorsConfig.info;
-  const successColor = (configToApply as any).success || configToApply.success_color || colorsConfig.success_color || colorsConfig.success || originalColorsConfig.success_color || originalColorsConfig.success;
+  const originalConfigAccessor = originalConfig as ThemeConfigAccessor;
+  const colorsConfig = configAccessor.colors || {};
+  const originalColorsConfig = originalConfigAccessor.colors || {};
+  const primaryColor = configAccessor.primary || configToApply.primary_color || colorsConfig.primary_color || colorsConfig.primary || originalColorsConfig.primary_color || originalColorsConfig.primary;
+  const secondaryColor = configAccessor.secondary || configToApply.secondary_color || colorsConfig.secondary_color || colorsConfig.secondary || originalColorsConfig.secondary_color || originalColorsConfig.secondary;
+  const dangerColor = configAccessor.danger || configToApply.danger_color || colorsConfig.danger_color || colorsConfig.destructive || colorsConfig.danger || originalColorsConfig.danger_color || originalColorsConfig.destructive || originalColorsConfig.danger;
+  const warningColor = configAccessor.warning || configToApply.warning_color || colorsConfig.warning_color || colorsConfig.warning || originalColorsConfig.warning_color || originalColorsConfig.warning;
+  const infoColor = configAccessor.info || configToApply.info_color || colorsConfig.info_color || colorsConfig.info || originalColorsConfig.info_color || originalColorsConfig.info;
+  const successColor = configAccessor.success || configToApply.success_color || colorsConfig.success_color || colorsConfig.success || originalColorsConfig.success_color || originalColorsConfig.success;
   
   // Generate color shades from base colors
   if (primaryColor) {
@@ -196,7 +198,7 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   
   // Apply colors from nested colors object
   // If bypassDarkModeProtection is true, also check original config for base colors
-  const originalBaseColorsConfig = bypassDarkModeProtection ? ((config as any).colors || {}) : colorsConfig;
+  const originalBaseColorsConfig = bypassDarkModeProtection ? (configAccessor.colors || {}) : colorsConfig;
   
   const appliedColors: string[] = [];
   
@@ -257,8 +259,9 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   }
   
   // Apply fonts from typography config if available
-  if ((configToApply as any).typography?.fontUrl && typeof document !== 'undefined') {
-    const fontUrl = (configToApply as any).typography.fontUrl;
+  const typography = configToApply.typography as TypographyConfig | undefined;
+  if (typography?.fontUrl && typeof document !== 'undefined') {
+    const fontUrl = typography.fontUrl;
     const existingLink = document.querySelector(`link[data-theme-font]`);
     if (existingLink) {
       existingLink.remove();
@@ -271,8 +274,8 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   }
   
   // Load theme fonts from S3 if fontFiles are specified
-  if ((configToApply as any).typography?.fontFiles && Array.isArray((configToApply as any).typography.fontFiles)) {
-    const fontIds = (configToApply as any).typography.fontFiles as number[];
+  if (typography?.fontFiles && Array.isArray(typography.fontFiles)) {
+    const fontIds = typography.fontFiles;
     if (fontIds.length > 0) {
       // Load fonts asynchronously (don't block rendering)
       loadThemeFonts(fontIds).catch((error: unknown) => {
@@ -289,27 +292,27 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
     root.style.setProperty('--font-family-subheading', `${fontFamily}, sans-serif`);
   }
   
-  if ((configToApply as any).typography?.fontFamily) {
-    const fontFamily = String((configToApply as any).typography.fontFamily).trim();
+  if (typography?.fontFamily) {
+    const fontFamily = String(typography.fontFamily).trim();
     root.style.setProperty('--font-family', fontFamily);
-    if ((configToApply as any).typography.fontFamilyHeading) {
-      root.style.setProperty('--font-family-heading', String((configToApply as any).typography.fontFamilyHeading));
+    if (typography.fontFamilyHeading) {
+      root.style.setProperty('--font-family-heading', String(typography.fontFamilyHeading));
     }
-    if ((configToApply as any).typography.fontFamilySubheading) {
-      root.style.setProperty('--font-family-subheading', String((configToApply as any).typography.fontFamilySubheading));
+    if (typography.fontFamilySubheading) {
+      root.style.setProperty('--font-family-subheading', String(typography.fontFamilySubheading));
     }
     
     // Check if fonts exist in database and warn user if not
     if (logWarnings && typeof window !== 'undefined') {
       const fontsToCheck: string[] = [];
-      if ((configToApply as any).typography.fontFamily) {
-        fontsToCheck.push(String((configToApply as any).typography.fontFamily));
+      if (typography?.fontFamily) {
+        fontsToCheck.push(String(typography.fontFamily));
       }
-      if ((configToApply as any).typography.fontFamilyHeading) {
-        fontsToCheck.push(String((configToApply as any).typography.fontFamilyHeading));
+      if (typography?.fontFamilyHeading) {
+        fontsToCheck.push(String(typography.fontFamilyHeading));
       }
-      if ((configToApply as any).typography.fontFamilySubheading) {
-        fontsToCheck.push(String((configToApply as any).typography.fontFamilySubheading));
+      if (typography?.fontFamilySubheading) {
+        fontsToCheck.push(String(typography.fontFamilySubheading));
       }
       
       // Extract font names from CSS font-family strings (e.g., "Inter, sans-serif" -> "Inter")
@@ -376,31 +379,31 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   }
   
   // Support borderRadius object format (sm, md, lg, xl, full)
-  if ((configToApply as any).borderRadius) {
-    const borderRadius = (configToApply as any).borderRadius;
+  if (configToApply.borderRadius) {
+    const borderRadius = configToApply.borderRadius;
     Object.entries(borderRadius).forEach(([key, value]) => {
       root.style.setProperty(`--border-radius-${key}`, String(value));
     });
   }
   
   // Apply typography fontSize
-  if ((configToApply as any).typography?.fontSize) {
-    const fontSize = (configToApply as any).typography.fontSize;
+  if (typography?.fontSize) {
+    const fontSize = typography.fontSize;
     Object.entries(fontSize).forEach(([key, value]) => {
       root.style.setProperty(`--font-size-${key}`, String(value));
     });
   }
   
   // Apply spacing
-  if ((configToApply as any).spacing) {
-    const spacing = (configToApply as any).spacing;
+  if (configToApply.spacing) {
+    const spacing = configToApply.spacing;
     Object.entries(spacing).forEach(([key, value]) => {
       root.style.setProperty(`--spacing-${key}`, String(value));
     });
   }
   
   // Apply CSS effects (comprehensive support for all effect types)
-  const effects = (configToApply as any).effects;
+  const effects = configToApply.effects;
   if (effects) {
     // Glassmorphism - Support both old format (glassmorphism.enabled) and new format (glassmorphism.card, etc.)
     if (effects.glassmorphism) {
@@ -495,7 +498,7 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
     Object.entries(effects).forEach(([key, value]) => {
       if (!predefinedKeys.includes(key) && typeof value === 'object' && value !== null && !Array.isArray(value)) {
         // Recursively convert nested effect properties to CSS variables
-        const convertEffectToCSSVars = (obj: Record<string, any>, prefix: string) => {
+        const convertEffectToCSSVars = (obj: Record<string, unknown>, prefix: string) => {
           Object.entries(obj).forEach(([propKey, propValue]) => {
             if (propKey !== 'description' && propKey !== 'enabled') {
               if (typeof propValue === 'string' || typeof propValue === 'number') {
@@ -504,12 +507,12 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
                 root.style.setProperty(cssVarName, String(propValue));
               } else if (typeof propValue === 'object' && propValue !== null && !Array.isArray(propValue)) {
                 // Recursively handle nested objects
-                convertEffectToCSSVars(propValue as Record<string, any>, `${prefix}-${propKey}`);
+                convertEffectToCSSVars(propValue as Record<string, unknown>, `${prefix}-${propKey}`);
               }
             }
           });
         };
-        convertEffectToCSSVars(value as Record<string, any>, key);
+        convertEffectToCSSVars(value as Record<string, unknown>, key);
       }
     });
   }

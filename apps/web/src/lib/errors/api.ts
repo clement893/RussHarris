@@ -19,7 +19,7 @@ import {
   UnauthorizedError,
   ValidationError,
 } from './AppError';
-import { ErrorCode, type ApiErrorResponse, type FastAPIValidationError, type FastAPIErrorResponse, type ValidationErrorDetail } from './types';
+import { ErrorCode, type ApiErrorResponse, type FastAPIValidationError, type ValidationErrorDetail } from './types';
 import { captureException } from '@/lib/sentry/client';
 import { logger } from '@/lib/logger';
 
@@ -111,17 +111,17 @@ export function handleApiError(error: unknown): AppError {
   // Axios error - extract detailed information
   if (error instanceof AxiosError) {
     const statusCode = error.response?.status ?? 500;
-    const responseData = error.response?.data as ApiErrorResponse | any | undefined;
+    const responseData = error.response?.data as ApiErrorResponse | Record<string, unknown> | undefined;
     const requestUrl = error.config?.url ?? 'unknown';
     const requestMethod = error.config?.method?.toUpperCase() ?? 'UNKNOWN';
 
     // Check for FastAPI standard validation error format (detail array)
     // FastAPI returns 422 errors in format: { "detail": [{ "type": "...", "loc": [...], "msg": "..." }] }
-    if (statusCode === 422 && responseData?.detail && Array.isArray(responseData.detail)) {
+    if (statusCode === 422 && responseData && typeof responseData === 'object' && 'detail' in responseData && Array.isArray(responseData.detail)) {
       logger.error('[handleApiError] FastAPI standard validation format detected', new Error('Validation error'), { responseData });
       
       // Convert FastAPI format to our format
-      const fastApiErrors = (responseData as FastAPIErrorResponse).detail;
+      const fastApiErrors = responseData.detail as FastAPIValidationError[];
       const validationErrors: ValidationErrorDetail[] = fastApiErrors.map((err: FastAPIValidationError) => ({
         field: Array.isArray(err.loc) ? err.loc.join('.') : String(err.loc || 'unknown'),
         message: err.msg || String(err),
@@ -151,7 +151,9 @@ export function handleApiError(error: unknown): AppError {
     }
 
     // Generate contextual error message based on status code
-    let message = responseData?.error?.message ?? error.message;
+    let message = (responseData && typeof responseData === 'object' && 'error' in responseData && typeof responseData.error === 'object' && responseData.error && 'message' in responseData.error)
+      ? String(responseData.error.message)
+      : error.message;
     
     if (!message || message === 'Request failed with status code') {
       // Generate user-friendly messages for common status codes
@@ -176,7 +178,11 @@ export function handleApiError(error: unknown): AppError {
           break;
         case 429:
           // Check if retry_after is provided in response
-          const retryAfter = responseData?.retry_after || responseData?.error?.retry_after;
+          const retryAfter = (responseData && typeof responseData === 'object' && 'retry_after' in responseData)
+            ? responseData.retry_after
+            : (responseData && typeof responseData === 'object' && 'error' in responseData && typeof responseData.error === 'object' && responseData.error && 'retry_after' in responseData.error)
+              ? responseData.error.retry_after
+              : undefined;
           if (retryAfter) {
             const seconds = parseInt(String(retryAfter), 10);
             const minutes = Math.ceil(seconds / 60);
@@ -201,16 +207,21 @@ export function handleApiError(error: unknown): AppError {
     }
 
     // Extract comprehensive details from API response
+    const errorDetails = (responseData && typeof responseData === 'object' && 'error' in responseData && typeof responseData.error === 'object' && responseData.error && 'details' in responseData.error && typeof responseData.error.details === 'object')
+      ? responseData.error.details
+      : {};
     const details: Record<string, unknown> = {
       url: requestUrl,
       method: requestMethod,
       statusCode,
-      ...responseData?.error?.details,
+      ...errorDetails,
     };
 
     // Add validation errors if present (for 422 errors)
-    if (responseData?.error?.validationErrors) {
-      const validationErrors = responseData.error.validationErrors;
+    const validationErrors = (responseData && typeof responseData === 'object' && 'error' in responseData && typeof responseData.error === 'object' && responseData.error && 'validationErrors' in responseData.error && Array.isArray(responseData.error.validationErrors))
+      ? responseData.error.validationErrors
+      : undefined;
+    if (validationErrors) {
       details.validationErrors = validationErrors;
       
       // Debug logging to help diagnose issues (always log, even in production for debugging)
@@ -278,11 +289,11 @@ export function handleApiError(error: unknown): AppError {
     } else if (statusCode === 422) {
       // Check for FastAPI standard validation error format (detail array)
       // FastAPI returns 422 errors in format: { "detail": [{ "type": "...", "loc": [...], "msg": "..." }] }
-      if (responseData?.detail && Array.isArray(responseData.detail)) {
+      if (responseData && typeof responseData === 'object' && 'detail' in responseData && Array.isArray(responseData.detail)) {
         logger.error('[handleApiError] FastAPI standard validation format detected', new Error('Validation error'), { responseData });
         
         // Convert FastAPI format to our format
-        const fastApiErrors = (responseData as FastAPIErrorResponse).detail;
+        const fastApiErrors = responseData.detail as FastAPIValidationError[];
         const validationErrors: ValidationErrorDetail[] = fastApiErrors.map((err: FastAPIValidationError) => ({
           field: Array.isArray(err.loc) ? err.loc.join('.') : String(err.loc || 'unknown'),
           message: err.msg || String(err),
@@ -318,7 +329,8 @@ export function handleApiError(error: unknown): AppError {
     
     // Send to Sentry for server errors (5xx) and unexpected client errors
     // Don't send 401 errors to Sentry - they're expected for unauthorized users
-    if (statusCode >= 500 || (statusCode >= 400 && statusCode !== 401 && !responseData?.error?.message)) {
+    const hasErrorMessage = responseData && typeof responseData === 'object' && 'error' in responseData && typeof responseData.error === 'object' && responseData.error && 'message' in responseData.error;
+    if (statusCode >= 500 || (statusCode >= 400 && statusCode !== 401 && !hasErrorMessage)) {
       captureException(new Error(message), {
         tags: {
           errorType: 'api_error',

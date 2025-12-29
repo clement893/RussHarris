@@ -20,7 +20,7 @@ interface AuditLog {
   request_method?: string;
   request_path?: string;
   description: string;
-  event_metadata?: Record<string, any>;
+  event_metadata?: Record<string, unknown>;
   success: string;
 }
 
@@ -71,7 +71,7 @@ export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {
   const fetchLogs = async () => {
     setIsLoading(true);
     try {
-      const params: Record<string, any> = {};
+      const params: Record<string, string | number | boolean | undefined> = {};
       if (filters.event_type) params.event_type = filters.event_type;
       if (filters.severity) params.severity = filters.severity;
       if (filters.start_date) params.start_date = filters.start_date;

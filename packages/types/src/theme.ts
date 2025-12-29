@@ -96,6 +96,19 @@ export interface ComponentConfig {
 }
 
 /**
+ * Typography configuration
+ */
+export interface TypographyConfig {
+  fontFamily?: string;
+  fontFamilyHeading?: string;
+  fontFamilySubheading?: string;
+  fontUrl?: string;
+  fontFiles?: number[];
+  fontSize?: Record<string, string>;
+  [key: string]: unknown; // Allow extra typography properties
+}
+
+/**
  * Animation configuration
  */
 export interface AnimationConfig {
@@ -103,16 +116,19 @@ export interface AnimationConfig {
     fast?: string;
     normal?: string;
     slow?: string;
+    [key: string]: string | undefined;
   };
   easing?: {
     default?: string;
     bounce?: string;
     smooth?: string;
+    [key: string]: string | undefined;
   };
   transitions?: {
     colors?: string;
     transform?: string;
     opacity?: string;
+    [key: string]: string | undefined;
   };
 }
 
@@ -155,15 +171,53 @@ export interface ThemeConfig {
   
   // Existing optional fields
   colors?: Record<string, unknown>;
-  typography?: Record<string, unknown>;
+  typography?: TypographyConfig;
   effects?: Record<string, unknown>;
-  spacing?: Record<string, unknown>;
-  borderRadius?: Record<string, unknown>;
-  shadow?: Record<string, unknown>;
-  breakpoint?: Record<string, unknown>;
+  spacing?: Record<string, string | number | undefined>;
+  borderRadius?: Record<string, string | number | undefined>;
+  shadow?: Record<string, string | undefined>;
+  breakpoint?: Record<string, string | number | undefined>;
   mode?: 'light' | 'dark' | 'system';
   
+  // Additional properties for backward compatibility (short format)
+  primary?: string;
+  secondary?: string;
+  danger?: string;
+  warning?: string;
+  info?: string;
+  success?: string;
+  
   [key: string]: unknown; // Allow extra config fields
+}
+
+/**
+ * Helper type for accessing theme config properties that may be in different formats
+ * This allows safe access to properties like primary/primary_color, etc.
+ */
+export type ThemeConfigAccessor = ThemeConfig & {
+  colors?: {
+    primary_color?: string;
+    primary?: string;
+    secondary_color?: string;
+    secondary?: string;
+    danger_color?: string;
+    danger?: string;
+    destructive?: string;
+    warning_color?: string;
+    warning?: string;
+    info_color?: string;
+    info?: string;
+    success_color?: string;
+    success?: string;
+    background?: string;
+    foreground?: string;
+    muted?: string;
+    mutedForeground?: string;
+    border?: string;
+    input?: string;
+    ring?: string;
+    [key: string]: unknown;
+  };
 }
 
 export interface ThemeBase {

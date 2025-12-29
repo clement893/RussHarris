@@ -6,7 +6,7 @@
 import { createContext, useContext, useEffect, useLayoutEffect, useState, ReactNode, startTransition } from 'react';
 import { getActiveTheme } from '@/lib/api/theme';
 import { logger } from '@/lib/logger';
-import type { ThemeConfigResponse, ThemeConfig } from '@modele/types';
+import type { ThemeConfigResponse, ThemeConfig, ThemeConfigAccessor, TypographyConfig } from '@modele/types';
 import { generateColorShades, generateRgb } from './color-utils';
 import { getThemeConfigForMode } from './dark-mode-utils';
 import { getThemeFromCache, saveThemeToCache, clearThemeCache } from './theme-cache';
@@ -156,13 +156,14 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     // 1. Flat format: primary_color, secondary_color, etc.
     // 2. Short format: primary, secondary, etc. (directly in config)
     // 3. Nested format: colors.primary, colors.secondary, etc.
-    const colorsConfig = (configToApply as any).colors || {};
-    const primaryColor = (configToApply as any).primary || configToApply.primary_color || colorsConfig.primary_color || colorsConfig.primary;
-    const secondaryColor = (configToApply as any).secondary || configToApply.secondary_color || colorsConfig.secondary_color || colorsConfig.secondary;
-    const dangerColor = (configToApply as any).danger || configToApply.danger_color || colorsConfig.danger_color || colorsConfig.destructive || colorsConfig.danger;
-    const warningColor = (configToApply as any).warning || configToApply.warning_color || colorsConfig.warning_color || colorsConfig.warning;
-    const infoColor = (configToApply as any).info || configToApply.info_color || colorsConfig.info_color || colorsConfig.info;
-    const successColor = (configToApply as any).success || configToApply.success_color || colorsConfig.success_color || colorsConfig.success;
+    const configAccessor = configToApply as ThemeConfigAccessor;
+    const colorsConfig = configAccessor.colors || {};
+    const primaryColor = configAccessor.primary || configToApply.primary_color || colorsConfig.primary_color || colorsConfig.primary;
+    const secondaryColor = configAccessor.secondary || configToApply.secondary_color || colorsConfig.secondary_color || colorsConfig.secondary;
+    const dangerColor = configAccessor.danger || configToApply.danger_color || colorsConfig.danger_color || colorsConfig.destructive || colorsConfig.danger;
+    const warningColor = configAccessor.warning || configToApply.warning_color || colorsConfig.warning_color || colorsConfig.warning;
+    const infoColor = configAccessor.info || configToApply.info_color || colorsConfig.info_color || colorsConfig.info;
+    const successColor = configAccessor.success || configToApply.success_color || colorsConfig.success_color || colorsConfig.success;
     
     // Generate color shades from base colors
     if (primaryColor) {
@@ -287,8 +288,9 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     // Also check typography.fontUrl for new format
-    if ((configToApply as any).typography?.fontUrl && typeof document !== 'undefined') {
-      const fontUrl = (configToApply as any).typography.fontUrl;
+    const typography = configToApply.typography as TypographyConfig | undefined;
+    if (typography?.fontUrl && typeof document !== 'undefined') {
+      const fontUrl = typography.fontUrl;
       const existingLink = document.querySelector(`link[data-theme-font]`);
       if (existingLink) {
         existingLink.remove();
@@ -302,28 +304,28 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     // Apply fonts from typography config if available
-    if ((configToApply as any).typography?.fontFamily) {
-      const fontFamily = String((configToApply as any).typography.fontFamily).trim();
+    if (typography?.fontFamily) {
+      const fontFamily = String(typography.fontFamily).trim();
       root.style.setProperty('--font-family', fontFamily);
-      if ((configToApply as any).typography.fontFamilyHeading) {
-        root.style.setProperty('--font-family-heading', String((configToApply as any).typography.fontFamilyHeading));
+      if (typography.fontFamilyHeading) {
+        root.style.setProperty('--font-family-heading', String(typography.fontFamilyHeading));
       }
-      if ((configToApply as any).typography.fontFamilySubheading) {
-        root.style.setProperty('--font-family-subheading', String((configToApply as any).typography.fontFamilySubheading));
+      if (typography.fontFamilySubheading) {
+        root.style.setProperty('--font-family-subheading', String(typography.fontFamilySubheading));
       }
       // Don't modify document.body or root directly - let CSS handle it via var(--font-family)
       
       // Check if fonts exist in database and warn user if not
       if (typeof window !== 'undefined') {
         const fontsToCheck: string[] = [];
-        if ((configToApply as any).typography.fontFamily) {
-          fontsToCheck.push(String((configToApply as any).typography.fontFamily));
+        if (typography?.fontFamily) {
+          fontsToCheck.push(String(typography.fontFamily));
         }
-        if ((configToApply as any).typography.fontFamilyHeading) {
-          fontsToCheck.push(String((configToApply as any).typography.fontFamilyHeading));
+        if (typography?.fontFamilyHeading) {
+          fontsToCheck.push(String(typography.fontFamilyHeading));
         }
-        if ((configToApply as any).typography.fontFamilySubheading) {
-          fontsToCheck.push(String((configToApply as any).typography.fontFamilySubheading));
+        if (typography?.fontFamilySubheading) {
+          fontsToCheck.push(String(typography.fontFamilySubheading));
         }
         
         // Extract font names from CSS font-family strings (e.g., "Inter, sans-serif" -> "Inter")
@@ -394,16 +396,16 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     // Support borderRadius object format (sm, md, lg, xl, full)
-    if ((configToApply as any).borderRadius) {
-      const borderRadius = (configToApply as any).borderRadius;
+    if (configToApply.borderRadius) {
+      const borderRadius = configToApply.borderRadius;
       Object.entries(borderRadius).forEach(([key, value]) => {
         root.style.setProperty(`--border-radius-${key}`, String(value));
       });
     }
     
     // Apply typography fontSize
-    if ((configToApply as any).typography?.fontSize) {
-      const fontSize = (configToApply as any).typography.fontSize;
+    if (typography?.fontSize) {
+      const fontSize = typography.fontSize;
       Object.entries(fontSize).forEach(([key, value]) => {
         root.style.setProperty(`--font-size-${key}`, String(value));
       });
@@ -411,8 +413,8 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     
     // Apply spacing (support both old format and new layout.spacing format)
     // Old format: config.spacing (for backward compatibility)
-    if ((configToApply as any).spacing) {
-      const spacing = (configToApply as any).spacing;
+    if (configToApply.spacing) {
+      const spacing = configToApply.spacing;
       Object.entries(spacing).forEach(([key, value]) => {
         if (key !== 'unit' && key !== 'scale' && typeof value === 'string') {
           root.style.setProperty(`--spacing-${key}`, String(value));
@@ -424,8 +426,8 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     // New format: config.layout.spacing (for complex theming)
-    if ((configToApply as any).layout?.spacing) {
-      const spacing = (configToApply as any).layout.spacing;
+    if (configToApply.layout?.spacing) {
+      const spacing = configToApply.layout.spacing;
       if (spacing.unit) root.style.setProperty('--spacing-unit', String(spacing.unit));
       if (spacing.scale) root.style.setProperty('--spacing-scale', String(spacing.scale));
       Object.entries(spacing).forEach(([key, value]) => {
@@ -436,8 +438,8 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     // Apply gaps (new layout system)
-    if ((configToApply as any).layout?.gaps) {
-      const gaps = (configToApply as any).layout.gaps;
+    if (configToApply.layout?.gaps) {
+      const gaps = configToApply.layout.gaps;
       Object.entries(gaps).forEach(([key, value]) => {
         if (typeof value === 'string') {
           root.style.setProperty(`--gap-${key}`, String(value));
@@ -446,8 +448,8 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     // Apply container widths (new layout system)
-    if ((configToApply as any).layout?.containers) {
-      const containers = (configToApply as any).layout.containers;
+    if (configToApply.layout?.containers) {
+      const containers = configToApply.layout.containers;
       Object.entries(containers).forEach(([key, value]) => {
         if (typeof value === 'string') {
           root.style.setProperty(`--container-${key}`, String(value));
@@ -456,8 +458,8 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     // Apply animation configuration (new animation system)
-    if ((configToApply as any).animations) {
-      const animations = (configToApply as any).animations;
+    if (configToApply.animations) {
+      const animations = configToApply.animations;
       
       // Apply durations
       if (animations.duration) {
@@ -488,7 +490,7 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     // Apply CSS effects (comprehensive support for all effect types)
-    const effects = (configToApply as any).effects;
+    const effects = configToApply.effects;
     if (effects) {
       // Glassmorphism - Support both old format (glassmorphism.enabled) and new format (glassmorphism.card, etc.)
       if (effects.glassmorphism) {
@@ -583,7 +585,7 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
       Object.entries(effects).forEach(([key, value]) => {
         if (!predefinedKeys.includes(key) && typeof value === 'object' && value !== null && !Array.isArray(value)) {
           // Recursively convert nested effect properties to CSS variables
-          const convertEffectToCSSVars = (obj: Record<string, any>, prefix: string) => {
+          const convertEffectToCSSVars = (obj: Record<string, unknown>, prefix: string) => {
             Object.entries(obj).forEach(([propKey, propValue]) => {
               if (propKey !== 'description' && propKey !== 'enabled') {
                 if (typeof propValue === 'string' || typeof propValue === 'number') {
@@ -592,12 +594,12 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
                   root.style.setProperty(cssVarName, String(propValue));
                 } else if (typeof propValue === 'object' && propValue !== null && !Array.isArray(propValue)) {
                   // Recursively handle nested objects
-                  convertEffectToCSSVars(propValue as Record<string, any>, `${prefix}-${propKey}`);
+                  convertEffectToCSSVars(propValue as Record<string, unknown>, `${prefix}-${propKey}`);
                 }
               }
             });
           };
-          convertEffectToCSSVars(value as Record<string, any>, key);
+          convertEffectToCSSVars(value as Record<string, unknown>, key);
         }
       });
     }

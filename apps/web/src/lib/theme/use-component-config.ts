@@ -53,7 +53,7 @@ export function useComponentConfig(componentName: string) {
       return null;
     }
     
-    const sizes = (componentConfig as any).sizes;
+    const sizes = (componentConfig as { sizes?: Record<string, ComponentSizeConfig> }).sizes;
     if (!sizes || typeof sizes !== 'object') {
       return null;
     }
@@ -78,7 +78,7 @@ export function useComponentConfig(componentName: string) {
       return null;
     }
     
-    const variants = (componentConfig as any).variants;
+    const variants = (componentConfig as { variants?: Record<string, ComponentVariantConfig> }).variants;
     if (!variants || typeof variants !== 'object') {
       return null;
     }
@@ -102,7 +102,7 @@ export function useComponentConfig(componentName: string) {
       return null;
     }
     
-    const layout = (componentConfig as any).layout;
+    const layout = (componentConfig as { layout?: ComponentLayoutConfig }).layout;
     return layout && typeof layout === 'object' ? layout : null;
   };
   
@@ -134,7 +134,7 @@ export const componentConfig = {
     if (!theme?.config?.components) return null;
     const componentConfig = theme.config.components[componentName as keyof ComponentConfig];
     if (!componentConfig || typeof componentConfig !== 'object') return null;
-    const sizes = (componentConfig as any).sizes;
+    const sizes = (componentConfig as { sizes?: Record<string, ComponentSizeConfig> }).sizes;
     if (!sizes || typeof sizes !== 'object') return null;
     const sizeConfig = sizes[size];
     return sizeConfig && typeof sizeConfig === 'object' ? sizeConfig : null;
@@ -147,7 +147,7 @@ export const componentConfig = {
     if (!theme?.config?.components) return null;
     const componentConfig = theme.config.components[componentName as keyof ComponentConfig];
     if (!componentConfig || typeof componentConfig !== 'object') return null;
-    const variants = (componentConfig as any).variants;
+    const variants = (componentConfig as { variants?: Record<string, ComponentVariantConfig> }).variants;
     if (!variants || typeof variants !== 'object') return null;
     const variantConfig = variants[variant];
     return variantConfig && typeof variantConfig === 'object' ? variantConfig : null;
@@ -160,7 +160,7 @@ export const componentConfig = {
     if (!theme?.config?.components) return null;
     const componentConfig = theme.config.components[componentName as keyof ComponentConfig];
     if (!componentConfig || typeof componentConfig !== 'object') return null;
-    const layout = (componentConfig as any).layout;
+    const layout = (componentConfig as { layout?: ComponentLayoutConfig }).layout;
     return layout && typeof layout === 'object' ? layout : null;
   },
 };

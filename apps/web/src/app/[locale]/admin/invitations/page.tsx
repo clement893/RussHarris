@@ -72,10 +72,10 @@ export default function InvitationsPage() {
           team_id?: number;
           status: string;
           invited_by_id?: number;
-          invited_by?: any;
+          invited_by?: { id?: number; email?: string; name?: string } | null;
           expires_at: string;
           created_at: string;
-          team?: any;
+          team?: { id?: number; name?: string } | null;
         }) => ({
           id: String(invitation.id),
           email: invitation.email,

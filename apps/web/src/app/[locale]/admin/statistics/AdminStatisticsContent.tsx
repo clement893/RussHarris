@@ -8,6 +8,7 @@ import { getErrorMessage } from '@/lib/errors';
 import { extractApiData } from '@/lib/api/utils';
 import { logger } from '@/lib/logger';
 import { Card, Badge, Alert, Loading } from '@/components/ui';
+import type { User, AuditLog, Team, Post, Page, Project } from '@/lib/types/common';
 
 interface Statistics {
   total_users: number;
@@ -209,7 +210,7 @@ export default function AdminStatisticsContent() {
         const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
         const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
-        users.forEach((user: any) => {
+        users.forEach((user: User) => {
           const createdAt = user.created_at ? new Date(user.created_at) : null;
           if (createdAt) {
             if (createdAt >= sevenDaysAgo) newUsersLast7Days++;
@@ -239,7 +240,7 @@ export default function AdminStatisticsContent() {
             : []);
 
         // Group by type
-        logs.forEach((log: any) => {
+        logs.forEach((log: AuditLog) => {
           const eventType = log.event_type || log.action || 'unknown';
           activitiesByType[eventType] = (activitiesByType[eventType] || 0) + 1;
         });
@@ -255,7 +256,7 @@ export default function AdminStatisticsContent() {
           }
         }
 
-        logs.forEach((log: any) => {
+        logs.forEach((log: AuditLog) => {
           if (log.timestamp) {
             const logDate = new Date(log.timestamp).toISOString().split('T')[0];
             if (logDate && dayCounts[logDate] !== undefined) {
@@ -284,7 +285,7 @@ export default function AdminStatisticsContent() {
 
         const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         
-        auditLogs.forEach((log: any) => {
+        auditLogs.forEach((log: AuditLog) => {
           const level = log.severity || log.level || 'info';
           logsByLevel[level] = (logsByLevel[level] || 0) + 1;
           
@@ -317,7 +318,7 @@ export default function AdminStatisticsContent() {
           const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
           const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
           
-          teams.forEach((team: any) => {
+          teams.forEach((team: Team) => {
             if (team.is_active || team.isActive) {
               activeOrgs++;
             }
@@ -360,7 +361,7 @@ export default function AdminStatisticsContent() {
         if (postsResponse && postsResponse.data) {
           const posts = Array.isArray(postsResponse.data) ? postsResponse.data : [];
           totalPosts = posts.length;
-          publishedPosts = posts.filter((post: any) => post.status === 'published' || post.status === 'PUBLISHED').length;
+          publishedPosts = posts.filter((post: Post) => post.status === 'published' || post.status === 'PUBLISHED').length;
         }
       } catch (e) {
         // Ignore if posts API fails
@@ -372,7 +373,7 @@ export default function AdminStatisticsContent() {
         if (pagesResponse && Array.isArray(pagesResponse.data)) {
           const pages = pagesResponse.data;
           totalPages = pages.length;
-          publishedPages = pages.filter((page: any) => page.status === 'published' || page.status === 'PUBLISHED').length;
+          publishedPages = pages.filter((page: Page) => page.status === 'published' || page.status === 'PUBLISHED').length;
         }
       } catch (e) {
         // Ignore if pages API fails
@@ -387,7 +388,7 @@ export default function AdminStatisticsContent() {
         if (projectsResponse && Array.isArray(projectsResponse.data)) {
           const projects = projectsResponse.data;
           totalProjects = projects.length;
-          projects.forEach((project: any) => {
+          projects.forEach((project: Project) => {
             const status = project.status || 'unknown';
             projectsByStatus[status] = (projectsByStatus[status] || 0) + 1;
           });

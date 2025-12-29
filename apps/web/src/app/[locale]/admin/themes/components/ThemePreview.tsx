@@ -168,7 +168,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
             <div>
               <p className="text-base text-foreground">
                 Paragraphe de texte normal avec une police{' '}
-                <span className="font-mono">{(config as any).font_family || 'par défaut'}</span>.
+                <span className="font-mono">{config.font_family || 'par défaut'}</span>.
               </p>
             </div>
             <div>
@@ -194,7 +194,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
                 placeholder="Saisissez du texte..."
                 className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
-                  borderRadius: (config as any).border_radius || '8px',
+                  borderRadius: config.border_radius || '8px',
                 }}
               />
             </div>
@@ -207,7 +207,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
                 rows={3}
                 className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
-                  borderRadius: (config as any).border_radius || '8px',
+                  borderRadius: config.border_radius || '8px',
                 }}
               />
             </div>
@@ -218,7 +218,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
               <select
                 className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{
-                  borderRadius: (config as any).border_radius || '8px',
+                  borderRadius: config.border_radius || '8px',
                 }}
               >
                 <option>Option 1</option>
@@ -231,7 +231,7 @@ export function ThemePreview({ config }: ThemePreviewProps) {
       </Card>
 
       {/* Border Radius Preview */}
-      {(config as any).border_radius && (
+      {config.border_radius && (
         <Card>
           <div className="p-6">
             <h4 className="text-md font-semibold text-foreground mb-4">Rayon des bordures</h4>
@@ -239,14 +239,14 @@ export function ThemePreview({ config }: ThemePreviewProps) {
               <div
                 className="w-20 h-20 bg-primary flex items-center justify-center text-primary-foreground font-semibold"
                 style={{
-                  borderRadius: (config as any).border_radius,
+                  borderRadius: config.border_radius,
                 }}
               >
                 Box
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Valeur appliquée:</p>
-                <p className="text-sm font-mono text-foreground">{(config as any).border_radius}</p>
+                <p className="text-sm font-mono text-foreground">{config.border_radius}</p>
               </div>
             </div>
           </div>

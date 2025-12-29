@@ -99,7 +99,7 @@ function isValidColor(color: string): boolean {
  * Validate theme configuration colors
  */
 function validateThemeColors(config: {
-  colors?: Record<string, any>;
+  colors?: Record<string, unknown>;
   primary_color?: string;
   secondary_color?: string;
   danger_color?: string;
@@ -193,7 +193,7 @@ export interface ThemeValidationResult {
  */
 export function validateThemeConfig(
   config: {
-    colors?: Record<string, any>;
+    colors?: Record<string, unknown>;
     primary_color?: string;
     secondary_color?: string;
     danger_color?: string;

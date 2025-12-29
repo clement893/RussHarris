@@ -5,7 +5,7 @@
 
 import { DARK_MODE_CONFIG } from './dark-mode-config';
 import { DEFAULT_THEME_CONFIG } from './default-theme-config';
-import type { ThemeConfig } from '@modele/types';
+import type { ThemeConfig, ThemeConfigAccessor } from '@modele/types';
 
 /**
  * Detect system dark mode preference
@@ -27,7 +27,7 @@ export function prefersDarkMode(): boolean {
  * @returns 'light' | 'dark' | 'system'
  */
 export function getThemeMode(config: ThemeConfig): 'light' | 'dark' | 'system' {
-  const mode = (config as any).mode || 'system';
+  const mode = config.mode || 'system';
   
   if (mode === 'system') {
     return prefersDarkMode() ? 'dark' : 'light';
@@ -83,17 +83,18 @@ export function getThemeConfigForMode(config: ThemeConfig): ThemeConfig {
   const mode = getThemeMode(config);
   
   if (mode === 'dark') {
-    const configColors = (config as any).colors;
-    const configTypography = (config as any).typography;
-    const darkColors = DARK_MODE_CONFIG.colors as Record<string, any> | undefined;
-    const darkTypography = DARK_MODE_CONFIG.typography as Record<string, any> | undefined;
+    const configAccessor = config as ThemeConfigAccessor;
+    const configColors = configAccessor.colors;
+    const configTypography = config.typography;
+    const darkColors = DARK_MODE_CONFIG.colors as Record<string, unknown> | undefined;
+    const darkTypography = DARK_MODE_CONFIG.typography as Record<string, unknown> | undefined;
     
     // Check if backend has explicit dark mode colors (for future extension)
-    const darkModeColors = (config as any).darkMode?.colors;
+    const darkModeColors = (config as { darkMode?: { colors?: Record<string, unknown> } }).darkMode?.colors;
     const hasExplicitDarkMode = darkModeColors && typeof darkModeColors === 'object' && !Array.isArray(darkModeColors);
     
     // Start with dark mode defaults
-    const mergedColors: Record<string, any> = darkColors ? { ...darkColors } : {};
+    const mergedColors: Record<string, unknown> = darkColors ? { ...darkColors } : {};
     
     // Apply base colors:
     // - If backend has explicit darkMode.colors, use those for base colors
@@ -118,7 +119,7 @@ export function getThemeConfigForMode(config: ThemeConfig): ThemeConfig {
       
       // Also allow any other colors that are not base colors (for extensibility)
       Object.keys(configColors).forEach(colorKey => {
-        if (!BASE_COLORS.includes(colorKey as any) && !THEME_COLORS.includes(colorKey as any)) {
+        if (!BASE_COLORS.includes(colorKey as string) && !THEME_COLORS.includes(colorKey as string)) {
           mergedColors[colorKey] = configColors[colorKey];
         }
       });
@@ -137,10 +138,11 @@ export function getThemeConfigForMode(config: ThemeConfig): ThemeConfig {
   }
   
   // Light mode - use default or provided config
-  const configColors = (config as any).colors;
-  const configTypography = (config as any).typography;
-  const defaultColors = DEFAULT_THEME_CONFIG.colors as Record<string, any> | undefined;
-  const defaultTypography = DEFAULT_THEME_CONFIG.typography as Record<string, any> | undefined;
+  const configAccessor = config as ThemeConfigAccessor;
+  const configColors = configAccessor.colors;
+  const configTypography = config.typography;
+  const defaultColors = DEFAULT_THEME_CONFIG.colors as Record<string, unknown> | undefined;
+  const defaultTypography = DEFAULT_THEME_CONFIG.typography as Record<string, unknown> | undefined;
   const mergedColors = configColors && typeof configColors === 'object' && !Array.isArray(configColors) && defaultColors && typeof defaultColors === 'object'
     ? { ...defaultColors, ...configColors }
     : (defaultColors || {});

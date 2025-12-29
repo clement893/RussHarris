@@ -16,7 +16,7 @@ interface OnboardingStep {
   description?: string;
   order: number;
   step_type: string;
-  step_data?: Record<string, any>;
+  step_data?: Record<string, unknown>;
   required: boolean;
 }
 

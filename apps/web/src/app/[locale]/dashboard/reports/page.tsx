@@ -82,7 +82,7 @@ export default function DashboardReportsPage() {
       const report = await reportsAPI.create({
         name: config.name,
         description: config.description,
-        config: config as any,
+        config: config,
         data: {
           table: [],
           chart: [],

@@ -25,15 +25,14 @@ export function ThemeVisualEditor({ config, onUpdate }: ThemeVisualEditorProps) 
 
   const updateNested = (path: string[], value: unknown) => {
     const updated = { ...localConfig };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let current: Record<string, any> = updated as Record<string, any>;
+    let current: Record<string, unknown> = updated as Record<string, unknown>;
     for (let i = 0; i < path.length - 1; i++) {
       const key = path[i];
       if (key === undefined) continue;
       if (!current[key]) {
         current[key] = {};
       }
-      current = current[key] as Record<string, any>;
+      current = current[key] as Record<string, unknown>;
     }
     const lastKey = path[path.length - 1];
     if (lastKey !== undefined) {

@@ -121,7 +121,7 @@ export function applyVariantConfigAsStyles(
       if (typeof value === 'string') {
         // Convert camelCase to kebab-case for CSS properties
         const cssProperty = key.replace(/([A-Z])/g, '-$1').toLowerCase() as keyof React.CSSProperties;
-        (styles as any)[cssProperty] = value;
+        (styles as React.CSSProperties)[cssProperty] = value;
       }
     }
   });

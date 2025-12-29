@@ -352,7 +352,7 @@ export const usersAPI = {
     } catch (error) {
       // Better error message for debugging
       const errorMessage = error instanceof Error ? error.message : String(error);
-      const axiosError = error as any;
+      const axiosError = error as { response?: { status?: number; data?: unknown } };
       
       if (axiosError?.response) {
         const status = axiosError.response.status;
