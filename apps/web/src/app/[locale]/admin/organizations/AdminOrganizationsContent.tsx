@@ -138,11 +138,11 @@ export default function AdminOrganizationsContent() {
   };
 
   const handleCreateTeam = async (data: OrganizationSettingsData) => {
+    const slug = data.slug || generateSlug(data.name);
+    
     try {
       setLoading(true);
       setError(null);
-      
-      const slug = data.slug || generateSlug(data.name);
       
       if (!slug) {
         setError('Le nom doit contenir au moins un caractère alphanumérique');
@@ -192,7 +192,8 @@ export default function AdminOrganizationsContent() {
       await loadTeams();
       
       if (errorDetail?.includes('slug') || errorDetail?.includes('already exists')) {
-        setError(`Une organisation avec le slug "${slug}" existe déjà dans la base de données. Si vous êtes le propriétaire, elle devrait apparaître dans la liste ci-dessous après rafraîchissement. Sinon, veuillez choisir un autre nom.`);
+        const errorSlug = data.slug || generateSlug(data.name);
+        setError(`Une organisation avec le slug "${errorSlug}" existe déjà dans la base de données. Si vous êtes le propriétaire, elle devrait apparaître dans la liste ci-dessous après rafraîchissement. Sinon, veuillez choisir un autre nom.`);
       } else {
         setError(errorDetail || errorMessage);
       }
