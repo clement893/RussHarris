@@ -3,7 +3,6 @@
 // Force dynamic rendering to avoid static generation
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
-export const runtime = 'nodejs';
 
 import { useState, useEffect, useCallback } from 'react';
 import { apiClient } from '@/lib/api/client';

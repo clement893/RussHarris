@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect } from 'react';
 import { clsx } from 'clsx';
+import Text from './Text';
 
 export interface ToastProps {
   id: string;
@@ -63,7 +64,7 @@ export default function Toast({
   return (
     <div
       className={clsx(
-        'rounded-lg border p-4 shadow-lg min-w-[300px] max-w-md',
+        'rounded-lg border p-lg shadow-lg min-w-[300px] max-w-md',
         'animate-slide-in-right',
         styles.bg,
         styles.border
@@ -71,17 +72,17 @@ export default function Toast({
     >
       <div className="flex items-start">
         {icon && (
-          <div className={clsx('flex-shrink-0 mr-3', styles.icon)}>
+          <div className={clsx('flex-shrink-0 mr-4', styles.icon)}>
             {icon}
           </div>
         )}
-        <p className={clsx('flex-1 text-sm font-medium', styles.text)}>
+        <Text variant="small" className={clsx('flex-1 font-medium', styles.text)}>
           {message}
-        </p>
+        </Text>
         <button
           onClick={() => onClose(id)}
-          className={clsx('ml-4 flex-shrink-0', styles.text)}
-          aria-label="Close"
+          className={clsx('ml-4 flex-shrink-0 p-1 rounded-md hover:bg-opacity-20 transition-colors', styles.text)}
+          aria-label="Close toast"
         >
           <svg
             className="w-5 h-5"

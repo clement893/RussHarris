@@ -285,7 +285,6 @@ export async function testCriticalEndpoints(
 ): Promise<EndpointTestResult[]> {
   const endpointsToTest = getEndpointsToTest();
   const results: EndpointTestResult[] = [];
-  const totalEndpoints = endpointsToTest.length;
 
   // Initialize all results as pending
   for (const endpoint of endpointsToTest) {
@@ -339,11 +338,16 @@ export async function testCriticalEndpoints(
         results[globalIndex] = settledResult.value;
       } else if (settledResult.status === 'rejected' && globalIndex < results.length) {
         // Handle rejection - mark as error
-        results[globalIndex] = {
-          ...results[globalIndex],
-          status: 'error',
-          message: `Test failed: ${settledResult.reason instanceof Error ? settledResult.reason.message : String(settledResult.reason)}`,
-        };
+        const existingResult = results[globalIndex];
+        if (existingResult) {
+          results[globalIndex] = {
+            endpoint: existingResult.endpoint,
+            method: existingResult.method,
+            status: 'error',
+            message: `Test failed: ${settledResult.reason instanceof Error ? settledResult.reason.message : String(settledResult.reason)}`,
+            category: existingResult.category,
+          };
+        }
       }
     });
 

@@ -10,7 +10,7 @@ import { useState } from 'react';
 import type { CheckResult } from '../types/health.types';
 
 export function useConnectionTests() {
-  const [connectionTests, setConnectionTests] = useState<CheckResult[]>([]);
+  const [connectionTests] = useState<CheckResult[]>([]);
   const [isTestingConnections, setIsTestingConnections] = useState(false);
 
   // Placeholder for future connection testing logic

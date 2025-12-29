@@ -3,8 +3,8 @@
  * Displays critical endpoints test results with progress indicator
  */
 
-import { useState, useMemo, useCallback } from 'react';
-import { Button, Card, Alert, Badge } from '@/components/ui';
+import { useMemo } from 'react';
+import { Button, Card, Alert } from '@/components/ui';
 import { RefreshCw, Loader2, CheckCircle, XCircle, Copy, Check } from 'lucide-react';
 import type { EndpointTestResult, TestProgress } from '../types/health.types';
 

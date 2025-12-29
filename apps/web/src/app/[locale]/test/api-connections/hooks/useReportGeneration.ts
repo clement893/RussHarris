@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { generateCompleteReport, generateReportPath, type GenerateReportParams } from '../services/reportGenerator';
+import { generateCompleteReport, generateReportPath } from '../services/reportGenerator';
 import type { CheckResult, ConnectionStatus, EndpointTestResult, ComponentTestResult } from '../types/health.types';
 
 export function useReportGeneration() {
