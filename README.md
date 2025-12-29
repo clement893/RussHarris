@@ -620,8 +620,8 @@ This project is private and proprietary.
 ### Getting Help
 
 - 📖 Check the [documentation](./GETTING_STARTED.md)
-- 🐛 [Open an issue](https://github.com/clement893/MODELE-NEXTJS-FULLSTACK/issues)
-- 💬 [Start a discussion](https://github.com/clement893/MODELE-NEXTJS-FULLSTACK/discussions)
+- 🐛 [Open an issue](https://github.com/your-username/your-repo/issues)
+- 💬 [Start a discussion](https://github.com/your-username/your-repo/discussions)
 - 📚 Review code comments and examples
 
 ### Common Issues
