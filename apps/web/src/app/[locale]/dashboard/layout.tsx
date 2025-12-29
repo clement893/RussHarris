@@ -6,23 +6,14 @@ export const runtime = 'nodejs';
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
-import { useAuth } from '@/hooks/useAuth';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Sidebar from '@/components/ui/Sidebar';
-import Button from '@/components/ui/Button';
-import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
 import DashboardFooter from '@/components/layout/DashboardFooter';
-import NotificationBellConnected from '@/components/notifications/NotificationBellConnected';
 import { 
   LayoutDashboard, 
   FolderKanban, 
-  LogOut,
-  Menu,
-  X,
   Shield,
-  Home,
   User,
   Settings
 } from 'lucide-react';
@@ -34,9 +25,7 @@ function DashboardLayoutContent({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const router = useRouter();
   const { user } = useAuthStore();
-  const { logout } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -83,56 +72,6 @@ function DashboardLayoutContent({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:from-muted dark:to-muted">
-      {/* Mobile/Tablet Header */}
-      <header className="xl:hidden bg-background shadow border-b border-border sticky top-0 z-30">
-        <div className="px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between">
-          <h1 className="text-lg sm:text-xl font-bold text-foreground truncate flex-1 mr-2">
-            {pathname === '/dashboard/projects' && 'Projets'}
-            {pathname === '/dashboard/become-superadmin' && 'Super Admin'}
-            {pathname === '/profile' && 'Profile'}
-            {pathname === '/settings' && 'Settings'}
-            {pathname?.startsWith('/admin') && 'Administration'}
-            {(pathname === '/dashboard' || !pathname) && ''}
-          </h1>
-          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.push('/')}
-              aria-label="Retour à l'accueil"
-              title="Retour à l'accueil"
-              className="hidden sm:flex"
-            >
-              <Home className="w-4 h-4 sm:w-5 sm:h-5" />
-            </Button>
-            <NotificationBellConnected />
-            <ThemeToggleWithIcon />
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-              className="p-2"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </Button>
-            <Button variant="danger" size="sm" onClick={logout} className="hidden sm:flex">
-              <LogOut className="w-4 h-4 mr-1" />
-              <span className="hidden md:inline">Logout</span>
-            </Button>
-            <Button 
-              variant="danger" 
-              size="sm" 
-              onClick={logout} 
-              className="sm:hidden p-2"
-              aria-label="Logout"
-            >
-              <LogOut className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </header>
-
       {/* Mobile/Tablet Sidebar Overlay */}
       {mobileMenuOpen && (
         <div
@@ -154,10 +93,6 @@ function DashboardLayoutContent({
           className="h-full"
           user={user}
           showSearch={true}
-          notificationsComponent={<NotificationBellConnected />}
-          onHomeClick={() => router.push('/')}
-          themeToggleComponent={<ThemeToggleWithIcon />}
-          onLogoutClick={logout}
         />
       </aside>
 
@@ -173,46 +108,11 @@ function DashboardLayoutContent({
             className="h-screen sticky top-0"
             user={user}
             showSearch={true}
-            notificationsComponent={<NotificationBellConnected />}
-            onHomeClick={() => router.push('/')}
-            themeToggleComponent={<ThemeToggleWithIcon />}
-            onLogoutClick={logout}
           />
         </aside>
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-w-0 w-full">
-          {/* Desktop Header */}
-          <header className="hidden xl:block bg-background shadow border-b border-border">
-            <div className="px-4 md:px-6 xl:px-8 2xl:px-10 py-3 md:py-4 2xl:py-5 flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-foreground">
-                {pathname === '/dashboard/projects' && 'Projets'}
-                {pathname === '/dashboard/become-superadmin' && 'Super Admin'}
-                {pathname === '/profile' && 'Profile'}
-                {pathname === '/settings' && 'Settings'}
-                {pathname?.startsWith('/admin') && 'Administration'}
-                {(pathname === '/dashboard' || !pathname) && ''}
-              </h1>
-              <div className="flex items-center gap-3">
-                <Button
-                  variant="ghost"
-                  onClick={() => router.push('/')}
-                  aria-label="Retour à l'accueil"
-                  title="Retour à l'accueil"
-                >
-                  <Home className="w-5 h-5 mr-2" />
-                  Accueil
-                </Button>
-                <NotificationBellConnected />
-                <ThemeToggleWithIcon />
-                <Button variant="danger" onClick={logout}>
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </Button>
-              </div>
-            </div>
-          </header>
-
           {/* Page Content */}
           <main className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 xl:px-8 2xl:px-10 py-4 sm:py-6 2xl:py-8">
             {children}
