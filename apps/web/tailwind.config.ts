@@ -139,15 +139,24 @@ const config: Config = {
         ring: 'var(--color-ring)',
       },
       spacing: {
-        // Theme-aware spacing using CSS variables with fallbacks
+        // Standardized spacing scale (UX/UI improvements - Batch 1)
+        // Fixed pixel values for consistent spacing across the application
+        xs: '4px',    // 0.25rem - Very small spacing
+        sm: '8px',    // 0.5rem - Small spacing
+        md: '16px',   // 1rem - Standard spacing
+        lg: '24px',   // 1.5rem - Large spacing
+        xl: '32px',   // 2rem - Very large spacing
+        '2xl': '48px', // 3rem - Extra large spacing
+        '3xl': '64px', // 4rem - Maximum spacing
+        // Theme-aware spacing using CSS variables with fallbacks (backward compatibility)
         // These map to the theme's spacing scale
-        xs: 'var(--spacing-xs, 0.5rem)',      // 8px default
-        sm: 'var(--spacing-sm, 0.75rem)',     // 12px default
-        md: 'var(--spacing-md, 1rem)',        // 16px default
-        lg: 'var(--spacing-lg, 1.5rem)',      // 24px default
-        xl: 'var(--spacing-xl, 2rem)',        // 32px default
-        '2xl': 'var(--spacing-2xl, 3rem)',    // 48px default
-        '3xl': 'var(--spacing-3xl, 4rem)',    // 64px default
+        'theme-xs': 'var(--spacing-xs, 0.5rem)',      // 8px default
+        'theme-sm': 'var(--spacing-sm, 0.75rem)',     // 12px default
+        'theme-md': 'var(--spacing-md, 1rem)',        // 16px default
+        'theme-lg': 'var(--spacing-lg, 1.5rem)',      // 24px default
+        'theme-xl': 'var(--spacing-xl, 2rem)',        // 32px default
+        'theme-2xl': 'var(--spacing-2xl, 3rem)',    // 48px default
+        'theme-3xl': 'var(--spacing-3xl, 4rem)',    // 64px default
         // Spacing unit and scale (for calculations)
         unit: 'var(--spacing-unit, 0.5rem)',  // 8px default
         // Extended spacing scale for consistent layouts (keep for backward compatibility)
