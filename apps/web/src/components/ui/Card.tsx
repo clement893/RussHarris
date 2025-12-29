@@ -165,7 +165,7 @@ export default function Card({
       {...props}
     >
       {(title || subtitle || header) && (
-        <div className="px-6 py-4 border-b border-[var(--color-border)]">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-[var(--color-border)]">
           {header || (
             <>
               {title && (
@@ -183,10 +183,10 @@ export default function Card({
         </div>
       )}
 
-      <div className={clsx(padding && 'p-6')}>{children}</div>
+      <div className={clsx(padding && 'p-4 sm:p-6')}>{children}</div>
 
       {cardFooter && (
-        <div className="px-6 py-4 border-t border-[var(--color-border)] bg-[var(--color-muted)]">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-[var(--color-border)] bg-[var(--color-muted)]">
           {cardFooter}
         </div>
       )}

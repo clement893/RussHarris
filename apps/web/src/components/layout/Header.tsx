@@ -9,6 +9,7 @@ import { ThemeToggleWithIcon } from '../ui/ThemeToggle';
 import LanguageSwitcher from '../i18n/LanguageSwitcher';
 import NotificationBellConnected from '../notifications/NotificationBellConnected';
 import { Menu, X } from 'lucide-react';
+import { clsx } from 'clsx';
 
 export default function Header() {
   const { isAuthenticated, user } = useAuthStore();
@@ -108,26 +109,29 @@ export default function Header() {
         </div>
 
         {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div 
-            ref={mobileMenuRef}
-            id="mobile-menu"
-            className="md:hidden border-t border-border py-4"
-            role="menu"
-            aria-label="Menu mobile"
-          >
-            <nav className="flex flex-col gap-4">
+        <div 
+          ref={mobileMenuRef}
+          id="mobile-menu"
+          className={clsx(
+            'md:hidden border-t border-border overflow-hidden transition-all duration-300 ease-in-out',
+            mobileMenuOpen ? 'max-h-[800px] opacity-100 py-4' : 'max-h-0 opacity-0 py-0'
+          )}
+          role="menu"
+          aria-label="Menu mobile"
+          aria-hidden={!mobileMenuOpen}
+        >
+            <nav className="flex flex-col gap-2">
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-foreground hover:text-primary transition px-4 py-3 min-h-[44px] flex items-center"
+                className="text-foreground hover:text-primary transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
               >
                 Accueil
               </Link>
               <Link
                 href="/components"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition px-4 py-3 min-h-[44px] flex items-center"
+                className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
               >
                 Composants
               </Link>
@@ -139,7 +143,7 @@ export default function Header() {
                   <Link
                     href="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition px-4 py-3 min-h-[44px] flex items-center"
+                    className="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
                   >
                     Dashboard
                   </Link>

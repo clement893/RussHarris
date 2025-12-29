@@ -94,7 +94,7 @@ export default function HomePage() {
       {/* Stats Section - Custom stats with StatsCard component */}
       <div className="bg-background py-12">
         <Container>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             <StatsCard
               title="Composants"
               value="270+"
@@ -131,7 +131,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-16">
             {customFeatures.map((feature, index) => (
               <Card key={index} hover className="p-6">
                 <div className={`${feature.color} mb-4`}>
@@ -164,9 +164,9 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-16">
             {useCases.map((useCase, index) => (
-              <Card key={index} hover className="p-8">
+              <Card key={index} hover className="p-6 sm:p-8">
                 <div className="flex items-start gap-4">
                   <div className="text-primary-600 dark:text-primary-400 flex-shrink-0">
                     {useCase.icon}
@@ -189,9 +189,9 @@ export default function HomePage() {
       {/* Key Features List - Custom section using Card component */}
       <div className="bg-gradient-to-br from-secondary-50 to-primary-50 dark:from-muted dark:to-muted py-20">
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <Card className="p-8">
-              <h2 className="text-3xl font-bold text-foreground mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            <Card className="p-6 sm:p-8">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4 sm:mb-6">
                 Fonctionnalités SaaS
               </h2>
               <ul className="space-y-4">
@@ -220,8 +220,8 @@ export default function HomePage() {
                 ))}
               </ul>
             </Card>
-            <Card className="p-8">
-              <h2 className="text-3xl font-bold text-foreground mb-6">
+            <Card className="p-6 sm:p-8">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4 sm:mb-6">
                 Expérience Développeur
               </h2>
               <ul className="space-y-4">
@@ -250,13 +250,13 @@ export default function HomePage() {
       {/* Quick Links - Custom section using Card component */}
       <div className="bg-background py-16">
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <h2 className="text-2xl font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Layers className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <Card className="p-4 sm:p-6 hover:shadow-lg transition-shadow">
+              <h2 className="text-xl sm:text-2xl font-semibold text-foreground mb-3 sm:mb-4 flex items-center gap-2">
+                <Layers className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600 dark:text-primary-400" />
                 Dashboard
               </h2>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4">
                 Accédez à votre tableau de bord pour gérer vos projets et données.
               </p>
               <ButtonLink href="/dashboard" variant="ghost" className="w-full">
@@ -264,12 +264,12 @@ export default function HomePage() {
               </ButtonLink>
             </Card>
 
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <h2 className="text-2xl font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Code className="w-6 h-6 text-success-600 dark:text-success-400" />
+            <Card className="p-4 sm:p-6 hover:shadow-lg transition-shadow">
+              <h2 className="text-xl sm:text-2xl font-semibold text-foreground mb-3 sm:mb-4 flex items-center gap-2">
+                <Code className="w-5 h-5 sm:w-6 sm:h-6 text-success-600 dark:text-success-400" />
                 Composants
               </h2>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4">
                 Explorez notre bibliothèque de 270+ composants réutilisables.
               </p>
               <ButtonLink href="/components" variant="ghost" className="w-full">
@@ -277,12 +277,12 @@ export default function HomePage() {
               </ButtonLink>
             </Card>
 
-            <Card className="p-6 hover:shadow-lg transition-shadow">
-              <h2 className="text-2xl font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Globe className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
+            <Card className="p-4 sm:p-6 hover:shadow-lg transition-shadow">
+              <h2 className="text-xl sm:text-2xl font-semibold text-foreground mb-3 sm:mb-4 flex items-center gap-2">
+                <Globe className="w-5 h-5 sm:w-6 sm:h-6 text-secondary-600 dark:text-secondary-400" />
                 Documentation
               </h2>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4">
                 Consultez la documentation complète pour apprendre à utiliser le template.
               </p>
               <ButtonLink href="/docs" variant="ghost" className="w-full">
