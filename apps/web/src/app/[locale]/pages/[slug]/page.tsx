@@ -10,6 +10,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Loading, Alert } from '@/components/ui';
+import { SafeHTML } from '@/components/ui/SafeHTML';
 import { logger } from '@/lib/logger';
 import { pagesAPI, type Page } from '@/lib/api/pages';
 import { handleApiError } from '@/lib/errors';
@@ -111,9 +112,9 @@ export default function DynamicPage() {
         )}
       </header>
 
-      <div 
+      <SafeHTML 
+        html={page.content}
         className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: page.content }}
       />
     </article>
   );
