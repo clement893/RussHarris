@@ -4,7 +4,7 @@ import { ReactNode, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
-import { ChevronRight, ChevronDown, Search, X } from 'lucide-react';
+import { ChevronRight, ChevronDown, Search, X, Home, LogOut } from 'lucide-react';
 import Input from './Input';
 
 interface SidebarItem {
@@ -27,6 +27,11 @@ interface SidebarProps {
     email?: string;
   } | null;
   showSearch?: boolean; // New prop for search bar (UX/UI improvements - Batch 8)
+  // New props for header and footer actions
+  notificationsComponent?: ReactNode;
+  onHomeClick?: () => void;
+  themeToggleComponent?: ReactNode;
+  onLogoutClick?: () => void;
 }
 
 export default function Sidebar({
@@ -37,6 +42,10 @@ export default function Sidebar({
   onToggleCollapse,
   user,
   showSearch = false, // Search bar disabled by default for backward compatibility
+  notificationsComponent,
+  onHomeClick,
+  themeToggleComponent,
+  onLogoutClick,
 }: SidebarProps) {
   const pathname = usePathname();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -164,8 +173,46 @@ export default function Sidebar({
         className
       )}
     >
-      {onToggleCollapse && (
+      {/* Header: User info + Notifications (top left) */}
+      {user && (
         <div className="p-lg border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+          <div className={clsx(
+            'flex items-center gap-3',
+            collapsed && 'justify-center'
+          )}>
+            <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center flex-shrink-0 min-w-[44px] min-h-[44px]">
+              <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
+                {user.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
+              </span>
+            </div>
+            {!collapsed && (
+              <div className="flex-1 min-w-0 flex items-center gap-2">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                    {user.name || 'Utilisateur'}
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                    {user.email}
+                  </p>
+                </div>
+                {notificationsComponent && (
+                  <div className="flex-shrink-0">
+                    {notificationsComponent}
+                  </div>
+                )}
+              </div>
+            )}
+            {collapsed && notificationsComponent && (
+              <div className="flex-shrink-0">
+                {notificationsComponent}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {onToggleCollapse && (
+        <div className="px-lg py-md border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
           <button
             onClick={onToggleCollapse}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -216,26 +263,38 @@ export default function Sidebar({
           filteredItems.map((item) => renderItem(item))
         )}
       </nav>
-      {user && (
+      
+      {/* Footer: Home, Theme Toggle, Logout (bottom right) */}
+      {(onHomeClick || themeToggleComponent || onLogoutClick) && (
         <div className="p-lg border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
           <div className={clsx(
-            'flex items-center gap-3',
-            collapsed && 'justify-center'
+            'flex items-center gap-2',
+            collapsed ? 'justify-center flex-col' : 'justify-end'
           )}>
-            <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center flex-shrink-0 min-w-[44px] min-h-[44px]">
-              <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
-                {user.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
-              </span>
-            </div>
-            {!collapsed && (
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                  {user.name || 'Utilisateur'}
-                </p>
-                <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
-                  {user.email}
-                </p>
+            {onHomeClick && (
+              <button
+                onClick={onHomeClick}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Retour à l'accueil"
+                title="Retour à l'accueil"
+              >
+                <Home className="w-5 h-5" />
+              </button>
+            )}
+            {themeToggleComponent && (
+              <div className="flex-shrink-0">
+                {themeToggleComponent}
               </div>
+            )}
+            {onLogoutClick && (
+              <button
+                onClick={onLogoutClick}
+                className="p-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Déconnexion"
+                title="Déconnexion"
+              >
+                <LogOut className="w-5 h-5" />
+              </button>
             )}
           </div>
         </div>

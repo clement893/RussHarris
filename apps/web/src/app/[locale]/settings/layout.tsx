@@ -153,6 +153,10 @@ function SettingsLayoutContent({
           currentPath={pathname}
           className="h-full"
           user={user}
+          notificationsComponent={<NotificationBellConnected />}
+          onHomeClick={() => router.push('/')}
+          themeToggleComponent={<ThemeToggleWithIcon />}
+          onLogoutClick={logout}
         />
       </aside>
 
@@ -167,6 +171,10 @@ function SettingsLayoutContent({
             onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
             className="h-screen sticky top-0"
             user={user}
+            notificationsComponent={<NotificationBellConnected />}
+            onHomeClick={() => router.push('/')}
+            themeToggleComponent={<ThemeToggleWithIcon />}
+            onLogoutClick={logout}
           />
         </aside>
 

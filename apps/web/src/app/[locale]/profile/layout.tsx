@@ -154,6 +154,10 @@ function ProfileLayoutContent({
           className="h-full"
           user={user}
           showSearch={true}
+          notificationsComponent={<NotificationBellConnected />}
+          onHomeClick={() => router.push('/')}
+          themeToggleComponent={<ThemeToggleWithIcon />}
+          onLogoutClick={logout}
         />
       </aside>
 
@@ -169,6 +173,10 @@ function ProfileLayoutContent({
             className="h-screen sticky top-0"
             user={user}
             showSearch={true}
+            notificationsComponent={<NotificationBellConnected />}
+            onHomeClick={() => router.push('/')}
+            themeToggleComponent={<ThemeToggleWithIcon />}
+            onLogoutClick={logout}
           />
         </aside>
 
