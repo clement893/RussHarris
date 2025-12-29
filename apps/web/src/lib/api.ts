@@ -291,33 +291,70 @@ export const usersAPI = {
     return apiClient.put('/v1/users/me', data);
   },
   uploadAvatar: async (file: File): Promise<string> => {
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    // Create a separate client for file uploads (multipart/form-data)
-    // The upload endpoint is at /api/upload/file (not under /v1)
-    const uploadClient = axios.create({
-      baseURL: getApiUrl(),
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      withCredentials: true,
-    });
-    
-    // Add auth token
-    if (typeof window !== 'undefined') {
-      const token = TokenStorage.getToken();
-      if (token) {
-        uploadClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    try {
+      // Use mediaAPI for consistent upload handling
+      const { mediaAPI } = await import('./media');
+      
+      // Upload file to media API with avatars folder
+      const media = await mediaAPI.upload(file, { 
+        folder: 'avatars',
+        is_public: true 
+      });
+      
+      // Return the file_path or url from media response
+      // media.file_path should be the URL to access the file
+      if (media.file_path) {
+        return media.file_path;
+      }
+      
+      // Fallback: try to construct URL from filename if file_path is not available
+      // This might happen if backend returns relative path
+      throw new Error('Media upload succeeded but no file path returned');
+    } catch (error) {
+      // If mediaAPI fails, try the legacy upload endpoint as fallback
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        // Create a separate client for file uploads (multipart/form-data)
+        // The upload endpoint is at /api/upload/file (not under /v1)
+        const uploadClient = axios.create({
+          baseURL: getApiUrl(),
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true,
+        });
+        
+        // Add auth token
+        if (typeof window !== 'undefined') {
+          const token = TokenStorage.getToken();
+          if (token) {
+            uploadClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          }
+        }
+        
+        const response = await uploadClient.post('/api/upload/file', formData, {
+          params: {
+            folder: 'avatars',
+          },
+        });
+        
+        // Handle both direct response and wrapped response
+        const responseData = response.data?.data || response.data;
+        if (responseData?.url) {
+          return responseData.url;
+        }
+        if (typeof responseData === 'string') {
+          return responseData;
+        }
+        
+        throw new Error('Upload succeeded but no URL returned in response');
+      } catch (fallbackError) {
+        // If both methods fail, throw the original error
+        throw error instanceof Error ? error : new Error(String(error));
       }
     }
-    
-    const response = await uploadClient.post('/api/upload/file', formData, {
-      params: {
-        folder: 'avatars',
-      },
-    });
-    return response.data.url;
   },
   getUser: (userId: string) => {
     return apiClient.get(`/v1/users/${userId}`);
