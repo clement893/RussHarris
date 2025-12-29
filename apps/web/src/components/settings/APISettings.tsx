@@ -9,12 +9,13 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { logger } from '@/lib/logger';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Switch from '@/components/ui/Switch';
-import { Save, Copy, Eye, EyeOff } from 'lucide-react';
+import { Save, Copy, Eye, EyeOff, ExternalLink } from 'lucide-react';
 
 export interface APISettingsData {
   apiKey?: string;
@@ -219,7 +220,13 @@ export default function APISettings({
         </Card>
 
         {/* Actions */}
-        <div className="flex justify-end">
+        <div className="flex justify-between items-center">
+          <Link href="/api-connections/testing">
+            <Button type="button" variant="outline">
+              <ExternalLink className="w-4 h-4 mr-2 inline" />
+              Test API Connections
+            </Button>
+          </Link>
           <Button type="submit" variant="primary" loading={isSaving}>
             <Save className="w-4 h-4 mr-2 inline" />
             Save API Settings

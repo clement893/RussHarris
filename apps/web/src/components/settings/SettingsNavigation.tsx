@@ -120,7 +120,7 @@ export default function SettingsNavigation({ className }: SettingsNavigationProp
     {
       id: 'logs',
       label: t('navigation.logs') || 'Logs',
-      href: '/settings/logs',
+      href: '/admin-logs/testing',
       icon: <FileText className="w-6 h-6" />,
       description: t('navigation.logsDescription') || 'View system logs and audit trail',
     },
