@@ -6,7 +6,7 @@ export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/lib/store';
-import { Card, Badge, Container, ServiceTestCard, Button, LoadingSkeleton, Grid, Stack } from '@/components/ui';
+import { Card, Badge, ServiceTestCard, Button, LoadingSkeleton, Grid, Stack } from '@/components/ui';
 import { PageHeader } from '@/components/layout';
 import { Link } from '@/i18n/routing';
 import dynamicImport from 'next/dynamic';
@@ -45,41 +45,38 @@ function DashboardContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-        <Container className="py-8 lg:py-12">
-          <div className="mb-8">
-            <LoadingSkeleton variant="custom" className="h-10 w-64 mb-2" />
-            <LoadingSkeleton variant="custom" className="h-6 w-96" />
-          </div>
-          <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal" className="mb-8">
-            <LoadingSkeleton variant="card" className="h-32" />
-            <LoadingSkeleton variant="card" className="h-32" />
-            <LoadingSkeleton variant="card" className="h-32" />
-            <LoadingSkeleton variant="card" className="h-32" />
-          </Grid>
-          <LoadingSkeleton variant="card" count={2} className="mb-8" />
-        </Container>
+      <div className="space-y-8">
+        <div>
+          <LoadingSkeleton variant="custom" className="h-10 w-64 mb-2" />
+          <LoadingSkeleton variant="custom" className="h-6 w-96" />
+        </div>
+        <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal">
+          <LoadingSkeleton variant="card" className="h-32" />
+          <LoadingSkeleton variant="card" className="h-32" />
+          <LoadingSkeleton variant="card" className="h-32" />
+          <LoadingSkeleton variant="card" className="h-32" />
+        </Grid>
+        <LoadingSkeleton variant="card" count={2} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <Container className="py-8 lg:py-12">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <PageHeader
-            title={`Welcome back, ${user?.name || 'User'}!`}
-            description="Here's what's happening with your account today"
-            breadcrumbs={[
-              { label: 'Home', href: '/' },
-              { label: 'Dashboard' },
-            ]}
-          />
-        </div>
+    <div className="space-y-8">
+      {/* Welcome Header */}
+      <div>
+        <PageHeader
+          title={`Welcome back, ${user?.name || 'User'}!`}
+          description="Here's what's happening with your account today"
+          breadcrumbs={[
+            { label: 'Home', href: '/' },
+            { label: 'Dashboard' },
+          ]}
+        />
+      </div>
 
-        {/* Quick Stats Grid */}
-        <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal" className="mb-8">
+      {/* Quick Stats Grid */}
+      <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal">
           <Card className="border-l-4 border-l-primary-500 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
@@ -124,9 +121,9 @@ function DashboardContent() {
               </div>
             </div>
           </Card>
-        </Grid>
+      </Grid>
 
-        <Grid columns={{ mobile: 1, tablet: 2 }} gap="loose" className="mb-8">
+      <Grid columns={{ mobile: 1, tablet: 2 }} gap="loose">
           {/* User Profile Card */}
           <Card className="hover:shadow-xl transition-all duration-300">
             <div className="flex items-center gap-4 mb-6">
@@ -213,10 +210,10 @@ function DashboardContent() {
               </Link>
             </Stack>
           </Card>
-        </Grid>
+      </Grid>
 
-        {/* API Status */}
-        <Card className="mb-8 hover:shadow-xl transition-all duration-300">
+      {/* API Status */}
+      <Card className="hover:shadow-xl transition-all duration-300">
           <div className="flex items-center gap-4 mb-6">
             <div className="p-3 bg-success-100 dark:bg-success-900/30 rounded-lg">
               <Shield className="w-6 h-6 text-success-600 dark:text-success-400" />
@@ -249,10 +246,10 @@ function DashboardContent() {
               <p className="text-sm text-success-800 dark:text-success-200 ml-8">JWT is working</p>
             </div>
           </Grid>
-        </Card>
+      </Card>
 
-        {/* Service Tests */}
-        <Card className="mb-8 hover:shadow-xl transition-all duration-300">
+      {/* Service Tests */}
+      <Card className="hover:shadow-xl transition-all duration-300">
           <div className="flex items-center gap-4 mb-6">
             <div className="p-3 bg-info-100 dark:bg-info-900/30 rounded-lg">
               <Sparkles className="w-6 h-6 text-info-600 dark:text-info-400" />
@@ -362,23 +359,22 @@ function DashboardContent() {
               </svg>
             }
           />
-          </Grid>
-        </Card>
+        </Grid>
+      </Card>
 
-        {/* AI Chat Assistant */}
-        <Card className="mb-8 hover:shadow-xl transition-all duration-300">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="p-3 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg">
-              <Sparkles className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-foreground">AI Assistant</h3>
-              <p className="text-sm text-muted-foreground">Get help with your questions</p>
-            </div>
+      {/* AI Chat Assistant */}
+      <Card className="hover:shadow-xl transition-all duration-300">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="p-3 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg">
+            <Sparkles className="w-6 h-6 text-white" />
           </div>
-          <TemplateAIChat />
-        </Card>
-      </Container>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground">AI Assistant</h3>
+            <p className="text-sm text-muted-foreground">Get help with your questions</p>
+          </div>
+        </div>
+        <TemplateAIChat />
+      </Card>
     </div>
   );
 }
