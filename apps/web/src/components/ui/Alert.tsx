@@ -28,6 +28,7 @@ import { clsx } from 'clsx';
 import { AlertVariant, BaseComponentProps, ClosableProps, IconProps } from './types';
 import { useComponentConfig } from '@/lib/theme/use-component-config';
 import { applyVariantConfigAsStyles } from '@/lib/theme/variant-helpers';
+import Text from './Text';
 
 export interface AlertProps extends BaseComponentProps, ClosableProps, IconProps {
   /** Alert variant style */
@@ -126,7 +127,7 @@ function Alert({
   return (
     <div
       className={clsx(
-        'rounded-lg border p-4',
+        'rounded-lg border p-lg',
         classes.container,
         className
       )}
@@ -134,17 +135,20 @@ function Alert({
     >
       <div className="flex">
         <div className="flex-shrink-0">{displayIcon}</div>
-        <div className="ml-3 flex-1">
+        <div className="ml-4 flex-1">
           {title && (
-            <h3 className={clsx('text-sm font-medium mb-1', classes.title)}>{title}</h3>
+            <h3 className={clsx('text-sm font-medium mb-2', classes.title)}>{title}</h3>
           )}
-          <div className={clsx('text-sm', classes.text)}>{children}</div>
+          <Text variant="small" className={classes.text}>
+            {children}
+          </Text>
         </div>
         {onClose && (
-          <div className="ml-auto pl-3">
+          <div className="ml-auto pl-4">
             <button
               onClick={onClose}
-              className={clsx('inline-flex rounded-md p-1.5 hover:bg-opacity-20', classes.text)}
+              className={clsx('inline-flex rounded-md p-1.5 hover:bg-opacity-20 transition-colors', classes.text)}
+              aria-label="Close alert"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path
