@@ -89,8 +89,9 @@ RUN cd apps/web && node scripts/prepare-build-env.js
 # Run pre-build validation to catch errors early (before expensive build process)
 # This runs type checking and other fast validations to fail fast if there are errors
 # This prevents wasting time on builds that will fail anyway
-# Set SKIP_TYPE_CHECK=1 to skip TypeScript validation (useful when there are known type errors)
-RUN cd apps/web && SKIP_TYPE_CHECK=${SKIP_TYPE_CHECK:-0} node scripts/validate-build.js || (echo "⚠️  TypeScript validation failed, but continuing build..." && SKIP_TYPE_CHECK=1 node scripts/validate-build.js || true)
+# Set SKIP_TYPE_CHECK=1 as build arg or env var to skip TypeScript validation (useful when there are known type errors)
+ARG SKIP_TYPE_CHECK=0
+RUN cd apps/web && SKIP_TYPE_CHECK=${SKIP_TYPE_CHECK} node scripts/validate-build.js
 
 # Build Next.js application
 # Uses Webpack by default in production (more stable with next-auth catch-all routes)
