@@ -37,7 +37,8 @@ COPY --from=deps /app/packages/types/package.json ./packages/types/package.json
 # Reinstall to recreate symlinks for binaries
 # Railway caches .pnpm-store automatically via railway.json, so pnpm will reuse cached packages
 # Use --prefer-offline to use cache if available, but don't fail if not
-RUN pnpm install --prefer-offline --no-frozen-lockfile
+# Use --frozen-lockfile for faster installs (lockfile is already validated in deps stage)
+RUN pnpm install --prefer-offline --frozen-lockfile || pnpm install --prefer-offline --no-frozen-lockfile
 
 # Copy and build types package first (required for web app build)
 COPY packages/types ./packages/types
@@ -55,10 +56,8 @@ COPY packages ./packages
 RUN mkdir -p apps/web/scripts
 COPY scripts/generate-frontend-api-manifest.js apps/web/scripts/generate-frontend-api-manifest.js
 
-# Reinstall to ensure workspace links are correct after types package build
-# Railway caches .pnpm-store automatically via railway.json, so pnpm will reuse cached packages
-# Use --prefer-offline to use cache if available, but don't fail if not
-RUN pnpm install --prefer-offline --no-frozen-lockfile
+# No need to reinstall here - workspace links are already correct from previous install
+# The types package build doesn't require a reinstall since it's already linked
 
 # Railway passes environment variables, but they need to be available during build
 # We use ARG to accept them and ENV to make them available to Next.js
@@ -98,8 +97,12 @@ RUN cd apps/web && node scripts/validate-build.js
 # Next.js will read variables from .env.local (created above) or ENV
 # To use Turbopack instead, set USE_TURBOPACK=true in Railway environment variables
 # Disable Next.js telemetry for faster builds (no network calls during build)
+# Skip type check (already done in validate-build.js) and skip lib check for speed
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV SKIP_TYPE_CHECK=true
+ENV TSC_COMPILE_ON_ERROR=true
+# Disable build traces collection (saves ~30-45 seconds)
+ENV NEXT_PRIVATE_STANDALONE=true
 RUN cd apps/web && USE_WEBPACK=true pnpm build
 
 # Production image

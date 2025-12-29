@@ -17,14 +17,16 @@ const nextConfig = {
   // Source maps are only needed for debugging, not for production builds
   productionBrowserSourceMaps: false,
   
-  // Skip type checking during build (already done in prebuild script)
-  // This saves ~20 seconds per build since type checking is done in prebuild
-  // Note: We still want to fail on TypeScript errors, but since prebuild already checks,
-  // we can skip the redundant check here. If prebuild fails, the build won't reach this point.
+  // Skip type checking during build (already done in validate-build.js)
+  // This saves ~20 seconds per build since type checking is done before build
+  // Note: We still want to fail on TypeScript errors, but since validate-build.js already checks,
+  // we can skip the redundant check here. If validate-build fails, the build won't reach this point.
   typescript: {
-    // Type checking is done in prebuild, so we can skip it here for speed
-    // But we still want to fail if there are errors (handled by prebuild)
+    // Type checking is done in validate-build.js, so we can skip it here for speed
+    // But we still want to fail if there are errors (handled by validate-build.js)
     ignoreBuildErrors: false,
+    // Skip lib check for faster builds (already validated in validate-build.js)
+    skipLibCheck: true,
   },
   
   // Skip ESLint during build for faster builds (linting should be done in CI/CD)
