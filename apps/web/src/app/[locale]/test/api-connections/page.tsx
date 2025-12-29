@@ -8,66 +8,10 @@ import { getErrorMessage } from '@/lib/errors';
 import { logger } from '@/lib/logger';
 import { RefreshCw, CheckCircle, Download, FileText, ExternalLink, Eye, XCircle, Loader2, Copy, Check } from 'lucide-react';
 import { PageHeader, PageContainer } from '@/components/layout';
-
-interface ConnectionStatus {
-  success: boolean;
-  frontend?: {
-    total: number;
-    connected: number;
-    partial: number;
-    needsIntegration: number;
-    static: number;
-    error?: string;
-    message?: string;
-    note?: string;
-  };
-  backend?: {
-    registered: number;
-    unregistered: number;
-    error?: string;
-    message?: string;
-    totalEndpoints?: number;
-  };
-  timestamp?: number;
-}
-
-interface EndpointTestResult {
-  endpoint: string;
-  method: string;
-  status: 'success' | 'error' | 'pending';
-  message?: string;
-  responseTime?: number;
-  category?: string;
-}
-
-interface CheckResult {
-  success: boolean;
-  summary?: {
-    total?: number;
-    connected?: number;
-    partial?: number;
-    needsIntegration?: number;
-    static?: number;
-    registered?: number;
-    unregistered?: number;
-    totalEndpoints?: number;
-  };
-  output?: string;
-  reportPath?: string;
-  reportContent?: string;
-  error?: string;
-  message?: string;
-  hint?: string;
-  useFrontendAnalysis?: boolean;
-  source?: 'node_script' | 'frontend_client';
-  pages?: Array<{ path: string; apiCalls: Array<{ method: string; endpoint: string }> }>;
-}
-
-// Local type for API response handling
-type ApiResponseWrapper<T> = {
-  data?: T;
-  [key: string]: unknown;
-};
+import type { ConnectionStatus, EndpointTestResult, CheckResult, ComponentTestResult } from './types/health.types';
+import { checkStatus, checkFrontend, checkBackend } from './services/healthChecker';
+import { testCriticalEndpoints } from './services/endpointTester';
+import { generateCompleteReport, generateReportPath } from './services/reportGenerator';
 
 function APIConnectionTestContent() {
   // Mounted check to prevent memory leaks
@@ -100,7 +44,7 @@ function APIConnectionTestContent() {
     };
   }, []);
 
-  const checkStatus = async () => {
+  const handleCheckStatus = async () => {
     // Cancel previous request if any
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -114,38 +58,17 @@ function APIConnectionTestContent() {
     setError('');
 
     try {
-      const response = await apiClient.get<ConnectionStatus>('/v1/api-connection-check/status', { signal });
-      // Extract data using proper type handling
-      const apiResponse = response as unknown as ApiResponseWrapper<ConnectionStatus>;
-      const data = apiResponse?.data || (response as ConnectionStatus);
+      const data = await checkStatus(signal);
       
       // Check if component is still mounted before updating state
       if (!isMountedRef.current) return;
       
-      // If frontend/backend data is empty but success is true, it means scripts are not available
-      // This is normal in production environments
-      if (data && data.success && (!data.frontend || Object.keys(data.frontend).length === 0)) {
-        setStatus({
-          ...data,
-          frontend: {
-            total: data.frontend?.total ?? 0,
-            connected: data.frontend?.connected ?? 0,
-            partial: data.frontend?.partial ?? 0,
-            needsIntegration: data.frontend?.needsIntegration ?? 0,
-            static: data.frontend?.static ?? 0,
-            error: data.frontend?.error,
-            message: data.frontend?.message || 'Frontend check scripts not available in this environment',
-            note: 'This is normal in production. Use the "Check Frontend" button below for detailed analysis.',
-          },
-        });
-      } else {
-        setStatus(data);
-      }
+      setStatus(data);
     } catch (err: unknown) {
       // Don't update state if request was aborted or component unmounted
       if (signal.aborted || !isMountedRef.current) return;
       
-      const errorMessage = getErrorMessage(err) || 'Failed to check API connection status';
+      const errorMessage = err instanceof Error ? err.message : 'Failed to check API connection status';
       setError(errorMessage);
       setStatus(null);
     } finally {
@@ -155,56 +78,7 @@ function APIConnectionTestContent() {
     }
   };
 
-  const analyzeFrontendFiles = async (): Promise<CheckResult> => {
-    // Try to fetch the API manifest generated at build time
-    try {
-      const manifestResponse = await fetch('/api-manifest.json');
-      if (manifestResponse.ok) {
-        const manifest = await manifestResponse.json();
-        
-        // Send analysis to backend
-        const response = await apiClient.post<CheckResult>('/v1/api-connection-check/frontend/analyze', {
-          pages: manifest.pages || [],
-          summary: manifest.summary || {
-            total: 0,
-            connected: 0,
-            partial: 0,
-            needsIntegration: 0,
-            static: 0,
-          },
-          timestamp: Date.now(),
-        });
-        return (response as unknown as CheckResult) ?? { success: false, error: 'No data returned' };
-      }
-    } catch (manifestErr) {
-      logger.warn('Could not load API manifest', { error: manifestErr });
-    }
-
-    // Fallback: create basic analysis from known routes
-    // This is a simplified version for production when manifest is not available
-    const pages: Array<{ path: string; apiCalls: Array<{ method: string; endpoint: string }> }> = [];
-    const summary = {
-      total: 0,
-      connected: 0,
-      partial: 0,
-      needsIntegration: 0,
-      static: 0,
-    };
-
-    // Send analysis to backend
-    try {
-      const response = await apiClient.post<CheckResult>('/v1/api-connection-check/frontend/analyze', {
-        pages,
-        summary,
-        timestamp: Date.now(),
-      });
-      return (response as unknown as CheckResult) ?? { success: false, error: 'No data returned' };
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  const checkFrontend = async (detailed = false) => {
+  const handleCheckFrontend = async (detailed = false) => {
     // Cancel previous request if any
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -219,47 +93,21 @@ function APIConnectionTestContent() {
     setFrontendCheck(null);
 
     try {
-      const params = detailed ? { detailed: 'true' } : {};
-      const response = await apiClient.get<CheckResult>('/v1/api-connection-check/frontend', { params, signal });
-      const apiResponse = response as unknown as ApiResponseWrapper<CheckResult>;
-      const data = (apiResponse?.data || (response as CheckResult)) ?? null;
+      const data = await checkFrontend(detailed, signal);
       
       // Check if component is still mounted before updating state
       if (!isMountedRef.current) return;
       
-      // If backend suggests using frontend analysis, do it
-      if (data && !data.success && data.useFrontendAnalysis) {
-        // Try frontend analysis
-        try {
-          const frontendAnalysis = await analyzeFrontendFiles();
-          if (isMountedRef.current) {
-            setFrontendCheck(frontendAnalysis);
-          }
-          return;
-        } catch (frontendErr) {
-          // If frontend analysis also fails, show the original error
-          if (isMountedRef.current) {
-            setFrontendCheck(data);
-            if (data.error) {
-              setError(data.error + ' (Frontend analysis also unavailable)');
-            }
-          }
-          return;
-        }
-      }
-      
-      if (isMountedRef.current) {
-        setFrontendCheck(data);
-        // If the response indicates failure, also set error for visibility
-        if (data && !data.success && data.error) {
-          setError(data.error);
-        }
+      setFrontendCheck(data);
+      // If the response indicates failure, also set error for visibility
+      if (data && !data.success && data.error) {
+        setError(data.error);
       }
     } catch (err: unknown) {
       // Don't update state if request was aborted or component unmounted
       if (signal.aborted || !isMountedRef.current) return;
       
-      const errorMessage = getErrorMessage(err) || 'Failed to check frontend connections';
+      const errorMessage = err instanceof Error ? err.message : 'Failed to check frontend connections';
       setError(errorMessage);
       setFrontendCheck({
         success: false,
@@ -272,7 +120,7 @@ function APIConnectionTestContent() {
     }
   };
 
-  const checkBackend = async () => {
+  const handleCheckBackend = async () => {
     // Cancel previous request if any
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -287,12 +135,7 @@ function APIConnectionTestContent() {
     setBackendCheck(null);
 
     try {
-      const response = await apiClient.get<CheckResult>('/v1/api-connection-check/backend', { signal });
-      // apiClient.get returns response.data from axios, which is the FastAPI response directly
-      // FastAPI returns the data directly, not wrapped in ApiResponse
-      // So response is already CheckResult, not ApiResponse<CheckResult>
-      const apiResponse = response as unknown as ApiResponseWrapper<CheckResult>;
-      const data = (apiResponse?.data || (response as CheckResult)) ?? null;
+      const data = await checkBackend(signal);
       
       // Check if component is still mounted before updating state
       if (!isMountedRef.current) return;
@@ -306,7 +149,7 @@ function APIConnectionTestContent() {
       // Don't update state if request was aborted or component unmounted
       if (signal.aborted || !isMountedRef.current) return;
       
-      const errorMessage = getErrorMessage(err) || 'Failed to check backend endpoints';
+      const errorMessage = err instanceof Error ? err.message : 'Failed to check backend endpoints';
       setError(errorMessage);
       setBackendCheck({
         success: false,
@@ -320,7 +163,7 @@ function APIConnectionTestContent() {
   };
 
 
-  const testCriticalEndpoints = async () => {
+  const handleTestCriticalEndpoints = async () => {
     // Cancel previous request if any
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -332,257 +175,33 @@ function APIConnectionTestContent() {
 
     setIsTestingEndpoints(true);
     setError('');
-    
-    // Liste COMPLÈTE de tous les endpoints critiques à tester
-    const endpointsToTest: Array<{ endpoint: string; method: string; requiresAuth?: boolean; category?: string }> = [
-      // ========== AUTHENTICATION & SECURITY ==========
-      { endpoint: '/v1/auth/me', method: 'GET', requiresAuth: true, category: 'Auth' },
-      { endpoint: '/v1/auth/2fa/status', method: 'GET', requiresAuth: true, category: 'Auth' },
-      { endpoint: '/v1/api-keys', method: 'GET', requiresAuth: true, category: 'Auth' },
-      
-      // ========== USER MANAGEMENT ==========
-      { endpoint: '/v1/users/preferences', method: 'GET', requiresAuth: true, category: 'Users' },
-      { endpoint: '/v1/users/preferences/notifications', method: 'GET', requiresAuth: true, category: 'Users' },
-      
-      // ========== ADMIN & TENANCY ==========
-      { endpoint: '/v1/admin/tenancy/config', method: 'GET', requiresAuth: true, category: 'Admin' },
-      { endpoint: '/v1/admin/statistics', method: 'GET', requiresAuth: true, category: 'Admin' },
-      { endpoint: '/v1/admin/users', method: 'GET', requiresAuth: true, category: 'Admin' },
-      { endpoint: '/v1/admin/organizations', method: 'GET', requiresAuth: true, category: 'Admin' },
-      
-      // ========== RBAC ==========
-      { endpoint: '/v1/rbac/roles', method: 'GET', requiresAuth: true, category: 'RBAC' },
-      { endpoint: '/v1/rbac/permissions', method: 'GET', requiresAuth: true, category: 'RBAC' },
-      
-      // ========== MEDIA & UPLOADS ==========
-      { endpoint: '/v1/media', method: 'GET', requiresAuth: true, category: 'Media' },
-      { endpoint: '/v1/media/validate', method: 'POST', requiresAuth: true, category: 'Media' },
-      
-      // ========== CONTENT MANAGEMENT ==========
-      { endpoint: '/v1/pages', method: 'GET', requiresAuth: true, category: 'Content' },
-      { endpoint: '/v1/posts', method: 'GET', requiresAuth: false, category: 'Content' },
-      { endpoint: '/v1/templates', method: 'GET', requiresAuth: true, category: 'Content' },
-      { endpoint: '/v1/forms', method: 'GET', requiresAuth: true, category: 'Content' },
-      { endpoint: '/v1/menus', method: 'GET', requiresAuth: true, category: 'Content' },
-      
-      // ========== TAGS & CATEGORIES ==========
-      { endpoint: '/v1/tags', method: 'GET', requiresAuth: true, category: 'Tags' },
-      { endpoint: '/v1/tags/categories/tree', method: 'GET', requiresAuth: true, category: 'Tags' },
-      
-      // ========== PROJECTS ==========
-      { endpoint: '/v1/projects', method: 'GET', requiresAuth: true, category: 'Projects' },
-      
-      // ========== THEMES ==========
-      { endpoint: '/v1/themes', method: 'GET', requiresAuth: true, category: 'Themes' },
-      { endpoint: '/v1/theme-fonts', method: 'GET', requiresAuth: true, category: 'Themes' },
-      
-      // ========== COMMENTS & INTERACTIONS ==========
-      { endpoint: '/v1/comments/post/1', method: 'GET', requiresAuth: false, category: 'Comments' },
-      { endpoint: '/v1/favorites', method: 'GET', requiresAuth: true, category: 'Favorites' },
-      { endpoint: '/v1/activities', method: 'GET', requiresAuth: true, category: 'Activities' },
-      
-      // ========== NOTIFICATIONS ==========
-      { endpoint: '/v1/notifications', method: 'GET', requiresAuth: true, category: 'Notifications' },
-      { endpoint: '/v1/announcements', method: 'GET', requiresAuth: true, category: 'Notifications' },
-      
-      // ========== SEARCH ==========
-      { endpoint: '/v1/search/autocomplete?q=test', method: 'GET', requiresAuth: false, category: 'Search' },
-      
-      // ========== FEATURE FLAGS ==========
-      { endpoint: '/v1/feature-flags', method: 'GET', requiresAuth: true, category: 'Feature Flags' },
-      
-      // ========== SCHEDULED TASKS ==========
-      { endpoint: '/v1/scheduled-tasks', method: 'GET', requiresAuth: true, category: 'Tasks' },
-      
-      // ========== REPORTS & ANALYTICS ==========
-      { endpoint: '/v1/reports', method: 'GET', requiresAuth: true, category: 'Reports' },
-      { endpoint: '/v1/analytics', method: 'GET', requiresAuth: true, category: 'Analytics' },
-      { endpoint: '/v1/insights', method: 'GET', requiresAuth: true, category: 'Insights' },
-      
-      // ========== EXPORTS & IMPORTS ==========
-      { endpoint: '/v1/exports', method: 'GET', requiresAuth: true, category: 'Exports' },
-      { endpoint: '/v1/imports', method: 'GET', requiresAuth: true, category: 'Imports' },
-      
-      // ========== VERSIONS & SHARES ==========
-      { endpoint: '/v1/versions', method: 'GET', requiresAuth: true, category: 'Versions' },
-      { endpoint: '/v1/shares', method: 'GET', requiresAuth: true, category: 'Shares' },
-      
-      // ========== TEAMS & INVITATIONS ==========
-      { endpoint: '/v1/teams', method: 'GET', requiresAuth: true, category: 'Teams' },
-      { endpoint: '/v1/invitations', method: 'GET', requiresAuth: true, category: 'Invitations' },
-      
-      // ========== SUPPORT ==========
-      { endpoint: '/v1/support/tickets', method: 'GET', requiresAuth: true, category: 'Support' },
-      
-      // ========== SEO ==========
-      { endpoint: '/v1/seo', method: 'GET', requiresAuth: true, category: 'SEO' },
-      
-      // ========== INTEGRATIONS ==========
-      { endpoint: '/v1/integrations', method: 'GET', requiresAuth: true, category: 'Integrations' },
-      
-      // ========== SETTINGS ==========
-      { endpoint: '/v1/settings/organization', method: 'GET', requiresAuth: true, category: 'Settings' },
-      { endpoint: '/v1/api-settings', method: 'GET', requiresAuth: true, category: 'Settings' },
-      
-      // ========== BACKUPS & AUDIT ==========
-      { endpoint: '/v1/backups', method: 'GET', requiresAuth: true, category: 'Backups' },
-      { endpoint: '/v1/audit-trail', method: 'GET', requiresAuth: true, category: 'Audit' },
-      
-      // ========== EMAIL & NEWSLETTER ==========
-      { endpoint: '/v1/newsletter/subscriptions', method: 'GET', requiresAuth: true, category: 'Newsletter' },
-      { endpoint: '/v1/email-templates', method: 'GET', requiresAuth: true, category: 'Email' },
-      
-      // ========== ONBOARDING & FEEDBACK ==========
-      { endpoint: '/v1/onboarding', method: 'GET', requiresAuth: true, category: 'Onboarding' },
-      { endpoint: '/v1/feedback', method: 'GET', requiresAuth: true, category: 'Feedback' },
-      
-      // ========== DOCUMENTATION ==========
-      { endpoint: '/v1/documentation', method: 'GET', requiresAuth: true, category: 'Documentation' },
-      
-      // ========== CLIENT PORTAL ==========
-      { endpoint: '/v1/client/invoices', method: 'GET', requiresAuth: true, category: 'Client Portal' },
-      { endpoint: '/v1/client/projects', method: 'GET', requiresAuth: true, category: 'Client Portal' },
-      { endpoint: '/v1/client/tickets', method: 'GET', requiresAuth: true, category: 'Client Portal' },
-      { endpoint: '/v1/client/dashboard', method: 'GET', requiresAuth: true, category: 'Client Portal' },
-      
-      // ========== ERP PORTAL ==========
-      { endpoint: '/v1/erp/clients', method: 'GET', requiresAuth: true, category: 'ERP' },
-      { endpoint: '/v1/erp/orders', method: 'GET', requiresAuth: true, category: 'ERP' },
-      { endpoint: '/v1/erp/invoices', method: 'GET', requiresAuth: true, category: 'ERP' },
-      { endpoint: '/v1/erp/inventory', method: 'GET', requiresAuth: true, category: 'ERP' },
-      { endpoint: '/v1/erp/reports', method: 'GET', requiresAuth: true, category: 'ERP' },
-      { endpoint: '/v1/erp/dashboard', method: 'GET', requiresAuth: true, category: 'ERP' },
-      
-      // ========== HEALTH CHECKS ==========
-      { endpoint: '/v1/health/health', method: 'GET', requiresAuth: false, category: 'Health' },
-      { endpoint: '/v1/db-health', method: 'GET', requiresAuth: false, category: 'Health' },
-      
-      // ========== AI ==========
-      { endpoint: '/v1/ai/chat', method: 'POST', requiresAuth: true, category: 'AI' },
-    ];
+    setEndpointTests([]);
 
-    const results: EndpointTestResult[] = [];
-
-    for (const { endpoint, method, requiresAuth, category } of endpointsToTest) {
-      // Check if request was aborted
-      if (signal.aborted || !isMountedRef.current) {
-        setIsTestingEndpoints(false);
-        return;
-      }
-
-      const startTime = Date.now();
-      const testResult: EndpointTestResult = {
-        endpoint,
-        method,
-        status: 'pending',
-        category,
-      };
-      
-      results.push(testResult);
-      if (isMountedRef.current) {
-        setEndpointTests([...results]);
-      }
-
-      try {
-        if (!endpoint) {
-          throw new Error('Endpoint is required');
-        }
-        
-        const testMethod = method.toLowerCase();
-        
-        // Séparer l'URL et les paramètres de requête
-        const [urlPath, queryString] = endpoint.split('?');
-        const params = queryString ? Object.fromEntries(new URLSearchParams(queryString)) : {};
-        
-        if (testMethod === 'get') {
-          await apiClient.get(urlPath || endpoint, { params, signal });
-        } else if (testMethod === 'post') {
-          // Pour POST, on envoie des données minimales selon le type d'endpoint
-          let testData: any = {};
-          
-          if (endpoint.includes('validate')) {
-            testData = { name: 'test.jpg', size: 1024, type: 'image/jpeg' };
-          } else if (endpoint.includes('/ai/chat')) {
-            // L'endpoint AI chat nécessite un format spécifique avec messages
-            testData = { 
-              messages: [{ content: 'test', role: 'user' }],
-              provider: 'auto'
-            };
-          } else if (endpoint.includes('search') && !endpoint.includes('autocomplete')) {
-            testData = { query: 'test' };
-          } else {
-            testData = {};
-          }
-          
-          await apiClient.post(urlPath || endpoint, testData, { signal });
-        } else {
-          throw new Error(`Method ${method} not supported in test`);
-        }
-
+    try {
+      const results = await testCriticalEndpoints(signal, (updatedResults) => {
         // Check if component is still mounted before updating state
-        if (!isMountedRef.current) return;
-
-        const responseTime = Date.now() - startTime;
-        testResult.status = 'success';
-        testResult.message = `OK (${responseTime}ms)`;
-        testResult.responseTime = responseTime;
-      } catch (err: unknown) {
-        // Don't update state if request was aborted or component unmounted
-        if (signal.aborted || !isMountedRef.current) return;
-
-        const responseTime = Date.now() - startTime;
-        const errorMessage = getErrorMessage(err);
-        
-        // Certaines erreurs sont attendues (401 pour endpoints non authentifiés, 404 pour ressources inexistantes)
-        if (errorMessage.includes('401') || errorMessage.includes('403')) {
-          testResult.status = requiresAuth ? 'error' : 'success';
-          testResult.message = requiresAuth 
-            ? `Auth required (${responseTime}ms)` 
-            : `OK - Auth check (${responseTime}ms)`;
-        } else if (errorMessage.includes('404')) {
-          // 404 peut être OK si l'endpoint existe mais la ressource n'existe pas
-          testResult.status = 'success';
-          testResult.message = `Endpoint exists (${responseTime}ms)`;
-        } else if (errorMessage.includes('405')) {
-          // 405 Method Not Allowed - l'endpoint existe mais la méthode n'est pas supportée
-          testResult.status = 'error';
-          testResult.message = `Method not allowed (${responseTime}ms)`;
-        } else if (errorMessage.includes('422') || errorMessage.includes('400')) {
-          // 422/400 peut indiquer que l'endpoint existe mais les données sont invalides (ce qui est OK pour un test)
-          // Sauf si c'est une erreur de validation de paramètres requis
-          if (errorMessage.includes('required') || errorMessage.includes('Field required')) {
-            // Si c'est un champ requis manquant, c'est peut-être un problème de test, mais l'endpoint existe
-            testResult.status = 'success';
-            testResult.message = `Endpoint exists - missing required field (${responseTime}ms)`;
-          } else {
-            testResult.status = 'success';
-            testResult.message = `Endpoint exists - validation error (${responseTime}ms)`;
-          }
-        } else if (errorMessage.includes('500') || errorMessage.includes('internal error')) {
-          // 500 peut indiquer que l'endpoint existe mais il y a un problème serveur
-          testResult.status = 'success';
-          testResult.message = `Endpoint exists - server error (${responseTime}ms)`;
-        } else if (errorMessage.includes('503') || errorMessage.includes('Service Unavailable')) {
-          // 503 Service Unavailable - l'endpoint existe mais le service n'est pas disponible
-          testResult.status = 'success';
-          testResult.message = `Endpoint exists - service unavailable (${responseTime}ms)`;
-        } else {
-          testResult.status = 'error';
-          testResult.message = `${errorMessage.substring(0, 50)} (${responseTime}ms)`;
+        if (isMountedRef.current) {
+          setEndpointTests([...updatedResults]);
         }
-        testResult.responseTime = responseTime;
-      }
-
+      });
+      
+      // Check if component is still mounted before updating state
+      if (!isMountedRef.current) return;
+      
+      setEndpointTests(results);
+    } catch (err: unknown) {
+      // Don't update state if request was aborted or component unmounted
+      if (signal.aborted || !isMountedRef.current) return;
+      
+      const errorMessage = err instanceof Error ? err.message : 'Failed to test endpoints';
+      setError(errorMessage);
+    } finally {
       if (isMountedRef.current) {
-        results[results.length - 1] = testResult;
-        setEndpointTests([...results]);
+        setIsTestingEndpoints(false);
       }
-    }
-
-    if (isMountedRef.current) {
-      setIsTestingEndpoints(false);
     }
   };
+
 
   const copyTestResult = useCallback(async (test: EndpointTestResult) => {
     const testText = `${test.method} ${test.endpoint}\nStatus: ${test.status}\n${test.message ? `Message: ${test.message}` : ''}${test.responseTime ? `\nResponse Time: ${test.responseTime}ms` : ''}`;
@@ -800,8 +419,9 @@ function APIConnectionTestContent() {
   useEffect(() => {
     // Auto-check status on mount (only on client)
     if (typeof window !== 'undefined') {
-      checkStatus();
+      handleCheckStatus();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const downloadReport = () => {
@@ -949,7 +569,7 @@ function APIConnectionTestContent() {
           <Button
             variant="outline"
             size="sm"
-            onClick={checkStatus}
+            onClick={handleCheckStatus}
             disabled={isLoadingStatus}
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${isLoadingStatus ? 'animate-spin' : ''}`} />
@@ -975,7 +595,7 @@ function APIConnectionTestContent() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => checkFrontend(false)}
+                        onClick={() => handleCheckFrontend(false)}
                         disabled={isLoading}
                       >
                         <RefreshCw className={`h-3 w-3 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
@@ -1064,7 +684,7 @@ function APIConnectionTestContent() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => checkFrontend(false)}
+              onClick={() => handleCheckFrontend(false)}
               disabled={isLoading}
             >
               <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
@@ -1073,7 +693,7 @@ function APIConnectionTestContent() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => checkFrontend(true)}
+              onClick={() => handleCheckFrontend(true)}
               disabled={isLoading}
             >
               <FileText className="h-4 w-4 mr-2" />
@@ -1158,7 +778,7 @@ function APIConnectionTestContent() {
           <Button
             variant="outline"
             size="sm"
-            onClick={checkBackend}
+            onClick={handleCheckBackend}
             disabled={isLoading}
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
@@ -1278,7 +898,7 @@ function APIConnectionTestContent() {
           </div>
           <Button
             variant="primary"
-            onClick={testCriticalEndpoints}
+            onClick={handleTestCriticalEndpoints}
             disabled={isTestingEndpoints}
           >
             {isTestingEndpoints ? (
@@ -1605,7 +1225,7 @@ function APIConnectionTestContent() {
           <div className="flex gap-2">
             <Button
               variant="primary"
-              onClick={generateCompleteReport}
+              onClick={handleGenerateCompleteReport}
               disabled={isLoading}
             >
               <FileText className="h-4 w-4 mr-2" />

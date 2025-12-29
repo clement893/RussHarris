@@ -79,6 +79,7 @@
 
 import { forwardRef, type SelectHTMLAttributes } from 'react';
 import { clsx } from 'clsx';
+import { useComponentConfig } from '@/lib/theme/use-component-config';
 
 /**
  * Select option definition
@@ -123,13 +124,20 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     ref
   ) => {
     const selectId = id || `select-${Math.random().toString(36).substring(7)}`;
+    const { getComponentSize } = useComponentConfig();
+    const sizeConfig = getComponentSize('select', 'md');
+    
+    const paddingX = sizeConfig.paddingX || '0.75rem';
+    const paddingY = sizeConfig.paddingY || '0.5rem';
+    const fontSize = sizeConfig.fontSize || '0.875rem';
+    const borderRadius = sizeConfig.borderRadius || '0.375rem';
 
     return (
       <div className={clsx('flex flex-col', fullWidth && 'w-full')}>
         {label && (
           <label
             htmlFor={selectId}
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-foreground mb-1"
           >
             {label}
           </label>
@@ -138,7 +146,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={selectId}
           className={clsx(
-            'block w-full rounded-md',
+            'block w-full',
             'bg-[var(--color-input)]',
             'text-[var(--color-foreground)]',
             'border-[var(--color-border)]',
@@ -147,6 +155,14 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             error && 'border-error-500 dark:border-error-400 focus:border-error-500 dark:focus:border-error-400 focus:ring-error-500 dark:focus:ring-error-400',
             className
           )}
+          style={{
+            paddingLeft: paddingX,
+            paddingRight: paddingX,
+            paddingTop: paddingY,
+            paddingBottom: paddingY,
+            fontSize,
+            borderRadius,
+          }}
           {...props}
         >
           {placeholder && (

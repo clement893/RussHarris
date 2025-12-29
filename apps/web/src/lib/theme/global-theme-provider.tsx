@@ -440,6 +440,38 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
       });
     }
     
+    // Apply animation configuration (new animation system)
+    if ((configToApply as any).animations) {
+      const animations = (configToApply as any).animations;
+      
+      // Apply durations
+      if (animations.duration) {
+        Object.entries(animations.duration).forEach(([key, value]) => {
+          if (typeof value === 'string') {
+            root.style.setProperty(`--animation-duration-${key}`, String(value));
+          }
+        });
+      }
+      
+      // Apply easing functions
+      if (animations.easing) {
+        Object.entries(animations.easing).forEach(([key, value]) => {
+          if (typeof value === 'string') {
+            root.style.setProperty(`--animation-easing-${key}`, String(value));
+          }
+        });
+      }
+      
+      // Apply transition presets
+      if (animations.transitions) {
+        Object.entries(animations.transitions).forEach(([key, value]) => {
+          if (typeof value === 'string') {
+            root.style.setProperty(`--transition-${key}`, String(value));
+          }
+        });
+      }
+    }
+    
     // Apply CSS effects (comprehensive support for all effect types)
     const effects = (configToApply as any).effects;
     if (effects) {

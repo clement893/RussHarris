@@ -1,5 +1,6 @@
 import { InputHTMLAttributes, forwardRef } from 'react';
 import { clsx } from 'clsx';
+import { useComponentConfig } from '@/lib/theme/use-component-config';
 
 /**
  * Checkbox Component

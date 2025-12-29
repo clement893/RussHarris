@@ -2,6 +2,7 @@
 
 import { ReactNode, useState, useRef, useEffect } from 'react';
 import { clsx } from 'clsx';
+import { useEffects } from '@/lib/theme/use-effects';
 
 export type DropdownItem =
   | {
@@ -34,6 +35,8 @@ export default function Dropdown({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const { getGlassmorphismPanelStyles, hasEffect } = useEffects();
+  const glassmorphismStyles = hasEffect('glassmorphism') ? getGlassmorphismPanelStyles() : {};
 
   // Get enabled items indices (excluding dividers and disabled items)
   const enabledIndices = items
@@ -169,9 +172,12 @@ export default function Dropdown({
           role="menu"
           aria-orientation="vertical"
           className={clsx(
-            'absolute z-50 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 min-w-[200px]',
+            'absolute z-50 rounded-lg shadow-lg border py-1 min-w-[200px]',
+            // Use glassmorphism background if enabled, otherwise use default
+            hasEffect('glassmorphism') ? '' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700',
             positions[position]
           )}
+          style={glassmorphismStyles}
         >
           {items.map((item, index) => {
             if ('divider' in item && item.divider) {

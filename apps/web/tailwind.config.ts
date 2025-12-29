@@ -203,12 +203,38 @@ const config: Config = {
         'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
         'strong': '0 10px 40px -10px rgba(0, 0, 0, 0.2)',
       },
+      transitionDuration: {
+        // Theme-aware transition durations
+        fast: 'var(--animation-duration-fast, 150ms)',
+        normal: 'var(--animation-duration-normal, 200ms)',
+        slow: 'var(--animation-duration-slow, 300ms)',
+        // Keep default Tailwind durations
+        75: '75ms',
+        100: '100ms',
+        150: '150ms',
+        200: '200ms',
+        300: '300ms',
+        500: '500ms',
+        700: '700ms',
+        1000: '1000ms',
+      },
+      transitionTimingFunction: {
+        // Theme-aware easing functions
+        default: 'var(--animation-easing-default, ease-in-out)',
+        bounce: 'var(--animation-easing-bounce, cubic-bezier(0.68, -0.55, 0.265, 1.55))',
+        smooth: 'var(--animation-easing-smooth, cubic-bezier(0.4, 0, 0.2, 1))',
+        // Keep default Tailwind easings
+        linear: 'linear',
+        in: 'cubic-bezier(0.4, 0, 1, 1)',
+        out: 'cubic-bezier(0, 0, 0.2, 1)',
+        'in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
+      },
       animation: {
-        // Custom animations
-        'fade-in': 'fadeIn 0.2s ease-in-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'slide-down': 'slideDown 0.3s ease-out',
-        'scale-in': 'scaleIn 0.2s ease-out',
+        // Custom animations with theme-aware durations and easings
+        'fade-in': `fadeIn var(--animation-duration-normal, 0.2s) var(--animation-easing-default, ease-in-out)`,
+        'slide-up': `slideUp var(--animation-duration-normal, 0.3s) var(--animation-easing-smooth, ease-out)`,
+        'slide-down': `slideDown var(--animation-duration-normal, 0.3s) var(--animation-easing-smooth, ease-out)`,
+        'scale-in': `scaleIn var(--animation-duration-fast, 0.2s) var(--animation-easing-smooth, ease-out)`,
         // Optimized blob animation - slower and smoother for better performance
         'blob': 'blob 20s ease-in-out infinite',
       },

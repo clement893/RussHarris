@@ -33,6 +33,7 @@
 import { type ReactNode, useEffect, useRef } from 'react';
 import { clsx } from 'clsx';
 import Button from './Button';
+import { useEffects } from '@/lib/theme/use-effects';
 
 export interface ModalProps {
   /** Control modal visibility */
@@ -89,6 +90,8 @@ function Modal({
   const modalRef = useRef<HTMLDivElement>(null);
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
   const mainContentRef = useRef<HTMLElement | null>(null);
+  const { getGlassmorphismPanelStyles, hasEffect } = useEffects();
+  const glassmorphismStyles = hasEffect('glassmorphism') ? getGlassmorphismPanelStyles() : {};
 
   // Handle Escape key
   useEffect(() => {
@@ -220,13 +223,16 @@ function Modal({
       <div
         ref={modalRef}
         className={clsx(
-          'bg-background shadow-xl',
+          // Use glassmorphism background if enabled, otherwise use default
+          hasEffect('glassmorphism') ? '' : 'bg-background',
+          'shadow-xl',
           'w-full h-full',
           'md:w-auto md:h-auto md:rounded-lg',
           sizeClasses[size],
           'md:max-h-[90vh] flex flex-col',
           className
         )}
+        style={glassmorphismStyles}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"

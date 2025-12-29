@@ -7,6 +7,7 @@
 
 import { forwardRef, type TextareaHTMLAttributes } from 'react';
 import { clsx } from 'clsx';
+import { useComponentConfig } from '@/lib/theme/use-component-config';
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
@@ -33,20 +34,27 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     ref
   ) => {
     const textareaId = id || `textarea-${Math.random().toString(36).substring(7)}`;
+    const { getComponentSize } = useComponentConfig();
+    const sizeConfig = getComponentSize('textarea', 'md');
+    
+    const paddingX = sizeConfig.paddingX || '0.75rem';
+    const paddingY = sizeConfig.paddingY || '0.5rem';
+    const fontSize = sizeConfig.fontSize || '0.875rem';
+    const borderRadius = sizeConfig.borderRadius || '0.375rem';
 
     return (
       <div className={clsx('flex flex-col', fullWidth && 'w-full')}>
         {label && (
           <label
             htmlFor={textareaId}
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-foreground mb-1"
           >
             {label}
           </label>
         )}
         <div className="relative">
           {leftIcon && (
-            <div className="absolute left-3 top-3 text-gray-400 dark:text-gray-500">
+            <div className="absolute left-3 top-3 text-muted-foreground">
               {leftIcon}
             </div>
           )}
@@ -54,7 +62,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             ref={ref}
             id={textareaId}
             className={clsx(
-              'block w-full rounded-md',
+              'block w-full',
               'bg-[var(--color-input)]',
               'text-[var(--color-foreground)]',
               'placeholder:text-[var(--color-muted-foreground)]',
@@ -67,10 +75,18 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               rightIcon && 'pr-10',
               className
             )}
+            style={{
+              paddingLeft: paddingX,
+              paddingRight: paddingX,
+              paddingTop: paddingY,
+              paddingBottom: paddingY,
+              fontSize,
+              borderRadius,
+            }}
             {...props}
           />
           {rightIcon && (
-            <div className="absolute right-3 top-3 text-gray-400 dark:text-gray-500">
+            <div className="absolute right-3 top-3 text-muted-foreground">
               {rightIcon}
             </div>
           )}
@@ -81,7 +97,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           </p>
         )}
         {helperText && !error && (
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{helperText}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{helperText}</p>
         )}
       </div>
     );
