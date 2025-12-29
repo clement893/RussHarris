@@ -74,8 +74,8 @@ export async function middleware(request: NextRequest) {
     '/ai/testing',
     '/stripe/testing',
     '/sentry/testing',
-    '/test/api-connections',
-    '/test/admin-logs',
+    '/api-connections/testing',
+    '/admin-logs/testing',
   ];
 
   // Check if the route is public (check both with and without locale)
