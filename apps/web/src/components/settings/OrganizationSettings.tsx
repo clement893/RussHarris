@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { clsx } from 'clsx';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -104,18 +104,21 @@ export default function OrganizationSettings({
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleChange = (field: keyof OrganizationSettingsData, value: unknown) => {
+  const handleChange = useCallback((field: keyof OrganizationSettingsData, value: unknown) => {
     setFormData((prev) => {
       const updated = { ...prev, [field]: value };
       onChange?.(updated);
       return updated;
     });
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: '' }));
-    }
-  };
+    setErrors((prev) => {
+      if (prev[field]) {
+        return { ...prev, [field]: '' };
+      }
+      return prev;
+    });
+  }, [onChange]);
 
-  const handleAddressChange = (field: string, value: string) => {
+  const handleAddressChange = useCallback((field: string, value: string) => {
     setFormData((prev) => {
       const updated = {
         ...prev,
@@ -127,18 +130,18 @@ export default function OrganizationSettings({
       onChange?.(updated);
       return updated;
     });
-  };
+  }, [onChange]);
 
-  const handleSlugChange = (value: string) => {
+  const handleSlugChange = useCallback((value: string) => {
     const slug = value
       .toLowerCase()
       .replace(/[^a-z0-9-]/g, '-')
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '');
     handleChange('slug', slug);
-  };
+  }, [handleChange]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -148,7 +151,7 @@ export default function OrganizationSettings({
     } finally {
       setLoading(false);
     }
-  };
+  }, [formData, onSave]);
 
   return (
     <div className={clsx('space-y-6', className)}>

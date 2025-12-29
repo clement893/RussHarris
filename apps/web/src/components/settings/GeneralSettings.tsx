@@ -16,7 +16,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { logger } from '@/lib/logger';
 import { clsx } from 'clsx';
 import Card from '@/components/ui/Card';
@@ -89,7 +89,7 @@ export default function GeneralSettings({
     }
   }, [settings]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!onSave) return;
 
@@ -102,9 +102,9 @@ export default function GeneralSettings({
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [formData, onSave]);
 
-  const languageOptions: SelectOption[] = [
+  const languageOptions: SelectOption[] = useMemo(() => [
     { value: 'en', label: 'English' },
     { value: 'fr', label: 'Français' },
     { value: 'es', label: 'Español' },
@@ -113,9 +113,9 @@ export default function GeneralSettings({
     { value: 'pt', label: 'Português' },
     { value: 'ja', label: '日本語' },
     { value: 'zh', label: '中文' },
-  ];
+  ], []);
 
-  const timezoneOptions: SelectOption[] = [
+  const timezoneOptions: SelectOption[] = useMemo(() => [
     { value: 'UTC', label: 'UTC' },
     { value: 'America/New_York', label: 'Eastern Time (ET)' },
     { value: 'America/Chicago', label: 'Central Time (CT)' },
@@ -127,30 +127,30 @@ export default function GeneralSettings({
     { value: 'Asia/Tokyo', label: 'Tokyo (JST)' },
     { value: 'Asia/Shanghai', label: 'Shanghai (CST)' },
     { value: 'Australia/Sydney', label: 'Sydney (AEST)' },
-  ];
+  ], []);
 
-  const themeOptions: SelectOption[] = [
+  const themeOptions: SelectOption[] = useMemo(() => [
     { value: 'light', label: 'Light' },
     { value: 'dark', label: 'Dark' },
     { value: 'system', label: 'System' },
-  ];
+  ], []);
 
-  const dateFormatOptions: SelectOption[] = [
+  const dateFormatOptions: SelectOption[] = useMemo(() => [
     { value: 'YYYY-MM-DD', label: 'YYYY-MM-DD (2024-01-25)' },
     { value: 'MM/DD/YYYY', label: 'MM/DD/YYYY (01/25/2024)' },
     { value: 'DD/MM/YYYY', label: 'DD/MM/YYYY (25/01/2024)' },
     { value: 'DD.MM.YYYY', label: 'DD.MM.YYYY (25.01.2024)' },
-  ];
+  ], []);
 
-  const timeFormatOptions: SelectOption[] = [
+  const timeFormatOptions: SelectOption[] = useMemo(() => [
     { value: '12h', label: '12-hour (3:45 PM)' },
     { value: '24h', label: '24-hour (15:45)' },
-  ];
+  ], []);
 
-  const weekStartsOnOptions: SelectOption[] = [
+  const weekStartsOnOptions: SelectOption[] = useMemo(() => [
     { value: 'monday', label: 'Monday' },
     { value: 'sunday', label: 'Sunday' },
-  ];
+  ], []);
 
   return (
     <form onSubmit={handleSubmit} className={clsx('space-y-6', className)}>

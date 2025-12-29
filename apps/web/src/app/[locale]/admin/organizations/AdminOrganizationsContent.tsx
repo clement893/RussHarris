@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { PageHeader, PageContainer } from '@/components/layout';
 import { getErrorMessage, getErrorDetail } from '@/lib/errors';
 import { Button, Card, Badge, Alert, Input, Loading, Modal, DataTable } from '@/components/ui';
@@ -317,7 +317,7 @@ export default function AdminOrganizationsContent() {
     setShowViewModal(true);
   };
 
-  const filteredTeams = teams.filter(team => {
+  const filteredTeams = useMemo(() => teams.filter(team => {
     const searchLower = searchTerm.toLowerCase();
     const nameMatch = team.name.toLowerCase().includes(searchLower);
     const descMatch = team.description?.toLowerCase().includes(searchLower);
@@ -334,9 +334,9 @@ export default function AdminOrganizationsContent() {
       settingsMatch = team.settings.toLowerCase().includes(searchLower);
     }
     return nameMatch || descMatch || settingsMatch;
-  });
+  }), [teams, searchTerm]);
 
-  const columns: Column<Team>[] = [
+  const columns: Column<Team>[] = useMemo(() => [
     {
       key: 'name',
       label: 'Nom',
@@ -441,7 +441,7 @@ export default function AdminOrganizationsContent() {
         </div>
       ),
     },
-  ];
+  ], []);
 
   return (
     <PageContainer>
