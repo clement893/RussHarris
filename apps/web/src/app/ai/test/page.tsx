@@ -1,10 +1,9 @@
-﻿'use client';
+﻿import { redirect } from 'next/navigation';
+import { routing } from '@/i18n/routing';
 
-import { useState } from 'react';
-import { aiAPI } from '@/lib/api';
-import { AxiosError } from 'axios';
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
-import { Button, Card, Input, Textarea, Alert, Badge, Select, Tabs, TabList, Tab } from '@/components/ui';
+export default function AITestRedirect() {
+  redirect(`/${routing.defaultLocale}/ai/test`);
+}
 
 interface Message {
   role: 'system' | 'user' | 'assistant';

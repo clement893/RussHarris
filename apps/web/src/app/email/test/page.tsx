@@ -1,12 +1,9 @@
-'use client';
+import { redirect } from 'next/navigation';
+import { routing } from '@/i18n/routing';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { AxiosError } from 'axios';
-import { emailAPI } from '@/lib/api';
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
-import { Button, Card, Input, Textarea, Alert, Badge, Tabs, TabList, Tab, Container } from '@/components/ui';
-import type { EmailResponse, EmailHealthResponse } from '@/lib/email/client';
+export default function EmailTestRedirect() {
+  redirect(`/${routing.defaultLocale}/email/test`);
+}
 
 interface ApiErrorResponse {
   detail?: string;
