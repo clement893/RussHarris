@@ -142,6 +142,8 @@ export default function IntegrationsSettings({
                         variant={integration.enabled ? 'outline' : 'primary'}
                         size="sm"
                         onClick={() => handleToggle(integration.id, !integration.enabled)}
+                        disabled={!onToggle || isNaN(parseInt(integration.id, 10))}
+                        title={isNaN(parseInt(integration.id, 10)) ? 'Create an integration first to enable this feature' : undefined}
                       >
                         {integration.enabled ? 'Disable' : 'Enable'}
                       </Button>

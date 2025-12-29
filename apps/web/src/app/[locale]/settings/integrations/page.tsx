@@ -93,7 +93,14 @@ export default function IntegrationsSettingsPage() {
 
   const handleToggle = async (integrationId: string, enabled: boolean) => {
     try {
+      // Check if integrationId is a valid number (only backend integrations can be toggled)
       const id = parseInt(integrationId, 10);
+      if (isNaN(id)) {
+        // This is a default integration (like 'slack', 'github'), cannot be toggled
+        setError(t('errors.cannotToggleDefault') || 'Default integrations cannot be toggled. Please create an integration first.');
+        return;
+      }
+      
       await integrationsAPI.toggle(id);
       
       // Update local state

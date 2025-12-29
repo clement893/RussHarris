@@ -277,7 +277,13 @@
         "integrations": "Intégrations"
       },
       "errors": {
-        "loadFailed": "Échec du chargement des intégrations. Veuillez réessayer."
+        "loadFailed": "Échec du chargement des intégrations. Veuillez réessayer.",
+        "toggleFailed": "Échec de la modification de l'intégration. Veuillez réessayer.",
+        "cannotToggleDefault": "Les intégrations par défaut ne peuvent pas être modifiées. Veuillez d'abord créer une intégration."
+      },
+      "success": {
+        "enabled": "Intégration activée avec succès",
+        "disabled": "Intégration désactivée avec succès"
       }
     },
     "api": {

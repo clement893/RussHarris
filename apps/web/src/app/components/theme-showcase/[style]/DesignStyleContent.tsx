@@ -97,8 +97,8 @@ export default function DesignStyleContent({ style }: { style: string }) {
               <ExampleCard title="Secondary" className={config.cardClass}>
                 <Button variant="secondary">Secondary</Button>
               </ExampleCard>
-              <ExampleCard title="Success" className={config.cardClass}>
-                <Button variant="success">Success</Button>
+              <ExampleCard title="Outline" className={config.cardClass}>
+                <Button variant="outline">Outline</Button>
               </ExampleCard>
               <ExampleCard title="Danger" className={config.cardClass}>
                 <Button variant="danger">Danger</Button>
