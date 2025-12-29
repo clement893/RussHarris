@@ -257,7 +257,7 @@ export async function loadThemeFonts(fontIds: number[]): Promise<void> {
       fontFamilies: validFonts.map(f => f.font_family),
     });
 
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error('[Font Loader] Failed to load theme fonts', { error, fontIds });
     throw error;
   }

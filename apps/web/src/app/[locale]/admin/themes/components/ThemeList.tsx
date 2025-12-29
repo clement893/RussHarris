@@ -69,7 +69,7 @@ export function ThemeList({
       }));
       
       setThemes(themesWithUI);
-    } catch (err) {
+    } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur lors du chargement des thèmes';
       setError(errorMessage);
       logger.error('[ThemeList] Error fetching themes', err instanceof Error ? err : new Error(String(err)));

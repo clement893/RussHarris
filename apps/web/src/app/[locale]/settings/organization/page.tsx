@@ -185,7 +185,7 @@ export default function OrganizationSettingsPage() {
         locale: teamSettings.locale || 'en-US',
       });
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('Failed to load organization settings', error instanceof Error ? error : new Error(String(error)));
       setError(t('errors.loadFailed') || 'Failed to load organization settings. Please try again.');
       setIsLoading(false);

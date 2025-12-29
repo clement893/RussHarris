@@ -79,7 +79,7 @@ export async function signedFetch(
     }
     
     return response;
-  } catch (error) {
+  } catch (error: unknown) {
     // Re-throw with context for better error handling upstream
     if (error instanceof Error) {
       throw new Error(`Signed fetch failed for ${url}: ${error.message}`);

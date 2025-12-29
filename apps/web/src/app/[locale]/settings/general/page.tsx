@@ -68,7 +68,7 @@ export default function GeneralSettingsPage() {
         enableEmailNotifications: apiSettings.enableEmailNotifications ?? true,
       });
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('Failed to load general settings', error instanceof Error ? error : new Error(String(error)));
       setError(t('errors.loadFailed') || 'Failed to load settings. Please try again.');
       setIsLoading(false);

@@ -57,7 +57,7 @@ export function VersionHistory({
       if (response.data) {
         setVersions(response.data);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('', 'Failed to fetch versions:', error);
     } finally {
       setIsLoading(false);

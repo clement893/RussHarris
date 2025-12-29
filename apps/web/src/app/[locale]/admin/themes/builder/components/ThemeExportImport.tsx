@@ -33,7 +33,7 @@ export function ThemeExportImport({ config, onImport, onExport }: ThemeExportImp
       const parsed = JSON.parse(jsonText) as ThemeConfig;
       setImportError(null);
       onImport(parsed);
-    } catch (error) {
+    } catch (error: unknown) {
       setImportError('Invalid JSON format. Please check your theme configuration.');
     }
   };
@@ -50,7 +50,7 @@ export function ThemeExportImport({ config, onImport, onExport }: ThemeExportImp
         setImportError(null);
         setJsonText(content);
         onImport(parsed);
-      } catch (error) {
+      } catch (error: unknown) {
         setImportError('Failed to parse file. Please ensure it is valid JSON.');
       }
     };

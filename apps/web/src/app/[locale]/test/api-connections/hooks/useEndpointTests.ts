@@ -87,7 +87,7 @@ export function useEndpointTests() {
     try {
       await navigator.clipboard.writeText(testText);
       return true;
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to copy test result', { error: err });
       return false;
     }

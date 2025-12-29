@@ -77,7 +77,7 @@ function APIConnectionTestContent() {
         try {
           await apiClient.get('/v1/auth/me');
           return { status: 'success' as const, message: 'Token refresh working' };
-        } catch (err) {
+        } catch (err: unknown) {
           return { status: 'error' as const, message: getErrorMessage(err) };
         }
       }},
@@ -85,7 +85,7 @@ function APIConnectionTestContent() {
         try {
           await apiClient.get('/v1/nonexistent-endpoint-12345');
           return { status: 'error' as const, message: 'Should have failed' };
-        } catch (err) {
+        } catch (err: unknown) {
           const errorMsg = getErrorMessage(err);
           if (errorMsg.includes('404') || errorMsg.includes('not found')) {
             return { status: 'success' as const, message: 'Error handling working correctly' };
@@ -97,7 +97,7 @@ function APIConnectionTestContent() {
         try {
           await apiClient.get('/v1/health/health');
           return { status: 'success' as const, message: 'GET request successful' };
-        } catch (err) {
+        } catch (err: unknown) {
           return { status: 'error' as const, message: getErrorMessage(err) };
         }
       }},
@@ -105,7 +105,7 @@ function APIConnectionTestContent() {
         try {
           await apiClient.post('/v1/media/validate', { name: 'test.jpg', size: 1024, type: 'image/jpeg' });
           return { status: 'success' as const, message: 'POST request successful' };
-        } catch (err) {
+        } catch (err: unknown) {
           const errorMsg = getErrorMessage(err);
           if (errorMsg.includes('422') || errorMsg.includes('400') || errorMsg.includes('validation')) {
             return { status: 'success' as const, message: 'POST endpoint exists (validation error expected)' };

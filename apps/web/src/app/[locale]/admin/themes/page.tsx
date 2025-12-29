@@ -89,7 +89,7 @@ function ThemesPageContent() {
       
       // Trigger refresh of theme list without reloading the page
       setRefreshKey(prev => prev + 1);
-    } catch (err) {
+    } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la sauvegarde';
       throw new Error(errorMessage);
     }

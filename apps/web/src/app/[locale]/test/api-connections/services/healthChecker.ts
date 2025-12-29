@@ -93,7 +93,7 @@ export async function analyzeFrontendFiles(signal?: AbortSignal): Promise<CheckR
       timestamp: Date.now(),
     }, { signal });
     return (response as unknown as CheckResult) ?? { success: false, error: 'No data returned' };
-  } catch (err) {
+  } catch (err: unknown) {
     throw err;
   }
 }

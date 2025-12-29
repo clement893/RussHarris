@@ -73,7 +73,7 @@ export default function IntegrationsSettingsPage() {
       
       setIntegrations(mappedIntegrations);
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('Failed to load integrations', error instanceof Error ? error : new Error(String(error)));
       setError(t('errors.loadFailed') || 'Failed to load integrations. Please try again.');
       setIsLoading(false);
@@ -115,7 +115,7 @@ export default function IntegrationsSettingsPage() {
       );
       
       logger.info(`Integration ${integrationId} ${enabled ? 'enabled' : 'disabled'}`);
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('Failed to toggle integration', error instanceof Error ? error : new Error(String(error)));
       setError(t('errors.toggleFailed') || 'Failed to toggle integration. Please try again.');
       throw error;

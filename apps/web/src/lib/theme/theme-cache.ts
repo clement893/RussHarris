@@ -37,9 +37,9 @@ export function saveThemeToCache(config: ThemeConfig, themeId?: number): void {
     };
     
     localStorage.setItem(THEME_CACHE_KEY, JSON.stringify(cached));
-  } catch (error) {
+  } catch (error: unknown) {
     // Silently fail if localStorage is full or unavailable
-    logger.warn('[Theme Cache] Failed to save theme to cache', { error });
+    logger.warn('[Theme Cache] Failed to save theme to cache', { error: error instanceof Error ? error : new Error(String(error)) });
   }
 }
 

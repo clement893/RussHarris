@@ -183,7 +183,7 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
 
       // Save the default config with updated form data
       await onSave(defaultConfig, updatedFormData);
-    } catch (err) {
+    } catch (err: unknown) {
       let errorMessage = 'Erreur lors de la réinitialisation aux valeurs par défaut';
       
       logger.error('[ThemeEditor] Reset to default error', err instanceof Error ? err : new Error(String(err)), {
@@ -235,7 +235,7 @@ export function ThemeEditor({ theme, onSave, onCancel }: ThemeEditorProps) {
       } as ThemeConfig;
 
       await onSave(config, formData);
-    } catch (err) {
+    } catch (err: unknown) {
       let errorMessage = 'Erreur lors de la sauvegarde';
       
       // Log error for debugging

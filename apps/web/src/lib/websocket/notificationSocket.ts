@@ -90,7 +90,7 @@ class NotificationSocket {
         try {
           const message: WebSocketMessage = JSON.parse(event.data);
           this.handleMessage(message);
-        } catch (error) {
+        } catch (error: unknown) {
           logger.error('[WebSocket] Failed to parse message', error);
         }
       };
@@ -112,7 +112,7 @@ class NotificationSocket {
           this.scheduleReconnect();
         }
       };
-    } catch (error) {
+    } catch (error: unknown) {
       logger.error('[WebSocket] Failed to create connection', error);
       this.isConnecting = false;
       this.callbacks.onError?.(error instanceof Error ? error : new Error('Failed to create WebSocket'));

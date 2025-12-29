@@ -185,7 +185,7 @@ export async function safeAsync<T>(
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       return await operation();
-    } catch (error) {
+    } catch (error: unknown) {
       lastError = error instanceof Error ? error : new Error(String(error));
 
       if (attempt < retries) {

@@ -41,8 +41,8 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
         try {
           const perms = await rbacAPI.getRole(role.id);
           newRolePermissions.set(role.id, new Set(perms.permissions.map(p => p.id)));
-        } catch (err) {
-          logger.error(`Failed to load permissions for role ${role.id}`, err);
+        } catch (err: unknown) {
+          logger.error(`Failed to load permissions for role ${role.id}`, err instanceof Error ? err : new Error(String(err)));
         }
       }
       
@@ -120,8 +120,8 @@ export default function RoleDefaultPermissionsEditor({ onUpdate }: RoleDefaultPe
       if (onUpdate) {
         onUpdate();
       }
-    } catch (err) {
-      logger.error('Failed to update role permissions', err);
+    } catch (err: unknown) {
+      logger.error('Failed to update role permissions', err instanceof Error ? err : new Error(String(err)));
       setError(getErrorMessage(err, t('errors.saveFailed')));
     } finally {
       setIsSaving(false);

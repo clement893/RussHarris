@@ -279,8 +279,11 @@ export function exportPresetAsJSON(preset: ThemePreset): string {
 export function importPresetFromJSON(json: string): ThemeConfig | null {
   try {
     return JSON.parse(json) as ThemeConfig;
-  } catch (error) {
-    console.error('Failed to parse preset JSON:', error);
+  } catch (error: unknown) {
+    // Use console.error here since this is a utility function that may be called before logger is initialized
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+      console.error('Failed to parse preset JSON:', error);
+    }
     return null;
   }
 }

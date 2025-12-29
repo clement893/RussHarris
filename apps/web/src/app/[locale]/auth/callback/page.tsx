@@ -130,7 +130,7 @@ function CallbackContent() {
       } else {
         throw new Error('No user data received');
       }
-    } catch (err) {
+    } catch (err: unknown) {
       const appError = handleApiError(err);
       logger.error('Failed to complete authentication', appError instanceof Error ? appError : new Error(String(err)), { 
         errorMessage: appError.message,

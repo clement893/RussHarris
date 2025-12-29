@@ -21,7 +21,7 @@ export function useRoles() {
       setError(null);
       const response = await rbacAPI.listRoles();
       setRoles(response.roles);
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to load roles', err instanceof Error ? err : new Error(String(err)));
       setError(err instanceof Error ? err.message : 'Failed to load roles');
     } finally {
@@ -38,7 +38,7 @@ export function useRoles() {
       const newRole = await rbacAPI.createRole(data);
       await loadRoles();
       return newRole;
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to create role', err instanceof Error ? err : new Error(String(err)));
       throw err;
     }
@@ -49,7 +49,7 @@ export function useRoles() {
       const updatedRole = await rbacAPI.updateRole(roleId, data);
       await loadRoles();
       return updatedRole;
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to update role', err instanceof Error ? err : new Error(String(err)));
       throw err;
     }
@@ -59,7 +59,7 @@ export function useRoles() {
     try {
       await rbacAPI.deleteRole(roleId);
       await loadRoles();
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to delete role', err instanceof Error ? err : new Error(String(err)));
       throw err;
     }
@@ -90,7 +90,7 @@ export function usePermissions() {
       setError(null);
       const perms = await rbacAPI.listPermissions();
       setPermissions(perms);
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to load permissions', err instanceof Error ? err : new Error(String(err)));
       setError(err instanceof Error ? err.message : 'Failed to load permissions');
     } finally {
@@ -107,7 +107,7 @@ export function usePermissions() {
       const newPermission = await rbacAPI.createPermission(data);
       await loadPermissions();
       return newPermission;
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to create permission', err instanceof Error ? err : new Error(String(err)));
       throw err;
     }
@@ -143,7 +143,7 @@ export function useUserPermissions(userId: number) {
       ]);
       setPermissions(allPerms);
       setCustomPermissions(customPerms);
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to load user permissions', err instanceof Error ? err : new Error(String(err)));
       setError(err instanceof Error ? err.message : 'Failed to load user permissions');
     } finally {
@@ -160,7 +160,7 @@ export function useUserPermissions(userId: number) {
       const newPermission = await rbacAPI.addCustomPermission(userId, permissionId);
       await loadPermissions();
       return newPermission;
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to add custom permission', err instanceof Error ? err : new Error(String(err)));
       throw err;
     }
@@ -170,7 +170,7 @@ export function useUserPermissions(userId: number) {
     try {
       await rbacAPI.removeCustomPermission(userId, permissionId);
       await loadPermissions();
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to remove custom permission', err instanceof Error ? err : new Error(String(err)));
       throw err;
     }
@@ -203,7 +203,7 @@ export function useUserRoles(userId: number) {
       setError(null);
       const userRoles = await rbacAPI.getUserRoles(userId);
       setRoles(userRoles);
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to load user roles', err instanceof Error ? err : new Error(String(err)));
       setError(err instanceof Error ? err.message : 'Failed to load user roles');
     } finally {
@@ -219,7 +219,7 @@ export function useUserRoles(userId: number) {
     try {
       await rbacAPI.assignRoleToUser(userId, roleId);
       await loadRoles();
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to assign role', err instanceof Error ? err : new Error(String(err)));
       throw err;
     }
@@ -229,7 +229,7 @@ export function useUserRoles(userId: number) {
     try {
       await rbacAPI.removeRoleFromUser(userId, roleId);
       await loadRoles();
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to remove role', err instanceof Error ? err : new Error(String(err)));
       throw err;
     }
@@ -240,7 +240,7 @@ export function useUserRoles(userId: number) {
       const updatedRoles = await rbacAPI.updateUserRoles(userId, roleIds);
       setRoles(updatedRoles);
       return updatedRoles;
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to update user roles', err instanceof Error ? err : new Error(String(err)));
       throw err;
     }
@@ -271,7 +271,7 @@ export function usePermissionCheck(permission: string) {
       setError(null);
       const result = await rbacAPI.checkPermission(permission);
       setHasPermission(result.has_permission);
-    } catch (err) {
+    } catch (err: unknown) {
       logger.error('Failed to check permission', err instanceof Error ? err : new Error(String(err)));
       setError(err instanceof Error ? err.message : 'Failed to check permission');
       setHasPermission(false);

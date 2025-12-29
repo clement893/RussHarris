@@ -106,7 +106,7 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
           activeId: activeTheme.id,
         });
       }
-    } catch (err) {
+    } catch (err: unknown) {
       const error = err instanceof Error ? err : new Error('Failed to load theme');
       setError(error);
       logger.error('Failed to fetch global theme from backend', { 

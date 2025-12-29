@@ -57,7 +57,7 @@ export function useThemeActions() {
       setSelectedTheme(null);
       
       return { success: true, message: `Thème "${themeName}" activé avec succès !` };
-    } catch (err) {
+    } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur lors de l\'activation du thème';
       return { success: false, message: errorMessage };
     } finally {
@@ -79,7 +79,7 @@ export function useThemeActions() {
       setSelectedTheme(null);
       
       return { success: true, message: `Thème "${themeName}" supprimé avec succès !` };
-    } catch (err) {
+    } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la suppression du thème';
       return { success: false, message: errorMessage };
     } finally {

@@ -53,7 +53,7 @@ export async function bootstrapSuperAdmin(
     }
 
     return response.json();
-  } catch (error) {
+  } catch (error: unknown) {
     // Handle network errors
     if (error instanceof Error && (error.name === 'AbortError' || error.message.includes('Failed to fetch'))) {
       throw new Error(`Le backend n'est pas accessible. Assurez-vous que le serveur backend est démarré sur ${API_URL}`);
@@ -92,7 +92,7 @@ export async function makeSuperAdmin(
     }
 
     return response.json();
-  } catch (error) {
+  } catch (error: unknown) {
     // Handle network errors
     if (error instanceof Error && (error.name === 'AbortError' || error.message.includes('Failed to fetch'))) {
       throw new Error(`Le backend n'est pas accessible. Assurez-vous que le serveur backend est démarré sur ${API_URL}`);
