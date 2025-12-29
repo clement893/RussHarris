@@ -125,12 +125,22 @@ export default function Card({
     <div
       className={clsx(
         'rounded-lg border shadow-sm',
+        // Normal background (will be overridden by glassmorphism if enabled)
         'bg-[var(--color-background)]',
         'border-[var(--color-border)]',
-        hover && 'transition-shadow hover:shadow-md',
+        hover && 'transition-all hover:shadow-md',
         onClick && 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
         className
       )}
+      style={{
+        // Glassmorphism support: use CSS variables with fallbacks
+        backgroundColor: 'var(--glassmorphism-card-background, var(--color-background))',
+        backdropFilter: 'var(--glassmorphism-card-backdrop-blur, var(--glassmorphism-backdrop, none))',
+        WebkitBackdropFilter: 'var(--glassmorphism-card-backdrop-blur, var(--glassmorphism-backdrop, none))',
+        borderColor: 'var(--glassmorphism-card-border, var(--color-border))',
+        // Enhanced shadow for glassmorphism (will use normal shadow if glassmorphism not enabled)
+        boxShadow: 'var(--glassmorphism-shadow, var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05)))',
+      } as React.CSSProperties}
       onClick={onClick ? (e: React.MouseEvent<HTMLDivElement>) => {
         // Only trigger card onClick if the click target is the card itself or a non-interactive element
         const target = e.target as HTMLElement;

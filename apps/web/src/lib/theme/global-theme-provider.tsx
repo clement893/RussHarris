@@ -408,11 +408,39 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
         
         // Old format: glassmorphism.enabled (for backward compatibility)
         if (effects.glassmorphism.enabled) {
-          const blur = effects.glassmorphism.blur || '10px';
+          const blur = effects.glassmorphism.blur || '20px';
           const saturation = effects.glassmorphism.saturation || '180%';
+          const opacity = effects.glassmorphism.opacity || 0.15;
+          const borderOpacity = effects.glassmorphism.borderOpacity || 0.3;
+          
+          // Set backdrop filter
           root.style.setProperty('--glassmorphism-backdrop', `blur(${blur}) saturate(${saturation})`);
-          root.style.setProperty('--glassmorphism-opacity', String(effects.glassmorphism.opacity || 0.1));
-          root.style.setProperty('--glassmorphism-border-opacity', String(effects.glassmorphism.borderOpacity || 0.2));
+          root.style.setProperty('--glassmorphism-opacity', String(opacity));
+          root.style.setProperty('--glassmorphism-border-opacity', String(borderOpacity));
+          
+          // Also set card-specific variables for easier use in components
+          const isDark = root.classList.contains('dark');
+          const bgColor = isDark 
+            ? `rgba(15, 23, 42, ${opacity})` // slate-900 with opacity
+            : `rgba(255, 255, 255, ${opacity})`; // white with opacity
+          const borderColor = isDark
+            ? `rgba(255, 255, 255, ${borderOpacity})`
+            : `rgba(0, 0, 0, ${borderOpacity})`;
+          
+          root.style.setProperty('--glassmorphism-card-background', bgColor);
+          root.style.setProperty('--glassmorphism-card-backdrop-blur', `blur(${blur}) saturate(${saturation})`);
+          root.style.setProperty('--glassmorphism-card-border', borderColor);
+          // Enhanced shadow for glassmorphism cards
+          root.style.setProperty('--glassmorphism-shadow', '0 8px 32px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)');
+        } else {
+          // Clear glassmorphism variables when disabled
+          root.style.removeProperty('--glassmorphism-backdrop');
+          root.style.removeProperty('--glassmorphism-opacity');
+          root.style.removeProperty('--glassmorphism-border-opacity');
+          root.style.removeProperty('--glassmorphism-card-background');
+          root.style.removeProperty('--glassmorphism-card-backdrop-blur');
+          root.style.removeProperty('--glassmorphism-card-border');
+          root.style.removeProperty('--glassmorphism-shadow');
         }
       }
       

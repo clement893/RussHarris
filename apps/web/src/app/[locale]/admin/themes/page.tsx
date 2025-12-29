@@ -68,11 +68,11 @@ function ThemesPageContent() {
           });
         }
         
-        // Clear cache and refresh if active
+        // Clear cache and always refresh active theme to show changes
         clearThemeCache();
-        if (editingTheme.is_active) {
-          await refreshTheme();
-        }
+        // Always refresh theme to apply changes (even if editing non-active theme, 
+        // we want to see the changes if we activate it later)
+        await refreshTheme();
       } else {
         // Create new theme
         await createTheme({
