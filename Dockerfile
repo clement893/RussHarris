@@ -92,9 +92,10 @@ RUN cd apps/web && node scripts/prepare-build-env.js
 # Turbopack has issues with vendored Next.js modules in catch-all routes
 # Next.js will read variables from .env.local (created above) or ENV
 # To use Turbopack instead, set USE_TURBOPACK=true in Railway environment variables
-# Type checking is optimized with incremental builds (tsconfig.tsbuildinfo)
+# Type checking is skipped in Docker builds (saves ~19s) - CI/CD already runs type checking
 # Disable Next.js telemetry for faster builds (no network calls during build)
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV SKIP_TYPE_CHECK=true
 RUN cd apps/web && USE_WEBPACK=true pnpm build
 
 # Production image
