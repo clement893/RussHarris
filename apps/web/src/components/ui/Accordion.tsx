@@ -50,7 +50,7 @@ export default function Accordion({ items, allowMultiple = false, className }: A
         return (
           <div
             key={item.id}
-            className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+            className="border border-border rounded-lg overflow-hidden"
           >
             <button
               id={`accordion-header-${item.id}`}
@@ -59,8 +59,8 @@ export default function Accordion({ items, allowMultiple = false, className }: A
               aria-controls={`accordion-content-${item.id}`}
               className={clsx(
                 'w-full px-4 py-3 flex items-center justify-between',
-                'text-left font-medium text-gray-900 dark:text-white',
-                'hover:bg-gray-50 dark:hover:bg-gray-800',
+                'text-left font-medium text-foreground',
+                'hover:bg-muted',
                 'transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
               )}
             >
@@ -70,7 +70,7 @@ export default function Accordion({ items, allowMultiple = false, className }: A
               </div>
               <svg
                 className={clsx(
-                  'w-5 h-5 text-gray-500 transition-transform',
+                  'w-5 h-5 text-muted-foreground transition-transform',
                   isOpen && 'rotate-180'
                 )}
                 fill="none"
@@ -90,7 +90,7 @@ export default function Accordion({ items, allowMultiple = false, className }: A
                 id={`accordion-content-${item.id}`}
                 role="region"
                 aria-labelledby={`accordion-header-${item.id}`}
-                className="px-4 py-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50"
+                className="px-4 py-3 border-t border-border bg-muted/50"
               >
                 {item.content}
               </div>

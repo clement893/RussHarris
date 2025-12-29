@@ -12,7 +12,7 @@ export function Table({ children, className, style }: TableProps) {
     <div className="overflow-x-auto -mx-1 px-1" style={style}>
       <table
         className={clsx(
-          'min-w-full divide-y divide-gray-200 dark:divide-gray-700',
+          'min-w-full divide-y divide-border',
           className
         )}
       >
@@ -30,7 +30,7 @@ interface TableHeadProps {
 
 export function TableHead({ children, className, style }: TableHeadProps) {
   return (
-    <thead className={clsx('bg-gray-50 dark:bg-gray-800', className)} style={style}>
+    <thead className={clsx('bg-muted', className)} style={style}>
       {children}
     </thead>
   );
@@ -48,9 +48,9 @@ export function TableBody({ children, className, striped = false, hover = false,
   return (
     <tbody
       className={clsx(
-        'bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700',
-        striped && '[&>tr:nth-child(even)]:bg-gray-50 dark:[&>tr:nth-child(even)]:bg-gray-800',
-        hover && '[&>tr:hover]:bg-gray-50 dark:[&>tr:hover]:bg-gray-800',
+        'bg-background divide-y divide-border',
+        striped && '[&>tr:nth-child(even)]:bg-muted',
+        hover && '[&>tr:hover]:bg-muted',
         className
       )}
       style={style}
@@ -102,7 +102,7 @@ export function TableHeader({
   return (
     <th
       className={clsx(
-        'px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider',
+        'px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider',
         sortable && 'cursor-pointer select-none',
         className
       )}
@@ -116,7 +116,7 @@ export function TableHeader({
             <svg
               className={clsx(
                 'w-3 h-3',
-                sortDirection === 'asc' ? 'text-primary-600 dark:text-primary-400' : 'text-gray-400 dark:text-gray-500'
+                sortDirection === 'asc' ? 'text-primary-600 dark:text-primary-400' : 'text-muted-foreground'
               )}
               fill="currentColor"
               viewBox="0 0 20 20"
@@ -143,7 +143,7 @@ export function TableCell({ children, className, colSpan, onClick, style }: Tabl
     <td
       colSpan={colSpan}
       onClick={onClick}
-      className={clsx('px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100', className)}
+      className={clsx('px-6 py-4 whitespace-nowrap text-sm text-foreground', className)}
       style={style}
     >
       {children}

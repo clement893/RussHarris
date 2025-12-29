@@ -26,7 +26,7 @@ export default function Breadcrumb({
   homeHref = '/',
   className,
 }: BreadcrumbProps) {
-  const defaultSeparator = <ChevronRight className="w-4 h-4 text-gray-400" />;
+  const defaultSeparator = <ChevronRight className="w-4 h-4 text-muted-foreground" />;
   const displaySeparator = separator || defaultSeparator;
 
   const allItems: BreadcrumbItem[] = showHome
@@ -46,8 +46,8 @@ export default function Breadcrumb({
                 <Link
                   href={item.href!}
                   className={clsx(
-                    'flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400',
-                    'hover:text-gray-900 dark:hover:text-gray-100 transition-colors'
+                    'flex items-center gap-1 text-sm text-muted-foreground',
+                    'hover:text-foreground transition-colors'
                   )}
                 >
                   {item.icon && <span className="flex-shrink-0">{item.icon}</span>}
@@ -58,8 +58,8 @@ export default function Breadcrumb({
                   className={clsx(
                     'flex items-center gap-1 text-sm',
                     isLast
-                      ? 'text-gray-900 dark:text-gray-100 font-medium'
-                      : 'text-gray-600 dark:text-gray-400'
+                      ? 'text-foreground font-medium'
+                      : 'text-muted-foreground'
                   )}
                   aria-current={isLast ? 'page' : undefined}
                 >

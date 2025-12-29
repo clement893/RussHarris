@@ -8,224 +8,67 @@ import { getErrorMessage } from '@/lib/errors';
 import { logger } from '@/lib/logger';
 import { RefreshCw, CheckCircle, Download, FileText, ExternalLink, Eye, XCircle, Loader2, Copy, Check } from 'lucide-react';
 import { PageHeader, PageContainer } from '@/components/layout';
-import type { ConnectionStatus, EndpointTestResult, CheckResult, TestProgress } from './types/health.types';
-import { checkStatus, checkFrontend, checkBackend } from './services/healthChecker';
-import { testCriticalEndpoints } from './services/endpointTester';
-import { generateCompleteReport, generateReportPath } from './services/reportGenerator';
+import type { ConnectionStatus, EndpointTestResult, CheckResult, TestProgress, ComponentTestResult } from './types/health.types';
+import { useTemplateHealth } from './hooks/useTemplateHealth';
+import { useEndpointTests } from './hooks/useEndpointTests';
+import { useConnectionTests } from './hooks/useConnectionTests';
+import { useReportGeneration } from './hooks/useReportGeneration';
 
 function APIConnectionTestContent() {
-  // Mounted check to prevent memory leaks
-  const isMountedRef = useRef(true);
-  // AbortController for request cancellation
-  const abortControllerRef = useRef<AbortController | null>(null);
+  // Use custom hooks for health checking, endpoint testing, and report generation
+  const {
+    status,
+    frontendCheck,
+    backendCheck,
+    isLoading,
+    isLoadingStatus,
+    error: healthError,
+    setError: setHealthError,
+    handleCheckStatus,
+    handleCheckFrontend,
+    handleCheckBackend,
+  } = useTemplateHealth();
 
-  const [status, setStatus] = useState<ConnectionStatus | null>(null);
-  const [frontendCheck, setFrontendCheck] = useState<CheckResult | null>(null);
-  const [backendCheck, setBackendCheck] = useState<CheckResult | null>(null);
-  const [report, setReport] = useState<CheckResult | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingStatus, setIsLoadingStatus] = useState(false);
-  const [error, setError] = useState('');
-  const [endpointTests, setEndpointTests] = useState<EndpointTestResult[]>([]);
-  const [isTestingEndpoints, setIsTestingEndpoints] = useState(false);
-  const [testProgress, setTestProgress] = useState<TestProgress | null>(null);
+  const {
+    endpointTests,
+    isTestingEndpoints,
+    testProgress,
+    error: endpointError,
+    setError: setEndpointError,
+    handleTestCriticalEndpoints,
+    copyTestResult,
+  } = useEndpointTests();
+
+  const { connectionTests, isTestingConnections } = useConnectionTests();
+
+  const {
+    report,
+    isGeneratingReport,
+    error: reportError,
+    setError: setReportError,
+    handleGenerateCompleteReport,
+    downloadReport,
+    openReportInNewTab,
+    openReportAsMarkdown,
+  } = useReportGeneration();
+
+  // Local state for component tests and copied test ID
   const [copiedTestId, setCopiedTestId] = useState<string | null>(null);
-  const [componentTests, setComponentTests] = useState<Array<{ name: string; status: 'pending' | 'success' | 'error'; message?: string }>>([]);
+  const [componentTests, setComponentTests] = useState<ComponentTestResult[]>([]);
   const [isTestingComponents, setIsTestingComponents] = useState(false);
 
-  // Cleanup on unmount
-  useEffect(() => {
-    isMountedRef.current = true;
-    return () => {
-      isMountedRef.current = false;
-      // Cancel any pending requests
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
-  }, []);
+  // Combined error state (from all hooks)
+  const error = healthError || endpointError || reportError;
 
-  const handleCheckStatus = async () => {
-    // Cancel previous request if any
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    
-    // Create new AbortController
-    abortControllerRef.current = new AbortController();
-    const signal = abortControllerRef.current.signal;
-
-    setIsLoadingStatus(true);
-    setError('');
-
-    try {
-      const data = await checkStatus(signal);
-      
-      // Check if component is still mounted before updating state
-      if (!isMountedRef.current) return;
-      
-      setStatus(data);
-    } catch (err: unknown) {
-      // Don't update state if request was aborted or component unmounted
-      if (signal.aborted || !isMountedRef.current) return;
-      
-      const errorMessage = err instanceof Error ? err.message : 'Failed to check API connection status';
-      setError(errorMessage);
-      setStatus(null);
-    } finally {
-      if (isMountedRef.current) {
-        setIsLoadingStatus(false);
-      }
-    }
-  };
-
-  const handleCheckFrontend = async (detailed = false) => {
-    // Cancel previous request if any
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    
-    // Create new AbortController
-    abortControllerRef.current = new AbortController();
-    const signal = abortControllerRef.current.signal;
-
-    setIsLoading(true);
-    setError('');
-    setFrontendCheck(null);
-
-    try {
-      const data = await checkFrontend(detailed, signal);
-      
-      // Check if component is still mounted before updating state
-      if (!isMountedRef.current) return;
-      
-      setFrontendCheck(data);
-      // If the response indicates failure, also set error for visibility
-      if (data && !data.success && data.error) {
-        setError(data.error);
-      }
-    } catch (err: unknown) {
-      // Don't update state if request was aborted or component unmounted
-      if (signal.aborted || !isMountedRef.current) return;
-      
-      const errorMessage = err instanceof Error ? err.message : 'Failed to check frontend connections';
-      setError(errorMessage);
-      setFrontendCheck({
-        success: false,
-        error: errorMessage,
-      });
-    } finally {
-      if (isMountedRef.current) {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const handleCheckBackend = async () => {
-    // Cancel previous request if any
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    
-    // Create new AbortController
-    abortControllerRef.current = new AbortController();
-    const signal = abortControllerRef.current.signal;
-
-    setIsLoading(true);
-    setError('');
-    setBackendCheck(null);
-
-    try {
-      const data = await checkBackend(signal);
-      
-      // Check if component is still mounted before updating state
-      if (!isMountedRef.current) return;
-      
-      setBackendCheck(data);
-      // If the response indicates failure, also set error for visibility
-      if (data && !data.success && data.error) {
-        setError(data.error);
-      }
-    } catch (err: unknown) {
-      // Don't update state if request was aborted or component unmounted
-      if (signal.aborted || !isMountedRef.current) return;
-      
-      const errorMessage = err instanceof Error ? err.message : 'Failed to check backend endpoints';
-      setError(errorMessage);
-      setBackendCheck({
-        success: false,
-        error: errorMessage,
-      });
-    } finally {
-      if (isMountedRef.current) {
-        setIsLoading(false);
-      }
-    }
-  };
-
-
-  const handleTestCriticalEndpoints = async () => {
-    // Cancel previous request if any
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    
-    // Create new AbortController
-    abortControllerRef.current = new AbortController();
-    const signal = abortControllerRef.current.signal;
-
-    setIsTestingEndpoints(true);
-    setError('');
-    setEndpointTests([]);
-    setTestProgress(null);
-
-    try {
-      const results = await testCriticalEndpoints(
-        signal,
-        (updatedResults) => {
-          // Check if component is still mounted before updating state
-          if (isMountedRef.current) {
-            setEndpointTests([...updatedResults]);
-          }
-        },
-        (progress) => {
-          // Update progress indicator
-          if (isMountedRef.current) {
-            setTestProgress(progress);
-          }
-        }
-      );
-      
-      // Check if component is still mounted before updating state
-      if (!isMountedRef.current) return;
-      
-      setEndpointTests(results);
-    } catch (err: unknown) {
-      // Don't update state if request was aborted or component unmounted
-      if (signal.aborted || !isMountedRef.current) return;
-      
-      const errorMessage = err instanceof Error ? err.message : 'Failed to test endpoints';
-      setError(errorMessage);
-    } finally {
-      if (isMountedRef.current) {
-        setIsTestingEndpoints(false);
-        // Keep progress visible even after completion
-      }
-    }
-  };
-
-
-  const copyTestResult = useCallback(async (test: EndpointTestResult) => {
-    const testText = `${test.method} ${test.endpoint}\nStatus: ${test.status}\n${test.message ? `Message: ${test.message}` : ''}${test.responseTime ? `\nResponse Time: ${test.responseTime}ms` : ''}`;
-    try {
-      await navigator.clipboard.writeText(testText);
+  // Wrapper for copyTestResult to handle UI state
+  const handleCopyTestResult = useCallback(async (test: EndpointTestResult) => {
+    const success = await copyTestResult(test);
+    if (success) {
       const testId = `${test.endpoint}-${test.method}`;
       setCopiedTestId(testId);
       setTimeout(() => setCopiedTestId(null), 2000);
-    } catch (err) {
-      logger.error('Failed to copy test result', { error: err });
     }
-  }, []);
+  }, [copyTestResult]);
 
   const testFrontendComponents = async () => {
     setIsTestingComponents(true);
@@ -296,137 +139,6 @@ function APIConnectionTestContent() {
     setIsTestingComponents(false);
   };
 
-  const generateCompleteReport = async () => {
-    setIsLoading(true);
-    setError('');
-    setReport(null);
-
-    try {
-      const reportData: string[] = [];
-      reportData.push('# API Connection Test Report\n');
-      reportData.push(`Generated: ${new Date().toISOString()}\n`);
-      reportData.push('---\n\n');
-
-      if (status) {
-        reportData.push('## Quick Status\n\n');
-        if (status.frontend) {
-          reportData.push('### Frontend Connections\n');
-          if (status.frontend.total !== undefined) {
-            reportData.push(`- Total: ${status.frontend.total}\n`);
-            reportData.push(`- Connected: ${status.frontend.connected}\n`);
-            reportData.push(`- Partial: ${status.frontend.partial}\n`);
-            reportData.push(`- Needs Integration: ${status.frontend.needsIntegration}\n`);
-            reportData.push(`- Static: ${status.frontend.static}\n`);
-          } else {
-            reportData.push(`- Status: ${status.frontend.message || 'No data available'}\n`);
-          }
-          reportData.push('\n');
-        }
-        if (status.backend) {
-          reportData.push('### Backend Endpoints\n');
-          reportData.push(`- Registered: ${status.backend.registered}\n`);
-          reportData.push(`- Unregistered: ${status.backend.unregistered}\n`);
-          if (status.backend.totalEndpoints !== undefined) {
-            reportData.push(`- Total Endpoints: ${status.backend.totalEndpoints}\n`);
-          }
-          reportData.push('\n');
-        }
-      }
-
-      if (frontendCheck) {
-        reportData.push('## Frontend API Connections Check\n\n');
-        if (frontendCheck.summary) {
-          reportData.push('### Summary\n');
-          Object.entries(frontendCheck.summary).forEach(([key, value]) => {
-            reportData.push(`- ${key}: ${String(value)}\n`);
-          });
-          reportData.push('\n');
-        }
-        if (frontendCheck.output) {
-          reportData.push('### Detailed Output\n\n```\n');
-          reportData.push(frontendCheck.output);
-          reportData.push('\n```\n\n');
-        }
-      }
-
-      if (backendCheck) {
-        reportData.push('## Backend Endpoints Check\n\n');
-        if (backendCheck.summary) {
-          reportData.push('### Summary\n');
-          Object.entries(backendCheck.summary).forEach(([key, value]) => {
-            reportData.push(`- ${key}: ${value}\n`);
-          });
-          reportData.push('\n');
-        }
-        if (backendCheck.output) {
-          reportData.push('### Detailed Output\n\n```\n');
-          reportData.push(backendCheck.output);
-          reportData.push('\n```\n\n');
-        }
-      }
-
-      if (endpointTests.length > 0) {
-        reportData.push('## Critical Endpoints Test Results\n\n');
-        reportData.push(`Total Tests: ${endpointTests.length}\n`);
-        reportData.push(`Success: ${endpointTests.filter(t => t.status === 'success').length}\n`);
-        reportData.push(`Errors: ${endpointTests.filter(t => t.status === 'error').length}\n`);
-        reportData.push(`Pending: ${endpointTests.filter(t => t.status === 'pending').length}\n\n`);
-
-        const categories = Array.from(new Set(endpointTests.map(t => t.category).filter(Boolean)));
-        categories.forEach(category => {
-          reportData.push(`### ${category}\n\n`);
-          const categoryTests = endpointTests.filter(t => t.category === category);
-          reportData.push('| Method | Endpoint | Status | Message | Response Time |\n');
-          reportData.push('|--------|----------|--------|---------|---------------|\n');
-          categoryTests.forEach(test => {
-            reportData.push(`| ${test.method} | ${test.endpoint} | ${test.status} | ${test.message || '-'} | ${test.responseTime ? test.responseTime + 'ms' : '-'} |\n`);
-          });
-          reportData.push('\n');
-        });
-
-        const uncategorizedTests = endpointTests.filter(t => !t.category);
-        if (uncategorizedTests.length > 0) {
-          reportData.push('### Other\n\n');
-          reportData.push('| Method | Endpoint | Status | Message | Response Time |\n');
-          reportData.push('|--------|----------|--------|---------|---------------|\n');
-          uncategorizedTests.forEach(test => {
-            reportData.push(`| ${test.method} | ${test.endpoint} | ${test.status} | ${test.message || '-'} | ${test.responseTime ? test.responseTime + 'ms' : '-'} |\n`);
-          });
-          reportData.push('\n');
-        }
-      }
-
-      if (componentTests.length > 0) {
-        reportData.push('## Frontend Components & Hooks Test Results\n\n');
-        reportData.push('| Test Name | Status | Message |\n');
-        reportData.push('|-----------|--------|---------|\n');
-        componentTests.forEach(test => {
-          reportData.push(`| ${test.name} | ${test.status} | ${test.message || '-'} |\n`);
-        });
-        reportData.push('\n');
-      }
-
-      reportData.push('---\n\n');
-      reportData.push('*Report generated by API Connection Test Page*\n');
-
-      const reportContent = reportData.join('');
-      
-      setReport({
-        success: true,
-        reportContent,
-        reportPath: `API_CONNECTION_REPORT_${Date.now()}.md`,
-      });
-    } catch (err: unknown) {
-      const errorMessage = getErrorMessage(err) || 'Failed to generate report';
-      setError(errorMessage);
-      setReport({
-        success: false,
-        error: errorMessage,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
     // Auto-check status on mount (only on client)
@@ -436,130 +148,6 @@ function APIConnectionTestContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const downloadReport = () => {
-    if (report?.reportContent) {
-      const blob = new Blob([report.reportContent], { type: 'text/markdown' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = report.reportPath || 'API_CONNECTION_REPORT.md';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-  };
-
-  const openReportInNewTab = () => {
-    if (report?.reportContent) {
-      // Create HTML from markdown
-      const htmlContent = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Connection Report</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      line-height: 1.6;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #fff;
-      color: #333;
-    }
-    pre {
-      background: #f5f5f5;
-      padding: 15px;
-      border-radius: 5px;
-      overflow-x: auto;
-      border: 1px solid #ddd;
-    }
-    code {
-      background: #f5f5f5;
-      padding: 2px 6px;
-      border-radius: 3px;
-      font-family: 'Courier New', monospace;
-    }
-    pre code {
-      background: none;
-      padding: 0;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 24px;
-      margin-bottom: 16px;
-      font-weight: 600;
-      line-height: 1.25;
-    }
-    h1 { font-size: 2em; border-bottom: 1px solid #eaecef; padding-bottom: 10px; }
-    h2 { font-size: 1.5em; border-bottom: 1px solid #eaecef; padding-bottom: 8px; }
-    h3 { font-size: 1.25em; }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin: 16px 0;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px 12px;
-      text-align: left;
-    }
-    th {
-      background-color: #f5f5f5;
-      font-weight: 600;
-    }
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-    ul, ol {
-      padding-left: 30px;
-    }
-    blockquote {
-      border-left: 4px solid #ddd;
-      padding-left: 16px;
-      margin: 16px 0;
-      color: #666;
-    }
-    .markdown-body {
-      box-sizing: border-box;
-      min-width: 200px;
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 45px;
-    }
-    @media (max-width: 767px) {
-      .markdown-body {
-        padding: 15px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="markdown-body">
-    <pre>${report.reportContent.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
-  </div>
-</body>
-</html>`;
-      
-      const blob = new Blob([htmlContent], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
-      // Clean up after a delay
-      setTimeout(() => URL.revokeObjectURL(url), 100);
-    }
-  };
-
-  const openReportAsMarkdown = () => {
-    if (report?.reportContent) {
-      const blob = new Blob([report.reportContent], { type: 'text/markdown' });
-      const url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
-      // Clean up after a delay
-      setTimeout(() => URL.revokeObjectURL(url), 100);
-    }
-  };
 
   return (
     <PageContainer>
@@ -1005,7 +593,7 @@ function APIConnectionTestContent() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => copyTestResult(test)}
+                              onClick={() => handleCopyTestResult(test)}
                               className="flex-shrink-0 h-6 w-6 p-0"
                               title="Copy test result"
                             >
@@ -1258,8 +846,8 @@ function APIConnectionTestContent() {
           <div className="flex gap-2">
             <Button
               variant="primary"
-              onClick={handleGenerateCompleteReport}
-              disabled={isLoading}
+              onClick={handleGenerateReport}
+              disabled={isLoading || isGeneratingReport}
             >
               <FileText className="h-4 w-4 mr-2" />
               {isLoading ? 'Generating...' : 'Generate Complete Report'}
