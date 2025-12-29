@@ -52,6 +52,8 @@ const baseStyles = [
   'focus:outline-none',
   'focus:ring-2',
   'focus:ring-offset-2',
+  'disabled:opacity-50',
+  'disabled:cursor-not-allowed',
 ].join(' ');
 
 // Variant styles - Split into arrays for better readability
@@ -91,12 +93,10 @@ const variants = {
     '[color:var(--color-primary-500)]',
   ].join(' '),
   ghost: [
-    'text-gray-700',
-    'dark:text-gray-300',
-    'hover:bg-gray-100',
-    'dark:hover:bg-gray-800',
-    'focus:ring-gray-500',
-    'dark:focus:ring-gray-400',
+    'text-foreground',
+    'hover:bg-muted',
+    'focus:ring-primary-500',
+    'dark:focus:ring-primary-400',
   ].join(' '),
   danger: createVariantStyles(
     ['bg-danger-600', 'dark:bg-danger-500', 'text-white'],
@@ -108,9 +108,9 @@ const variants = {
 
 // Default sizes (fallback if theme config not available)
 const defaultSizes = {
-  sm: 'px-4 py-2 text-sm min-h-[44px]', // Ensure minimum touch target (44x44px)
-  md: 'px-6 py-3 text-base min-h-[44px]',
-  lg: 'px-8 py-4 text-lg min-h-[44px]',
+  sm: 'px-4 py-2.5 text-sm min-h-[44px]', // Ensure minimum touch target (44x44px) - Increased py for better breathing room
+  md: 'px-6 py-3 text-base min-h-[44px]', // Standard size - py-3 (12px) provides good balance
+  lg: 'px-8 py-4 text-lg min-h-[44px]', // Large size - py-4 (16px) for prominence
 };
 
 function Button({
@@ -199,7 +199,7 @@ function Button({
       {...props}
     >
       {loading ? (
-        <span className="flex items-center gap-2" aria-hidden="true">
+        <span className="flex items-center gap-3" aria-hidden="true">
           <svg
             className="animate-spin h-4 w-4"
             xmlns="http://www.w3.org/2000/svg"
