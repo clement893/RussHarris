@@ -46,11 +46,10 @@ export function useThemeActions() {
       
       // Immediately refresh theme (force apply) - no delays needed
       // The refreshTheme function already handles force apply
-      await refreshTheme();
-      
-      // Force a small delay to ensure DOM updates are visible
-      // This is minimal (50ms) just for visual feedback
-      await new Promise(resolve => setTimeout(resolve, 50));
+      // Don't await - let it run in parallel for instant UI update
+      refreshTheme().catch(err => {
+        logger.error('[ThemeActions] Error refreshing theme after activation', err);
+      });
       
       setShowActivateModal(false);
       const themeName = selectedTheme.display_name;

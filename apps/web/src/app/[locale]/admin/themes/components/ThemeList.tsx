@@ -88,10 +88,26 @@ export function ThemeList({
 
   const handleActivateConfirm = async (): Promise<{ success: boolean; message: string }> => {
     const result = await confirmActivate();
-    if (result.success) {
+    if (result.success && selectedTheme) {
+      // Optimistically update UI immediately - no waiting for API refresh
+      setThemes(prevThemes => 
+        prevThemes.map(theme => ({
+          ...theme,
+          isActive: theme.id === selectedTheme.id, // Set new active theme
+          canDelete: theme.id !== selectedTheme.id, // Can't delete active theme
+        }))
+      );
+      
       setSuccessMessage(result.message);
       setTimeout(() => setSuccessMessage(null), 5000);
-      await fetchThemes(); // Refresh list
+      
+      // Refresh list in background to sync with backend (non-blocking)
+      fetchThemes().catch(err => {
+        logger.error('[ThemeList] Error refreshing themes after activation', err);
+        // If refresh fails, revert optimistic update
+        fetchThemes();
+      });
+      
       if (selectedTheme) {
         onActivateTheme(selectedTheme);
       }
