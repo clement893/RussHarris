@@ -4,6 +4,7 @@
  */
 
 import { apiClient } from './client';
+import { extractApiData } from './utils';
 import type { ReportConfig, ReportData } from '@/components/analytics';
 
 export interface Report {
@@ -45,12 +46,12 @@ export const reportsAPI = {
     });
     
     // Handle both array and paginated response formats
-    const data = (response as any).data || response;
+    const data = extractApiData<Report[] | { items: Report[] }>(response);
     if (Array.isArray(data)) {
       return data;
     }
     if (data && typeof data === 'object' && 'items' in data) {
-      return (data as any).items;
+      return (data as { items: Report[] }).items;
     }
     return [];
   },
@@ -60,7 +61,7 @@ export const reportsAPI = {
    */
   get: async (reportId: number): Promise<Report> => {
     const response = await apiClient.get<Report>(`/v1/reports/${reportId}`);
-    const data = (response as any).data || response;
+    const data = extractApiData<Report>(response);
     if (!data) {
       throw new Error(`Report not found: ${reportId}`);
     }
@@ -72,7 +73,7 @@ export const reportsAPI = {
    */
   create: async (data: ReportCreate): Promise<Report> => {
     const response = await apiClient.post<Report>('/v1/reports', data);
-    const result = (response as any).data || response;
+    const result = extractApiData<Report>(response);
     if (!result) {
       throw new Error('Failed to create report: no data returned');
     }
@@ -84,7 +85,7 @@ export const reportsAPI = {
    */
   update: async (id: number, data: ReportUpdate): Promise<Report> => {
     const response = await apiClient.put<Report>(`/v1/reports/${id}`, data);
-    const result = (response as any).data || response;
+    const result = extractApiData<Report>(response);
     if (!result) {
       throw new Error('Failed to update report: no data returned');
     }
@@ -103,7 +104,7 @@ export const reportsAPI = {
    */
   refresh: async (id: number): Promise<Report> => {
     const response = await apiClient.post<Report>(`/v1/reports/${id}/refresh`);
-    const result = (response as any).data || response;
+    const result = extractApiData<Report>(response);
     if (!result) {
       throw new Error('Failed to refresh report: no data returned');
     }

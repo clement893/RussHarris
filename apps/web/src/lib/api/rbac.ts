@@ -4,6 +4,7 @@
  */
 
 import { apiClient } from './client';
+import { extractApiData } from './utils';
 
 // Types
 export interface Permission {
@@ -97,8 +98,7 @@ export const rbacAPI = {
     const response = await apiClient.get<RoleListResponse>('/v1/rbac/roles', {
       params: { skip, limit },
     });
-    const data = (response as any).data || response;
-    return data;
+    return extractApiData<RoleListResponse>(response);
   },
 
   /**
@@ -106,8 +106,7 @@ export const rbacAPI = {
    */
   getRole: async (roleId: number): Promise<Role> => {
     const response = await apiClient.get<Role>(`/v1/rbac/roles/${roleId}`);
-    const data = (response as any).data || response;
-    return data;
+    return extractApiData<Role>(response);
   },
 
   /**
@@ -115,8 +114,7 @@ export const rbacAPI = {
    */
   createRole: async (data: RoleCreate): Promise<Role> => {
     const response = await apiClient.post<Role>('/v1/rbac/roles', data);
-    const result = (response as any).data || response;
-    return result;
+    return extractApiData<Role>(response);
   },
 
   /**
@@ -124,8 +122,7 @@ export const rbacAPI = {
    */
   updateRole: async (roleId: number, data: RoleUpdate): Promise<Role> => {
     const response = await apiClient.put<Role>(`/v1/rbac/roles/${roleId}`, data);
-    const result = (response as any).data || response;
-    return result;
+    return extractApiData<Role>(response);
   },
 
   /**
@@ -141,7 +138,7 @@ export const rbacAPI = {
    */
   listPermissions: async (): Promise<Permission[]> => {
     const response = await apiClient.get<Permission[]>('/v1/rbac/permissions');
-    const data = (response as any).data || response;
+    const data = extractApiData<Permission[]>(response);
     return Array.isArray(data) ? data : [];
   },
 
@@ -154,8 +151,7 @@ export const rbacAPI = {
     description?: string;
   }): Promise<Permission> => {
     const response = await apiClient.post<Permission>('/v1/rbac/permissions', data);
-    const result = (response as any).data || response;
-    return result;
+    return extractApiData<Permission>(response);
   },
 
   // Role Permissions
@@ -167,8 +163,7 @@ export const rbacAPI = {
       `/v1/rbac/roles/${roleId}/permissions`,
       { permission_id: permissionId }
     );
-    const result = (response as any).data || response;
-    return result;
+    return extractApiData<Role>(response);
   },
 
   /**
@@ -186,8 +181,7 @@ export const rbacAPI = {
       `/v1/rbac/roles/${roleId}/permissions`,
       { permission_ids: permissionIds }
     );
-    const result = (response as any).data || response;
-    return result;
+    return extractApiData<Role>(response);
   },
 
   // User Roles
@@ -196,7 +190,7 @@ export const rbacAPI = {
    */
   getUserRoles: async (userId: number): Promise<Role[]> => {
     const response = await apiClient.get<Role[]>(`/v1/rbac/users/${userId}/roles`);
-    const data = (response as any).data || response;
+    const data = extractApiData<Role[]>(response);
     return Array.isArray(data) ? data : [];
   },
 
@@ -208,8 +202,7 @@ export const rbacAPI = {
       `/v1/rbac/users/${userId}/roles`,
       { role_id: roleId }
     );
-    const result = (response as any).data || response;
-    return result;
+    return extractApiData<UserRole>(response);
   },
 
   /**
@@ -227,7 +220,7 @@ export const rbacAPI = {
       `/v1/rbac/users/${userId}/roles`,
       { role_ids: roleIds }
     );
-    const data = (response as any).data || response;
+    const data = extractApiData<Role[]>(response);
     return Array.isArray(data) ? data : [];
   },
 
@@ -237,7 +230,7 @@ export const rbacAPI = {
    */
   getUserPermissions: async (userId: number): Promise<string[]> => {
     const response = await apiClient.get<string[]>(`/v1/rbac/users/${userId}/permissions`);
-    const data = (response as any).data || response;
+    const data = extractApiData<string[]>(response);
     return Array.isArray(data) ? data : [];
   },
 
@@ -248,7 +241,7 @@ export const rbacAPI = {
     const response = await apiClient.get<UserPermission[]>(
       `/v1/rbac/users/${userId}/permissions/custom`
     );
-    const data = (response as any).data || response;
+    const data = extractApiData<UserPermission[]>(response);
     return Array.isArray(data) ? data : [];
   },
 
@@ -260,8 +253,7 @@ export const rbacAPI = {
       `/v1/rbac/users/${userId}/permissions/custom`,
       { permission_id: permissionId }
     );
-    const result = (response as any).data || response;
-    return result;
+    return extractApiData<UserPermission>(response);
   },
 
   /**
@@ -280,7 +272,6 @@ export const rbacAPI = {
       '/v1/rbac/check',
       { permission, require_all: requireAll }
     );
-    const result = (response as any).data || response;
-    return result;
+    return extractApiData<PermissionCheckResponse>(response);
   },
 };

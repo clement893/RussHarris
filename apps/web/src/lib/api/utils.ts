@@ -19,10 +19,13 @@ export function isApiResponse<T>(response: unknown): response is ApiResponse<T> 
 
 /**
  * Extract data from API response (handles both ApiResponse<T> and direct T)
+ * FastAPI may return data directly or wrapped in ApiResponse
  */
 export function extractApiData<T>(response: ApiResponse<T> | T): T {
   if (isApiResponse(response)) {
-    return response.data as T;
+    // If response.data exists, use it; otherwise response itself might be the data
+    // This handles cases where FastAPI returns data directly
+    return (response.data !== undefined && response.data !== null ? response.data : response) as T;
   }
   return response as T;
 }

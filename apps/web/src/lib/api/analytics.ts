@@ -4,6 +4,7 @@
  */
 
 import { apiClient } from './client';
+import { extractApiData } from './utils';
 import type { AnalyticsMetric } from '@/components/analytics';
 
 export interface AnalyticsResponse {
@@ -26,7 +27,7 @@ export const analyticsAPI = {
     const response = await apiClient.get<AnalyticsResponse>('/v1/analytics/metrics', {
       params,
     });
-    const data = (response as any).data || response;
+    const data = extractApiData<AnalyticsResponse>(response);
     if (!data || !data.metrics) {
       throw new Error('Failed to load analytics: no data returned');
     }

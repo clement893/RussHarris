@@ -4,6 +4,7 @@
  */
 
 import { apiClient } from './client';
+import { extractApiData } from './utils';
 
 export interface Page {
   id: number;
@@ -49,7 +50,7 @@ export const pagesAPI = {
     });
     
     // Handle both array and paginated response formats
-    const data = (response as any).data || response;
+    const data = extractApiData<Page[] | PageListResponse>(response);
     if (Array.isArray(data)) {
       return data;
     }
@@ -64,7 +65,7 @@ export const pagesAPI = {
    */
   get: async (slug: string): Promise<Page> => {
     const response = await apiClient.get<Page>(`/v1/pages/${slug}`);
-    const data = (response as any).data || response;
+    const data = extractApiData<Page>(response);
     if (!data) {
       throw new Error(`Page not found: ${slug}`);
     }
@@ -76,7 +77,7 @@ export const pagesAPI = {
    */
   create: async (data: PageCreate): Promise<Page> => {
     const response = await apiClient.post<Page>('/v1/pages', data);
-    const result = (response as any).data || response;
+    const result = extractApiData<Page>(response);
     if (!result) {
       throw new Error('Failed to create page: no data returned');
     }
@@ -88,7 +89,7 @@ export const pagesAPI = {
    */
   update: async (id: number, data: PageUpdate): Promise<Page> => {
     const response = await apiClient.put<Page>(`/v1/pages/${id}`, data);
-    const result = (response as any).data || response;
+    const result = extractApiData<Page>(response);
     if (!result) {
       throw new Error('Failed to update page: no data returned');
     }

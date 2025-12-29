@@ -4,6 +4,7 @@
  */
 
 import { apiClient } from './client';
+import { extractApiData } from './utils';
 
 export interface Media {
   id: number;
@@ -36,12 +37,12 @@ export const mediaAPI = {
     });
     
     // Handle both array and paginated response formats
-    const data = (response as any).data || response;
+    const data = extractApiData<Media[] | { items: Media[] }>(response);
     if (Array.isArray(data)) {
       return data;
     }
     if (data && typeof data === 'object' && 'items' in data) {
-      return (data as any).items;
+      return (data as { items: Media[] }).items;
     }
     return [];
   },
@@ -51,7 +52,7 @@ export const mediaAPI = {
    */
   get: async (mediaId: number): Promise<Media> => {
     const response = await apiClient.get<Media>(`/v1/media/${mediaId}`);
-    const data = (response as any).data || response;
+    const data = extractApiData<Media>(response);
     if (!data) {
       throw new Error(`Media file not found: ${mediaId}`);
     }
@@ -80,7 +81,7 @@ export const mediaAPI = {
       },
     });
     
-    const result = (response as any).data || response;
+    const result = extractApiData<Media>(response);
     if (!result) {
       throw new Error('Failed to upload media file: no data returned');
     }
