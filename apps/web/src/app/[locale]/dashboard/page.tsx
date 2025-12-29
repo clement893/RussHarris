@@ -6,7 +6,7 @@ export const dynamicParams = true;
 
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/lib/store';
-import { Card, Badge, Container, StatsCard, StatusCard, ServiceTestCard, Button, LoadingSkeleton, Grid, Stack } from '@/components/ui';
+import { Card, Badge, Container, ServiceTestCard, Button, LoadingSkeleton, Grid, Stack } from '@/components/ui';
 import { PageHeader } from '@/components/layout';
 import { Link } from '@/i18n/routing';
 import dynamicImport from 'next/dynamic';
@@ -48,8 +48,8 @@ function DashboardContent() {
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
         <Container className="py-8 lg:py-12">
           <div className="mb-8">
-            <LoadingSkeleton variant="text" className="h-10 w-64 mb-2" />
-            <LoadingSkeleton variant="text" className="h-6 w-96" />
+            <LoadingSkeleton variant="custom" className="h-10 w-64 mb-2" />
+            <LoadingSkeleton variant="custom" className="h-6 w-96" />
           </div>
           <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal" className="mb-8">
             <LoadingSkeleton variant="card" className="h-32" />
