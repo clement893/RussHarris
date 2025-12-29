@@ -352,20 +352,12 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
                     `[Theme] Fonts not found in database: ${missingFonts.join(', ')}. ` +
                     `Please upload these fonts to ensure they are available.`
                   );
-                  // Theme warnings are non-critical, only log in development
-                  // In client-side code, we can't use process.env directly
-                  // Log warnings in development mode (when not in production build)
-                  if (typeof window !== 'undefined') {
-                    // Only log in development - production builds won't have console.warn in optimized builds
-                    try {
-                      // eslint-disable-next-line no-console
-                      console.warn(
-                        `⚠️ Theme Font Warning: The following fonts are not in the database: ${missingFonts.join(', ')}. ` +
-                        `Please upload them via the theme fonts management page to ensure proper display.`
-                      );
-                    } catch {
-                      // Silently ignore if console is not available
-                    }
+                  // Theme warnings are non-critical, use logger for consistent logging
+                  if (typeof window !== 'undefined' && missingFonts.length > 0) {
+                    logger.warn(
+                      `Theme Font Warning: The following fonts are not in the database: ${missingFonts.join(', ')}. Please upload them via the theme fonts management page to ensure proper display.`,
+                      { missingFonts }
+                    );
                   }
                 }
               })
