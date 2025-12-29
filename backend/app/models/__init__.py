@@ -38,8 +38,6 @@ from app.models.notification import Notification, NotificationType
 from app.models.report import Report
 from app.models.post import Post
 from app.models.file import File
-from app.models.contact import Contact
-from app.models.company import Company
 from app.core.security_audit import SecurityAuditLog
 
 __all__ = [
@@ -115,8 +113,6 @@ __all__ = [
     "Report",
     "Post",
     "File",
-    "Contact",
-    "Company",
     "SecurityAuditLog",
 ]
 
