@@ -630,9 +630,14 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
   useEffect(() => {
     // Fetch theme from API asynchronously (non-blocking, use startTransition)
     // Cache is already applied synchronously above
-    startTransition(() => {
-      fetchTheme();
-    });
+    // Delay fetch slightly to prevent flash - let cache render first
+    const timeoutId = setTimeout(() => {
+      startTransition(() => {
+        fetchTheme();
+      });
+    }, 100); // Small delay to let initial render complete with cache
+    
+    return () => clearTimeout(timeoutId);
     
     // Watch for dark class changes on document root (set by ThemeContext)
     // This ensures theme CSS variables update when user toggles dark mode

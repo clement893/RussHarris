@@ -82,7 +82,15 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={inter.variable} data-api-url={apiUrl} suppressHydrationWarning>
       <head>
-        {/* Minimal CSS structure with default colors to prevent flash */}
+        {/* CRITICAL: Apply theme script FIRST, before any CSS, to prevent flash */}
+        {/* This script MUST execute synchronously and block rendering until theme is applied */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: themeCacheInlineScript,
+          }}
+        />
+        
+        {/* CSS structure with default colors - applied AFTER script sets theme */}
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -123,21 +131,38 @@ export default async function LocaleLayout({
                 --color-input: #1e293b;
               }
               
-              /* Body uses CSS variables */
+              /* Body uses CSS variables - NO transition on initial load to prevent flash */
+              /* Transition only applies after initial render */
               body {
-                background-color: var(--color-background);
-                color: var(--color-foreground);
+                background-color: var(--color-background) !important;
+                color: var(--color-foreground) !important;
                 font-family: var(--font-family, Inter, system-ui, sans-serif);
+              }
+              
+              /* Enable transitions only after initial load */
+              body.loaded {
                 transition: background-color 0.2s ease, color 0.2s ease;
               }
             `,
           }}
         />
         
-        {/* Apply cached theme IMMEDIATELY before first paint to prevent color flash */}
+        {/* Add loaded class to body after initial render to enable transitions */}
         <script
           dangerouslySetInnerHTML={{
-            __html: themeCacheInlineScript,
+            __html: `
+              (function() {
+                // Wait for DOM to be ready
+                if (document.readyState === 'loading') {
+                  document.addEventListener('DOMContentLoaded', function() {
+                    document.body.classList.add('loaded');
+                  });
+                } else {
+                  // DOM already ready, add class immediately
+                  document.body.classList.add('loaded');
+                }
+              })();
+            `,
           }}
         />
         
