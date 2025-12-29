@@ -13,7 +13,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, memo } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
@@ -32,6 +32,49 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
+// Memoize sidebar items to prevent recreation on every render
+// This ensures the sidebar doesn't re-render unnecessarily during navigation
+const createSidebarItems = (isAdmin: boolean) => [
+  {
+    label: 'Dashboard',
+    href: '/dashboard',
+    icon: <LayoutDashboard className="w-5 h-5" />,
+  },
+  {
+    label: 'Profile',
+    href: '/profile',
+    icon: <User className="w-5 h-5" />,
+  },
+  {
+    label: 'Settings',
+    href: '/settings',
+    icon: <Settings className="w-5 h-5" />,
+  },
+  {
+    label: 'Projets',
+    href: '/dashboard/projects',
+    icon: <FolderKanban className="w-5 h-5" />,
+  },
+  {
+    label: 'Super Admin',
+    href: '/dashboard/become-superadmin',
+    icon: <Shield className="w-5 h-5" />,
+  },
+  // Admin link - only visible to admins and superadmins
+  ...(isAdmin
+    ? [
+        {
+          label: 'Administration',
+          href: '/admin',
+          icon: <Shield className="w-5 h-5" />,
+        },
+      ]
+    : []),
+];
+
+// Memoize the sidebar component to prevent re-renders during navigation
+const MemoizedSidebar = memo(Sidebar);
+
 function DashboardLayoutContent({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
   const { user } = useAuthStore();
@@ -39,46 +82,14 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Check if user is admin or superadmin
-  const isAdmin = user?.is_admin;
+  const isAdmin = user?.is_admin ?? false;
 
-  // Shared sidebar items - consistent across all pages
-  const sidebarItems = [
-    {
-      label: 'Dashboard',
-      href: '/dashboard',
-      icon: <LayoutDashboard className="w-5 h-5" />,
-    },
-    {
-      label: 'Profile',
-      href: '/profile',
-      icon: <User className="w-5 h-5" />,
-    },
-    {
-      label: 'Settings',
-      href: '/settings',
-      icon: <Settings className="w-5 h-5" />,
-    },
-    {
-      label: 'Projets',
-      href: '/dashboard/projects',
-      icon: <FolderKanban className="w-5 h-5" />,
-    },
-    {
-      label: 'Super Admin',
-      href: '/dashboard/become-superadmin',
-      icon: <Shield className="w-5 h-5" />,
-    },
-    // Admin link - only visible to admins and superadmins
-    ...(isAdmin
-      ? [
-          {
-            label: 'Administration',
-            href: '/admin',
-            icon: <Shield className="w-5 h-5" />,
-          },
-        ]
-      : []),
-  ];
+  // Memoize sidebar items - only recreate if admin status changes
+  // This prevents the sidebar from re-rendering on every navigation
+  const sidebarItems = useMemo(
+    () => createSidebarItems(isAdmin),
+    [isAdmin]
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:from-muted dark:to-muted">
@@ -90,14 +101,14 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
         />
       )}
 
-      {/* Mobile/Tablet Sidebar */}
+      {/* Mobile/Tablet Sidebar - Fixed position, persists during navigation */}
       <aside
         className={clsx(
           'xl:hidden fixed top-0 left-0 h-full z-50 transform transition-transform duration-300 ease-in-out w-64 sm:w-72',
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
-        <Sidebar
+        <MemoizedSidebar
           items={sidebarItems}
           currentPath={pathname}
           className="h-full"
@@ -106,11 +117,11 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
         />
       </aside>
 
-      {/* Desktop Layout */}
+      {/* Desktop Layout - Sidebar stays fixed, only content changes */}
       <div className="flex h-screen pt-0 xl:pt-0">
-        {/* Desktop Sidebar */}
+        {/* Desktop Sidebar - Fixed position, persists during navigation */}
         <aside className="hidden xl:block">
-          <Sidebar
+          <MemoizedSidebar
             items={sidebarItems}
             currentPath={pathname}
             collapsed={sidebarCollapsed}
@@ -121,10 +132,13 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
           />
         </aside>
 
-        {/* Main Content */}
+        {/* Main Content - Only this part changes during navigation */}
         <div className="flex-1 flex flex-col min-w-0 w-full">
-          {/* Page Content */}
-          <main className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 xl:px-8 2xl:px-10 py-4 sm:py-6 2xl:py-8">
+          {/* Page Content - This is the only part that updates on navigation */}
+          <main 
+            key={pathname} 
+            className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 xl:px-8 2xl:px-10 py-4 sm:py-6 2xl:py-8"
+          >
             {children}
           </main>
 
@@ -137,6 +151,9 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  // Next.js App Router keeps layouts persistent by default
+  // The layout component stays mounted, only {children} changes during navigation
+  // This ensures the sidebar stays in place while only the content area updates
   return (
     <ProtectedRoute>
       <DashboardLayoutContent>{children}</DashboardLayoutContent>
