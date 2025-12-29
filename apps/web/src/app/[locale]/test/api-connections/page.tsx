@@ -902,16 +902,37 @@ function APIConnectionTestContent() {
       {/* Critical Endpoints Test */}
       <Card className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <div>
+          <div className="flex-1">
             <h2 className="text-xl font-semibold">Critical Endpoints Test</h2>
             <p className="text-sm text-gray-500 mt-1">
               Test all critical endpoints that were created/fixed in the API alignment batches
             </p>
+            {testProgress && (
+              <div className="mt-3">
+                <div className="flex items-center gap-3 text-sm">
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Progress: {testProgress.completed}/{testProgress.total} ({testProgress.percentage}%)
+                  </span>
+                  <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2 max-w-md">
+                    <div
+                      className="bg-primary-600 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${testProgress.percentage}%` }}
+                    />
+                  </div>
+                  <span className="text-green-600 dark:text-green-400">✓ {testProgress.success}</span>
+                  <span className="text-red-600 dark:text-red-400">✗ {testProgress.error}</span>
+                  {testProgress.pending > 0 && (
+                    <span className="text-gray-400">⏳ {testProgress.pending}</span>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
           <Button
             variant="primary"
             onClick={handleTestCriticalEndpoints}
             disabled={isTestingEndpoints}
+            className="ml-4"
           >
             {isTestingEndpoints ? (
               <>
