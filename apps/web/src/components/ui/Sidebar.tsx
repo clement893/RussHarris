@@ -1,10 +1,11 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronDown, Search, X } from 'lucide-react';
+import Input from './Input';
 
 interface SidebarItem {
   label: string;
@@ -25,6 +26,7 @@ interface SidebarProps {
     name?: string;
     email?: string;
   } | null;
+  showSearch?: boolean; // New prop for search bar (UX/UI improvements - Batch 8)
 }
 
 export default function Sidebar({
@@ -34,10 +36,38 @@ export default function Sidebar({
   collapsed = false,
   onToggleCollapse,
   user,
+  showSearch = false, // Search bar disabled by default for backward compatibility
 }: SidebarProps) {
   const pathname = usePathname();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState('');
   const activePath = currentPath || pathname;
+  
+  // Filter items based on search query (UX/UI improvements - Batch 8)
+  const filteredItems = useMemo(() => {
+    if (!searchQuery.trim() || !showSearch) {
+      return items;
+    }
+    
+    const query = searchQuery.toLowerCase();
+    return items.filter((item) => {
+      const matchesLabel = item.label.toLowerCase().includes(query);
+      const matchesChildren = item.children?.some(
+        (child) => child.label.toLowerCase().includes(query) || child.href?.toLowerCase().includes(query)
+      );
+      return matchesLabel || matchesChildren;
+    }).map((item) => {
+      if (item.children) {
+        const filteredChildren = item.children.filter(
+          (child) =>
+            child.label.toLowerCase().includes(query) ||
+            child.href?.toLowerCase().includes(query)
+        );
+        return { ...item, children: filteredChildren };
+      }
+      return item;
+    });
+  }, [items, searchQuery, showSearch]);
 
   const toggleItem = (label: string) => {
     setExpandedItems((prev) => {
@@ -60,11 +90,11 @@ export default function Sidebar({
       <div key={item.label}>
         <div
           className={clsx(
-            'flex items-center justify-between px-3 md:px-4 py-2 md:py-2.5 rounded-lg transition-colors',
+            'flex items-center justify-between px-lg py-md rounded-lg transition-colors min-h-[44px]', // Improved spacing and touch target (UX/UI improvements - Batch 8, 17)
             isActive
               ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-900 dark:text-primary-100 font-medium'
               : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800',
-            level > 0 && 'ml-2 md:ml-4'
+            level > 0 && 'ml-lg' // Increased indentation for nested items
           )}
         >
           {item.href ? (
@@ -73,15 +103,17 @@ export default function Sidebar({
               className="flex items-center flex-1 space-x-3 min-w-0"
             >
               {item.icon && <span className="flex-shrink-0 w-5 h-5">{item.icon}</span>}
-              {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
+              {!collapsed && <span className="flex-1 truncate text-sm font-medium">{item.label}</span>}
             </Link>
           ) : (
             <button
               onClick={item.onClick || (hasChildren ? () => toggleItem(item.label) : undefined)}
               className="flex items-center flex-1 space-x-3 text-left min-w-0"
+              aria-expanded={hasChildren ? isExpanded : undefined}
+              aria-label={hasChildren ? `Toggle ${item.label}` : item.label}
             >
               {item.icon && <span className="flex-shrink-0 w-5 h-5">{item.icon}</span>}
-              {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
+              {!collapsed && <span className="flex-1 truncate text-sm font-medium">{item.label}</span>}
             </button>
           )}
           {!collapsed && (
@@ -92,12 +124,11 @@ export default function Sidebar({
                 </span>
               )}
               {hasChildren && (
-                <ChevronRight
-                  className={clsx(
-                    'w-4 h-4 transition-transform text-gray-500 dark:text-gray-400',
-                    isExpanded && 'transform rotate-90'
-                  )}
-                />
+                isExpanded ? (
+                  <ChevronDown className="w-4 h-4 transition-transform text-gray-500 dark:text-gray-400" />
+                ) : (
+                  <ChevronRight className="w-4 h-4 transition-transform text-gray-500 dark:text-gray-400" />
+                )
               )}
             </div>
           )}
@@ -111,6 +142,20 @@ export default function Sidebar({
     );
   };
 
+  // Auto-expand groups that contain active items (UX/UI improvements - Batch 8)
+  useMemo(() => {
+    items.forEach((item) => {
+      if (item.children) {
+        const hasActiveChild = item.children.some(
+          (child) => activePath === child.href || (child.href && activePath?.startsWith(child.href))
+        );
+        if (hasActiveChild && !expandedItems.has(item.label)) {
+          setExpandedItems((prev) => new Set(prev).add(item.label));
+        }
+      }
+    });
+  }, [items, activePath]);
+
   return (
     <aside
       className={clsx(
@@ -120,10 +165,10 @@ export default function Sidebar({
       )}
     >
       {onToggleCollapse && (
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="p-lg border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
           <button
             onClick={onToggleCollapse}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             <ChevronRight
@@ -135,14 +180,49 @@ export default function Sidebar({
           </button>
         </div>
       )}
-      <nav className="p-3 md:p-4 space-y-1 flex-1 overflow-y-auto">{items.map((item) => renderItem(item))}</nav>
+      
+      {/* Search Bar (UX/UI improvements - Batch 8) */}
+      {showSearch && !collapsed && (
+        <div className="px-lg py-md border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Rechercher..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-10 h-10 text-sm"
+              aria-label="Rechercher dans la navigation"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Effacer la recherche"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+      
+      <nav className="p-lg space-y-1 flex-1 overflow-y-auto">
+        {filteredItems.length === 0 ? (
+          <div className="px-lg py-md text-sm text-gray-500 dark:text-gray-400 text-center">
+            Aucun résultat trouvé
+          </div>
+        ) : (
+          filteredItems.map((item) => renderItem(item))
+        )}
+      </nav>
       {user && (
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-lg border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
           <div className={clsx(
             'flex items-center gap-3',
             collapsed && 'justify-center'
           )}>
-            <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/40 flex items-center justify-center flex-shrink-0 min-w-[44px] min-h-[44px]">
               <span className="text-sm font-medium text-primary-700 dark:text-primary-300">
                 {user.name?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
               </span>

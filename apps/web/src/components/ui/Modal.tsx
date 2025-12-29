@@ -216,6 +216,7 @@ function Modal({
         'fixed inset-0 z-50 flex items-center justify-center',
         'p-0 md:p-4',
         'bg-black/50 dark:bg-black/70',
+        'animate-fade-in', // Overlay fade-in animation
         overlayClassName
       )}
       onClick={closeOnOverlayClick ? onClose : undefined}
@@ -230,6 +231,7 @@ function Modal({
           'md:w-auto md:h-auto md:rounded-lg',
           sizeClasses[size],
           'md:max-h-[90vh] flex flex-col',
+          'animate-scale-in', // Modal scale-in animation (UX/UI improvements - Batch 16)
           className
         )}
         style={glassmorphismStyles}

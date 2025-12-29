@@ -90,7 +90,11 @@ export default function Accordion({ items, allowMultiple = false, className }: A
                 id={`accordion-content-${item.id}`}
                 role="region"
                 aria-labelledby={`accordion-header-${item.id}`}
-                className="px-4 py-3 border-t border-border bg-muted/50"
+                className={clsx(
+                  'px-4 py-3 border-t border-border bg-muted/50',
+                  'animate-slide-down', // Accordion slide-down animation (UX/UI improvements - Batch 16)
+                  'transition-all duration-normal ease-smooth'
+                )}
               >
                 {item.content}
               </div>

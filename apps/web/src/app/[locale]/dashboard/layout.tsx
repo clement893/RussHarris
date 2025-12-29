@@ -153,6 +153,7 @@ function DashboardLayoutContent({
           currentPath={pathname}
           className="h-full"
           user={user}
+          showSearch={true}
         />
       </aside>
 
@@ -167,6 +168,7 @@ function DashboardLayoutContent({
             onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
             className="h-screen sticky top-0"
             user={user}
+            showSearch={true}
           />
         </aside>
 

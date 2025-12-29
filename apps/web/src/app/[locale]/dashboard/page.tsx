@@ -11,6 +11,7 @@ import { PageHeader } from '@/components/layout';
 import { Link } from '@/i18n/routing';
 import dynamicImport from 'next/dynamic';
 import { ErrorBoundary } from '@/components/errors/ErrorBoundary';
+import MotionDiv from '@/components/motion/MotionDiv';
 import { 
   User, 
   Mail, 
@@ -62,9 +63,9 @@ function DashboardContent() {
   }
 
   return (
-    <div className="space-y-2xl">
+    <MotionDiv variant="slideUp" duration="normal" className="space-y-2xl">
       {/* Welcome Header */}
-      <div>
+      <MotionDiv variant="fade" delay={100}>
         <PageHeader
           title={`Welcome back, ${user?.name || 'User'}!`}
           description="Here's what's happening with your account today"
@@ -73,10 +74,11 @@ function DashboardContent() {
             { label: 'Dashboard' },
           ]}
         />
-      </div>
+      </MotionDiv>
 
       {/* Quick Stats Grid */}
-      <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal">
+      <MotionDiv variant="slideUp" delay={200}>
+        <Grid columns={{ mobile: 1, tablet: 2, desktop: 4 }} gap="normal">
           <Card className="border-l-4 border-l-primary-500 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
@@ -121,9 +123,11 @@ function DashboardContent() {
               </div>
             </div>
           </Card>
-      </Grid>
+        </Grid>
+      </MotionDiv>
 
-      <Grid columns={{ mobile: 1, tablet: 2 }} gap="loose">
+      <MotionDiv variant="slideUp" delay={300}>
+        <Grid columns={{ mobile: 1, tablet: 2 }} gap="loose">
           {/* User Profile Card */}
           <Card className="hover:shadow-xl transition-all duration-300">
             <div className="flex items-center gap-4 mb-6">
@@ -210,10 +214,12 @@ function DashboardContent() {
               </Link>
             </Stack>
           </Card>
-      </Grid>
+        </Grid>
+      </MotionDiv>
 
       {/* API Status */}
-      <Card className="hover:shadow-xl transition-all duration-300">
+      <MotionDiv variant="slideUp" delay={400}>
+        <Card className="hover:shadow-xl transition-all duration-300">
           <div className="flex items-center gap-4 mb-6">
             <div className="p-3 bg-success-100 dark:bg-success-900/30 rounded-lg">
               <Shield className="w-6 h-6 text-success-600 dark:text-success-400" />
@@ -246,10 +252,12 @@ function DashboardContent() {
               <p className="text-sm text-success-800 dark:text-success-200 ml-8">JWT is working</p>
             </div>
           </Grid>
-      </Card>
+        </Card>
+      </MotionDiv>
 
       {/* Service Tests */}
-      <Card className="hover:shadow-xl transition-all duration-300">
+      <MotionDiv variant="slideUp" delay={500}>
+        <Card className="hover:shadow-xl transition-all duration-300">
           <div className="flex items-center gap-4 mb-6">
             <div className="p-3 bg-info-100 dark:bg-info-900/30 rounded-lg">
               <Sparkles className="w-6 h-6 text-info-600 dark:text-info-400" />
@@ -360,10 +368,12 @@ function DashboardContent() {
             }
           />
         </Grid>
-      </Card>
+        </Card>
+      </MotionDiv>
 
       {/* AI Chat Assistant */}
-      <Card className="hover:shadow-xl transition-all duration-300">
+      <MotionDiv variant="slideUp" delay={600}>
+        <Card className="hover:shadow-xl transition-all duration-300">
         <div className="flex items-center gap-4 mb-6">
           <div className="p-3 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg">
             <Sparkles className="w-6 h-6 text-white" />
@@ -375,7 +385,8 @@ function DashboardContent() {
         </div>
         <TemplateAIChat />
       </Card>
-    </div>
+      </MotionDiv>
+    </MotionDiv>
   );
 }
 

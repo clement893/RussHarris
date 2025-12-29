@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Sidebar from './Sidebar';
+import { Menu } from 'lucide-react';
 
 interface InternalLayoutProps {
   children: React.ReactNode;
@@ -19,13 +20,14 @@ export default function InternalLayout({ children }: InternalLayoutProps) {
 
       <div className="flex-1 flex flex-col overflow-hidden md:ml-64 lg:ml-72 xl:ml-80">
         <header className="bg-background border-b border-border h-16 flex items-center justify-between px-4 md:px-6">
+          {/* Hamburger Menu Button (Mobile only) - UX/UI improvements Batch 17 */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="md:hidden p-2 rounded-md text-muted-foreground hover:bg-muted"
+            className="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-foreground hover:bg-muted transition-colors min-h-[44px] min-w-[44px]"
+            aria-label="Ouvrir le menu"
+            aria-expanded={sidebarOpen}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <Menu className="w-6 h-6" />
           </button>
           <div className="flex-1" />
           <div className="flex items-center gap-4">
@@ -37,18 +39,8 @@ export default function InternalLayout({ children }: InternalLayoutProps) {
         </main>
       </div>
 
-      {/* Mobile Sidebar Overlay */}
-      {sidebarOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <div className="fixed left-0 top-0 z-40 md:hidden">
-            <Sidebar />
-          </div>
-        </>
-      )}
+      {/* Mobile Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
     </div>
   );
 }

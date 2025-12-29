@@ -12,12 +12,22 @@ import { getNavigationConfig, type NavigationItem, type NavigationGroup } from '
 import { clsx } from 'clsx';
 import { ChevronDown, ChevronRight, Search, X } from 'lucide-react';
 
-export default function Sidebar() {
+export interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen: controlledIsOpen, onClose }: SidebarProps = {}) {
   const pathname = usePathname();
   const { user } = useAuthStore();
   const { logout } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  
+  // Use controlled or internal state
+  const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : internalIsOpen;
+  const handleClose = onClose || (() => setInternalIsOpen(false));
 
   // Check if user is admin or superadmin
   const isAdmin = user?.is_admin || false;
@@ -172,15 +182,42 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 bg-background border-r border-border flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between h-16 px-lg border-b border-border flex-shrink-0">
-        <Link href="/dashboard" className="flex items-center">
-          <span className="text-xl font-bold text-primary">
-            MODELE
-          </span>
-        </Link>
-      </div>
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 dark:bg-black/70 md:hidden animate-fade-in"
+          onClick={handleClose}
+          aria-hidden="true"
+        />
+      )}
+      
+      {/* Sidebar */}
+      <aside
+        className={clsx(
+          'fixed left-0 top-0 z-40 h-screen w-64 bg-background border-r border-border flex flex-col',
+          'transition-transform duration-normal ease-smooth', // Smooth transition (UX/UI improvements - Batch 17)
+          // Mobile: slide in/out from left
+          isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        )}
+      >
+        {/* Header with Hamburger Menu */}
+        <div className="flex items-center justify-between h-16 px-lg border-b border-border flex-shrink-0">
+          <Link href="/dashboard" className="flex items-center">
+            <span className="text-xl font-bold text-primary">
+              MODELE
+            </span>
+          </Link>
+          {/* Hamburger Menu Button (Mobile only) */}
+          <button
+            onClick={handleClose}
+            className="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-foreground hover:bg-muted transition-colors min-h-[44px] min-w-[44px]"
+            aria-label="Fermer le menu"
+            aria-expanded={isOpen}
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
 
       {/* Search Bar */}
       <div className="px-lg py-md border-b border-border flex-shrink-0">
@@ -249,5 +286,6 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
+    </>
   );
 }
