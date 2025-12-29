@@ -37,19 +37,20 @@ export function useThemeActions() {
 
     try {
       setIsActivating(true);
-      await activateTheme(selectedTheme.id);
       
-      // Clear cache to force fresh theme load
+      // Clear cache FIRST to prevent stale cache from being used
       clearThemeCache();
       
-      // Small delay to ensure cache is cleared before refresh
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Activate theme on backend
+      await activateTheme(selectedTheme.id);
       
-      // Refresh global theme to apply changes (force apply)
+      // Immediately refresh theme (force apply) - no delays needed
+      // The refreshTheme function already handles force apply
       await refreshTheme();
       
-      // Additional delay to ensure theme is applied before closing modal
-      await new Promise(resolve => setTimeout(resolve, 200));
+      // Force a small delay to ensure DOM updates are visible
+      // This is minimal (50ms) just for visual feedback
+      await new Promise(resolve => setTimeout(resolve, 50));
       
       setShowActivateModal(false);
       const themeName = selectedTheme.display_name;

@@ -45,6 +45,12 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
       setError(null);
       
       // Fetch fresh theme from backend (non-blocking)
+      // Add a small delay if forceApply to ensure backend has processed the change
+      if (forceApply) {
+        // Wait a bit for backend to commit the change (database transaction)
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      
       const activeTheme = await getActiveTheme();
       
       // Check if theme changed (ID or config)
@@ -73,8 +79,14 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
         // BUT: Don't override if manual theme is active (for preview mode)
         const isManualTheme = typeof document !== 'undefined' && document.documentElement.hasAttribute('data-manual-theme');
         if (!isManualTheme) {
+          // Apply immediately and synchronously
           applyThemeConfig(activeTheme.config);
           logger.info('[Theme] Theme config applied to DOM', { themeId: activeTheme.id });
+          
+          // Force a reflow to ensure styles are applied immediately
+          if (typeof document !== 'undefined') {
+            document.documentElement.offsetHeight; // Trigger reflow
+          }
         } else {
           logger.info('[Theme] Skipped theme application (manual theme active)');
         }
@@ -584,6 +596,9 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
 
   const refreshTheme = async () => {
     // Force apply when refreshing (e.g., after theme activation)
+    // Clear cache first to ensure we get fresh data
+    clearThemeCache();
+    // Force fetch and apply
     await fetchTheme(true);
   };
 
