@@ -85,6 +85,10 @@ export function useDeleteAllReseauContacts() {
       // Get all contacts and delete them one by one
       const contacts = await reseauContactsAPI.list(0, 10000);
       await Promise.all(contacts.map(contact => reseauContactsAPI.delete(contact.id)));
+      return {
+        deleted_count: contacts.length,
+        message: `${contacts.length} contact(s) supprimé(s) avec succès`,
+      };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: reseauContactsQueryKeys.lists() });

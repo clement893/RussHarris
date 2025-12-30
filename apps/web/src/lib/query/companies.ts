@@ -85,6 +85,10 @@ export function useDeleteAllCompanies() {
       // Get all companies and delete them one by one
       const companies = await companiesAPI.list(0, 10000);
       await Promise.all(companies.map(company => companiesAPI.delete(company.id)));
+      return {
+        deleted_count: companies.length,
+        message: `${companies.length} entreprise(s) supprimée(s) avec succès`,
+      };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: companiesQueryKeys.lists() });
