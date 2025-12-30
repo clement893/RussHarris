@@ -248,7 +248,8 @@ function getApiClient(): ApiClient {
 export const apiClient = new Proxy({} as ApiClient, {
   get(_target, prop) {
     const instance = getApiClient();
-    const value = (instance as unknown as Record<string, unknown>)[prop];
+    const propKey = typeof prop === 'string' ? prop : String(prop);
+    const value = (instance as unknown as Record<string, unknown>)[propKey];
     if (typeof value === 'function') {
       return value.bind(instance);
     }
@@ -256,7 +257,8 @@ export const apiClient = new Proxy({} as ApiClient, {
   },
   set(_target, prop, value) {
     const instance = getApiClient();
-    (instance as unknown as Record<string, unknown>)[prop] = value;
+    const propKey = typeof prop === 'string' ? prop : String(prop);
+    (instance as unknown as Record<string, unknown>)[propKey] = value;
     return true;
   }
 });
