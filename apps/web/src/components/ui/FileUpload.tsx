@@ -95,6 +95,15 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     const validateFileSize = (file: File, minSize?: number, maxSize?: number): boolean => {
       const fileSizeMB = file.size / (1024 * 1024);
       
+      // No size limit for images (removed restriction)
+      const isImage = file.type.startsWith('image/');
+      if (isImage) {
+        // Only check minimum size for images, no maximum
+        if (minSize && fileSizeMB < minSize) return false;
+        return true;
+      }
+      
+      // For non-images, apply size limits as before
       if (minSize && fileSizeMB < minSize) return false;
       if (maxSize && fileSizeMB > maxSize) return false;
       
