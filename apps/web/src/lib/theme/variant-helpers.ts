@@ -120,8 +120,9 @@ export function applyVariantConfigAsStyles(
     if (!['background', 'text', 'border', 'borderRadius', 'boxShadow', 'textShadow', 'hover'].includes(key)) {
       if (typeof value === 'string') {
         // Convert camelCase to kebab-case for CSS properties
-        const cssProperty = key.replace(/([A-Z])/g, '-$1').toLowerCase() as keyof React.CSSProperties;
-        (styles as React.CSSProperties)[cssProperty] = value;
+        const cssProperty = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+        // Use Record<string, string> for dynamic CSS properties to allow string values
+        (styles as unknown as Record<string, string>)[cssProperty] = value;
       }
     }
   });
