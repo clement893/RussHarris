@@ -356,7 +356,7 @@ export const usersAPI = {
       
       if (axiosError?.response) {
         const status = axiosError.response.status;
-        const data = axiosError.response.data;
+        const data = axiosError.response.data as { detail?: string; error?: string; message?: string } | undefined;
         const detail = data?.detail || data?.error || data?.message || 'Unknown error';
         throw new Error(`Avatar upload failed (${status}): ${detail}`);
       }
