@@ -83,14 +83,14 @@ export default function AdminAPIKeysContent() {
 
   const columns: Column<AdminAPIKeyListResponse>[] = [
     {
-      header: 'ID',
-      accessor: 'id',
-      cell: (key) => <span className="font-mono text-sm">{key.id}</span>,
+      key: 'id',
+      label: 'ID',
+      render: (_value, key) => <span className="font-mono text-sm">{key.id}</span>,
     },
     {
-      header: 'Nom',
-      accessor: 'name',
-      cell: (key) => (
+      key: 'name',
+      label: 'Nom',
+      render: (_value, key) => (
         <div>
           <div className="font-medium">{key.name}</div>
           {key.description && (
@@ -100,9 +100,9 @@ export default function AdminAPIKeysContent() {
       ),
     },
     {
-      header: 'Utilisateur',
-      accessor: 'user_email',
-      cell: (key) => (
+      key: 'user_email',
+      label: 'Utilisateur',
+      render: (_value, key) => (
         <div>
           <div className="font-medium">{key.user_email}</div>
           {key.user_name && (
@@ -113,18 +113,18 @@ export default function AdminAPIKeysContent() {
       ),
     },
     {
-      header: 'Préfixe',
-      accessor: 'key_prefix',
-      cell: (key) => (
+      key: 'key_prefix',
+      label: 'Préfixe',
+      render: (_value, key) => (
         <code className="text-sm font-mono bg-muted px-2 py-1 rounded">
           {key.key_prefix}••••••••
         </code>
       ),
     },
     {
-      header: 'Statut',
-      accessor: 'is_active',
-      cell: (key) => (
+      key: 'is_active',
+      label: 'Statut',
+      render: (_value, key) => (
         <div className="flex flex-col gap-1">
           {key.is_active ? (
             <Badge variant="success">Actif</Badge>
@@ -143,9 +143,9 @@ export default function AdminAPIKeysContent() {
       ),
     },
     {
-      header: 'Rotation',
-      accessor: 'rotation_policy',
-      cell: (key) => (
+      key: 'rotation_policy',
+      label: 'Rotation',
+      render: (_value, key) => (
         <div className="text-sm">
           <div>{key.rotation_policy}</div>
           <div className="text-xs text-muted-foreground">
@@ -155,9 +155,9 @@ export default function AdminAPIKeysContent() {
       ),
     },
     {
-      header: 'Utilisation',
-      accessor: 'usage_count',
-      cell: (key) => (
+      key: 'usage_count',
+      label: 'Utilisation',
+      render: (_value, key) => (
         <div className="text-sm">
           <div>{key.usage_count} utilisation{key.usage_count !== 1 ? 's' : ''}</div>
           {key.last_used_at && (
@@ -169,9 +169,9 @@ export default function AdminAPIKeysContent() {
       ),
     },
     {
-      header: 'Créé le',
-      accessor: 'created_at',
-      cell: (key) => (
+      key: 'created_at',
+      label: 'Créé le',
+      render: (_value, key) => (
         <div className="text-sm">
           {new Date(key.created_at).toLocaleDateString()}
           <div className="text-xs text-muted-foreground">
@@ -181,9 +181,9 @@ export default function AdminAPIKeysContent() {
       ),
     },
     {
-      header: 'Actions',
-      accessor: 'id',
-      cell: (key) => (
+      key: 'actions',
+      label: 'Actions',
+      render: (_value, key) => (
         <div className="flex gap-2">
           <Button
             variant="ghost"
