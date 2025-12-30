@@ -233,14 +233,14 @@ export default function AdminStatisticsContent() {
       try {
         const logsResponse = await apiClient.get('/v1/audit-trail/audit-trail?limit=1000&offset=0');
         const logsData = extractApiData<unknown[] | { data: unknown[] }>(logsResponse);
-        const logs = Array.isArray(logsData) 
+        const logs = (Array.isArray(logsData) 
           ? logsData 
           : (logsData && typeof logsData === 'object' && 'data' in logsData && Array.isArray(logsData.data)
             ? logsData.data
-            : []);
+            : [])) as AuditLog[];
 
         // Group by type
-        logs.forEach((log: AuditLog) => {
+        logs.forEach((log) => {
           const eventType = log.event_type || log.action || 'unknown';
           activitiesByType[eventType] = (activitiesByType[eventType] || 0) + 1;
         });
@@ -277,15 +277,15 @@ export default function AdminStatisticsContent() {
       try {
         const auditResponse = await apiClient.get('/v1/audit-trail/audit-trail?limit=1000&offset=0');
         const auditData = extractApiData<unknown[] | { data: unknown[] }>(auditResponse);
-        const auditLogs = Array.isArray(auditData) 
+        const auditLogs = (Array.isArray(auditData) 
           ? auditData 
           : (auditData && typeof auditData === 'object' && 'data' in auditData && Array.isArray(auditData.data)
             ? auditData.data
-            : []);
+            : [])) as AuditLog[];
 
         const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         
-        auditLogs.forEach((log: AuditLog) => {
+        auditLogs.forEach((log) => {
           const level = log.severity || log.level || 'info';
           logsByLevel[level] = (logsByLevel[level] || 0) + 1;
           
@@ -311,14 +311,14 @@ export default function AdminStatisticsContent() {
         const teamsResponse = await teamsAPI.list();
         if (teamsResponse.data) {
           const teamsData = teamsResponse.data.teams || teamsResponse.data;
-          const teams = Array.isArray(teamsData) ? teamsData : [];
+          const teams = (Array.isArray(teamsData) ? teamsData : []) as Team[];
           totalOrgs = teams.length;
           
           const now = new Date();
           const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
           const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
           
-          teams.forEach((team: Team) => {
+          teams.forEach((team) => {
             if (team.is_active || team.isActive) {
               activeOrgs++;
             }
@@ -371,9 +371,9 @@ export default function AdminStatisticsContent() {
         // Load pages
         const pagesResponse = await apiClient.get('/v1/pages?limit=1000').catch(() => null);
         if (pagesResponse && Array.isArray(pagesResponse.data)) {
-          const pages = pagesResponse.data;
+          const pages = pagesResponse.data as Page[];
           totalPages = pages.length;
-          publishedPages = pages.filter((page: Page) => page.status === 'published' || page.status === 'PUBLISHED').length;
+          publishedPages = pages.filter((page) => page.status === 'published' || page.status === 'PUBLISHED').length;
         }
       } catch (e) {
         // Ignore if pages API fails
@@ -386,9 +386,9 @@ export default function AdminStatisticsContent() {
       try {
         const projectsResponse = await apiClient.get('/v1/projects?limit=1000').catch(() => null);
         if (projectsResponse && Array.isArray(projectsResponse.data)) {
-          const projects = projectsResponse.data;
+          const projects = projectsResponse.data as Project[];
           totalProjects = projects.length;
-          projects.forEach((project: Project) => {
+          projects.forEach((project) => {
             const status = project.status || 'unknown';
             projectsByStatus[status] = (projectsByStatus[status] || 0) + 1;
           });
