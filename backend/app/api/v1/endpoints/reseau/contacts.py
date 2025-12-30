@@ -115,3 +115,14 @@ async def delete_contact(
         db=db,
         current_user=current_user,
     )
+
+@router.get("/import/{import_id}/logs")
+async def stream_import_logs(
+    import_id: str,
+    current_user: User = Depends(get_current_user),
+):
+    """Stream import logs via Server-Sent Events (SSE) for network module"""
+    return await commercial_contacts.stream_import_logs(
+        import_id=import_id,
+        current_user=current_user,
+    )

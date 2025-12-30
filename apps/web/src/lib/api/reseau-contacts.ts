@@ -81,6 +81,147 @@ export const reseauContactsAPI = {
   delete: async (id: number): Promise<void> => {
     await apiClient.delete(`/v1/reseau/contacts/${id}`);
   },
+
+  /**
+   * Import contacts from Excel or ZIP (Excel + photos)
+   */
+  import: async (file: File): Promise<{
+    total_rows: number;
+    valid_rows: number;
+    invalid_rows: number;
+    errors: Array<{ row: number; data: unknown; error: string }>;
+    warnings?: Array<{ 
+      row: number; 
+      type: string; 
+      message: string; 
+      data?: Record<string, unknown> 
+    }>;
+    data: Contact[];
+    photos_uploaded?: number;
+    import_id?: string;
+  }> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    // Generate import_id for tracking logs
+    const import_id = `import_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    const response = await apiClient.post<{
+      total_rows: number;
+      valid_rows: number;
+      invalid_rows: number;
+      errors: Array<{ row: number; data: unknown; error: string }>;
+      warnings?: Array<{ 
+        row: number; 
+        type: string; 
+        message: string; 
+        data?: Record<string, unknown> 
+      }>;
+      data: Contact[];
+      photos_uploaded?: number;
+      import_id?: string;
+    }>('/v1/reseau/contacts/import', formData, {
+      params: { import_id },
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    
+    const result = extractApiData(response) || {
+      total_rows: 0,
+      valid_rows: 0,
+      invalid_rows: 0,
+      errors: [],
+      warnings: [],
+      data: [],
+      photos_uploaded: 0,
+    };
+    
+    return {
+      ...result,
+      import_id: result.import_id || import_id,
+    };
+  },
+
+  /**
+   * Export contacts to Excel
+   */
+  export: async (): Promise<Blob> => {
+    try {
+      const axios = (await import('axios')).default;
+      const { getApiUrl } = await import('../api');
+      const apiUrl = getApiUrl();
+      const TokenStorage = (await import('../auth/tokenStorage')).TokenStorage;
+      
+      const response = await axios.get(`${apiUrl}/api/v1/reseau/contacts/export`, {
+        responseType: 'blob',
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${typeof window !== 'undefined' ? TokenStorage.getToken() || '' : ''}`,
+        },
+      });
+      
+      if (response.status >= 400) {
+        const text = await (response.data as Blob).text();
+        let errorData: any;
+        try {
+          errorData = JSON.parse(text);
+        } catch (parseError) {
+          errorData = { detail: text || 'Export failed' };
+        }
+        
+        const axiosError = {
+          response: {
+            status: response.status,
+            statusText: response.statusText,
+            data: errorData,
+            headers: response.headers,
+            config: response.config,
+          },
+          config: response.config,
+          isAxiosError: true,
+          name: 'AxiosError',
+          message: `Request failed with status code ${response.status}`,
+        };
+        
+        throw axiosError;
+      }
+      
+      return response.data as Blob;
+    } catch (error: any) {
+      if (error.response?.data instanceof Blob) {
+        try {
+          const text = await error.response.data.text();
+          let errorData: any;
+          try {
+            errorData = JSON.parse(text);
+          } catch (parseError) {
+            errorData = { detail: text || 'Export failed' };
+          }
+          error.response.data = errorData;
+        } catch (parseError) {
+          error.response.data = { detail: 'Erreur lors de l\'export' };
+        }
+      }
+      throw error;
+    }
+  },
+
+  /**
+   * Download contact import template (Excel only)
+   */
+  downloadTemplate: async (): Promise<void> => {
+    const { downloadContactTemplate } = await import('@/lib/utils/generateContactTemplate');
+    downloadContactTemplate();
+  },
+
+  /**
+   * Download contact import ZIP template (Excel + instructions + photos folder)
+   */
+  downloadZipTemplate: async (): Promise<void> => {
+    const { downloadContactZipTemplate } = await import('@/lib/utils/generateContactTemplate');
+    await downloadContactZipTemplate();
+  },
 };
 
 // Re-export types for convenience
