@@ -752,10 +752,6 @@ function ContactsContent() {
             filterable={false}
             emptyMessage="Aucun contact trouvé"
             loading={loading}
-            infiniteScroll={filterCity.length === 0 && filterPhone.length === 0 && filterCircle.length === 0 && filterCompany.length === 0}
-            hasMore={hasMore && filterCity.length === 0 && filterPhone.length === 0 && filterCircle.length === 0 && filterCompany.length === 0}
-            loadingMore={loadingMore}
-            onLoadMore={loadMore}
             onRowClick={(row) => openDetailPage(row as unknown as Contact)}
           />
         </Card>

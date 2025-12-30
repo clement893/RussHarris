@@ -672,10 +672,6 @@ function CompaniesContent() {
             filterable={false}
             emptyMessage="Aucune entreprise trouvée"
             loading={loading}
-            infiniteScroll={filterCountry.length === 0 && filterIsClient.length === 0}
-            hasMore={hasMore && filterCountry.length === 0 && filterIsClient.length === 0}
-            loadingMore={loadingMore}
-            onLoadMore={loadMore}
             onRowClick={(row) => openDetailPage(row as unknown as Company)}
           />
         </Card>
