@@ -8,7 +8,7 @@
 
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { useAuthStore } from '@/lib/store';
@@ -20,7 +20,7 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { sanitizeInput } from '@/utils/edgeCaseHandlers';
 import { logger } from '@/lib/logger';
 import { getErrorMessage } from '@/lib/errors';
-import { User, Calendar, Mail, Shield, CheckCircle, XCircle, Clock, Hash } from 'lucide-react';
+import { Calendar, Mail, CheckCircle, XCircle, Clock, Hash } from 'lucide-react';
 
 interface UserData {
   id: number;
@@ -45,17 +45,10 @@ export default function ProfilePage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const profileFormRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const focusTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    if (!isAuthenticated()) {
-      router.push('/auth/login');
-      return;
-    }
-
-    loadUser();
-  }, [isAuthenticated, router]);
-
-  const loadUser = async () => {
+  const loadUser = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
@@ -82,7 +75,28 @@ export default function ProfilePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [t]);
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.push('/auth/login');
+      return;
+    }
+
+    loadUser();
+  }, [isAuthenticated, router, loadUser]);
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (focusTimeoutRef.current) {
+        clearTimeout(focusTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handleSubmit = async (data: {
     first_name?: string;
@@ -126,7 +140,7 @@ export default function ProfilePage() {
             .join(' ') || response.data.email?.split('@')[0] || '',
         };
         
-        setUser({
+        const updatedUserData: UserData = {
           ...updatedUser,
           id: response.data.id,
           email: response.data.email,
@@ -136,34 +150,36 @@ export default function ProfilePage() {
           is_active: response.data.is_active !== undefined ? response.data.is_active : true,
           created_at: response.data.created_at || user?.created_at,
           updated_at: response.data.updated_at || new Date().toISOString(),
-        });
+        };
         
-        // Update auth store
-        useAuthStore.getState().setUser({
-          ...authUser!,
-          ...response.data,
-          name: updatedUser.name,
-        });
+        setUser(updatedUserData);
+        
+        // Update auth store only if authUser exists
+        if (authUser) {
+          useAuthStore.getState().setUser({
+            ...authUser,
+            ...response.data,
+            name: updatedUser.name,
+          });
+        }
         
         setSuccess(t('success.updateSuccess') || 'Profile updated successfully');
         logger.info('Profile updated successfully', { email: response.data.email });
         
-        // Reload user data to get latest from database
-        setTimeout(() => {
-          loadUser();
-        }, 500);
+        // Data is already updated in state, no need to reload from database
+        // The response.data already contains the latest information
       }
     } catch (error: unknown) {
       logger.error('Failed to update profile', error instanceof Error ? error : new Error(String(error)));
       const errorMessage = getErrorMessage(error) || t('errors.updateFailed') || 'Failed to update profile. Please try again.';
       setError(errorMessage);
-      throw error;
+      // Don't throw - error is already handled via setError state
     } finally {
       setIsSaving(false);
     }
   };
 
-  const formatDate = (dateString?: string) => {
+  const formatDate = useCallback((dateString?: string) => {
     if (!dateString) return 'N/A';
     try {
       const dateLocale = locale === 'fr' ? 'fr-FR' : locale === 'en' ? 'en-US' : 'en-US';
@@ -177,7 +193,7 @@ export default function ProfilePage() {
     } catch {
       return dateString;
     }
-  };
+  }, [locale]);
 
   if (isLoading) {
     return (
@@ -249,12 +265,18 @@ export default function ProfilePage() {
                 });
                 
                 // Focus on first input field after scroll
-                setTimeout(() => {
+                // Clear any existing timeout before setting a new one
+                if (focusTimeoutRef.current) {
+                  clearTimeout(focusTimeoutRef.current);
+                }
+                
+                focusTimeoutRef.current = setTimeout(() => {
                   const firstInput = element.querySelector('input[type="text"], input[type="email"]') as HTMLInputElement;
                   if (firstInput) {
                     firstInput.focus();
                     logger.debug('Focused on first input field');
                   }
+                  focusTimeoutRef.current = null;
                 }, 600);
               } else {
                 logger.warn('profileFormRef.current is null');
