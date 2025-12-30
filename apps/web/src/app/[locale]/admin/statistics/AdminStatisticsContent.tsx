@@ -241,7 +241,7 @@ export default function AdminStatisticsContent() {
 
         // Group by type
         logs.forEach((log) => {
-          const eventType = log.event_type || log.action || 'unknown';
+          const eventType = String(log.event_type || log.action || 'unknown');
           activitiesByType[eventType] = (activitiesByType[eventType] || 0) + 1;
         });
 
@@ -286,7 +286,7 @@ export default function AdminStatisticsContent() {
         const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         
         auditLogs.forEach((log) => {
-          const level = log.severity || log.level || 'info';
+          const level = String(log.severity || log.level || 'info');
           logsByLevel[level] = (logsByLevel[level] || 0) + 1;
           
           if ((level === 'error' || level === 'critical') && log.timestamp) {
@@ -389,7 +389,7 @@ export default function AdminStatisticsContent() {
           const projects = projectsResponse.data as Project[];
           totalProjects = projects.length;
           projects.forEach((project) => {
-            const status = project.status || 'unknown';
+            const status = String(project.status || 'unknown');
             projectsByStatus[status] = (projectsByStatus[status] || 0) + 1;
           });
         }
