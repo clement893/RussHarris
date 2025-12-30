@@ -89,7 +89,24 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   
   // Validate theme configuration if requested
   if (validateContrast) {
-    const validation = validateThemeConfig(modeConfig, { 
+    // Transform modeConfig to match validateThemeConfig's expected type
+    const validationConfig = {
+      colors: modeConfig.colors,
+      primary_color: modeConfig.primary_color,
+      secondary_color: modeConfig.secondary_color,
+      danger_color: modeConfig.danger_color,
+      warning_color: modeConfig.warning_color,
+      info_color: modeConfig.info_color,
+      success_color: modeConfig.success_color,
+      typography: modeConfig.typography ? {
+        textHeading: (modeConfig.typography as Record<string, unknown>).textHeading as string | undefined,
+        textSubheading: (modeConfig.typography as Record<string, unknown>).textSubheading as string | undefined,
+        textBody: (modeConfig.typography as Record<string, unknown>).textBody as string | undefined,
+        textSecondary: (modeConfig.typography as Record<string, unknown>).textSecondary as string | undefined,
+        textLink: (modeConfig.typography as Record<string, unknown>).textLink as string | undefined,
+      } : undefined,
+    };
+    const validation = validateThemeConfig(validationConfig, { 
       strictContrast: false, 
       logWarnings 
     });
