@@ -7,7 +7,8 @@ contacts logic to avoid code duplication while maintaining isolation.
 """
 
 from typing import List, Optional
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, Query, Request, UploadFile, File
+from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -112,6 +113,32 @@ async def delete_contact(
     return await commercial_contacts.delete_contact(
         request=request,
         contact_id=contact_id,
+        db=db,
+        current_user=current_user,
+    )
+
+@router.post("/import")
+async def import_contacts(
+    file: UploadFile = File(...),
+    import_id: Optional[str] = Query(None, description="Optional import ID for tracking logs"),
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Import contacts from Excel or ZIP for network module"""
+    return await commercial_contacts.import_contacts(
+        file=file,
+        import_id=import_id,
+        db=db,
+        current_user=current_user,
+    )
+
+@router.get("/export")
+async def export_contacts(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> StreamingResponse:
+    """Export contacts to Excel for network module"""
+    return await commercial_contacts.export_contacts(
         db=db,
         current_user=current_user,
     )
