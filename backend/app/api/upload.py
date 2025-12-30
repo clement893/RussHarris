@@ -161,8 +161,9 @@ async def upload_file(
     file_content = await file.read()
     file_size = len(file_content)
     
-    # Check file size
-    if file_size > MAX_FILE_SIZE:
+    # Check file size only for non-image files (images have no size limit)
+    is_image = file.content_type and file.content_type.startswith('image/')
+    if not is_image and file_size > MAX_FILE_SIZE:
         raise HTTPException(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
             detail=f"File too large. Maximum size is {MAX_FILE_SIZE / (1024 * 1024):.0f}MB",

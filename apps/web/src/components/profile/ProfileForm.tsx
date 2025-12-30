@@ -127,14 +127,7 @@ export function ProfileForm({
       return;
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      showToast({
-        message: 'Image size must be less than 5MB',
-        type: 'error',
-      });
-      return;
-    }
+    // No size limit for images (removed 5MB restriction)
 
     // Create local preview immediately
     const reader = new FileReader();

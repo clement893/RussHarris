@@ -73,11 +73,7 @@ export default function UserSettings({
       return;
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setErrors({ avatar: 'Image size must be less than 5MB' });
-      return;
-    }
+    // No size limit for images (removed 5MB restriction)
 
     // Create preview
     const reader = new FileReader();
@@ -133,7 +129,7 @@ export default function UserSettings({
             </div>
             <div className="flex-1">
               <p className="text-sm text-muted-foreground mb-2">
-                Upload a new profile picture. JPG, PNG or GIF. Max size 5MB.
+                Upload a new profile picture. JPG, PNG or GIF. No size limit.
               </p>
               {errors.avatar && (
                 <p className="text-sm text-danger-600 dark:text-danger-400">{errors.avatar}</p>

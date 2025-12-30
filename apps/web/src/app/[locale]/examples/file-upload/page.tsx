@@ -9,8 +9,8 @@ import { X, Image as ImageIcon, FileText } from 'lucide-react';
 // Simple validation functions
 const validateImageFile = (file: File): boolean => {
   const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-  const maxSize = 5 * 1024 * 1024; // 5MB
-  return allowedTypes.includes(file.type) && file.size <= maxSize;
+  // No size limit for images (removed 5MB restriction)
+  return allowedTypes.includes(file.type) && file.size > 0;
 };
 
 const validateDocumentFile = (file: File): boolean => {
@@ -158,7 +158,7 @@ export default function ExampleFileUploadPage() {
                   Cliquez pour uploader une image
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  PNG, JPG, GIF jusqu'à 5MB
+                  PNG, JPG, GIF (aucune limite de taille)
                 </p>
                 <input
                   ref={imageInputRef}

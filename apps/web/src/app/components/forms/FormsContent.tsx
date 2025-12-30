@@ -106,9 +106,8 @@ export default function FormsContent() {
             label="Téléverser des fichiers" 
             accept="image/*" 
             multiple 
-            maxSize={5} 
             onFileSelect={(files) => logger.debug('Files selected', { count: files.length })} 
-            helperText="Formats acceptés : JPG, PNG, GIF. Taille max : 5MB" 
+            helperText="Formats acceptés : JPG, PNG, GIF. Aucune limite de taille" 
           />
         </Section>
 

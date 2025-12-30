@@ -42,9 +42,11 @@ function UploadContent() {
     const validationErrors: string[] = [];
     
     files.forEach((file) => {
+      // No size limit for images, use default for other files
+      const isImage = file.type.startsWith('image/');
       const validation = validateFile(file, {
         allowedTypes: ALLOWED_MIME_TYPES.all,
-        maxSize: MAX_FILE_SIZE,
+        maxSize: isImage ? undefined : MAX_FILE_SIZE, // No limit for images
         requireExtensionMatch: true,
       });
       

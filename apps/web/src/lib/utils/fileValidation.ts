@@ -57,9 +57,11 @@ ALLOWED_MIME_TYPES.all = [
 
 /**
  * Maximum file size in bytes
- * Default: 10MB
+ * Default: 10MB for non-image files
+ * Images have no size limit (set to undefined/null to disable)
  */
-export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB for non-images
+export const MAX_FILE_SIZE_IMAGE = undefined; // No limit for images
 
 /**
  * Sanitize file name to prevent directory traversal and other attacks
@@ -151,8 +153,12 @@ export function validateMimeType(
  */
 export function validateFileSize(
   size: number,
-  maxSize: number = MAX_FILE_SIZE
+  maxSize: number | undefined = MAX_FILE_SIZE
 ): boolean {
+  // If maxSize is undefined/null, skip size validation (no limit)
+  if (maxSize === undefined || maxSize === null) {
+    return size > 0;
+  }
   return size > 0 && size <= maxSize;
 }
 
@@ -271,21 +277,35 @@ export function validateFile(
   file: { name: string; size: number; type: string },
   options: {
     allowedTypes?: string[];
-    maxSize?: number;
+    maxSize?: number | undefined;
     requireExtensionMatch?: boolean;
   } = {}
 ): FileValidationResult {
   const {
     allowedTypes = ALLOWED_MIME_TYPES.all,
-    maxSize = MAX_FILE_SIZE,
+    maxSize,
     requireExtensionMatch = true,
   } = options;
 
-  // Validate file size
-  if (!validateFileSize(file.size, maxSize)) {
+  // Determine maxSize: use provided, or no limit for images, or default for others
+  const isImage = file.type.startsWith('image/');
+  const effectiveMaxSize = maxSize !== undefined 
+    ? maxSize 
+    : (isImage ? MAX_FILE_SIZE_IMAGE : MAX_FILE_SIZE);
+
+  // Validate file size (skip if maxSize is undefined/null)
+  if (effectiveMaxSize !== undefined && effectiveMaxSize !== null) {
+    if (!validateFileSize(file.size, effectiveMaxSize)) {
+      return {
+        valid: false,
+        error: `File size exceeds maximum allowed size of ${Math.round(effectiveMaxSize / 1024 / 1024)}MB`,
+      };
+    }
+  } else if (file.size <= 0) {
+    // Still check for empty files even if no size limit
     return {
       valid: false,
-      error: `File size exceeds maximum allowed size of ${Math.round(maxSize / 1024 / 1024)}MB`,
+      error: 'File is empty',
     };
   }
 

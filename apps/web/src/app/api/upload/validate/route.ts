@@ -46,12 +46,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Perform validation
+    // Perform validation - no size limit for images
+    const isImage = type.startsWith('image/');
     const validation = validateFile(
       { name, size, type },
       {
         allowedTypes: ALLOWED_MIME_TYPES.all,
-        maxSize: MAX_FILE_SIZE,
+        maxSize: isImage ? undefined : MAX_FILE_SIZE, // No limit for images
         requireExtensionMatch: true,
       }
     );

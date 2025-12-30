@@ -32,7 +32,8 @@ ALLOWED_ARCHIVE_TYPES = {
 }
 
 # File size limits (in bytes)
-MAX_FILE_SIZE_IMAGE = 5 * 1024 * 1024  # 5 MB
+# Images: No size limit (removed 5MB restriction)
+MAX_FILE_SIZE_IMAGE = None  # No limit for images
 MAX_FILE_SIZE_DOCUMENT = 10 * 1024 * 1024  # 10 MB
 MAX_FILE_SIZE_ARCHIVE = 50 * 1024 * 1024  # 50 MB
 MAX_FILE_SIZE_GENERIC = 10 * 1024 * 1024  # 10 MB default
@@ -40,18 +41,22 @@ MAX_FILE_SIZE_GENERIC = 10 * 1024 * 1024  # 10 MB default
 
 def validate_file_size(
     file: UploadFile,
-    max_size: int = MAX_FILE_SIZE_GENERIC
+    max_size: Optional[int] = MAX_FILE_SIZE_GENERIC
 ) -> Tuple[bool, Optional[str]]:
     """
     Validate file size.
     
     Args:
         file: UploadFile to validate
-        max_size: Maximum allowed size in bytes
+        max_size: Maximum allowed size in bytes (None = no limit)
         
     Returns:
         Tuple of (is_valid, error_message)
     """
+    # If max_size is None, skip size validation (no limit)
+    if max_size is None:
+        return True, None
+    
     if file.size and file.size > max_size:
         max_size_mb = max_size / (1024 * 1024)
         return False, f"File size exceeds maximum allowed size of {max_size_mb:.1f} MB"
@@ -91,18 +96,18 @@ def validate_file_type(
     return True, None
 
 
-def validate_image_file(file: UploadFile, max_size: int = MAX_FILE_SIZE_IMAGE) -> Tuple[bool, Optional[str]]:
+def validate_image_file(file: UploadFile, max_size: Optional[int] = MAX_FILE_SIZE_IMAGE) -> Tuple[bool, Optional[str]]:
     """
     Validate image file (type and size).
     
     Args:
         file: UploadFile to validate
-        max_size: Maximum allowed size in bytes (default: 5 MB)
+        max_size: Maximum allowed size in bytes (default: None = no limit for images)
         
     Returns:
         Tuple of (is_valid, error_message)
     """
-    # Validate size
+    # Validate size (no limit if max_size is None)
     is_valid, error = validate_file_size(file, max_size)
     if not is_valid:
         return False, error
