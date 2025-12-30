@@ -25,14 +25,13 @@ const nextConfig = {
     // Type checking is done in validate-build.js, so we can skip it here for speed
     // But we still want to fail if there are errors (handled by validate-build.js)
     ignoreBuildErrors: false,
-    // Skip lib check for faster builds (already validated in validate-build.js)
-    skipLibCheck: true,
+    // Note: skipLibCheck is not a valid Next.js config option (it's a TypeScript compiler option)
+    // TypeScript lib checking is handled by validate-build.js
   },
   
-  // Skip ESLint during build for faster builds (linting should be done in CI/CD)
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Note: eslint config in next.config.js is deprecated in Next.js 16+
+  // ESLint should be configured via .eslintrc.json or eslint.config.js
+  // For now, we keep it for backward compatibility but it will show a warning
   
   // Performance budgets
   // These limits help prevent bundle size regressions
@@ -65,9 +64,8 @@ const nextConfig = {
     ],
     // Enable faster refresh for better dev experience
     optimizeCss: true,
-    // Disable build traces to speed up finalization phase (~10-30s faster)
-    // Build traces are used for analyzing bundle size but slow down builds
-    buildTraces: false,
+    // Note: buildTraces is not a valid experimental option in Next.js 16+
+    // Build traces are automatically managed by Next.js
     // Enable partial prerendering for better performance
     ppr: false, // Can be enabled when stable
   },
