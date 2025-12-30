@@ -15,7 +15,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useAuthStore } from '@/lib/store';
-import { usersAPI } from '@/lib/api';
+import { usersAPI, apiKeysAPI } from '@/lib/api';
+import type { APIKeyListResponse } from '@/lib/api';
 import { SecuritySettings, APIKeys } from '@/components/settings';
 import { PageHeader, PageContainer, Section } from '@/components/layout';
 import { Loading, Alert, Tabs, TabList, Tab, TabPanels, TabPanel } from '@/components/ui';
@@ -39,16 +40,7 @@ export default function ProfileSecurityPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('security');
-  interface APIKey {
-    id: number | string;
-    name: string;
-    key_prefix: string;
-    created_at: string;
-    last_used_at?: string;
-    [key: string]: unknown;
-  }
-  
-  const [apiKeys, setApiKeys] = useState<APIKey[]>([]);
+  const [apiKeys, setApiKeys] = useState<APIKeyListResponse[]>([]);
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -78,11 +70,11 @@ export default function ProfileSecurityPage() {
 
   const loadAPIKeys = async () => {
     try {
-      // API integration - Add API keys API call when backend endpoint is available
-      // const response = await apiKeysAPI.getMyKeys();
-      // setApiKeys(response.data || []);
+      const keys = await apiKeysAPI.list();
+      setApiKeys(keys);
     } catch (error) {
       logger.error('Failed to load API keys', error instanceof Error ? error : new Error(String(error)));
+      // Don't show error to user, just log it
     }
   };
 
@@ -132,33 +124,49 @@ export default function ProfileSecurityPage() {
 
   const handleCreateAPIKey = async (name: string, scopes: string[]) => {
     try {
-      // API integration - Implement API key creation when backend endpoint is available
-      logger.info('API key creation requested', { name, scopes });
-      // const response = await apiKeysAPI.create({ name, scopes });
-      // return response.data;
-      return {
-        id: `key-${Date.now()}`,
+      // Note: Backend doesn't support scopes yet, but we keep the parameter for future compatibility
+      const response = await apiKeysAPI.create({
         name,
-        // SECURITY: This is a placeholder for UI display only, not a real API key
-        key: 'sk_test_' + 'PLACEHOLDER_KEY_DO_NOT_USE',
-        prefix: 'sk_test_',
-        createdAt: new Date().toISOString(),
-        scopes,
+        description: `API key with scopes: ${scopes.join(', ')}`,
+        rotation_policy: 'manual',
+      });
+      
+      // Reload API keys list
+      await loadAPIKeys();
+      
+      // Convert API response to component format
+      return {
+        id: String(response.id),
+        name: response.name,
+        key: response.key, // This is the plaintext key shown only once
+        prefix: response.key_prefix,
+        createdAt: response.created_at,
+        expiresAt: response.expires_at || undefined,
+        scopes, // Keep scopes for UI display
       };
     } catch (error) {
       logger.error('Failed to create API key', error instanceof Error ? error : new Error(String(error)));
+      const errorMessage = getErrorMessage(error) || t('errors.createFailed') || 'Failed to create API key. Please try again.';
+      setError(errorMessage);
       throw error;
     }
   };
 
   const handleDeleteAPIKey = async (id: string) => {
     try {
-      // API integration - Implement API key deletion when backend endpoint is available
-      logger.info('API key deletion requested', { id });
-      // await apiKeysAPI.delete(id);
-      setApiKeys((prev) => prev.filter((key) => key.id !== id));
+      const keyId = parseInt(id, 10);
+      if (isNaN(keyId)) {
+        throw new Error('Invalid API key ID');
+      }
+      
+      await apiKeysAPI.revoke(keyId);
+      
+      // Reload API keys list
+      await loadAPIKeys();
     } catch (error) {
       logger.error('Failed to delete API key', error instanceof Error ? error : new Error(String(error)));
+      const errorMessage = getErrorMessage(error) || t('errors.deleteFailed') || 'Failed to delete API key. Please try again.';
+      setError(errorMessage);
       throw error;
     }
   };
@@ -242,12 +250,12 @@ export default function ProfileSecurityPage() {
                     apiKeys={apiKeys.map((key) => ({
                       id: String(key.id),
                       name: key.name,
-                      key: (key as { key?: string }).key || '',
+                      key: '', // API keys are never shown in list view for security
                       prefix: key.key_prefix,
-                      lastUsed: key.last_used_at,
+                      lastUsed: key.last_used_at || undefined,
                       createdAt: key.created_at,
-                      expiresAt: (key as { expires_at?: string }).expires_at,
-                      scopes: (key as { scopes?: string[] }).scopes || [],
+                      expiresAt: key.expires_at || undefined,
+                      scopes: [], // Backend doesn't support scopes yet
                     }))}
                     onCreate={handleCreateAPIKey}
                     onDelete={handleDeleteAPIKey}

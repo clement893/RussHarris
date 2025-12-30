@@ -68,3 +68,7 @@ export { apiClient as client } from './client';
 
 // Re-export theme errors utilities
 export * from './theme-errors';
+
+// Re-export API keys API
+export { apiKeysAPI } from './apiKeys';
+export type { APIKeyCreate, APIKeyResponse, APIKeyListResponse, APIKeyRotateResponse, AdminAPIKeyListResponse } from './apiKeys';

@@ -16,6 +16,9 @@ from app.models.user import User
 from app.models.api_key import APIKey
 from app.api.v1.endpoints.auth import get_current_user
 from app.services.api_key_service import APIKeyService, APIKeyRotationPolicy
+from app.dependencies import require_admin_or_superadmin
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 router = APIRouter()
 
@@ -54,6 +57,23 @@ class APIKeyListResponse(BaseModel):
     rotation_count: int
     usage_count: int
     is_active: bool
+
+
+class AdminAPIKeyListResponse(BaseModel):
+    id: int
+    name: str
+    key_prefix: str
+    created_at: str
+    expires_at: Optional[str] = None
+    last_used_at: Optional[str] = None
+    rotation_policy: str
+    next_rotation_at: Optional[str] = None
+    rotation_count: int
+    usage_count: int
+    is_active: bool
+    user_id: int
+    user_email: str
+    user_name: Optional[str] = None
 
 
 class APIKeyRotateResponse(BaseModel):
@@ -240,4 +260,53 @@ async def revoke_api_key(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e)
         )
+
+
+@router.get("/admin/list", response_model=List[AdminAPIKeyListResponse])
+@rate_limit_decorator("20/minute")
+async def admin_list_all_api_keys(
+    request: Request,
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+    _: None = Depends(require_admin_or_superadmin),
+    include_inactive: bool = False,
+    user_id: Optional[int] = None,
+):
+    """List all API keys (admin only). Can filter by user_id."""
+    # Build query
+    query = select(APIKey)
+    
+    if user_id:
+        query = query.where(APIKey.user_id == user_id)
+    
+    if not include_inactive:
+        query = query.where(APIKey.is_active == True)
+    
+    query = query.order_by(APIKey.created_at.desc())
+    
+    # Load user relationship
+    query = query.options(selectinload(APIKey.user))
+    
+    result = await db.execute(query)
+    api_keys = result.scalars().all()
+    
+    return [
+        AdminAPIKeyListResponse(
+            id=key.id,
+            name=key.name,
+            key_prefix=key.key_prefix,
+            created_at=key.created_at.isoformat(),
+            expires_at=key.expires_at.isoformat() if key.expires_at else None,
+            last_used_at=key.last_used_at.isoformat() if key.last_used_at else None,
+            rotation_policy=key.rotation_policy,
+            next_rotation_at=key.next_rotation_at.isoformat() if key.next_rotation_at else None,
+            rotation_count=key.rotation_count,
+            usage_count=key.usage_count,
+            is_active=key.is_active,
+            user_id=key.user_id,
+            user_email=key.user.email if key.user else "Unknown",
+            user_name=f"{key.user.first_name or ''} {key.user.last_name or ''}".strip() if key.user else None,
+        )
+        for key in api_keys
+    ]
 

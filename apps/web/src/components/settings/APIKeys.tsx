@@ -57,6 +57,10 @@ export default function APIKeys({
   const [loading, setLoading] = useState(false);
 
   const maskKey = (key: string, prefix: string) => {
+    if (!key || key.length === 0) {
+      // If key is not available (normal for API keys - only shown once on creation)
+      return `${prefix}${'•'.repeat(20)}`;
+    }
     return `${prefix}${'•'.repeat(20)}${key.slice(-4)}`;
   };
 
@@ -162,25 +166,34 @@ export default function APIKeys({
                     </div>
                     <div className="flex items-center gap-2 mb-2">
                       <code className="text-sm font-mono bg-background px-2 py-1 rounded border border-border text-foreground">
-                        {visibleKeys.has(key.id) ? key.key : maskKey(key.key, key.prefix)}
+                        {key.key && visibleKeys.has(key.id) ? key.key : maskKey(key.key || '', key.prefix)}
                       </code>
-                      <button
-                        onClick={() => toggleKeyVisibility(key.id)}
-                        className="p-1 text-muted-foreground hover:text-foreground"
-                      >
-                        {visibleKeys.has(key.id) ? (
-                          <EyeOff className="w-4 h-4" />
-                        ) : (
-                          <Eye className="w-4 h-4" />
-                        )}
-                      </button>
-                      <button
-                        onClick={() => copyToClipboard(key.key)}
-                        className="p-1 text-muted-foreground hover:text-primary-600 dark:hover:text-primary-400"
-                        title="Copy to clipboard"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </button>
+                      {key.key && (
+                        <>
+                          <button
+                            onClick={() => toggleKeyVisibility(key.id)}
+                            className="p-1 text-muted-foreground hover:text-foreground"
+                          >
+                            {visibleKeys.has(key.id) ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
+                          </button>
+                          <button
+                            onClick={() => copyToClipboard(key.key)}
+                            className="p-1 text-muted-foreground hover:text-primary-600 dark:hover:text-primary-400"
+                            title="Copy to clipboard"
+                          >
+                            <Copy className="w-4 h-4" />
+                          </button>
+                        </>
+                      )}
+                      {!key.key && (
+                        <span className="text-xs text-muted-foreground">
+                          Key is hidden for security (only shown once on creation)
+                        </span>
+                      )}
                     </div>
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <div className="flex items-center gap-1">

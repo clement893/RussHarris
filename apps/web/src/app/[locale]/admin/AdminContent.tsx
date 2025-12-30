@@ -125,6 +125,17 @@ export default function AdminContent() {
           </Link>
         </Card>
 
+        <Card title="Clés API" className="flex flex-col">
+          <p className="text-muted-foreground mb-4">
+            Consulter et gérer toutes les clés API du système.
+          </p>
+          <Link href="/admin/api-keys">
+            <Button variant="primary" className="w-full">
+              Gérer les clés API
+            </Button>
+          </Link>
+        </Card>
+
       </div>
 
       {/* Service Tests Section */}
