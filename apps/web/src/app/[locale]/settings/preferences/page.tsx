@@ -2,7 +2,7 @@
  * Preferences Settings Page
  * 
  * Page for managing user preferences and personalization.
- * Uses existing PreferencesManager component.
+ * Connected to the database via the preferences API.
  */
 
 'use client';
@@ -51,7 +51,7 @@ export default function PreferencesSettingsPage() {
       <PageContainer>
         <PageHeader
           title={t('title') || 'Preferences Settings'}
-          description={t('description') || 'Manage your user preferences and personalization'}
+          description={t('description') || 'Manage your user preferences and personalization settings'}
           breadcrumbs={[
             { label: t('breadcrumbs.dashboard') || 'Dashboard', href: '/dashboard' },
             { label: t('breadcrumbs.settings') || 'Settings', href: '/settings' },
@@ -66,5 +66,3 @@ export default function PreferencesSettingsPage() {
     </ProtectedRoute>
   );
 }
-
-
