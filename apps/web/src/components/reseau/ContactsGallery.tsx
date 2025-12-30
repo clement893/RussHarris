@@ -1,18 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import { Card } from '@/components/ui';
 import { User } from 'lucide-react';
-
-interface Contact {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email?: string | null;
-  phone?: string | null;
-  photo_url?: string | null;
-  company_name?: string | null;
-}
+import type { Contact } from '@/lib/api/reseau-contacts';
 
 interface ContactsGalleryProps {
   contacts?: Contact[];
