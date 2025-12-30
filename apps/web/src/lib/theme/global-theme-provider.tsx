@@ -490,35 +490,45 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
     }
     
     // Apply CSS effects (comprehensive support for all effect types)
-    const effects = configToApply.effects;
+    const effects = configToApply.effects as Record<string, unknown> | undefined;
     if (effects) {
       // Glassmorphism - Support both old format (glassmorphism.enabled) and new format (glassmorphism.card, etc.)
-      if (effects.glassmorphism) {
+      const glassmorphism = effects.glassmorphism as {
+        card?: { background?: string; backdropBlur?: string; border?: string };
+        panel?: { background?: string; backdropBlur?: string; border?: string };
+        overlay?: { background?: string; backdropBlur?: string };
+        enabled?: boolean;
+        blur?: string;
+        saturation?: string;
+        opacity?: number;
+        borderOpacity?: number;
+      } | undefined;
+      if (glassmorphism) {
         // New format: glassmorphism.card, glassmorphism.panel, etc.
-        if (effects.glassmorphism.card) {
-          const card = effects.glassmorphism.card;
+        if (glassmorphism.card) {
+          const card = glassmorphism.card;
           if (card.background) root.style.setProperty('--glassmorphism-card-background', card.background);
           if (card.backdropBlur) root.style.setProperty('--glassmorphism-card-backdrop-blur', card.backdropBlur);
           if (card.border) root.style.setProperty('--glassmorphism-card-border', card.border);
         }
-        if (effects.glassmorphism.panel) {
-          const panel = effects.glassmorphism.panel;
+        if (glassmorphism.panel) {
+          const panel = glassmorphism.panel;
           if (panel.background) root.style.setProperty('--glassmorphism-panel-background', panel.background);
           if (panel.backdropBlur) root.style.setProperty('--glassmorphism-panel-backdrop-blur', panel.backdropBlur);
           if (panel.border) root.style.setProperty('--glassmorphism-panel-border', panel.border);
         }
-        if (effects.glassmorphism.overlay) {
-          const overlay = effects.glassmorphism.overlay;
+        if (glassmorphism.overlay) {
+          const overlay = glassmorphism.overlay;
           if (overlay.background) root.style.setProperty('--glassmorphism-overlay-background', overlay.background);
           if (overlay.backdropBlur) root.style.setProperty('--glassmorphism-overlay-backdrop-blur', overlay.backdropBlur);
         }
         
         // Old format: glassmorphism.enabled (for backward compatibility)
-        if (effects.glassmorphism.enabled) {
-          const blur = effects.glassmorphism.blur || '20px';
-          const saturation = effects.glassmorphism.saturation || '180%';
-          const opacity = effects.glassmorphism.opacity || 0.15;
-          const borderOpacity = effects.glassmorphism.borderOpacity || 0.3;
+        if (glassmorphism.enabled) {
+          const blur = glassmorphism.blur || '20px';
+          const saturation = glassmorphism.saturation || '180%';
+          const opacity = glassmorphism.opacity || 0.15;
+          const borderOpacity = glassmorphism.borderOpacity || 0.3;
           
           // Set backdrop filter
           root.style.setProperty('--glassmorphism-backdrop', `blur(${blur}) saturate(${saturation})`);
@@ -552,13 +562,14 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
       }
       
       // Shadows
-      if (effects.shadows) {
-        if (effects.shadows.sm) root.style.setProperty('--shadow-sm', effects.shadows.sm);
-        if (effects.shadows.md) root.style.setProperty('--shadow-md', effects.shadows.md);
-        if (effects.shadows.lg) root.style.setProperty('--shadow-lg', effects.shadows.lg);
-        if (effects.shadows.xl) root.style.setProperty('--shadow-xl', effects.shadows.xl);
+      const shadows = effects.shadows as Record<string, string> | undefined;
+      if (shadows) {
+        if (shadows.sm) root.style.setProperty('--shadow-sm', shadows.sm);
+        if (shadows.md) root.style.setProperty('--shadow-md', shadows.md);
+        if (shadows.lg) root.style.setProperty('--shadow-lg', shadows.lg);
+        if (shadows.xl) root.style.setProperty('--shadow-xl', shadows.xl);
         // Support for any other shadow properties
-        Object.entries(effects.shadows).forEach(([key, value]) => {
+        Object.entries(shadows).forEach(([key, value]) => {
           if (!['sm', 'md', 'lg', 'xl'].includes(key) && typeof value === 'string') {
             root.style.setProperty(`--shadow-${key}`, value);
           }
@@ -566,13 +577,19 @@ export function GlobalThemeProvider({ children }: GlobalThemeProviderProps) {
       }
       
       // Gradients
-      if (effects.gradients) {
-        if (effects.gradients.enabled) {
-          root.style.setProperty('--gradient-direction', effects.gradients.direction || 'to-br');
-          root.style.setProperty('--gradient-intensity', String(effects.gradients.intensity || 0.3));
+      const gradients = effects.gradients as {
+        enabled?: boolean;
+        direction?: string;
+        intensity?: number;
+        [key: string]: unknown;
+      } | undefined;
+      if (gradients) {
+        if (gradients.enabled) {
+          root.style.setProperty('--gradient-direction', gradients.direction || 'to-br');
+          root.style.setProperty('--gradient-intensity', String(gradients.intensity || 0.3));
         }
         // Support for gradient colors, stops, etc.
-        Object.entries(effects.gradients).forEach(([key, value]) => {
+        Object.entries(gradients).forEach(([key, value]) => {
           if (!['enabled', 'direction', 'intensity'].includes(key) && typeof value === 'string') {
             root.style.setProperty(`--gradient-${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`, value);
           }
