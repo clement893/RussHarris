@@ -54,7 +54,7 @@ export interface AdminAPIKeyListResponse extends APIKeyListResponse {
 /**
  * API Keys API client
  */
-export const apiKeysAPI = {
+const apiKeysAPI = {
   /**
    * Generate a new API key
    */
@@ -125,3 +125,6 @@ export const apiKeysAPI = {
     return [];
   },
 };
+
+export default apiKeysAPI;
+export { apiKeysAPI };
