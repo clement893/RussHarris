@@ -222,37 +222,37 @@ export function applyThemeConfigDirectly(config: ThemeConfig, options?: {
   // Apply base colors (always apply if bypassDarkModeProtection is true, otherwise only if in modeConfig)
   if (originalBaseColorsConfig.background || colorsConfig.background) {
     const bgColor = originalBaseColorsConfig.background || colorsConfig.background;
-    root.style.setProperty('--color-background', bgColor);
+    root.style.setProperty('--color-background', bgColor ?? null);
     appliedColors.push(`background: ${bgColor}`);
   }
   if (originalBaseColorsConfig.foreground || colorsConfig.foreground) {
     const fgColor = originalBaseColorsConfig.foreground || colorsConfig.foreground;
-    root.style.setProperty('--color-foreground', fgColor);
+    root.style.setProperty('--color-foreground', fgColor ?? null);
     appliedColors.push(`foreground: ${fgColor}`);
   }
   if (originalBaseColorsConfig.muted || colorsConfig.muted) {
     const mutedColor = originalBaseColorsConfig.muted || colorsConfig.muted;
-    root.style.setProperty('--color-muted', mutedColor);
+    root.style.setProperty('--color-muted', mutedColor ?? null);
     appliedColors.push(`muted: ${mutedColor}`);
   }
   if (originalBaseColorsConfig.mutedForeground || colorsConfig.mutedForeground) {
     const mutedFgColor = originalBaseColorsConfig.mutedForeground || colorsConfig.mutedForeground;
-    root.style.setProperty('--color-muted-foreground', mutedFgColor);
+    root.style.setProperty('--color-muted-foreground', mutedFgColor ?? null);
     appliedColors.push(`mutedForeground: ${mutedFgColor}`);
   }
   if (originalBaseColorsConfig.border || colorsConfig.border) {
     const borderColor = originalBaseColorsConfig.border || colorsConfig.border;
-    root.style.setProperty('--color-border', borderColor);
+    root.style.setProperty('--color-border', borderColor ?? null);
     appliedColors.push(`border: ${borderColor}`);
   }
   if (originalBaseColorsConfig.input || colorsConfig.input) {
     const inputColor = originalBaseColorsConfig.input || colorsConfig.input;
-    root.style.setProperty('--color-input', inputColor);
+    root.style.setProperty('--color-input', inputColor ?? null);
     appliedColors.push(`input: ${inputColor}`);
   }
   if (originalBaseColorsConfig.ring || colorsConfig.ring) {
     const ringColor = originalBaseColorsConfig.ring || colorsConfig.ring;
-    root.style.setProperty('--color-ring', ringColor);
+    root.style.setProperty('--color-ring', ringColor ?? null);
     appliedColors.push(`ring: ${ringColor}`);
   }
   
