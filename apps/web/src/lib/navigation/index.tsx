@@ -20,7 +20,8 @@ import {
   Sliders, 
   FileCheck, 
   Palette, 
-  Cog
+  Cog,
+  Network
 } from 'lucide-react';
 
 export interface NavigationItem {
@@ -102,6 +103,12 @@ export function getNavigationConfig(isAdmin: boolean): NavigationConfig {
         ],
         collapsible: true,
         defaultOpen: false,
+      },
+      // Réseau (non-grouped)
+      {
+        name: 'Réseau',
+        href: '/dashboard/reseau',
+        icon: <Network className="w-5 h-5" />,
       },
       // Paramètres (collapsible group)
       {
