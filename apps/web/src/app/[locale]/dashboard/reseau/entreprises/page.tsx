@@ -87,16 +87,8 @@ function CompaniesContent() {
   
   // Derived state from React Query
   const loading = isLoading;
-  const loadingMore = isFetchingNextPage;
-  const hasMore = hasNextPage ?? false;
   const error = queryError ? handleApiError(queryError).message : null;
 
-  // Load more companies for infinite scroll
-  const loadMore = useCallback(() => {
-    if (!loadingMore && hasMore) {
-      fetchNextPage();
-    }
-  }, [loadingMore, hasMore, fetchNextPage]);
 
   // Extract unique values for dropdowns
   const uniqueValues = useMemo(() => {
