@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { Button, Input, Textarea } from '@/components/ui';
+import { Button, Input } from '@/components/ui';
 import { type Contact, type ContactCreate, type ContactUpdate } from '@/lib/api/reseau-contacts';
 
 export interface ContactFormProps {
