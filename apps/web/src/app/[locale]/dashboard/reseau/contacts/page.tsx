@@ -534,7 +534,6 @@ function ContactsContent() {
               }
             }}
             onClearAll={clearAllFilters}
-            companies={companies}
           />
           
           {/* Top row: Filters, View toggle, Actions */}
