@@ -399,8 +399,7 @@ export default function MediaLibrary({
             accept="image/*,video/*,audio/*,application/pdf"
             multiple
             onFileSelect={handleUpload}
-            maxSize={50}
-            helperText="Maximum file size: 50MB. Supported: Images, Videos, Audio, PDF"
+            helperText="Supported: Images (no size limit), Videos, Audio, PDF (max 50MB)"
           />
           {isUploading && (
             <Alert variant="info">
