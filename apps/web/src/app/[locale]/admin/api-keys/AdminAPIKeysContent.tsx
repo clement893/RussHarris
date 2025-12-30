@@ -15,7 +15,7 @@ import { PageHeader, PageContainer, Section } from '@/components/layout';
 import { apiKeysAPI } from '@/lib/api';
 import type { AdminAPIKeyListResponse } from '@/lib/api';
 import { logger } from '@/lib/logger';
-import { Key, Search, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Key, Search, Trash2 } from 'lucide-react';
 
 export default function AdminAPIKeysContent() {
   const [apiKeys, setApiKeys] = useState<AdminAPIKeyListResponse[]>([]);
