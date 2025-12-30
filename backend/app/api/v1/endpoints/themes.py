@@ -5,7 +5,7 @@ from typing import List
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, text
+from sqlalchemy import select, text, func
 from pydantic import BaseModel, Field
 import json
 from app.schemas.theme import (
@@ -209,24 +209,28 @@ async def list_themes(
         # Ignore errors - migration should handle this, but we try anyway
         await db.rollback()
     
-    # Get ALL themes from database, excluding only "default" theme
-    # Simple query: return everything except id=0, name='default', display_name='Default Theme'
+    # Optimized: Get total count first (without loading all objects)
+    from sqlalchemy import func
+    count_result = await db.execute(
+        select(func.count()).select_from(Theme).where(
+            (Theme.id != 0) & 
+            (Theme.name != 'default') &
+            (Theme.display_name != 'Default Theme')
+        )
+    )
+    total_count = count_result.scalar_one() or 0
+    
+    # Get paginated themes from database (optimized: pagination at SQL level)
     all_themes_result = await db.execute(
         select(Theme).where(
             (Theme.id != 0) & 
             (Theme.name != 'default') &
             (Theme.display_name != 'Default Theme')
         ).order_by(Theme.id)
+        .offset(skip)
+        .limit(limit)
     )
-    all_themes = all_themes_result.scalars().all()
-    
-    # Simply return all themes found (no complex pagination logic)
-    # TemplateTheme will be included if it exists and matches the filter
-    themes_list = list(all_themes)
-    
-    # Apply simple pagination
-    total_count = len(themes_list)
-    themes_list = themes_list[skip:skip+limit]
+    themes_list = list(all_themes_result.scalars().all())
     
     # Get active theme
     active_result = await db.execute(select(Theme).where(Theme.is_active == True))

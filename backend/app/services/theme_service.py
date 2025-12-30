@@ -121,14 +121,12 @@ class ThemeService:
     @staticmethod
     def deactivate_all_themes(db: Session, exclude_id: Optional[int] = None) -> None:
         """Deactivate all themes, optionally excluding one."""
-        query = db.query(Theme).filter(Theme.is_active == True)
+        # Optimized: Use bulk update instead of loading all objects
+        update_stmt = update(Theme).where(Theme.is_active == True).values(is_active=False)
         if exclude_id:
-            query = query.filter(Theme.id != exclude_id)
+            update_stmt = update_stmt.where(Theme.id != exclude_id)
         
-        themes = query.all()
-        for theme in themes:
-            theme.is_active = False
-        
+        db.execute(update_stmt)
         db.commit()
 
 
