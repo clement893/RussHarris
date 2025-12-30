@@ -1,0 +1,3922 @@
+{
+  "score": 44,
+  "grade": "F",
+  "stats": {
+    "totalFiles": 1428,
+    "totalLines": 213102,
+    "consoleLogs": 223,
+    "todos": 133,
+    "anyTypes": 10,
+    "duplicateCode": [],
+    "largeFiles": [
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\organizations\\AdminOrganizationsContent.tsx",
+        "lines": 752
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\statistics\\AdminStatisticsContent.tsx",
+        "lines": 833
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\ComponentsContent.tsx",
+        "lines": 568
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\settings\\organization\\page.tsx",
+        "lines": 571
+      },
+      {
+        "file": "apps\\web\\src\\components\\admin\\TeamManagement.tsx",
+        "lines": 634
+      },
+      {
+        "file": "apps\\web\\src\\components\\surveys\\SurveyBuilder.tsx",
+        "lines": 887
+      },
+      {
+        "file": "apps\\web\\src\\components\\surveys\\SurveyResults.tsx",
+        "lines": 652
+      },
+      {
+        "file": "apps\\web\\src\\components\\surveys\\SurveyTaker.tsx",
+        "lines": 626
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\MultiSelect.test.tsx",
+        "lines": 546
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\ServiceTestCard.test.tsx",
+        "lines": 503
+      },
+      {
+        "file": "apps\\web\\src\\config\\sitemap.ts",
+        "lines": 607
+      },
+      {
+        "file": "apps\\web\\src\\hooks\\forms\\__tests__\\useForm.test.ts",
+        "lines": 508
+      },
+      {
+        "file": "apps\\web\\src\\lib\\api.ts",
+        "lines": 860
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\apply-theme-config.ts",
+        "lines": 555
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\global-theme-provider.tsx",
+        "lines": 742
+      },
+      {
+        "file": "backend\\app\\api\\v1\\endpoints\\admin.py",
+        "lines": 1034
+      },
+      {
+        "file": "backend\\app\\api\\v1\\endpoints\\api_connection_check.py",
+        "lines": 630
+      },
+      {
+        "file": "backend\\app\\api\\v1\\endpoints\\auth.py",
+        "lines": 1027
+      },
+      {
+        "file": "backend\\app\\api\\v1\\endpoints\\forms.py",
+        "lines": 560
+      },
+      {
+        "file": "backend\\app\\api\\v1\\endpoints\\posts.py",
+        "lines": 539
+      },
+      {
+        "file": "backend\\app\\api\\v1\\endpoints\\rbac.py",
+        "lines": 832
+      },
+      {
+        "file": "backend\\app\\api\\v1\\endpoints\\themes.py",
+        "lines": 528
+      },
+      {
+        "file": "backend\\app\\api\\webhooks\\stripe.py",
+        "lines": 648
+      },
+      {
+        "file": "backend\\app\\core\\theme_validation.py",
+        "lines": 530
+      },
+      {
+        "file": "backend\\app\\services\\email_templates.py",
+        "lines": 523
+      }
+    ],
+    "complexFunctions": [
+      {
+        "file": "apps\\web\\src\\app\\admin\\invitations\\page.tsx",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\app\\admin\\rbac\\page.tsx",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\app\\admin\\teams\\page.tsx",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\app\\admin\\users\\AdminUsersContent.tsx",
+        "complexity": 19
+      },
+      {
+        "file": "apps\\web\\src\\app\\api\\themes\\route.ts",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\app\\app.tsx",
+        "complexity": 33
+      },
+      {
+        "file": "apps\\web\\src\\app\\auth\\callback\\page.tsx",
+        "complexity": 31
+      },
+      {
+        "file": "apps\\web\\src\\app\\auth\\register\\page.tsx",
+        "complexity": 55
+      },
+      {
+        "file": "apps\\web\\src\\app\\components\\ComponentsContent.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\app\\components\\forms\\FormsContent.tsx",
+        "complexity": 65
+      },
+      {
+        "file": "apps\\web\\src\\app\\components\\notifications\\NotificationComponentsContent.tsx",
+        "complexity": 46
+      },
+      {
+        "file": "apps\\web\\src\\app\\dashboard\\become-superadmin\\page.tsx",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\app\\dashboard\\projects\\page.tsx",
+        "complexity": 36
+      },
+      {
+        "file": "apps\\web\\src\\app\\db\\test\\page.tsx",
+        "complexity": 33
+      },
+      {
+        "file": "apps\\web\\src\\app\\docs\\page.tsx",
+        "complexity": 16
+      },
+      {
+        "file": "apps\\web\\src\\app\\examples\\onboarding\\page.tsx",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\app\\examples\\settings\\page.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\app\\subscriptions\\page.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\app\\upload\\page.tsx",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\AdminContent.tsx",
+        "complexity": 20
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\api-keys\\AdminAPIKeysContent.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\invitations\\page.tsx",
+        "complexity": 37
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\media\\AdminMediaContent.tsx",
+        "complexity": 23
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\organizations\\AdminOrganizationsContent.tsx",
+        "complexity": 114
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\rbac\\page.tsx",
+        "complexity": 39
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\settings\\AdminSettingsContent.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\statistics\\AdminStatisticsContent.tsx",
+        "complexity": 121
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\teams\\page.tsx",
+        "complexity": 42
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\tenancy\\TenancyContent.tsx",
+        "complexity": 25
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\builder\\components\\ThemeVisualEditor.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\JSONEditor.tsx",
+        "complexity": 64
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeActions.tsx",
+        "complexity": 19
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeEditor.tsx",
+        "complexity": 69
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeForm.tsx",
+        "complexity": 68
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeList.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemePreview.tsx",
+        "complexity": 45
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\page.tsx",
+        "complexity": 19
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\users\\AdminUsersContent.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin-logs\\testing\\AdminLogsContent.tsx",
+        "complexity": 31
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\ai\\testing\\page.tsx",
+        "complexity": 23
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\components\\OverviewSection.tsx",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\hooks\\useEndpointTests.ts",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\hooks\\useTemplateHealth.ts",
+        "complexity": 34
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\page.tsx",
+        "complexity": 16
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\services\\endpointTester.ts",
+        "complexity": 71
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\services\\healthChecker.ts",
+        "complexity": 73
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\services\\reportGenerator.ts",
+        "complexity": 27
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\auth\\callback\\page.tsx",
+        "complexity": 30
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\auth\\google\\testing\\page.tsx",
+        "complexity": 37
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\auth\\login\\page.tsx",
+        "complexity": 33
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\auth\\register\\page.tsx",
+        "complexity": 55
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\check-my-superadmin-status\\page.tsx",
+        "complexity": 46
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\auth\\AuthComponentsContent.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\ComponentsContent.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\data\\DataContent.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\feedback\\FeedbackContent.tsx",
+        "complexity": 20
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\forms\\FormsContent.tsx",
+        "complexity": 67
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\notifications\\NotificationComponentsContent.tsx",
+        "complexity": 46
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\theme\\ThemeContent.tsx",
+        "complexity": 16
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\content\\categories\\page.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\content\\media\\page.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\content\\posts\\page.tsx",
+        "complexity": 30
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\content\\posts\\[id]\\edit\\page.tsx",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\content\\schedule\\page.tsx",
+        "complexity": 25
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\content\\templates\\page.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\dashboard\\activity\\page.tsx",
+        "complexity": 25
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\dashboard\\become-superadmin\\page.tsx",
+        "complexity": 38
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\dashboard\\page.tsx",
+        "complexity": 43
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\dashboard\\projects\\page.tsx",
+        "complexity": 39
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\dashboard\\reports\\page.tsx",
+        "complexity": 39
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\db\\test\\page.tsx",
+        "complexity": 44
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\docs\\page.tsx",
+        "complexity": 56
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\email\\testing\\page.tsx",
+        "complexity": 34
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\api-fetching\\page.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\auth\\page.tsx",
+        "complexity": 39
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\crud\\page.tsx",
+        "complexity": 48
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\dashboard\\page.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\file-upload\\page.tsx",
+        "complexity": 36
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\modal\\page.tsx",
+        "complexity": 29
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\onboarding\\page.tsx",
+        "complexity": 38
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\search\\page.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\settings\\page.tsx",
+        "complexity": 36
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\toast\\page.tsx",
+        "complexity": 38
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\forms\\page.tsx",
+        "complexity": 31
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\forms\\[id]\\submissions\\page.tsx",
+        "complexity": 37
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\layout.tsx",
+        "complexity": 30
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\page.tsx",
+        "complexity": 30
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\profile\\activity\\page.tsx",
+        "complexity": 22
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\profile\\notifications\\page.tsx",
+        "complexity": 52
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\profile\\page.tsx",
+        "complexity": 64
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\profile\\security\\page.tsx",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\profile\\settings\\page.tsx",
+        "complexity": 29
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\sentry\\testing\\page.tsx",
+        "complexity": 32
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\settings\\general\\page.tsx",
+        "complexity": 22
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\settings\\logs\\page.tsx",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\settings\\notifications\\page.tsx",
+        "complexity": 33
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\settings\\organization\\page.tsx",
+        "complexity": 107
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\sitemap\\page.tsx",
+        "complexity": 31
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\stripe\\testing\\page.tsx",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\subscriptions\\page.tsx",
+        "complexity": 27
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\subscriptions\\success\\page.tsx",
+        "complexity": 22
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\surveys\\page.tsx",
+        "complexity": 22
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\surveys\\[id]\\results\\page.tsx",
+        "complexity": 20
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\test\\admin-logs\\AdminLogsContent.tsx",
+        "complexity": 31
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\components\\OverviewSection.tsx",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\hooks\\useEndpointTests.ts",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\hooks\\useTemplateHealth.ts",
+        "complexity": 34
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\page.tsx",
+        "complexity": 16
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\services\\endpointTester.ts",
+        "complexity": 71
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\services\\healthChecker.ts",
+        "complexity": 73
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\services\\reportGenerator.ts",
+        "complexity": 27
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\test-sentry\\page.tsx",
+        "complexity": 16
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\upload\\page.tsx",
+        "complexity": 46
+      },
+      {
+        "file": "apps\\web\\src\\components\\activity\\ActivityFeed.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\components\\activity\\ActivityLog.tsx",
+        "complexity": 19
+      },
+      {
+        "file": "apps\\web\\src\\components\\activity\\ActivityTimeline.tsx",
+        "complexity": 60
+      },
+      {
+        "file": "apps\\web\\src\\components\\activity\\AuditTrail.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\components\\activity\\EventHistory.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\components\\admin\\RoleDefaultPermissionsEditor.tsx",
+        "complexity": 39
+      },
+      {
+        "file": "apps\\web\\src\\components\\admin\\RoleForm.tsx",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\components\\admin\\RolePermissionsEditor.tsx",
+        "complexity": 27
+      },
+      {
+        "file": "apps\\web\\src\\components\\admin\\TeamManagement.tsx",
+        "complexity": 62
+      },
+      {
+        "file": "apps\\web\\src\\components\\admin\\UserPermissionsEditor.tsx",
+        "complexity": 20
+      },
+      {
+        "file": "apps\\web\\src\\components\\admin\\UserRolesEditor.tsx",
+        "complexity": 19
+      },
+      {
+        "file": "apps\\web\\src\\components\\advanced\\FileManager.tsx",
+        "complexity": 31
+      },
+      {
+        "file": "apps\\web\\src\\components\\ai\\AIChat.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\components\\ai\\TemplateAIChat.tsx",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\components\\analytics\\AnalyticsDashboard.tsx",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\components\\analytics\\DataExport.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\components\\analytics\\ReportBuilder.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\components\\audit-trail\\AuditTrailViewer.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\components\\auth\\AuthInitializer.tsx",
+        "complexity": 56
+      },
+      {
+        "file": "apps\\web\\src\\components\\auth\\MFA.tsx",
+        "complexity": 48
+      },
+      {
+        "file": "apps\\web\\src\\components\\auth\\ProtectedRoute.tsx",
+        "complexity": 56
+      },
+      {
+        "file": "apps\\web\\src\\components\\auth\\ProtectedSuperAdminRoute.tsx",
+        "complexity": 30
+      },
+      {
+        "file": "apps\\web\\src\\components\\backups\\BackupManager.tsx",
+        "complexity": 20
+      },
+      {
+        "file": "apps\\web\\src\\components\\billing\\BillingSettings.tsx",
+        "complexity": 44
+      },
+      {
+        "file": "apps\\web\\src\\components\\billing\\InvoiceViewer.tsx",
+        "complexity": 19
+      },
+      {
+        "file": "apps\\web\\src\\components\\billing\\PaymentMethodForm.tsx",
+        "complexity": 42
+      },
+      {
+        "file": "apps\\web\\src\\components\\cms\\CMSFormBuilder.tsx",
+        "complexity": 40
+      },
+      {
+        "file": "apps\\web\\src\\components\\cms\\FormSubmissions.tsx",
+        "complexity": 16
+      },
+      {
+        "file": "apps\\web\\src\\components\\cms\\SEOManager.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\components\\collaboration\\Comments.tsx",
+        "complexity": 40
+      },
+      {
+        "file": "apps\\web\\src\\components\\collaboration\\CommentThread.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\components\\collaboration\\Mentions.tsx",
+        "complexity": 31
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\CategoriesManager.tsx",
+        "complexity": 72
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\MediaLibrary.tsx",
+        "complexity": 49
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\PagesManager.tsx",
+        "complexity": 55
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\PostsManager.tsx",
+        "complexity": 70
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\ScheduledContentManager.tsx",
+        "complexity": 67
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\TagsManager.tsx",
+        "complexity": 54
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\TemplatesManager.tsx",
+        "complexity": 75
+      },
+      {
+        "file": "apps\\web\\src\\components\\data\\DataImporter.tsx",
+        "complexity": 20
+      },
+      {
+        "file": "apps\\web\\src\\components\\email-templates\\EmailTemplateManager.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\components\\errors\\ErrorDisplay.tsx",
+        "complexity": 36
+      },
+      {
+        "file": "apps\\web\\src\\components\\errors\\ErrorReporting.tsx",
+        "complexity": 54
+      },
+      {
+        "file": "apps\\web\\src\\components\\help\\ContactSupport.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\components\\integrations\\APIDocumentation.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\components\\integrations\\IntegrationConfig.tsx",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\components\\integrations\\WebhookManager.tsx",
+        "complexity": 38
+      },
+      {
+        "file": "apps\\web\\src\\components\\layout\\Sidebar.tsx",
+        "complexity": 33
+      },
+      {
+        "file": "apps\\web\\src\\components\\marketing\\LeadCaptureForm.tsx",
+        "complexity": 38
+      },
+      {
+        "file": "apps\\web\\src\\components\\marketing\\NewsletterSignup.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\components\\monitoring\\SystemPerformanceDashboard.tsx",
+        "complexity": 40
+      },
+      {
+        "file": "apps\\web\\src\\components\\notifications\\NotificationBell.tsx",
+        "complexity": 43
+      },
+      {
+        "file": "apps\\web\\src\\components\\notifications\\NotificationCenter.tsx",
+        "complexity": 89
+      },
+      {
+        "file": "apps\\web\\src\\components\\notifications\\NotificationCenterConnected.tsx",
+        "complexity": 54
+      },
+      {
+        "file": "apps\\web\\src\\components\\onboarding\\OnboardingWizard.tsx",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\components\\onboarding\\PreferencesSetup.tsx",
+        "complexity": 36
+      },
+      {
+        "file": "apps\\web\\src\\components\\onboarding\\ProfileSetup.tsx",
+        "complexity": 32
+      },
+      {
+        "file": "apps\\web\\src\\components\\onboarding\\TeamSetup.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\components\\performance\\OfflineSupport.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\components\\performance\\OptimizationDashboard.tsx",
+        "complexity": 83
+      },
+      {
+        "file": "apps\\web\\src\\components\\performance\\PerformanceDashboard.tsx",
+        "complexity": 35
+      },
+      {
+        "file": "apps\\web\\src\\components\\preferences\\LocaleSync.tsx",
+        "complexity": 36
+      },
+      {
+        "file": "apps\\web\\src\\components\\preferences\\PreferencesManager.tsx",
+        "complexity": 54
+      },
+      {
+        "file": "apps\\web\\src\\components\\profile\\ProfileCard.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\components\\profile\\ProfileForm.tsx",
+        "complexity": 34
+      },
+      {
+        "file": "apps\\web\\src\\components\\providers\\GlobalErrorHandler.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\components\\scheduled-tasks\\TaskManager.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\components\\search\\SearchBar.tsx",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\APIKeys.tsx",
+        "complexity": 43
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\APISettings.tsx",
+        "complexity": 32
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\GeneralSettings.tsx",
+        "complexity": 75
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\NotificationSettings.tsx",
+        "complexity": 33
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\OrganizationSettings.tsx",
+        "complexity": 45
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\PrivacySettings.tsx",
+        "complexity": 30
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\SecuritySettings.tsx",
+        "complexity": 58
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\SettingsNavigation.tsx",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\UserSettings.tsx",
+        "complexity": 36
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\WebhooksSettings.tsx",
+        "complexity": 36
+      },
+      {
+        "file": "apps\\web\\src\\components\\surveys\\SurveyBuilder.tsx",
+        "complexity": 59
+      },
+      {
+        "file": "apps\\web\\src\\components\\surveys\\SurveyResults.tsx",
+        "complexity": 67
+      },
+      {
+        "file": "apps\\web\\src\\components\\surveys\\SurveyTaker.tsx",
+        "complexity": 27
+      },
+      {
+        "file": "apps\\web\\src\\components\\tags\\TagInput.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\components\\templates\\TemplateManager.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\components\\theme\\FontUploader.tsx",
+        "complexity": 38
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\AdvancedCharts.tsx",
+        "complexity": 20
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\AudioPlayer.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Button.tsx",
+        "complexity": 27
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Card.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\CommandPalette.hooks.ts",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\DataTable.tsx",
+        "complexity": 16
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\DataTableEnhanced.tsx",
+        "complexity": 35
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Drawer.tsx",
+        "complexity": 34
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Dropdown.tsx",
+        "complexity": 31
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\ErrorBoundary.tsx",
+        "complexity": 22
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\FileUploadWithPreview.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Form.tsx",
+        "complexity": 46
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\FormBuilder.tsx",
+        "complexity": 42
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\FormField.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\KanbanBoard.tsx",
+        "complexity": 22
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Modal.tsx",
+        "complexity": 46
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\MultiSelect.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Pagination.tsx",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\RichTextEditor.tsx",
+        "complexity": 41
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\SafeHTML.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Sidebar.tsx",
+        "complexity": 53
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Stepper.tsx",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Table.tsx",
+        "complexity": 23
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Tabs.tsx",
+        "complexity": 27
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\TagInput.tsx",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\TimePicker.tsx",
+        "complexity": 31
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\tokens.ts",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\TreeView.tsx",
+        "complexity": 25
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\VideoPlayer.tsx",
+        "complexity": 30
+      },
+      {
+        "file": "apps\\web\\src\\components\\versions\\DiffViewer.tsx",
+        "complexity": 36
+      },
+      {
+        "file": "apps\\web\\src\\components\\versions\\VersionHistory.tsx",
+        "complexity": 20
+      },
+      {
+        "file": "apps\\web\\src\\components\\workflow\\AutomationRules.tsx",
+        "complexity": 41
+      },
+      {
+        "file": "apps\\web\\src\\components\\workflow\\TriggerManager.tsx",
+        "complexity": 16
+      },
+      {
+        "file": "apps\\web\\src\\components\\workflow\\WorkflowBuilder.tsx",
+        "complexity": 30
+      },
+      {
+        "file": "apps\\web\\src\\config\\sitemap.ts",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\hooks\\data\\useFilters.ts",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\hooks\\data\\useTableData.ts",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\hooks\\forms\\useForm.ts",
+        "complexity": 47
+      },
+      {
+        "file": "apps\\web\\src\\hooks\\useApi.ts",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\hooks\\useAuth.ts",
+        "complexity": 37
+      },
+      {
+        "file": "apps\\web\\src\\hooks\\useNotificationCount.ts",
+        "complexity": 23
+      },
+      {
+        "file": "apps\\web\\src\\hooks\\useNotifications.ts",
+        "complexity": 137
+      },
+      {
+        "file": "apps\\web\\src\\hooks\\useRBAC.ts",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\hooks\\useRetry.ts",
+        "complexity": 19
+      },
+      {
+        "file": "apps\\web\\src\\lib\\api\\admin.ts",
+        "complexity": 82
+      },
+      {
+        "file": "apps\\web\\src\\lib\\api\\client.ts",
+        "complexity": 37
+      },
+      {
+        "file": "apps\\web\\src\\lib\\api\\theme-errors.ts",
+        "complexity": 71
+      },
+      {
+        "file": "apps\\web\\src\\lib\\api\\theme-font.ts",
+        "complexity": 38
+      },
+      {
+        "file": "apps\\web\\src\\lib\\api\\theme.ts",
+        "complexity": 109
+      },
+      {
+        "file": "apps\\web\\src\\lib\\auth\\config.ts",
+        "complexity": 19
+      },
+      {
+        "file": "apps\\web\\src\\lib\\auth\\jwt.ts",
+        "complexity": 35
+      },
+      {
+        "file": "apps\\web\\src\\lib\\auth\\middleware.ts",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\lib\\csrf.ts",
+        "complexity": 19
+      },
+      {
+        "file": "apps\\web\\src\\lib\\errors\\api.ts",
+        "complexity": 93
+      },
+      {
+        "file": "apps\\web\\src\\lib\\errors\\utils.ts",
+        "complexity": 32
+      },
+      {
+        "file": "apps\\web\\src\\lib\\marketing\\analytics.ts",
+        "complexity": 24
+      },
+      {
+        "file": "apps\\web\\src\\lib\\monitoring\\metrics.ts",
+        "complexity": 21
+      },
+      {
+        "file": "apps\\web\\src\\lib\\monitoring\\sentry.ts",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\lib\\performance\\preloading.ts",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\lib\\performance\\webVitals.ts",
+        "complexity": 18
+      },
+      {
+        "file": "apps\\web\\src\\lib\\performance.ts",
+        "complexity": 27
+      },
+      {
+        "file": "apps\\web\\src\\lib\\portal\\utils.ts",
+        "complexity": 54
+      },
+      {
+        "file": "apps\\web\\src\\lib\\query\\queries.ts",
+        "complexity": 27
+      },
+      {
+        "file": "apps\\web\\src\\lib\\security\\inputValidation.ts",
+        "complexity": 67
+      },
+      {
+        "file": "apps\\web\\src\\lib\\sentry\\client.ts",
+        "complexity": 48
+      },
+      {
+        "file": "apps\\web\\src\\lib\\sentry\\server.ts",
+        "complexity": 32
+      },
+      {
+        "file": "apps\\web\\src\\lib\\seo\\schemaMarkup.ts",
+        "complexity": 20
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\apply-theme-config.ts",
+        "complexity": 177
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\color-utils.ts",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\color-validation.ts",
+        "complexity": 67
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\component-helpers.ts",
+        "complexity": 17
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\contrast-utils.ts",
+        "complexity": 81
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\dark-mode-utils.ts",
+        "complexity": 30
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\font-loader.ts",
+        "complexity": 39
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\global-theme-provider.tsx",
+        "complexity": 232
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\presets.ts",
+        "complexity": 16
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\theme-cache.ts",
+        "complexity": 29
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\theme-inline-cache-script.ts",
+        "complexity": 77
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\theme-inline-script.ts",
+        "complexity": 84
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\theme-validator.ts",
+        "complexity": 79
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\use-component-config.ts",
+        "complexity": 42
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\use-effects.ts",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\use-theme-spacing.ts",
+        "complexity": 20
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\variant-helpers.ts",
+        "complexity": 26
+      },
+      {
+        "file": "apps\\web\\src\\lib\\types\\common.ts",
+        "complexity": 46
+      },
+      {
+        "file": "apps\\web\\src\\lib\\utils\\envValidation.ts",
+        "complexity": 45
+      },
+      {
+        "file": "apps\\web\\src\\lib\\utils\\fileValidation.ts",
+        "complexity": 52
+      },
+      {
+        "file": "apps\\web\\src\\lib\\utils\\rateLimiter.ts",
+        "complexity": 48
+      },
+      {
+        "file": "apps\\web\\src\\lib\\websocket\\notificationSocket.ts",
+        "complexity": 59
+      },
+      {
+        "file": "apps\\web\\src\\middleware.ts",
+        "complexity": 28
+      },
+      {
+        "file": "apps\\web\\src\\utils\\edgeCaseHandlers.ts",
+        "complexity": 52
+      },
+      {
+        "file": "apps\\web\\src\\utils\\surveyUtils.ts",
+        "complexity": 37
+      },
+      {
+        "file": "backend\\app\\api\\v1\\endpoints\\api_connection_check.py",
+        "complexity": 100
+      },
+      {
+        "file": "backend\\app\\api\\v1\\endpoints\\websocket.py",
+        "complexity": 80
+      },
+      {
+        "file": "backend\\app\\core\\cache_enhanced.py",
+        "complexity": 21
+      },
+      {
+        "file": "backend\\app\\core\\cors.py",
+        "complexity": 44
+      },
+      {
+        "file": "backend\\app\\core\\permissions.py",
+        "complexity": 42
+      },
+      {
+        "file": "backend\\app\\core\\rate_limit.py",
+        "complexity": 52
+      },
+      {
+        "file": "backend\\app\\core\\tenancy.py",
+        "complexity": 38
+      },
+      {
+        "file": "backend\\app\\core\\tenancy_helpers.py",
+        "complexity": 23
+      },
+      {
+        "file": "backend\\app\\core\\tenant_database_manager.py",
+        "complexity": 45
+      },
+      {
+        "file": "backend\\app\\dependencies\\__init__.py",
+        "complexity": 31
+      },
+      {
+        "file": "backend\\app\\dependencies.py",
+        "complexity": 30
+      },
+      {
+        "file": "backend\\app\\main.py",
+        "complexity": 83
+      },
+      {
+        "file": "backend\\app\\services\\import_service.py",
+        "complexity": 49
+      }
+    ]
+  },
+  "categories": {
+    "quality": {
+      "score": 0,
+      "max": 100,
+      "issues": [
+        {
+          "file": "apps\\web\\src\\app\\admin\\invitations\\page.tsx",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\admin\\rbac\\page.tsx",
+          "issue": "3 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\admin\\rbac\\page.tsx",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\admin\\teams\\page.tsx",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\admin\\users\\AdminUsersContent.tsx",
+          "issue": "High complexity function (19 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\api\\auth\\[...nextauth]\\route.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\api\\themes\\route.ts",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\app.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\app.tsx",
+          "issue": "High complexity function (33 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\auth\\callback\\page.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\auth\\callback\\page.tsx",
+          "issue": "High complexity function (31 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\auth\\register\\page.tsx",
+          "issue": "High complexity function (55 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\auth\\AuthComponentsContent.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\ComponentsContent.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\forms\\FormsContent.tsx",
+          "issue": "High complexity function (65 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\notifications\\NotificationComponentsContent.tsx",
+          "issue": "High complexity function (46 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\theme\\ThemeContent.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\dashboard\\become-superadmin\\page.tsx",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\dashboard\\projects\\page.tsx",
+          "issue": "High complexity function (36 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\db\\test\\page.tsx",
+          "issue": "High complexity function (33 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\docs\\page.tsx",
+          "issue": "High complexity function (16 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\examples\\onboarding\\page.tsx",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\examples\\settings\\page.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\route-based-splitting.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\subscriptions\\page.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\subscriptions\\page.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\subscriptions\\success\\page.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\upload\\page.tsx",
+          "issue": "3 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\upload\\page.tsx",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\AdminContent.tsx",
+          "issue": "High complexity function (20 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\api-keys\\AdminAPIKeysContent.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\invitations\\page.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\invitations\\page.tsx",
+          "issue": "High complexity function (37 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\media\\AdminMediaContent.tsx",
+          "issue": "High complexity function (23 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\organizations\\AdminOrganizationsContent.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\organizations\\AdminOrganizationsContent.tsx",
+          "issue": "High complexity function (114 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\rbac\\page.tsx",
+          "issue": "High complexity function (39 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\settings\\AdminSettingsContent.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\settings\\AdminSettingsContent.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\statistics\\AdminStatisticsContent.tsx",
+          "issue": "3 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\statistics\\AdminStatisticsContent.tsx",
+          "issue": "High complexity function (121 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\teams\\page.tsx",
+          "issue": "High complexity function (42 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\tenancy\\TenancyContent.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\tenancy\\TenancyContent.tsx",
+          "issue": "High complexity function (25 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\builder\\components\\ThemeVisualEditor.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\JSONEditor.tsx",
+          "issue": "High complexity function (64 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeActions.tsx",
+          "issue": "High complexity function (19 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeEditor.tsx",
+          "issue": "High complexity function (69 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeForm.tsx",
+          "issue": "High complexity function (68 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeList.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemePreview.tsx",
+          "issue": "High complexity function (45 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\page.tsx",
+          "issue": "High complexity function (19 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\users\\AdminUsersContent.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin-logs\\testing\\AdminLogsContent.tsx",
+          "issue": "High complexity function (31 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\ai\\testing\\page.tsx",
+          "issue": "High complexity function (23 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\components\\ComponentTestCard.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\components\\OverviewSection.tsx",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\hooks\\useConnectionTests.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\hooks\\useEndpointTests.ts",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\hooks\\useTemplateHealth.ts",
+          "issue": "High complexity function (34 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\page.tsx",
+          "issue": "High complexity function (16 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\services\\endpointTester.ts",
+          "issue": "High complexity function (71 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\services\\healthChecker.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\services\\healthChecker.ts",
+          "issue": "High complexity function (73 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\services\\reportGenerator.ts",
+          "issue": "High complexity function (27 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\auth\\callback\\page.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\auth\\callback\\page.tsx",
+          "issue": "High complexity function (30 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\auth\\google\\testing\\page.tsx",
+          "issue": "High complexity function (37 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\auth\\login\\page.tsx",
+          "issue": "High complexity function (33 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\auth\\register\\page.tsx",
+          "issue": "High complexity function (55 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\check-my-superadmin-status\\page.tsx",
+          "issue": "High complexity function (46 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\auth\\AuthComponentsContent.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\auth\\AuthComponentsContent.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\ComponentsContent.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\data\\DataContent.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\feedback\\FeedbackContent.tsx",
+          "issue": "High complexity function (20 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\forms\\FormsContent.tsx",
+          "issue": "High complexity function (67 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\notifications\\NotificationComponentsContent.tsx",
+          "issue": "High complexity function (46 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\theme\\ThemeContent.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\theme\\ThemeContent.tsx",
+          "issue": "High complexity function (16 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\content\\categories\\page.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\content\\media\\page.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\content\\posts\\page.tsx",
+          "issue": "High complexity function (30 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\content\\posts\\[id]\\edit\\page.tsx",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\content\\schedule\\page.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\content\\schedule\\page.tsx",
+          "issue": "High complexity function (25 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\content\\tags\\page.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\content\\templates\\page.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\activity\\page.tsx",
+          "issue": "High complexity function (25 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\become-superadmin\\page.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\become-superadmin\\page.tsx",
+          "issue": "High complexity function (38 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\page.tsx",
+          "issue": "High complexity function (43 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\projects\\page.tsx",
+          "issue": "High complexity function (39 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\reports\\page.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\reports\\page.tsx",
+          "issue": "High complexity function (39 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\db\\test\\page.tsx",
+          "issue": "High complexity function (44 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\docs\\page.tsx",
+          "issue": "High complexity function (56 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\email\\testing\\page.tsx",
+          "issue": "High complexity function (34 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\api-fetching\\page.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\auth\\page.tsx",
+          "issue": "High complexity function (39 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\crud\\page.tsx",
+          "issue": "High complexity function (48 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\dashboard\\page.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\file-upload\\page.tsx",
+          "issue": "High complexity function (36 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\modal\\page.tsx",
+          "issue": "High complexity function (29 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\onboarding\\page.tsx",
+          "issue": "High complexity function (38 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\search\\page.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\settings\\page.tsx",
+          "issue": "High complexity function (36 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\toast\\page.tsx",
+          "issue": "High complexity function (38 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\forms\\page.tsx",
+          "issue": "High complexity function (31 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\forms\\[id]\\submissions\\page.tsx",
+          "issue": "High complexity function (37 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\layout.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\layout.tsx",
+          "issue": "High complexity function (30 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\page.tsx",
+          "issue": "High complexity function (30 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\pages\\[slug]\\edit\\page.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\profile\\activity\\page.tsx",
+          "issue": "High complexity function (22 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\profile\\notifications\\page.tsx",
+          "issue": "High complexity function (52 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\profile\\page.tsx",
+          "issue": "High complexity function (64 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\profile\\security\\page.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\profile\\security\\page.tsx",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\profile\\settings\\page.tsx",
+          "issue": "High complexity function (29 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\sentry\\testing\\page.tsx",
+          "issue": "High complexity function (32 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\settings\\general\\page.tsx",
+          "issue": "High complexity function (22 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\settings\\logs\\page.tsx",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\settings\\notifications\\page.tsx",
+          "issue": "High complexity function (33 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\settings\\organization\\page.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\settings\\organization\\page.tsx",
+          "issue": "High complexity function (107 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\sitemap\\page.tsx",
+          "issue": "High complexity function (31 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\stripe\\testing\\page.tsx",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\subscriptions\\page.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\subscriptions\\page.tsx",
+          "issue": "High complexity function (27 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\subscriptions\\success\\page.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\subscriptions\\success\\page.tsx",
+          "issue": "High complexity function (22 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\surveys\\page.tsx",
+          "issue": "High complexity function (22 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\surveys\\[id]\\results\\page.tsx",
+          "issue": "High complexity function (20 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\admin-logs\\AdminLogsContent.tsx",
+          "issue": "High complexity function (31 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\components\\ComponentTestCard.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\components\\OverviewSection.tsx",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\hooks\\useConnectionTests.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\hooks\\useEndpointTests.ts",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\hooks\\useTemplateHealth.ts",
+          "issue": "High complexity function (34 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\page.tsx",
+          "issue": "High complexity function (16 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\services\\endpointTester.ts",
+          "issue": "High complexity function (71 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\services\\healthChecker.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\services\\healthChecker.ts",
+          "issue": "High complexity function (73 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\services\\reportGenerator.ts",
+          "issue": "High complexity function (27 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test-sentry\\page.tsx",
+          "issue": "High complexity function (16 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\upload\\page.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\upload\\page.tsx",
+          "issue": "High complexity function (46 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\ActivityFeed.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\ActivityFeed.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\ActivityLog.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\ActivityLog.tsx",
+          "issue": "High complexity function (19 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\ActivityTimeline.tsx",
+          "issue": "High complexity function (60 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\AuditTrail.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\AuditTrail.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\EventHistory.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\EventHistory.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\admin\\RoleDefaultPermissionsEditor.tsx",
+          "issue": "High complexity function (39 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\admin\\RoleForm.tsx",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\admin\\RolePermissionsEditor.tsx",
+          "issue": "High complexity function (27 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\admin\\TeamManagement.tsx",
+          "issue": "High complexity function (62 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\admin\\UserPermissionsEditor.tsx",
+          "issue": "High complexity function (20 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\admin\\UserRolesEditor.tsx",
+          "issue": "High complexity function (19 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\advanced\\CodeEditor.stories.tsx",
+          "issue": "5 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\advanced\\FileManager.stories.tsx",
+          "issue": "6 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\advanced\\FileManager.tsx",
+          "issue": "High complexity function (31 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\advanced\\ImageEditor.stories.tsx",
+          "issue": "2 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\advanced\\MarkdownEditor.stories.tsx",
+          "issue": "5 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ai\\AIChat.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ai\\TemplateAIChat.tsx",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\AnalyticsDashboard.stories.tsx",
+          "issue": "4 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\AnalyticsDashboard.tsx",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\DataExport.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\DataExport.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\ReportBuilder.stories.tsx",
+          "issue": "4 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\ReportBuilder.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\ReportViewer.stories.tsx",
+          "issue": "7 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\audit-trail\\AuditTrailViewer.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\AuthInitializer.tsx",
+          "issue": "High complexity function (56 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\MFA.stories.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\MFA.stories.tsx",
+          "issue": "1 'any' types (type safety concern)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\MFA.tsx",
+          "issue": "High complexity function (48 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\ProtectedRoute.tsx",
+          "issue": "High complexity function (56 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\ProtectedSuperAdminRoute.tsx",
+          "issue": "High complexity function (30 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\SocialAuth.stories.tsx",
+          "issue": "7 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\__tests__\\ProtectedSuperAdminRoute.test.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\backups\\BackupManager.tsx",
+          "issue": "High complexity function (20 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\billing\\BillingSettings.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\billing\\BillingSettings.tsx",
+          "issue": "High complexity function (44 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\billing\\InvoiceList.stories.tsx",
+          "issue": "6 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\billing\\InvoiceViewer.stories.tsx",
+          "issue": "9 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\billing\\InvoiceViewer.tsx",
+          "issue": "High complexity function (19 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\billing\\PaymentHistory.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\billing\\PaymentMethodForm.stories.tsx",
+          "issue": "6 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\billing\\PaymentMethodForm.tsx",
+          "issue": "High complexity function (42 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\billing\\SubscriptionPlans.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\cms\\CMSFormBuilder.tsx",
+          "issue": "High complexity function (40 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\cms\\FormSubmissions.tsx",
+          "issue": "High complexity function (16 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\cms\\SEOManager.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\collaboration\\CollaborationPanel.stories.tsx",
+          "issue": "5 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\collaboration\\Comments.stories.tsx",
+          "issue": "5 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\collaboration\\Comments.tsx",
+          "issue": "High complexity function (40 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\collaboration\\CommentThread.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\collaboration\\Mentions.tsx",
+          "issue": "High complexity function (31 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\CategoriesManager.tsx",
+          "issue": "High complexity function (72 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\MediaLibrary.tsx",
+          "issue": "High complexity function (49 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\PagesManager.tsx",
+          "issue": "High complexity function (55 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\PostsManager.tsx",
+          "issue": "High complexity function (70 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\ScheduledContentManager.tsx",
+          "issue": "High complexity function (67 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\TagsManager.tsx",
+          "issue": "High complexity function (54 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\TemplatesManager.tsx",
+          "issue": "High complexity function (75 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\data\\DataImporter.tsx",
+          "issue": "High complexity function (20 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\email-templates\\EmailTemplateManager.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\errors\\ErrorDisplay.tsx",
+          "issue": "High complexity function (36 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\errors\\ErrorReporting.tsx",
+          "issue": "High complexity function (54 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\help\\ContactSupport.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\APIDocumentation.stories.tsx",
+          "issue": "2 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\APIDocumentation.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\IntegrationConfig.stories.tsx",
+          "issue": "4 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\IntegrationConfig.tsx",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\IntegrationList.stories.tsx",
+          "issue": "4 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\WebhookManager.stories.tsx",
+          "issue": "5 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\WebhookManager.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\WebhookManager.tsx",
+          "issue": "High complexity function (38 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\layout\\Sidebar.tsx",
+          "issue": "High complexity function (33 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\marketing\\LeadCaptureForm.tsx",
+          "issue": "High complexity function (38 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\marketing\\NewsletterSignup.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\monitoring\\SystemPerformanceDashboard.tsx",
+          "issue": "High complexity function (40 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\notifications\\NotificationBell.stories.tsx",
+          "issue": "9 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\notifications\\NotificationBell.tsx",
+          "issue": "High complexity function (43 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\notifications\\NotificationCenter.stories.tsx",
+          "issue": "9 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\notifications\\NotificationCenter.tsx",
+          "issue": "High complexity function (89 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\notifications\\NotificationCenterConnected.tsx",
+          "issue": "High complexity function (54 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\onboarding\\OnboardingWizard.tsx",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\onboarding\\PreferencesSetup.tsx",
+          "issue": "High complexity function (36 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\onboarding\\ProfileSetup.tsx",
+          "issue": "High complexity function (32 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\onboarding\\TeamSetup.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\performance\\OfflineSupport.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\performance\\OptimizationDashboard.tsx",
+          "issue": "High complexity function (83 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\performance\\PerformanceDashboard.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\performance\\PerformanceDashboard.tsx",
+          "issue": "High complexity function (35 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\preferences\\LocaleSync.tsx",
+          "issue": "High complexity function (36 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\preferences\\PreferencesManager.tsx",
+          "issue": "High complexity function (54 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\profile\\ProfileCard.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\profile\\ProfileForm.tsx",
+          "issue": "High complexity function (34 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\providers\\GlobalErrorHandler.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\scheduled-tasks\\TaskManager.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\search\\SearchBar.tsx",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\APIKeys.stories.tsx",
+          "issue": "6 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\APIKeys.tsx",
+          "issue": "High complexity function (43 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\APISettings.tsx",
+          "issue": "High complexity function (32 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\GeneralSettings.tsx",
+          "issue": "High complexity function (75 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\NotificationSettings.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\NotificationSettings.tsx",
+          "issue": "High complexity function (33 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\OrganizationSettings.stories.tsx",
+          "issue": "5 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\OrganizationSettings.tsx",
+          "issue": "High complexity function (45 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\PrivacySettings.stories.tsx",
+          "issue": "9 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\PrivacySettings.tsx",
+          "issue": "High complexity function (30 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\SecuritySettings.stories.tsx",
+          "issue": "12 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\SecuritySettings.tsx",
+          "issue": "High complexity function (58 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\SettingsNavigation.tsx",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\UserSettings.stories.tsx",
+          "issue": "5 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\UserSettings.tsx",
+          "issue": "High complexity function (36 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\WebhooksSettings.stories.tsx",
+          "issue": "12 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\WebhooksSettings.tsx",
+          "issue": "High complexity function (36 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\subscriptions\\index.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyBuilder.tsx",
+          "issue": "High complexity function (59 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyResults.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyResults.tsx",
+          "issue": "High complexity function (67 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyTaker.tsx",
+          "issue": "High complexity function (27 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\tags\\TagInput.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\tags\\TagManager.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\templates\\TemplateManager.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\theme\\FontUploader.tsx",
+          "issue": "High complexity function (38 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\theme\\hooks.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\AdvancedCharts.tsx",
+          "issue": "High complexity function (20 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\AudioPlayer.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Button.tsx",
+          "issue": "High complexity function (27 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Card.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\CommandPalette.hooks.ts",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\DataTable.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\DataTable.tsx",
+          "issue": "High complexity function (16 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\DataTableEnhanced.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\DataTableEnhanced.tsx",
+          "issue": "High complexity function (35 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Drawer.tsx",
+          "issue": "High complexity function (34 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Dropdown.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Dropdown.tsx",
+          "issue": "High complexity function (31 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\ErrorBoundary.tsx",
+          "issue": "High complexity function (22 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\FileUploadWithPreview.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Form.stories.tsx",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Form.tsx",
+          "issue": "High complexity function (46 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\FormBuilder.tsx",
+          "issue": "High complexity function (42 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\FormField.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\KanbanBoard.tsx",
+          "issue": "High complexity function (22 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Modal.tsx",
+          "issue": "High complexity function (46 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\MultiSelect.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Pagination.tsx",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\RichTextEditor.stories.tsx",
+          "issue": "1 'any' types (type safety concern)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\RichTextEditor.tsx",
+          "issue": "High complexity function (41 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\SafeHTML.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Sidebar.tsx",
+          "issue": "High complexity function (53 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Stepper.tsx",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Table.tsx",
+          "issue": "High complexity function (23 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Tabs.tsx",
+          "issue": "High complexity function (27 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\TagInput.tsx",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\TimePicker.tsx",
+          "issue": "High complexity function (31 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\tokens.ts",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\TreeView.tsx",
+          "issue": "High complexity function (25 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\VideoPlayer.tsx",
+          "issue": "High complexity function (30 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\DataTableEnhanced.test.tsx",
+          "issue": "4 'any' types (type safety concern)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\ErrorBoundary.test.tsx",
+          "issue": "1 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\List.test.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\Sidebar.test.tsx",
+          "issue": "1 'any' types (type safety concern)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\ToastContainer.test.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\versions\\DiffViewer.tsx",
+          "issue": "High complexity function (36 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\versions\\VersionHistory.tsx",
+          "issue": "High complexity function (20 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\workflow\\AutomationRules.stories.tsx",
+          "issue": "5 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\workflow\\AutomationRules.tsx",
+          "issue": "High complexity function (41 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\workflow\\TriggerManager.stories.tsx",
+          "issue": "5 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\workflow\\TriggerManager.tsx",
+          "issue": "High complexity function (16 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\workflow\\WorkflowBuilder.stories.tsx",
+          "issue": "4 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\workflow\\WorkflowBuilder.tsx",
+          "issue": "High complexity function (30 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\config\\sitemap.ts",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\data\\useFilters.ts",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\data\\useTableData.ts",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\forms\\useForm.ts",
+          "issue": "High complexity function (47 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\useApi.ts",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\useAuth.ts",
+          "issue": "High complexity function (37 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\useCSRF.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\useNotificationCount.ts",
+          "issue": "High complexity function (23 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\useNotifications.ts",
+          "issue": "High complexity function (137 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\usePreferences.ts",
+          "issue": "1 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\useRBAC.ts",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\useRetry.ts",
+          "issue": "High complexity function (19 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\__tests__\\useAuth.comprehensive.test.tsx",
+          "issue": "3 'any' types (type safety concern)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\instrumentation-client.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\instrumentation.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\admin.ts",
+          "issue": "High complexity function (82 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\client.ts",
+          "issue": "High complexity function (37 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\notifications.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\theme-errors.ts",
+          "issue": "High complexity function (71 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\theme-font.ts",
+          "issue": "High complexity function (38 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\theme.ts",
+          "issue": "High complexity function (109 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\__tests__\\api.test.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\__tests__\\client.test.ts",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\auth\\config.ts",
+          "issue": "High complexity function (19 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\auth\\jwt.ts",
+          "issue": "High complexity function (35 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\auth\\middleware.ts",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\auth\\tokenStorage.ts",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\csrf.ts",
+          "issue": "3 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\csrf.ts",
+          "issue": "High complexity function (19 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\errors\\api.ts",
+          "issue": "High complexity function (93 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\errors\\utils.ts",
+          "issue": "High complexity function (32 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\i18n\\utils.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\logger\\index.ts",
+          "issue": "4 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\logger.ts",
+          "issue": "8 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\marketing\\analytics.ts",
+          "issue": "High complexity function (24 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\monitoring\\metrics.ts",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\monitoring\\sentry.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\monitoring\\sentry.ts",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\performance\\preloading.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\performance\\preloading.ts",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\performance\\resourceHints.tsx",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\performance\\webVitals.ts",
+          "issue": "1 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\performance\\webVitals.ts",
+          "issue": "High complexity function (18 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\performance.ts",
+          "issue": "High complexity function (27 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\portal\\utils.ts",
+          "issue": "High complexity function (54 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\query\\queries.ts",
+          "issue": "High complexity function (27 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\security\\csrf.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\security\\inputValidation.ts",
+          "issue": "High complexity function (67 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\sentry\\client.ts",
+          "issue": "High complexity function (48 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\sentry\\server.ts",
+          "issue": "High complexity function (32 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\seo\\schemaMarkup.ts",
+          "issue": "High complexity function (20 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\apply-theme-config.ts",
+          "issue": "High complexity function (177 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\color-utils.ts",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\color-validation.ts",
+          "issue": "High complexity function (67 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\colors.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\component-helpers.ts",
+          "issue": "High complexity function (17 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\contrast-utils.ts",
+          "issue": "High complexity function (81 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\dark-mode-utils.ts",
+          "issue": "High complexity function (30 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\font-loader.ts",
+          "issue": "High complexity function (39 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\global-theme-provider.tsx",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\global-theme-provider.tsx",
+          "issue": "High complexity function (232 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\presets.ts",
+          "issue": "High complexity function (16 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\theme-cache.ts",
+          "issue": "High complexity function (29 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\theme-inline-cache-script.ts",
+          "issue": "High complexity function (77 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\theme-inline-script.ts",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\theme-inline-script.ts",
+          "issue": "High complexity function (84 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\theme-validator.ts",
+          "issue": "High complexity function (79 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\use-component-config.ts",
+          "issue": "High complexity function (42 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\use-effects.ts",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\use-theme-spacing.ts",
+          "issue": "High complexity function (20 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\variant-helpers.ts",
+          "issue": "High complexity function (26 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\__tests__\\theme-validator.test.ts",
+          "issue": "2 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\types\\common.ts",
+          "issue": "High complexity function (46 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\utils\\envValidation.ts",
+          "issue": "High complexity function (45 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\utils\\fileValidation.ts",
+          "issue": "High complexity function (52 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\utils\\rateLimiter.ts",
+          "issue": "High complexity function (48 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\websocket\\notificationSocket.ts",
+          "issue": "High complexity function (59 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\middleware.ts",
+          "issue": "High complexity function (28 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\test\\setup.ts",
+          "issue": "3 console.log statements",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\utils\\edgeCaseHandlers.ts",
+          "issue": "High complexity function (52 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\utils\\surveyUtils.ts",
+          "issue": "High complexity function (37 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\__tests__\\integration\\api.test.ts",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\admin.py",
+          "issue": "4 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\api_connection_check.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\api_connection_check.py",
+          "issue": "High complexity function (100 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\auth.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\backups.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\client\\orders.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\erp\\inventory.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\erp\\invoices.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\erp\\orders.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\erp\\reports.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\notifications.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\organization_settings.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\themes.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\users.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\websocket.py",
+          "issue": "High complexity function (80 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\webhooks\\stripe.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\core\\cache_enhanced.py",
+          "issue": "High complexity function (21 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\core\\cors.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\core\\cors.py",
+          "issue": "High complexity function (44 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\core\\permissions.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\core\\permissions.py",
+          "issue": "High complexity function (42 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\core\\query_optimization.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\core\\rate_limit.py",
+          "issue": "High complexity function (52 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\core\\tenancy.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\core\\tenancy.py",
+          "issue": "High complexity function (38 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\core\\tenancy_helpers.py",
+          "issue": "High complexity function (23 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\core\\tenant_database_manager.py",
+          "issue": "High complexity function (45 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\core\\theme_validation.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\dependencies\\__init__.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\dependencies\\__init__.py",
+          "issue": "High complexity function (31 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\dependencies.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\dependencies.py",
+          "issue": "High complexity function (30 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\main.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\main.py",
+          "issue": "High complexity function (83 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\notification.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\models\\user.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\schemas\\notification.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\services\\client_service.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\services\\comment_service.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\services\\erp_service.py",
+          "issue": "2 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\services\\import_service.py",
+          "issue": "High complexity function (49 control structures)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\scheduled_task_service.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\tasks\\notification_tasks.py",
+          "issue": "1 TODO/FIXME comments",
+          "severity": "low"
+        }
+      ],
+      "positives": []
+    },
+    "security": {
+      "score": 0,
+      "max": 100,
+      "issues": [
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\auth\\page.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\MFA.stories.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\__tests__\\MFA.test.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\__tests__\\ProtectedRoute.test.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\__tests__\\ProtectedSuperAdminRoute.test.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\__tests__\\IntegrationConfig.test.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\WebhooksSettings.stories.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Form.stories.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\Form.test.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\forms\\__tests__\\useForm.test.ts",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\useCSRF.ts",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\__tests__\\useAuth.comprehensive.test.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\__tests__\\useAuth.comprehensive.test.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\__tests__\\useCSRF.test.ts",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\__tests__\\api.test.ts",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\__tests__\\client.test.ts",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api\\__tests__\\client.test.ts",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\i18n\\messages.ts",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\security\\__tests__\\csrf.test.ts",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\security\\__tests__\\inputValidation.test.ts",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\__tests__\\integration\\api.test.ts",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\__tests__\\integration\\auth.test.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\__tests__\\integration\\auth.test.tsx",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "backend\\app\\core\\patterns\\factory.py",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "backend\\app\\core\\security_audit.py",
+          "issue": "Potential hardcoded secret detected",
+          "severity": "critical"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\layout.tsx",
+          "issue": "Unsafe code pattern: dangerouslySetInnerHTML",
+          "severity": "high"
+        },
+        {
+          "file": "apps\\web\\src\\components\\advanced\\MarkdownEditor.tsx",
+          "issue": "Unsafe code pattern: dangerouslySetInnerHTML",
+          "severity": "high"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\RichTextEditor.tsx",
+          "issue": "Unsafe code pattern: innerHTML",
+          "severity": "high"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\SafeHTML.tsx",
+          "issue": "Unsafe code pattern: dangerouslySetInnerHTML",
+          "severity": "high"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\SafeHTML.test.tsx",
+          "issue": "Unsafe code pattern: innerHTML",
+          "severity": "high"
+        },
+        {
+          "file": "apps\\web\\src\\components\\__tests__\\security.test.tsx",
+          "issue": "Unsafe code pattern: dangerouslySetInnerHTML",
+          "severity": "high"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\marketing\\analytics.ts",
+          "issue": "Unsafe code pattern: innerHTML",
+          "severity": "high"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\performance.ts",
+          "issue": "Unsafe code pattern: Function(",
+          "severity": "high"
+        },
+        {
+          "file": "apps\\web\\src\\utils\\edgeCaseHandlers.ts",
+          "issue": "Unsafe code pattern: Function(",
+          "severity": "high"
+        }
+      ],
+      "positives": [
+        "Good input validation (105 occurrences)"
+      ]
+    },
+    "architecture": {
+      "score": 100,
+      "max": 100,
+      "issues": [],
+      "positives": [
+        "Monorepo structure with pnpm workspaces",
+        "Turborepo configured",
+        "Clear separation between frontend and backend",
+        "Shared types package exists",
+        "Excellent component organization (52 categories)",
+        "Backend properly organized by concerns"
+      ]
+    },
+    "tests": {
+      "score": 100,
+      "max": 100,
+      "issues": [],
+      "positives": [
+        "Frontend tests found (2 files)",
+        "Frontend tests found (11 files)",
+        "Backend tests found (88 files)",
+        "All test configurations present",
+        "E2E tests found (2 files)",
+        "E2E tests found (10 files)"
+      ]
+    },
+    "maintainability": {
+      "score": 65,
+      "max": 100,
+      "issues": [
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\organizations\\AdminOrganizationsContent.tsx",
+          "issue": "Large file: 752 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\statistics\\AdminStatisticsContent.tsx",
+          "issue": "Large file: 833 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\ComponentsContent.tsx",
+          "issue": "Large file: 568 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\settings\\organization\\page.tsx",
+          "issue": "Large file: 571 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\admin\\TeamManagement.tsx",
+          "issue": "Large file: 634 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyBuilder.tsx",
+          "issue": "Large file: 887 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyResults.tsx",
+          "issue": "Large file: 652 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyTaker.tsx",
+          "issue": "Large file: 626 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\MultiSelect.test.tsx",
+          "issue": "Large file: 546 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\ServiceTestCard.test.tsx",
+          "issue": "Large file: 503 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\config\\sitemap.ts",
+          "issue": "Large file: 607 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\hooks\\forms\\__tests__\\useForm.test.ts",
+          "issue": "Large file: 508 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\api.ts",
+          "issue": "Large file: 860 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\apply-theme-config.ts",
+          "issue": "Large file: 555 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\global-theme-provider.tsx",
+          "issue": "Large file: 742 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\admin.py",
+          "issue": "Large file: 1034 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\api_connection_check.py",
+          "issue": "Large file: 630 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\auth.py",
+          "issue": "Large file: 1027 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\forms.py",
+          "issue": "Large file: 560 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\posts.py",
+          "issue": "Large file: 539 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\rbac.py",
+          "issue": "Large file: 832 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\themes.py",
+          "issue": "Large file: 528 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\webhooks\\stripe.py",
+          "issue": "Large file: 648 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\core\\theme_validation.py",
+          "issue": "Large file: 530 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\email_templates.py",
+          "issue": "Large file: 523 lines (consider splitting)",
+          "severity": "medium"
+        },
+        "25 files exceed 500 lines",
+        "302 functions with high complexity"
+      ],
+      "positives": [
+        "Comprehensive documentation",
+        "Good automation (48 scripts)"
+      ]
+    },
+    "documentation": {
+      "score": 0,
+      "max": 100,
+      "issues": [],
+      "positives": []
+    }
+  },
+  "timestamp": "2025-12-30T15:48:42.208Z"
+}

@@ -1,0 +1,1753 @@
+{
+  "score": 59,
+  "grade": "D",
+  "stats": {
+    "largeComponents": [
+      {
+        "file": "apps\\web\\src\\app\\admin\\invitations\\page.tsx",
+        "lines": 389
+      },
+      {
+        "file": "apps\\web\\src\\app\\admin\\rbac\\page.tsx",
+        "lines": 314
+      },
+      {
+        "file": "apps\\web\\src\\app\\admin\\teams\\page.tsx",
+        "lines": 349
+      },
+      {
+        "file": "apps\\web\\src\\app\\components\\billing\\BillingComponentsContent.tsx",
+        "lines": 324
+      },
+      {
+        "file": "apps\\web\\src\\app\\components\\ComponentsContent.tsx",
+        "lines": 425
+      },
+      {
+        "file": "apps\\web\\src\\app\\components\\data\\DataContent.tsx",
+        "lines": 370
+      },
+      {
+        "file": "apps\\web\\src\\app\\dashboard\\become-superadmin\\page.tsx",
+        "lines": 366
+      },
+      {
+        "file": "apps\\web\\src\\app\\dashboard\\projects\\page.tsx",
+        "lines": 433
+      },
+      {
+        "file": "apps\\web\\src\\app\\db\\test\\page.tsx",
+        "lines": 367
+      },
+      {
+        "file": "apps\\web\\src\\app\\docs\\page.tsx",
+        "lines": 334
+      },
+      {
+        "file": "apps\\web\\src\\app\\upload\\page.tsx",
+        "lines": 401
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\api-keys\\AdminAPIKeysContent.tsx",
+        "lines": 317
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\invitations\\page.tsx",
+        "lines": 415
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\organizations\\AdminOrganizationsContent.tsx",
+        "lines": 752
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\rbac\\page.tsx",
+        "lines": 336
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\statistics\\AdminStatisticsContent.tsx",
+        "lines": 833
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\teams\\page.tsx",
+        "lines": 355
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\tenancy\\TenancyContent.tsx",
+        "lines": 311
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeEditor.tsx",
+        "lines": 386
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\users\\AdminUsersContent.tsx",
+        "lines": 318
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\ai\\testing\\page.tsx",
+        "lines": 331
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\components\\OverviewSection.tsx",
+        "lines": 302
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\billing\\BillingComponentsContent.tsx",
+        "lines": 324
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\ComponentsContent.tsx",
+        "lines": 568
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\data\\DataContent.tsx",
+        "lines": 370
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\content\\posts\\[id]\\edit\\page.tsx",
+        "lines": 362
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\dashboard\\become-superadmin\\page.tsx",
+        "lines": 369
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\dashboard\\projects\\page.tsx",
+        "lines": 433
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\dashboard\\reports\\page.tsx",
+        "lines": 322
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\db\\test\\page.tsx",
+        "lines": 367
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\docs\\page.tsx",
+        "lines": 334
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\email\\testing\\page.tsx",
+        "lines": 339
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\api-fetching\\page.tsx",
+        "lines": 319
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\auth\\page.tsx",
+        "lines": 351
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\crud\\page.tsx",
+        "lines": 408
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\file-upload\\page.tsx",
+        "lines": 334
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\page.tsx",
+        "lines": 325
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\profile\\page.tsx",
+        "lines": 361
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\sentry\\testing\\page.tsx",
+        "lines": 407
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\settings\\logs\\page.tsx",
+        "lines": 320
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\settings\\organization\\page.tsx",
+        "lines": 571
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\components\\OverviewSection.tsx",
+        "lines": 302
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\upload\\page.tsx",
+        "lines": 404
+      },
+      {
+        "file": "apps\\web\\src\\components\\activity\\AuditTrail.tsx",
+        "lines": 416
+      },
+      {
+        "file": "apps\\web\\src\\components\\admin\\RoleDefaultPermissionsEditor.tsx",
+        "lines": 321
+      },
+      {
+        "file": "apps\\web\\src\\components\\admin\\TeamManagement.tsx",
+        "lines": 634
+      },
+      {
+        "file": "apps\\web\\src\\components\\analytics\\EnhancedReportBuilder.tsx",
+        "lines": 333
+      },
+      {
+        "file": "apps\\web\\src\\components\\auth\\MFA.tsx",
+        "lines": 335
+      },
+      {
+        "file": "apps\\web\\src\\components\\auth\\ProtectedRoute.tsx",
+        "lines": 332
+      },
+      {
+        "file": "apps\\web\\src\\components\\cms\\CMSFormBuilder.tsx",
+        "lines": 438
+      },
+      {
+        "file": "apps\\web\\src\\components\\cms\\MenuBuilder.tsx",
+        "lines": 304
+      },
+      {
+        "file": "apps\\web\\src\\components\\cms\\SEOManager.tsx",
+        "lines": 316
+      },
+      {
+        "file": "apps\\web\\src\\components\\collaboration\\Comments.tsx",
+        "lines": 375
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\CategoriesManager.tsx",
+        "lines": 464
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\MediaLibrary.tsx",
+        "lines": 463
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\PagesManager.tsx",
+        "lines": 416
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\PostsManager.tsx",
+        "lines": 473
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\ScheduledContentManager.tsx",
+        "lines": 468
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\TagsManager.tsx",
+        "lines": 383
+      },
+      {
+        "file": "apps\\web\\src\\components\\content\\TemplatesManager.tsx",
+        "lines": 499
+      },
+      {
+        "file": "apps\\web\\src\\components\\email-templates\\EmailTemplateManager.tsx",
+        "lines": 305
+      },
+      {
+        "file": "apps\\web\\src\\components\\integrations\\APIDocumentation.tsx",
+        "lines": 380
+      },
+      {
+        "file": "apps\\web\\src\\components\\integrations\\WebhookManager.tsx",
+        "lines": 332
+      },
+      {
+        "file": "apps\\web\\src\\components\\performance\\OptimizationDashboard.tsx",
+        "lines": 378
+      },
+      {
+        "file": "apps\\web\\src\\components\\preferences\\PreferencesManager.tsx",
+        "lines": 402
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\APIKeys.tsx",
+        "lines": 350
+      },
+      {
+        "file": "apps\\web\\src\\components\\settings\\OrganizationSettings.tsx",
+        "lines": 307
+      },
+      {
+        "file": "apps\\web\\src\\components\\surveys\\SurveyBuilder.tsx",
+        "lines": 887
+      },
+      {
+        "file": "apps\\web\\src\\components\\surveys\\SurveyResults.tsx",
+        "lines": 652
+      },
+      {
+        "file": "apps\\web\\src\\components\\surveys\\SurveyTaker.tsx",
+        "lines": 626
+      },
+      {
+        "file": "apps\\web\\src\\components\\theme\\ComponentGallery.tsx",
+        "lines": 308
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\AdvancedCharts.tsx",
+        "lines": 370
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Modal.tsx",
+        "lines": 343
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\MultiSelect.tsx",
+        "lines": 319
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\RichTextEditor.tsx",
+        "lines": 406
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\Sidebar.tsx",
+        "lines": 318
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\AdvancedCharts.test.tsx",
+        "lines": 305
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\ColorPicker.test.tsx",
+        "lines": 420
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\CRUDModal.test.tsx",
+        "lines": 344
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\DataTableEnhanced.test.tsx",
+        "lines": 359
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\Drawer.test.tsx",
+        "lines": 325
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\Dropdown.test.tsx",
+        "lines": 426
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\FileUpload.test.tsx",
+        "lines": 369
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\FileUploadWithPreview.test.tsx",
+        "lines": 317
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\Modal.test.tsx",
+        "lines": 301
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\MultiSelect.test.tsx",
+        "lines": 546
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\Popover.test.tsx",
+        "lines": 351
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\ServiceTestCard.test.tsx",
+        "lines": 503
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\Sidebar.test.tsx",
+        "lines": 338
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\Table.test.tsx",
+        "lines": 319
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\TimePicker.test.tsx",
+        "lines": 392
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\TreeView.test.tsx",
+        "lines": 329
+      },
+      {
+        "file": "apps\\web\\src\\components\\workflow\\AutomationRules.tsx",
+        "lines": 354
+      },
+      {
+        "file": "apps\\web\\src\\components\\workflow\\WorkflowBuilder.tsx",
+        "lines": 344
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\global-theme-provider.tsx",
+        "lines": 742
+      },
+      {
+        "file": "apps\\web\\src\\__tests__\\integration\\auth.test.tsx",
+        "lines": 302
+      }
+    ],
+    "missingMemoization": [
+      {
+        "file": "apps\\web\\src\\app\\admin\\invitations\\page.tsx",
+        "operations": 9
+      },
+      {
+        "file": "apps\\web\\src\\app\\components\\notifications\\NotificationComponentsContent.tsx",
+        "operations": 6
+      },
+      {
+        "file": "apps\\web\\src\\app\\components\\workflow\\WorkflowComponentsContent.tsx",
+        "operations": 6
+      },
+      {
+        "file": "apps\\web\\src\\app\\db\\test\\page.tsx",
+        "operations": 6
+      },
+      {
+        "file": "apps\\web\\src\\app\\upload\\page.tsx",
+        "operations": 11
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\invitations\\page.tsx",
+        "operations": 8
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\statistics\\AdminStatisticsContent.tsx",
+        "operations": 11
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\notifications\\NotificationComponentsContent.tsx",
+        "operations": 6
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\workflow\\WorkflowComponentsContent.tsx",
+        "operations": 6
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\dashboard\\reports\\page.tsx",
+        "operations": 6
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\db\\test\\page.tsx",
+        "operations": 6
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\examples\\file-upload\\page.tsx",
+        "operations": 8
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\settings\\organization\\page.tsx",
+        "operations": 8
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\upload\\page.tsx",
+        "operations": 11
+      },
+      {
+        "file": "apps\\web\\src\\components\\activity\\ActivityTimeline.tsx",
+        "operations": 7
+      },
+      {
+        "file": "apps\\web\\src\\components\\admin\\UserPermissionsEditor.tsx",
+        "operations": 7
+      },
+      {
+        "file": "apps\\web\\src\\components\\advanced\\FileManager.tsx",
+        "operations": 6
+      },
+      {
+        "file": "apps\\web\\src\\components\\analytics\\DataExport.tsx",
+        "operations": 8
+      },
+      {
+        "file": "apps\\web\\src\\components\\analytics\\EnhancedReportBuilder.tsx",
+        "operations": 7
+      },
+      {
+        "file": "apps\\web\\src\\components\\analytics\\ReportBuilder.tsx",
+        "operations": 8
+      },
+      {
+        "file": "apps\\web\\src\\components\\cms\\CMSFormBuilder.tsx",
+        "operations": 7
+      },
+      {
+        "file": "apps\\web\\src\\components\\integrations\\APIDocumentation.tsx",
+        "operations": 11
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\MultiSelect.tsx",
+        "operations": 8
+      },
+      {
+        "file": "apps\\web\\src\\lib\\theme\\global-theme-provider.tsx",
+        "operations": 9
+      }
+    ],
+    "missingLazyLoading": [
+      {
+        "file": "apps\\web\\src\\app\\components\\charts\\ChartsContent.tsx",
+        "import": "import { Chart, AdvancedChart"
+      },
+      {
+        "file": "apps\\web\\src\\app\\components\\forms\\FormsContent.tsx",
+        "import": "import { Input, Textarea, Select, Checkbox, Radio, Switch, DatePicker, TimePicker, FileUpload, Button, Form, FormField, FormBuilder, RichTextEditor"
+      },
+      {
+        "file": "apps\\web\\src\\app\\monitoring\\page.tsx",
+        "import": "import MetricsChart from '@/components/monitoring/MetricsChart"
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\builder\\components\\ThemeBuilder.tsx",
+        "import": "import { ThemeVisualEditor } from './ThemeVisualEditor"
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeEditor.tsx",
+        "import": "import { useThemeEditor } from '../hooks/useThemeEditor"
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\admin\\users\\AdminUsersContent.tsx",
+        "import": "import UserRolesEditor from '@/components/admin/UserRolesEditor"
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\charts\\ChartsContent.tsx",
+        "import": "import { Chart, AdvancedChart"
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\forms\\FormsContent.tsx",
+        "import": "import { Input, Textarea, Select, Checkbox, Radio, Switch, DatePicker, TimePicker, FileUpload, Button, Form, FormField, FormBuilder, RichTextEditor"
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\page-builder\\PageBuilderComponentsContent.tsx",
+        "import": "import { PageEditor"
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\components\\templates\\TemplatesComponentsContent.tsx",
+        "import": "import { TemplateManager, TemplateEditor"
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\content\\posts\\[id]\\edit\\page.tsx",
+        "import": "import { RichTextEditor"
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\monitoring\\page.tsx",
+        "import": "import MetricsChart from '@/components/monitoring/MetricsChart"
+      },
+      {
+        "file": "apps\\web\\src\\app\\[locale]\\pages\\[slug]\\edit\\page.tsx",
+        "import": "import { PageEditor"
+      },
+      {
+        "file": "apps\\web\\src\\components\\advanced\\CodeEditor.stories.tsx",
+        "import": "import CodeEditor from './CodeEditor"
+      },
+      {
+        "file": "apps\\web\\src\\components\\advanced\\ImageEditor.stories.tsx",
+        "import": "import ImageEditor from './ImageEditor"
+      },
+      {
+        "file": "apps\\web\\src\\components\\advanced\\MarkdownEditor.stories.tsx",
+        "import": "import MarkdownEditor from './MarkdownEditor"
+      },
+      {
+        "file": "apps\\web\\src\\components\\analytics\\AnalyticsDashboard.tsx",
+        "import": "import { Chart"
+      },
+      {
+        "file": "apps\\web\\src\\components\\analytics\\EnhancedReportBuilder.tsx",
+        "import": "import { Plus, Trash2, Save, BarChart3, PieChart, LineChart"
+      },
+      {
+        "file": "apps\\web\\src\\components\\analytics\\ReportViewer.tsx",
+        "import": "import { Chart"
+      },
+      {
+        "file": "apps\\web\\src\\components\\billing\\BillingDashboard.tsx",
+        "import": "import { Chart"
+      },
+      {
+        "file": "apps\\web\\src\\components\\feature-flags\\FeatureFlagManager.tsx",
+        "import": "import { Flag, ToggleLeft, ToggleRight, Trash2, BarChart"
+      },
+      {
+        "file": "apps\\web\\src\\components\\monitoring\\MetricsChart.tsx",
+        "import": "import Chart from '@/components/ui/Chart"
+      },
+      {
+        "file": "apps\\web\\src\\components\\page-builder\\PagePreview.tsx",
+        "import": "import type { PageSection } from './PageEditor"
+      },
+      {
+        "file": "apps\\web\\src\\components\\page-builder\\SectionTemplates.tsx",
+        "import": "import type { PageSection } from './PageEditor"
+      },
+      {
+        "file": "apps\\web\\src\\components\\performance\\OptimizationDashboard.tsx",
+        "import": "import { Chart"
+      },
+      {
+        "file": "apps\\web\\src\\components\\surveys\\SurveyResults.tsx",
+        "import": "import { BarChart, Bar, PieChart"
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\RichTextEditor.stories.tsx",
+        "import": "import RichTextEditor from './RichTextEditor"
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\AdvancedCharts.test.tsx",
+        "import": "import AdvancedCharts from '../AdvancedChart"
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\Chart.test.tsx",
+        "import": "import Chart from '../Chart"
+      },
+      {
+        "file": "apps\\web\\src\\components\\ui\\__tests__\\RichTextEditor.test.tsx",
+        "import": "import RichTextEditor from '../RichTextEditor"
+      }
+    ],
+    "inlineStyles": [],
+    "largeBundles": [],
+    "nPlusOneQueries": [
+      {
+        "file": "backend\\app\\services\\theme_service.py"
+      }
+    ],
+    "missingIndexes": [],
+    "inefficientQueries": []
+  },
+  "categories": {
+    "frontend": {
+      "score": 0,
+      "max": 100,
+      "issues": [
+        {
+          "file": "apps\\web\\src\\app\\admin\\invitations\\page.tsx",
+          "issue": "Large component: 389 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\admin\\invitations\\page.tsx",
+          "issue": "9 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\admin\\rbac\\page.tsx",
+          "issue": "Large component: 314 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\admin\\teams\\page.tsx",
+          "issue": "Large component: 349 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\billing\\BillingComponentsContent.tsx",
+          "issue": "Large component: 324 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\charts\\ChartsContent.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\ComponentsContent.tsx",
+          "issue": "Large component: 425 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\data\\DataContent.tsx",
+          "issue": "Large component: 370 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\forms\\FormsContent.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\notifications\\NotificationComponentsContent.tsx",
+          "issue": "6 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\components\\workflow\\WorkflowComponentsContent.tsx",
+          "issue": "6 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\dashboard\\become-superadmin\\page.tsx",
+          "issue": "Large component: 366 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\dashboard\\projects\\page.tsx",
+          "issue": "Large component: 433 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\db\\test\\page.tsx",
+          "issue": "Large component: 367 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\db\\test\\page.tsx",
+          "issue": "6 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\docs\\page.tsx",
+          "issue": "Large component: 334 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\monitoring\\page.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\upload\\page.tsx",
+          "issue": "Large component: 401 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\upload\\page.tsx",
+          "issue": "11 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\api-keys\\AdminAPIKeysContent.tsx",
+          "issue": "Large component: 317 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\invitations\\page.tsx",
+          "issue": "Large component: 415 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\invitations\\page.tsx",
+          "issue": "8 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\organizations\\AdminOrganizationsContent.tsx",
+          "issue": "Large component: 752 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\rbac\\page.tsx",
+          "issue": "Large component: 336 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\statistics\\AdminStatisticsContent.tsx",
+          "issue": "Large component: 833 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\statistics\\AdminStatisticsContent.tsx",
+          "issue": "11 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\teams\\page.tsx",
+          "issue": "Large component: 355 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\tenancy\\TenancyContent.tsx",
+          "issue": "Large component: 311 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\builder\\components\\ThemeBuilder.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeEditor.tsx",
+          "issue": "Large component: 386 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\themes\\components\\ThemeEditor.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\users\\AdminUsersContent.tsx",
+          "issue": "Large component: 318 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\admin\\users\\AdminUsersContent.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\ai\\testing\\page.tsx",
+          "issue": "Large component: 331 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\api-connections\\testing\\components\\OverviewSection.tsx",
+          "issue": "Large component: 302 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\billing\\BillingComponentsContent.tsx",
+          "issue": "Large component: 324 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\charts\\ChartsContent.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\ComponentsContent.tsx",
+          "issue": "Large component: 568 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\data\\DataContent.tsx",
+          "issue": "Large component: 370 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\forms\\FormsContent.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\notifications\\NotificationComponentsContent.tsx",
+          "issue": "6 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\page-builder\\PageBuilderComponentsContent.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\templates\\TemplatesComponentsContent.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\components\\workflow\\WorkflowComponentsContent.tsx",
+          "issue": "6 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\content\\posts\\[id]\\edit\\page.tsx",
+          "issue": "Large component: 362 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\content\\posts\\[id]\\edit\\page.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\become-superadmin\\page.tsx",
+          "issue": "Large component: 369 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\projects\\page.tsx",
+          "issue": "Large component: 433 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\reports\\page.tsx",
+          "issue": "Large component: 322 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\dashboard\\reports\\page.tsx",
+          "issue": "6 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\db\\test\\page.tsx",
+          "issue": "Large component: 367 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\db\\test\\page.tsx",
+          "issue": "6 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\docs\\page.tsx",
+          "issue": "Large component: 334 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\email\\testing\\page.tsx",
+          "issue": "Large component: 339 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\api-fetching\\page.tsx",
+          "issue": "Large component: 319 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\auth\\page.tsx",
+          "issue": "Large component: 351 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\crud\\page.tsx",
+          "issue": "Large component: 408 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\file-upload\\page.tsx",
+          "issue": "Large component: 334 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\examples\\file-upload\\page.tsx",
+          "issue": "8 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\monitoring\\page.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\page.tsx",
+          "issue": "Large component: 325 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\pages\\[slug]\\edit\\page.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\profile\\page.tsx",
+          "issue": "Large component: 361 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\sentry\\testing\\page.tsx",
+          "issue": "Large component: 407 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\settings\\logs\\page.tsx",
+          "issue": "Large component: 320 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\settings\\organization\\page.tsx",
+          "issue": "Large component: 571 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\settings\\organization\\page.tsx",
+          "issue": "8 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\test\\api-connections\\components\\OverviewSection.tsx",
+          "issue": "Large component: 302 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\upload\\page.tsx",
+          "issue": "Large component: 404 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\app\\[locale]\\upload\\page.tsx",
+          "issue": "11 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\ActivityTimeline.tsx",
+          "issue": "7 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\activity\\AuditTrail.tsx",
+          "issue": "Large component: 416 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\admin\\RoleDefaultPermissionsEditor.tsx",
+          "issue": "Large component: 321 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\admin\\TeamManagement.tsx",
+          "issue": "Large component: 634 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\admin\\UserPermissionsEditor.tsx",
+          "issue": "7 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\advanced\\CodeEditor.stories.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\advanced\\FileManager.tsx",
+          "issue": "6 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\advanced\\ImageEditor.stories.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\advanced\\MarkdownEditor.stories.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\AnalyticsDashboard.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\DataExport.tsx",
+          "issue": "8 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\EnhancedReportBuilder.tsx",
+          "issue": "Large component: 333 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\EnhancedReportBuilder.tsx",
+          "issue": "7 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\EnhancedReportBuilder.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\ReportBuilder.tsx",
+          "issue": "8 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\analytics\\ReportViewer.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\MFA.tsx",
+          "issue": "Large component: 335 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\auth\\ProtectedRoute.tsx",
+          "issue": "Large component: 332 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\billing\\BillingDashboard.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\cms\\CMSFormBuilder.tsx",
+          "issue": "Large component: 438 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\cms\\CMSFormBuilder.tsx",
+          "issue": "7 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\cms\\MenuBuilder.tsx",
+          "issue": "Large component: 304 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\cms\\SEOManager.tsx",
+          "issue": "Large component: 316 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\collaboration\\Comments.tsx",
+          "issue": "Large component: 375 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\CategoriesManager.tsx",
+          "issue": "Large component: 464 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\MediaLibrary.tsx",
+          "issue": "Large component: 463 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\PagesManager.tsx",
+          "issue": "Large component: 416 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\PostsManager.tsx",
+          "issue": "Large component: 473 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\ScheduledContentManager.tsx",
+          "issue": "Large component: 468 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\TagsManager.tsx",
+          "issue": "Large component: 383 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\content\\TemplatesManager.tsx",
+          "issue": "Large component: 499 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\email-templates\\EmailTemplateManager.tsx",
+          "issue": "Large component: 305 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\feature-flags\\FeatureFlagManager.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\APIDocumentation.tsx",
+          "issue": "Large component: 380 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\APIDocumentation.tsx",
+          "issue": "11 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\integrations\\WebhookManager.tsx",
+          "issue": "Large component: 332 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\monitoring\\MetricsChart.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\page-builder\\PagePreview.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\page-builder\\SectionTemplates.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\performance\\OptimizationDashboard.tsx",
+          "issue": "Large component: 378 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\performance\\OptimizationDashboard.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\preferences\\PreferencesManager.tsx",
+          "issue": "Large component: 402 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\APIKeys.tsx",
+          "issue": "Large component: 350 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\settings\\OrganizationSettings.tsx",
+          "issue": "Large component: 307 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyBuilder.tsx",
+          "issue": "Large component: 887 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyResults.tsx",
+          "issue": "Large component: 652 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyResults.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\surveys\\SurveyTaker.tsx",
+          "issue": "Large component: 626 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\theme\\ComponentGallery.tsx",
+          "issue": "Large component: 308 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\AdvancedCharts.tsx",
+          "issue": "Large component: 370 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Modal.tsx",
+          "issue": "Large component: 343 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\MultiSelect.tsx",
+          "issue": "Large component: 319 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\MultiSelect.tsx",
+          "issue": "8 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\RichTextEditor.stories.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\RichTextEditor.tsx",
+          "issue": "Large component: 406 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\Sidebar.tsx",
+          "issue": "Large component: 318 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\AdvancedCharts.test.tsx",
+          "issue": "Large component: 305 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\AdvancedCharts.test.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\Chart.test.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\ColorPicker.test.tsx",
+          "issue": "Large component: 420 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\CRUDModal.test.tsx",
+          "issue": "Large component: 344 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\DataTableEnhanced.test.tsx",
+          "issue": "Large component: 359 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\Drawer.test.tsx",
+          "issue": "Large component: 325 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\Dropdown.test.tsx",
+          "issue": "Large component: 426 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\FileUpload.test.tsx",
+          "issue": "Large component: 369 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\FileUploadWithPreview.test.tsx",
+          "issue": "Large component: 317 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\Modal.test.tsx",
+          "issue": "Large component: 301 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\MultiSelect.test.tsx",
+          "issue": "Large component: 546 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\Popover.test.tsx",
+          "issue": "Large component: 351 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\RichTextEditor.test.tsx",
+          "issue": "Heavy component imported directly (consider lazy loading)",
+          "severity": "low"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\ServiceTestCard.test.tsx",
+          "issue": "Large component: 503 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\Sidebar.test.tsx",
+          "issue": "Large component: 338 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\Table.test.tsx",
+          "issue": "Large component: 319 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\TimePicker.test.tsx",
+          "issue": "Large component: 392 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\ui\\__tests__\\TreeView.test.tsx",
+          "issue": "Large component: 329 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\workflow\\AutomationRules.tsx",
+          "issue": "Large component: 354 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\components\\workflow\\WorkflowBuilder.tsx",
+          "issue": "Large component: 344 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\global-theme-provider.tsx",
+          "issue": "Large component: 742 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\lib\\theme\\global-theme-provider.tsx",
+          "issue": "9 expensive operations without memoization",
+          "severity": "medium"
+        },
+        {
+          "file": "apps\\web\\src\\__tests__\\integration\\auth.test.tsx",
+          "issue": "Large component: 302 lines (consider splitting)",
+          "severity": "medium"
+        },
+        {
+          "file": "General",
+          "issue": "Low React.memo usage (1% of components)",
+          "severity": "low"
+        },
+        {
+          "file": "General",
+          "issue": "10 components using <img> instead of next/image",
+          "severity": "medium"
+        }
+      ],
+      "positives": []
+    },
+    "backend": {
+      "score": 0,
+      "max": 100,
+      "issues": [
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\admin.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\analytics.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\insights.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\invitations.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\menus.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\posts.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\subscriptions.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\support_tickets.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\api\\v1\\endpoints\\users.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\core\\mixins.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\core\\query_optimization.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\announcement.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\api_key.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\backup.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\comment.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\documentation.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\email_template.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\favorite.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\feature_flag.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\feedback.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\file.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\form.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\integration.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\invitation.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\invoice.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\menu.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\notification.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\onboarding.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\page.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\plan.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\post.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\project.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\report.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\role.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\scheduled_task.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\share.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\subscription.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\support_ticket.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\tag.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\team.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\template.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\user_preference.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\version.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\models\\webhook_event.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\scripts\\seed.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\announcement_service.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\api_key_service.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\email_template_service.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\feature_flag_service.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\invitation_service.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\onboarding_service.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\rbac_service.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\share_service.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\services\\theme_service.py",
+          "issue": "Potential N+1 query pattern detected",
+          "severity": "high"
+        },
+        {
+          "file": "backend\\app\\services\\theme_service.py",
+          "issue": "Query without caching (consider adding cache)",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\services\\user_preference_service.py",
+          "issue": "Query without pagination (.all() without limit)",
+          "severity": "medium"
+        },
+        {
+          "file": "backend\\app\\tasks\\notification_tasks.py",
+          "issue": "Query without caching (consider adding cache)",
+          "severity": "low"
+        },
+        {
+          "file": "backend\\app\\utils\\invoice_helpers.py",
+          "issue": "Relationship without eager loading (potential N+1)",
+          "severity": "medium"
+        }
+      ],
+      "positives": [
+        "Eager loading used in api_keys.py",
+        "Eager loading used in clients.py",
+        "Eager loading used in invoices.py",
+        "Eager loading used in rbac.py",
+        "Eager loading used in teams.py",
+        "Eager loading used in query_optimization.py",
+        "Eager loading used in user.py",
+        "Eager loading used in client_service.py",
+        "Eager loading used in comment_service.py",
+        "Eager loading used in erp_service.py",
+        "Eager loading used in invitation_service.py",
+        "Eager loading used in invoice_service.py",
+        "Eager loading used in rbac_service.py",
+        "Eager loading used in search_service.py",
+        "Eager loading used in subscription_service.py",
+        "Eager loading used in tag_service.py",
+        "Eager loading used in team_service.py",
+        "Pagination implemented in 36 files"
+      ]
+    },
+    "bundle": {
+      "score": 96,
+      "max": 100,
+      "issues": [
+        {
+          "file": "package.json",
+          "issue": "Heavy dependency: axios (consider alternatives)",
+          "severity": "low"
+        },
+        {
+          "file": "package.json",
+          "issue": "Heavy dependency: recharts (consider alternatives)",
+          "severity": "low"
+        }
+      ],
+      "positives": [
+        "Package imports optimization enabled",
+        "Console removal in production enabled",
+        "Good route-based code splitting (248 routes)"
+      ]
+    },
+    "database": {
+      "score": 100,
+      "max": 100,
+      "issues": [],
+      "positives": [
+        "Good index coverage (165 indexes)",
+        "Cache implemented in 21 files"
+      ]
+    },
+    "optimization": {
+      "score": 97,
+      "max": 100,
+      "issues": [
+        {
+          "file": "next.config.js",
+          "issue": "Partial prerendering not configured",
+          "severity": "low"
+        }
+      ],
+      "positives": [
+        "Compression enabled",
+        "Image optimization enabled",
+        "Web Vitals tracking implemented"
+      ]
+    }
+  },
+  "timestamp": "2025-12-30T15:48:44.215Z"
+}

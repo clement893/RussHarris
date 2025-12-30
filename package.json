@@ -23,7 +23,10 @@
     "api:report:custom": "node scripts/generate-api-connection-report.js --output",
     "migrate:module": "node scripts/migrate-module.js",
     "migrate:guide": "node scripts/guide-module-integration.js",
-    "validate:dependencies": "node scripts/validate-dependencies.js"
+    "validate:dependencies": "node scripts/validate-dependencies.js",
+    "audit:code": "node scripts/audit-code-complete.js",
+    "audit:performance": "node scripts/audit-performance-complete.js",
+    "audit:all": "pnpm audit:code && pnpm audit:performance"
   },
   "devDependencies": {
     "prettier": "^3.1.1"
