@@ -303,7 +303,7 @@ export default function AdminAPIKeysContent() {
               >
                 Annuler
               </Button>
-              <Button variant="error" onClick={handleDelete}>
+              <Button variant="danger" onClick={handleDelete}>
                 Révoquer
               </Button>
             </div>
