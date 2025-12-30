@@ -41,6 +41,8 @@ COPY --from=deps /app/packages/types/package.json ./packages/types/package.json
 RUN pnpm install --prefer-offline --frozen-lockfile || pnpm install --prefer-offline --no-frozen-lockfile
 
 # Copy and build types package first (required for web app build)
+# Copy tsconfig.base.json first (required by packages/types/tsconfig.json)
+COPY tsconfig.base.json ./tsconfig.base.json
 COPY packages/types ./packages/types
 RUN cd packages/types && pnpm build && ls -la dist/
 
