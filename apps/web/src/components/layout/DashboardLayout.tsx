@@ -25,7 +25,10 @@ import {
   FolderKanban, 
   Shield,
   User,
-  Settings
+  Settings,
+  Network,
+  Building2,
+  MessageSquare
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -55,6 +58,27 @@ const createSidebarItems = (isAdmin: boolean) => [
     label: 'Projets',
     href: '/dashboard/projects',
     icon: <FolderKanban className="w-5 h-5" />,
+  },
+  {
+    label: 'Réseau',
+    icon: <Network className="w-5 h-5" />,
+    children: [
+      {
+        label: 'Entreprises',
+        href: '/dashboard/reseau/entreprises',
+        icon: <Building2 className="w-5 h-5" />,
+      },
+      {
+        label: 'Contacts',
+        href: '/dashboard/reseau/contacts',
+        icon: <User className="w-5 h-5" />,
+      },
+      {
+        label: 'Témoignages',
+        href: '/dashboard/reseau/temoignages',
+        icon: <MessageSquare className="w-5 h-5" />,
+      },
+    ],
   },
   {
     label: 'Super Admin',
