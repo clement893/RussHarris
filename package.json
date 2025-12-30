@@ -21,7 +21,9 @@
     "api:check:backend": "node scripts/check-api-connections-backend.js",
     "api:report": "node scripts/generate-api-connection-report.js",
     "api:report:custom": "node scripts/generate-api-connection-report.js --output",
-    "api:manifest": "node scripts/generate-frontend-api-manifest.js"
+    "migrate:module": "node scripts/migrate-module.js",
+    "migrate:guide": "node scripts/guide-module-integration.js",
+    "validate:dependencies": "node scripts/validate-dependencies.js"
   },
   "devDependencies": {
     "prettier": "^3.1.1"
