@@ -5,6 +5,9 @@ Authentication Endpoints
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 from urllib.parse import urlencode, urlparse
+import asyncio
+import json
+import base64
 
 import httpx
 import bcrypt
@@ -934,6 +937,7 @@ async def google_oauth_callback(
             
             token_data = token_response.json()
             access_token = token_data.get("access_token")
+            id_token = token_data.get("id_token")  # JWT containing user info
             
             if not access_token:
                 raise HTTPException(
@@ -941,54 +945,134 @@ async def google_oauth_callback(
                     detail="No access token received from Google"
                 )
             
-            # Get user info from Google
-            try:
-                userinfo_response = await client.get(
-                    "https://www.googleapis.com/oauth2/v2/userinfo",
-                    headers={"Authorization": f"Bearer {access_token}"},
-                )
-            except httpx.ConnectError as e:
-                logger.error(f"Failed to connect to Google userinfo endpoint: {e}")
-                raise HTTPException(
-                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                    detail="Unable to connect to Google user information service. Please try again."
-                )
-            except httpx.TimeoutException as e:
-                logger.error(f"Timeout connecting to Google userinfo endpoint: {e}")
-                raise HTTPException(
-                    status_code=status.HTTP_504_GATEWAY_TIMEOUT,
-                    detail="Google user information service is taking too long to respond. Please try again."
-                )
-            except httpx.NetworkError as e:
-                logger.error(f"Network error connecting to Google userinfo endpoint: {e}")
-                error_msg = str(e)
-                if "Name or service not known" in error_msg or "Errno -2" in error_msg:
+            # Try to extract user info from id_token first (avoids extra HTTP request)
+            email = None
+            name = ""
+            picture = None
+            google_user_id = None
+            
+            if id_token:
+                try:
+                    # Decode JWT without verification (Google already verified it)
+                    # The id_token is already validated by Google, so we can decode it
+                    # JWT format: header.payload.signature
+                    parts = id_token.split('.')
+                    if len(parts) >= 2:
+                        # Decode payload (add padding if needed)
+                        payload = parts[1]
+                        # Add padding for base64 decoding
+                        padding_needed = (4 - len(payload) % 4) % 4
+                        payload += '=' * padding_needed
+                        decoded_payload = base64.urlsafe_b64decode(payload)
+                        id_token_data = json.loads(decoded_payload)
+                        
+                        email = id_token_data.get("email")
+                        name = id_token_data.get("name", "")
+                        picture = id_token_data.get("picture")
+                        google_user_id = id_token_data.get("sub")  # Google user ID
+                        
+                        logger.info(f"Extracted user info from id_token: email={email}, name={name}")
+                except Exception as e:
+                    logger.warning(f"Failed to extract user info from id_token: {e}, will fetch from userinfo endpoint")
+            
+            # If we don't have email from id_token, fetch from userinfo endpoint
+            # Note: google_user_id is optional, but email is required
+            if not email:
+                # Retry logic for userinfo request
+                max_retries = 3
+                retry_delay = 1.0  # Start with 1 second
+                userinfo_response = None
+                last_error = None
+                
+                for attempt in range(max_retries):
+                    try:
+                        logger.info(f"Fetching user info from Google (attempt {attempt + 1}/{max_retries})")
+                        userinfo_response = await client.get(
+                            "https://www.googleapis.com/oauth2/v2/userinfo",
+                            headers={"Authorization": f"Bearer {access_token}"},
+                            timeout=10.0,
+                        )
+                        
+                        if userinfo_response.status_code == 200:
+                            break  # Success, exit retry loop
+                        else:
+                            logger.warning(f"Google userinfo returned status {userinfo_response.status_code}: {userinfo_response.text}")
+                            if attempt < max_retries - 1:
+                                await asyncio.sleep(retry_delay)
+                                retry_delay *= 2  # Exponential backoff
+                                
+                    except (httpx.ConnectError, httpx.TimeoutException, httpx.NetworkError) as e:
+                        last_error = e
+                        error_msg = str(e)
+                        is_dns_error = "Name or service not known" in error_msg or "Errno -2" in error_msg
+                        
+                        logger.warning(f"Error fetching userinfo (attempt {attempt + 1}/{max_retries}): {error_msg}")
+                        
+                        if attempt < max_retries - 1:
+                            # Wait before retry with exponential backoff
+                            await asyncio.sleep(retry_delay)
+                            retry_delay *= 2
+                            logger.info(f"Retrying in {retry_delay} seconds...")
+                        else:
+                            # Last attempt failed
+                            if isinstance(e, httpx.ConnectError):
+                                raise HTTPException(
+                                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                                    detail="Unable to connect to Google user information service after multiple attempts. Please try again later."
+                                )
+                            elif isinstance(e, httpx.TimeoutException):
+                                raise HTTPException(
+                                    status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+                                    detail="Google user information service is taking too long to respond. Please try again."
+                                )
+                            elif is_dns_error:
+                                raise HTTPException(
+                                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                                    detail="DNS resolution failed when fetching user information. This may be a temporary network issue. Please try again."
+                                )
+                            else:
+                                raise HTTPException(
+                                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                                    detail=f"Network error connecting to Google user information service: {error_msg}"
+                                )
+                    except Exception as e:
+                        logger.error(f"Unexpected error fetching userinfo: {e}", exc_info=True)
+                        last_error = e
+                        if attempt < max_retries - 1:
+                            await asyncio.sleep(retry_delay)
+                            retry_delay *= 2
+                        else:
+                            raise HTTPException(
+                                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                                detail=f"Failed to get user information from Google: {str(e)}"
+                            )
+                
+                # Process userinfo response
+                if userinfo_response and userinfo_response.status_code == 200:
+                    google_user = userinfo_response.json()
+                    email = google_user.get("email") or email
+                    name = google_user.get("name", "") or name
+                    picture = google_user.get("picture") or picture
+                    google_user_id = google_user.get("id") or google_user_id
+                elif userinfo_response:
+                    logger.error(f"Google userinfo failed with status {userinfo_response.status_code}: {userinfo_response.text}")
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail=f"Failed to get user information from Google: {userinfo_response.text}"
+                    )
+                else:
+                    # Should not happen, but handle it
                     raise HTTPException(
                         status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                        detail="DNS resolution failed when fetching user information. Please check your network configuration."
+                        detail="Failed to get user information from Google after multiple attempts"
                     )
-                raise HTTPException(
-                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                    detail=f"Network error connecting to Google user information service: {error_msg}"
-                )
-            except Exception as e:
-                logger.error(f"Unexpected error connecting to Google userinfo endpoint: {e}", exc_info=True)
-                raise HTTPException(
-                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    detail=f"Failed to connect to Google user information service: {str(e)}"
-                )
             
-            if userinfo_response.status_code != 200:
-                logger.error(f"Google userinfo failed: {userinfo_response.text}")
+            # Verify we have required information
+            if not email:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Failed to get user information from Google"
+                    detail="Email not provided by Google"
                 )
-            
-            google_user = userinfo_response.json()
-            email = google_user.get("email")
-            name = google_user.get("name", "")
-            picture = google_user.get("picture")
             
             if not email:
                 raise HTTPException(
