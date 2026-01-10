@@ -2,7 +2,7 @@
 
 **Date de début:** 2025-01-27  
 **Statut global:** 🟡 En cours  
-**Batches terminés:** 2/10 (20%)
+**Batches terminés:** 3/10 (30%)
 
 ---
 
@@ -66,15 +66,26 @@
 
 ## 📋 BATCH 3: Intégration Navigation
 
-**Statut:** ⏳ En attente  
+**Statut:** 🟢 Terminé  
 **Priorité:** 🔴 Critique  
+**Date de début:** 2025-01-27  
+**Date de fin:** 2025-01-27  
 **Dépend de:** BATCH 2
 
 ### Checklist:
-- [ ] Remplacer Header.tsx par MasterclassNavigation
-- [ ] Intégrer dans layout.tsx principal
-- [ ] Adapter pour pages booking (mini-header)
-- [ ] Vérifier toutes les pages utilisent nouvelle navigation
+- [x] Remplacer Header.tsx par MasterclassNavigation ✅
+- [x] Intégrer dans app.tsx (layout principal) ✅
+- [x] Adapter pour pages booking (navigation minimale, pas de CTA, pas de footer) ✅
+- [x] Exclure pages dashboard/admin/auth (gérées séparément) ✅
+
+### Fichiers modifiés:
+- ✅ `apps/web/src/app/app.tsx` (modifié, remplacé Header par MasterclassNavigation)
+
+### Notes:
+- Navigation active sur toutes les pages publiques
+- Pages booking: navigation minimale (logo seulement, pas de menu complet)
+- Pages dashboard/admin/auth: exclues (gérées par leurs propres layouts)
+- Footer affiché seulement sur pages publiques (pas sur booking)
 
 ---
 
@@ -184,9 +195,9 @@
 
 ## 📊 Statistiques
 
-- **Batches terminés:** 2/10
-- **Batches en cours:** 1/10 (BATCH 3)
-- **Progression globale:** 20%
+- **Batches terminés:** 3/10
+- **Batches en cours:** 0/10
+- **Progression globale:** 30%
 - **Dernière mise à jour:** 2025-01-27
 
 ---
