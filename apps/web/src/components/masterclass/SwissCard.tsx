@@ -1,15 +1,14 @@
 /**
  * SwissCard Component
- * 
+ *
  * Minimalist card component following Swiss International Style
  * - No shadows
  * - Thin border (1px)
  * - Generous padding
  * - Subtle hover effect (optional)
- * 
+ *
  * @component
  */
-
 'use client';
 
 import { ReactNode, HTMLAttributes } from 'react';
@@ -41,14 +40,14 @@ export default function SwissCard({
   };
 
   const hoverClasses = hover
-    ? 'transition-colors duration-200 hover:border-swiss-black hover:bg-gray-50'
+    ? 'transition-colors duration-200 hover:border-swiss-black hover:bg-muted'
     : '';
 
   return (
     <div
       className={clsx(
-        'border border-gray-300',
-        'bg-white',
+        'border border-border',
+        'bg-background',
         paddingClasses[padding],
         hoverClasses,
         className

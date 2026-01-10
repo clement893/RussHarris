@@ -1,14 +1,13 @@
 /**
  * UrgencyBadge Component
- * 
+ *
  * Badge indicating limited availability for masterclass events
  * - "Places limitées" message
  * - Color variants: warning (yellow) or danger (red if < 5 places)
  * - Optional subtle pulse animation
- * 
+ *
  * @component
  */
-
 'use client';
 
 import { HTMLAttributes } from 'react';

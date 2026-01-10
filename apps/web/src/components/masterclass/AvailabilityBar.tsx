@@ -1,14 +1,13 @@
 /**
  * AvailabilityBar Component
- * 
+ *
  * Visual progress bar showing event availability
  * - Color changes based on availability: green (> 20%), yellow (10-20%), red (< 10%)
  * - Displays "X/Y places disponibles" text
  * - Responsive design
- * 
+ *
  * @component
  */
-
 'use client';
 
 import { HTMLAttributes } from 'react';
@@ -57,15 +56,15 @@ export default function AvailabilityBar({
     <div className={clsx('w-full', className)} {...props}>
       {showLabel && (
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium text-gray-900">
+          <span className="text-sm font-medium text-foreground">
             {available}/{total} places disponibles
           </span>
-          <span className="text-xs text-gray-600">{getStatusText()}</span>
+          <span className="text-xs text-muted-foreground">{getStatusText()}</span>
         </div>
       )}
-      
+
       {/* Progress bar container */}
-      <div className="w-full h-2 bg-gray-200 border border-gray-300">
+      <div className="w-full h-2 bg-muted border border-border">
         <div
           className={clsx('h-full transition-all duration-300', getColorClass())}
           style={{ width: `${percentage}%` }}
@@ -76,9 +75,9 @@ export default function AvailabilityBar({
           aria-label={`${available} places disponibles sur ${total}`}
         />
       </div>
-      
+
       {showLabel && available > 0 && (
-        <div className="mt-1 text-xs text-gray-500">
+        <div className="mt-1 text-xs text-muted-foreground">
           {booked} places réservées
         </div>
       )}

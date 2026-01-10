@@ -1,12 +1,11 @@
 /**
  * SwissDivider Component
- * 
+ *
  * Minimal horizontal divider line following Swiss International Style
  * Thin 1px line in black/gray, no shadows, no decorations
- * 
+ *
  * @component
  */
-
 'use client';
 
 import { HTMLAttributes } from 'react';
@@ -31,7 +30,7 @@ export default function SwissDivider({
 }: SwissDividerProps) {
   const colorClasses = {
     black: 'border-swiss-black',
-    gray: 'border-gray-300',
+    gray: 'border-border',
   };
 
   const variantClasses = {
