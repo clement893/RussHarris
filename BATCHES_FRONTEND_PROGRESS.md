@@ -2,7 +2,7 @@
 
 **Date de début:** 2025-01-27  
 **Statut global:** 🟡 En cours  
-**Batches terminés:** 5/10 (50%)
+**Batches terminés:** 6/10 (60%)
 
 ---
 
@@ -142,15 +142,31 @@
 
 ## 📋 BATCH 6: Page d'Accueil - Sections Principales
 
-**Statut:** ⏳ En attente  
+**Statut:** 🟢 Terminé  
 **Priorité:** 🔴 Critique  
+**Date de début:** 2025-01-27  
+**Date de fin:** 2025-01-27  
 **Dépend de:** BATCH 4 (Navigation)
 
 ### Checklist:
-- [ ] Améliorer Hero Section (image, texte)
-- [ ] Créer section "Pourquoi cette Masterclass?"
-- [ ] Créer section "Le Programme en Bref"
-- [ ] Améliorer section Villes (carrousel/grille)
+- [x] Hero Section (maintenue, déjà bien) ✅
+- [x] Créer section "Pourquoi cette Masterclass?" (BenefitsGrid) ✅
+- [x] Créer section "Le Programme en Bref" (ProgramPreview) ✅
+- [x] Améliorer section Villes (CityCard avec top 3 villes) ✅
+
+### Fichiers créés/modifiés:
+- ✅ `apps/web/src/components/masterclass/BenefitsGrid.tsx` (nouveau)
+- ✅ `apps/web/src/components/masterclass/ProgramPreview.tsx` (nouveau)
+- ✅ `apps/web/src/components/masterclass/CityCard.tsx` (nouveau)
+- ✅ `apps/web/src/components/masterclass/index.ts` (modifié, exports)
+- ✅ `apps/web/src/app/[locale]/page.tsx` (modifié, nouvelles sections)
+
+### Notes:
+- BenefitsGrid: grille 4 colonnes avec icônes, hover states (noir/blanc)
+- ProgramPreview: timeline condensée jour 1/jour 2 avec icônes
+- CityCard: card ville avec disponibilité, next event, CTA
+- Design Swiss Style appliqué partout (border 2px, noir/blanc, font-black)
+- Stats section maintenue (déjà bien)
 
 ---
 
@@ -217,9 +233,9 @@
 
 ## 📊 Statistiques
 
-- **Batches terminés:** 5/10
+- **Batches terminés:** 6/10
 - **Batches en cours:** 0/10
-- **Progression globale:** 50%
+- **Progression globale:** 60%
 - **Dernière mise à jour:** 2025-01-27
 
 ---
