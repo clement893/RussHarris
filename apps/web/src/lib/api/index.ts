@@ -72,3 +72,6 @@ export * from './theme-errors';
 // Re-export API keys API
 export { apiKeysAPI } from './apiKeys';
 export type { APIKeyCreate, APIKeyResponse, APIKeyListResponse, APIKeyRotateResponse, AdminAPIKeyListResponse } from './apiKeys';
+
+// Re-export API utilities
+export { extractApiData } from './utils';

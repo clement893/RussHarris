@@ -36,7 +36,7 @@ export default function CityDetailPage() {
       setIsLoading(true);
       const events = await masterclassAPI.listCityEvents(cityId);
       setCityEvents(events);
-      if (events.length > 0 && events[0].city) {
+      if (events.length > 0 && events[0]?.city) {
         setCity(events[0].city);
       }
     } catch (error) {
