@@ -1234,30 +1234,54 @@ async def google_oauth_callback(
         logger.error(f"Google OAuth callback error: {e}", exc_info=True)
         error_msg = str(e)
         error_type = type(e).__name__
+        error_module = type(e).__module__
         
         # Check if this is a database connection error (not Google-related)
-        is_database_error = (
+        # Check exception type and module
+        is_database_exception = (
+            "sqlalchemy" in error_module.lower() or
+            "asyncpg" in error_module.lower() or
+            "psycopg" in error_module.lower() or
+            "OperationalError" in error_type or
+            "DatabaseError" in error_type
+        )
+        
+        # Check error message for database-related keywords
+        is_database_error_msg = (
             "postgres" in error_msg.lower() or
             "railway.internal" in error_msg.lower() or
             "database" in error_msg.lower() or
-            "OperationalError" in error_type or
             "asyncpg" in error_msg.lower() or
-            "sqlalchemy" in error_msg.lower()
+            "sqlalchemy" in error_msg.lower() or
+            "connection pool" in error_msg.lower()
         )
+        
+        # Check if it's a DNS error that's likely from database (not Google)
+        is_dns_error = "Name or service not known" in error_msg or "Errno -2" in error_msg
+        
+        # If it's a DNS error and we're not in an httpx context, it's likely database
+        # (httpx errors are caught earlier, so if we get here with DNS error, it's likely DB)
+        is_database_dns_error = (
+            is_dns_error and 
+            (is_database_exception or is_database_error_msg or 
+             ("socket.gaierror" in str(type(e)) and not isinstance(e, (httpx.ConnectError, httpx.NetworkError))))
+        )
+        
+        is_database_error = is_database_exception or is_database_error_msg or is_database_dns_error
         
         # Check if this is a Google API DNS error
         is_google_dns_error = (
-            ("Name or service not known" in error_msg or "Errno -2" in error_msg) and
+            is_dns_error and
             not is_database_error and
             ("googleapis.com" in error_msg or "google.com" in error_msg or isinstance(e, (httpx.ConnectError, httpx.NetworkError)))
         )
         
         if is_database_error:
             # Database connection error - different issue
-            logger.error(f"Database connection error during Google OAuth: {error_msg}")
+            logger.error(f"Database connection error during Google OAuth: {error_msg} (type: {error_type}, module: {error_module})")
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Database connection failed. Please check your database configuration and ensure the database service is available."
+                detail="Database connection failed. Please check your database configuration and ensure the database service is available. The Google OAuth authentication succeeded, but user data could not be saved."
             )
         elif is_google_dns_error:
             raise HTTPException(
