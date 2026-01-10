@@ -13,11 +13,8 @@ export { default as SwissCard } from './SwissCard';
 export { default as BookingForm } from './BookingForm';
 export { default as BookingSummary } from './BookingSummary';
 export { default as BookingStripeCheckout } from './BookingStripeCheckout';
+export { default as BenefitsGrid } from './BenefitsGrid';
+export { default as ProgramPreview } from './ProgramPreview';
+export { default as CityCard } from './CityCard';
 export type { BookingSummaryData } from './BookingSummary';
-
-// TODO: Créer ces composants selon le plan BATCH 5 et BATCH 6
-// export { default as CityCard } from './CityCard';
-// export { default as BookingForm } from './BookingForm';
-// export { default as BookingSummary } from './BookingSummary';
-// export { default as CityDateSelector } from './CityDateSelector';
-// export { default as BookingStripeCheckout } from './BookingStripeCheckout';
+export type { Benefit } from './BenefitsGrid';
