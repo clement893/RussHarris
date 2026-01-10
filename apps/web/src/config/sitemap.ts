@@ -454,40 +454,6 @@ export const sitePages: Record<string, SitemapPage[]> = {
       requiresAdmin: true,
     },
   ],
-  'Exemples': [
-    { 
-      path: '/examples', 
-      title: 'Exemples', 
-      description: 'Page d\'exemples',
-      priority: 0.6,
-      changefreq: 'monthly',
-      requiresAuth: false, // Page publique
-    },
-    { 
-      path: '/examples/dashboard', 
-      title: 'Exemple Dashboard', 
-      description: 'Exemple de tableau de bord',
-      priority: 0.6,
-      changefreq: 'monthly',
-      requiresAuth: false, // Page publique
-    },
-    { 
-      path: '/examples/onboarding', 
-      title: 'Exemple Onboarding', 
-      description: 'Exemple d\'onboarding',
-      priority: 0.6,
-      changefreq: 'monthly',
-      requiresAuth: false, // Page publique
-    },
-    { 
-      path: '/examples/settings', 
-      title: 'Exemple Paramètres', 
-      description: 'Exemple de paramètres',
-      priority: 0.6,
-      changefreq: 'monthly',
-      requiresAuth: false, // Page publique
-    },
-  ],
   'Onboarding': [
     {
       path: '/onboarding',
@@ -545,30 +511,6 @@ export const sitePages: Record<string, SitemapPage[]> = {
       description: 'Chat avec OpenAI GPT ou Anthropic Claude',
       priority: 0.8,
       changefreq: 'weekly',
-      requiresAuth: true, // Protected page
-    },
-    { 
-      path: '/ai/test', 
-      title: 'Test IA', 
-      description: 'Page de test pour l\'IA',
-      priority: 0.5,
-      changefreq: 'monthly',
-      requiresAuth: false, // Page publique
-    },
-    { 
-      path: '/email/test', 
-      title: 'Test Email', 
-      description: 'Page de test pour les emails',
-      priority: 0.5,
-      changefreq: 'monthly',
-      requiresAuth: false, // Page publique
-    },
-    { 
-      path: '/db/test', 
-      title: 'Database Health Check', 
-      description: 'Page de vérification de la santé de la base de données',
-      priority: 0.5,
-      changefreq: 'monthly',
       requiresAuth: true, // Protected page
     },
     { 
