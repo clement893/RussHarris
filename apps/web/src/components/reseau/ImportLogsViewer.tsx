@@ -88,26 +88,26 @@ export default function ImportLogsViewer({ importId, onComplete }: ImportLogsVie
   const getLogIcon = (level: string) => {
     switch (level) {
       case 'success':
-        return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+        return <CheckCircle2 className="w-4 h-4 text-success-500" />;
       case 'error':
-        return <XCircle className="w-4 h-4 text-red-500" />;
+        return <XCircle className="w-4 h-4 text-error-500" />;
       case 'warning':
-        return <AlertCircle className="w-4 h-4 text-yellow-500" />;
+        return <AlertCircle className="w-4 h-4 text-warning-500" />;
       default:
-        return <Info className="w-4 h-4 text-blue-500" />;
+        return <Info className="w-4 h-4 text-primary-500" />;
     }
   };
 
   const getLogColor = (level: string) => {
     switch (level) {
       case 'success':
-        return 'text-green-600 bg-green-50 border-green-200';
+        return 'text-success-600 bg-success-50 border-success-200';
       case 'error':
-        return 'text-red-600 bg-red-50 border-red-200';
+        return 'text-error-600 bg-error-50 border-error-200';
       case 'warning':
-        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+        return 'text-warning-600 bg-warning-50 border-warning-200';
       default:
-        return 'text-blue-600 bg-blue-50 border-blue-200';
+        return 'text-primary-600 bg-primary-50 border-primary-200';
     }
   };
 
@@ -126,8 +126,8 @@ export default function ImportLogsViewer({ importId, onComplete }: ImportLogsVie
             ) : (
               <div className={clsx(
                 "w-2 h-2 rounded-full",
-                status?.status === 'completed' ? "bg-green-500" :
-                status?.status === 'failed' ? "bg-red-500" :
+                status?.status === 'completed' ? "bg-success-500" :
+                status?.status === 'failed' ? "bg-error-500" :
                 "bg-gray-400"
               )} />
             )}

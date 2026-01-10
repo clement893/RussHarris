@@ -101,7 +101,7 @@ export function ErrorDisplay({
         <Card className="max-w-lg w-full mx-auto text-center">
           <div className="p-8 md:p-12">
             <div className="mb-6">
-              <div className="text-7xl md:text-8xl font-bold text-red-600 dark:text-red-400 mb-4">
+              <div className="text-7xl md:text-8xl font-bold text-error-600 dark:text-error-400 mb-4">
                 {errorStatusCode ?? '!'}
               </div>
               <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3">

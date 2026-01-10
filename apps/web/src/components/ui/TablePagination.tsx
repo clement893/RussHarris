@@ -33,7 +33,7 @@ export default function TablePagination({
 
   return (
     <div className={`flex items-center justify-between ${className}`}>
-      <div className="text-sm text-gray-600 dark:text-gray-400">
+      <div className="text-sm text-muted-foreground">
         Affichage de {startIndex} à {endIndex} sur {totalItems}
       </div>
       <Pagination

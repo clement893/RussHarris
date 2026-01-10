@@ -44,9 +44,9 @@ export default function PerformanceProfiler() {
   };
 
   const getDurationColor = (duration: number): string => {
-    if (duration > 3000) return 'text-red-600 dark:text-red-400';
-    if (duration > 1000) return 'text-yellow-600 dark:text-yellow-400';
-    return 'text-green-600 dark:text-green-400';
+    if (duration > 3000) return 'text-error-600 dark:text-error-400';
+    if (duration > 1000) return 'text-warning-600 dark:text-warning-400';
+    return 'text-success-600 dark:text-success-400';
   };
 
   return (
@@ -74,7 +74,7 @@ export default function PerformanceProfiler() {
         </div>
 
         {Object.keys(profiles).length === 0 ? (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-muted-foreground">
             No profiling data available. Start profiling to see results.
           </div>
         ) : (
@@ -103,7 +103,7 @@ export default function PerformanceProfiler() {
           </div>
         )}
 
-        <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
+        <div className="mt-4 text-xs text-muted-foreground">
           <p>Profiling helps identify performance bottlenecks in your application.</p>
         </div>
       </div>

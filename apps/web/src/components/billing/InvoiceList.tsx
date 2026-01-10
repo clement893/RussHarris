@@ -63,8 +63,8 @@ export default function InvoiceList({
       sortable: true,
       render: (_value, invoice) => (
         <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-gray-400 dark:text-gray-500" />
-          <span className="font-medium text-gray-900 dark:text-gray-100">{invoice.number}</span>
+          <FileText className="w-4 h-4 text-muted-foreground" />
+          <span className="font-medium text-foreground">{invoice.number}</span>
         </div>
       ),
     },
@@ -73,7 +73,7 @@ export default function InvoiceList({
       label: 'Date',
       sortable: true,
       render: (value) => (
-        <span className="text-gray-700 dark:text-gray-300">
+        <span className="text-foreground">
           {new Date(value as string).toLocaleDateString()}
         </span>
       ),
@@ -83,7 +83,7 @@ export default function InvoiceList({
       label: 'Due Date',
       sortable: true,
       render: (value) => (
-        <span className="text-gray-700 dark:text-gray-300">
+        <span className="text-foreground">
           {new Date(value as string).toLocaleDateString()}
         </span>
       ),
@@ -93,7 +93,7 @@ export default function InvoiceList({
       label: 'Amount',
       sortable: true,
       render: (_value, invoice) => (
-        <span className="font-semibold text-gray-900 dark:text-gray-100">
+        <span className="font-semibold text-foreground">
           {invoice.currency} {invoice.amount.toFixed(2)}
         </span>
       ),
@@ -135,9 +135,9 @@ export default function InvoiceList({
   ];
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Invoices</h3>
+        <h3 className="text-lg font-semibold text-foreground">Invoices</h3>
         <div className="flex items-center gap-2">
           <select
             value={statusFilter}
@@ -145,8 +145,8 @@ export default function InvoiceList({
             className={clsx(
               'px-3 py-2 border rounded-lg text-sm',
               'bg-white dark:bg-gray-700',
-              'text-gray-900 dark:text-gray-100',
-              'border-gray-300 dark:border-gray-600',
+              'text-foreground',
+              'border-border',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
             )}
           >

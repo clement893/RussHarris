@@ -48,7 +48,7 @@ export default function SupportTickets({
       render: (_value: unknown, ticket: SupportTicket) => (
         <div className="flex items-center gap-2">
           <MessageSquare className="w-4 h-4 text-gray-400" />
-          <span className="font-medium text-gray-900 dark:text-gray-100">{ticket.subject}</span>
+          <span className="font-medium text-foreground">{ticket.subject}</span>
         </div>
       ),
     },
@@ -101,7 +101,7 @@ export default function SupportTickets({
       label: 'Created',
       sortable: true,
       render: (_value: unknown, ticket: SupportTicket) => (
-        <span className="text-sm text-gray-600 dark:text-gray-400">
+        <span className="text-sm text-muted-foreground">
           {new Date(ticket.created_at).toLocaleDateString()}
         </span>
       ),

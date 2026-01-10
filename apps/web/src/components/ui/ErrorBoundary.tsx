@@ -150,7 +150,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                     <summary className="cursor-pointer text-sm font-medium mb-2">
                       Détails techniques
                     </summary>
-                    <pre className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded overflow-auto max-h-48">
+                    <pre className="text-xs bg-muted p-3 rounded overflow-auto max-h-48">
                       {this.state.error.toString()}
                       {this.state.errorInfo?.componentStack && (
                         <>

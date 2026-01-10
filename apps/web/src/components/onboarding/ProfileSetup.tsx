@@ -87,7 +87,7 @@ export default function ProfileSetup({
                 onChange={handleAvatarChange}
                 className="hidden"
               />
-              <div className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+              <div className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                 <Upload className="w-4 h-4" />
                 <span className="text-sm font-medium">Upload Photo</span>
               </div>
@@ -96,7 +96,7 @@ export default function ProfileSetup({
 
           {/* First Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               First Name *
             </label>
             <Input
@@ -109,7 +109,7 @@ export default function ProfileSetup({
 
           {/* Last Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Last Name *
             </label>
             <Input
@@ -122,7 +122,7 @@ export default function ProfileSetup({
 
           {/* Display Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Display Name *
             </label>
             <Input
@@ -131,14 +131,14 @@ export default function ProfileSetup({
               placeholder="johndoe"
               required
             />
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-sm text-muted-foreground">
               This is how your name will appear to others
             </p>
           </div>
 
           {/* Bio */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Bio (Optional)
             </label>
             <textarea
@@ -146,7 +146,7 @@ export default function ProfileSetup({
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
               placeholder="Tell us a bit about yourself..."
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
           </div>
 

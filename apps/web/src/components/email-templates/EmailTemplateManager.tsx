@@ -153,7 +153,7 @@ export function EmailTemplateManager({ className = '' }: EmailTemplateManagerPro
                 className={`p-3 border rounded-lg cursor-pointer transition-colors ${
                   selectedTemplate?.id === template.id
                     ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                    : 'border-border hover:border-gray-300 dark:hover:border-gray-600'
                 }`}
                 onClick={() => {
                   setSelectedTemplate(template);
@@ -165,7 +165,7 @@ export function EmailTemplateManager({ className = '' }: EmailTemplateManagerPro
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-medium">{template.name}</span>
                       {template.is_system && (
-                        <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded">
+                        <span className="text-xs bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-0.5 rounded">
                           System
                         </span>
                       )}
@@ -191,7 +191,7 @@ export function EmailTemplateManager({ className = '' }: EmailTemplateManagerPro
                     {!template.is_system && (
                       <button
                         onClick={() => handleDelete(template.id, template.is_system)}
-                        className="p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                        className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
                         title="Delete"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -239,7 +239,7 @@ export function EmailTemplateManager({ className = '' }: EmailTemplateManagerPro
                   value={editForm.html_body || ''}
                   onChange={(e) => setEditForm({ ...editForm, html_body: e.target.value })}
                   rows={10}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 font-mono text-sm"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-background font-mono text-sm"
                 />
               </div>
               <div>
@@ -248,7 +248,7 @@ export function EmailTemplateManager({ className = '' }: EmailTemplateManagerPro
                   value={editForm.text_body || ''}
                   onChange={(e) => setEditForm({ ...editForm, text_body: e.target.value })}
                   rows={5}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-background"
                 />
               </div>
               <div className="flex gap-2">

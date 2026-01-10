@@ -171,7 +171,7 @@ export default function RichTextEditor({
   return (
     <div className={clsx('flex flex-col', className)}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-foreground mb-1">
           {label}
         </label>
       )}
@@ -179,17 +179,17 @@ export default function RichTextEditor({
       <div
         className={clsx(
           'border rounded-lg overflow-hidden',
-          'bg-white dark:bg-gray-800',
+          'bg-background',
           error
             ? 'border-danger-500 dark:border-danger-400'
             : isFocused
             ? 'border-primary-500 dark:border-primary-400 ring-2 ring-primary-500 dark:ring-primary-400'
-            : 'border-gray-300 dark:border-gray-600',
+            : 'border-border',
           disabled && 'opacity-60 cursor-not-allowed'
         )}
       >
         {toolbar && (
-          <div className="flex items-center gap-1 p-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+          <div className="flex items-center gap-1 p-2 border-b border-border bg-muted">
             <ToolbarButton
               command="bold"
               icon={
@@ -307,7 +307,7 @@ export default function RichTextEditor({
           onBlur={() => setIsFocused(false)}
           className={clsx(
             'p-4 outline-none',
-            'text-gray-900 dark:text-gray-100',
+            'text-foreground',
             'min-h-[200px]',
             disabled && 'cursor-not-allowed'
           )}
@@ -334,7 +334,7 @@ export default function RichTextEditor({
         </p>
       )}
       {helperText && !error && (
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-1 text-sm text-muted-foreground">
           {helperText}
         </p>
       )}

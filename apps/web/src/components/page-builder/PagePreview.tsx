@@ -40,13 +40,13 @@ export default function PagePreview({
         return (
           <div className="py-12 px-4 max-w-4xl mx-auto">
             {section.title && (
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              <h2 className="text-3xl font-bold text-foreground mb-4">
                 {section.title}
               </h2>
             )}
             {section.content && (
               <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                <p className="text-foreground whitespace-pre-wrap">
                   {section.content}
                 </p>
               </div>
@@ -58,12 +58,12 @@ export default function PagePreview({
           <div className="py-12 px-4 bg-gray-50 dark:bg-gray-800">
             <div className="max-w-6xl mx-auto">
               {section.title && (
-                <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-8">
+                <h2 className="text-3xl font-bold text-center text-foreground mb-8">
                   {section.title}
                 </h2>
               )}
               {section.content && (
-                <p className="text-center text-gray-600 dark:text-gray-400 mb-8">
+                <p className="text-center text-muted-foreground mb-8">
                   {section.content}
                 </p>
               )}
@@ -75,12 +75,12 @@ export default function PagePreview({
           <div className="py-12 px-4">
             <div className="max-w-6xl mx-auto">
               {section.title && (
-                <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-gray-100 mb-8">
+                <h2 className="text-3xl font-bold text-center text-foreground mb-8">
                   {section.title}
                 </h2>
               )}
               {section.content && (
-                <div className="text-center text-gray-600 dark:text-gray-400">
+                <div className="text-center text-muted-foreground">
                   {section.content}
                 </div>
               )}
@@ -100,14 +100,14 @@ export default function PagePreview({
         );
       default:
         return (
-          <div className="py-8 px-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <div className="py-8 px-4 border border-border rounded-lg">
             {section.title && (
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              <h3 className="text-xl font-semibold text-foreground mb-2">
                 {section.title}
               </h3>
             )}
             {section.content && (
-              <p className="text-gray-600 dark:text-gray-400">{section.content}</p>
+              <p className="text-muted-foreground">{section.content}</p>
             )}
           </div>
         );
@@ -118,7 +118,7 @@ export default function PagePreview({
     <div className={className}>
       {sections.length === 0 ? (
         <Card>
-          <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-12 text-muted-foreground">
             <p>No sections to preview. Add sections in the editor.</p>
           </div>
         </Card>

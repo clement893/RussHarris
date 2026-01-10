@@ -187,11 +187,11 @@ export default function CMSFormBuilder({
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-3">
           <Badge variant="default">{field.type}</Badge>
-          <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+          <span className="text-sm font-medium text-foreground">
             {field.label || field.name}
           </span>
           {field.required && (
-            <span className="text-xs text-red-500">*</span>
+            <span className="text-xs text-error-500">*</span>
           )}
         </div>
         <div className="flex items-center gap-2">
@@ -230,7 +230,7 @@ export default function CMSFormBuilder({
 
             <div className="mb-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Form Name *
                 </label>
                 <Input
@@ -240,7 +240,7 @@ export default function CMSFormBuilder({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Description
                 </label>
                 <textarea
@@ -248,7 +248,7 @@ export default function CMSFormBuilder({
                   onChange={(e) => setCurrentForm({ ...currentForm, description: e.target.value })}
                   placeholder="Form description"
                   rows={2}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
             </div>
@@ -268,7 +268,7 @@ export default function CMSFormBuilder({
             </div>
 
             {currentForm.fields.length === 0 ? (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-12 text-muted-foreground">
                 <p>No fields yet. Add a field to get started.</p>
               </div>
             ) : (
@@ -285,7 +285,7 @@ export default function CMSFormBuilder({
           <Card title="Form Settings">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Submit Button Text
                 </label>
                 <Input
@@ -295,7 +295,7 @@ export default function CMSFormBuilder({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Success Message
                 </label>
                 <textarea
@@ -303,7 +303,7 @@ export default function CMSFormBuilder({
                   onChange={(e) => setCurrentForm({ ...currentForm, successMessage: e.target.value })}
                   placeholder="Thank you for your submission!"
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
             </div>
@@ -335,7 +335,7 @@ export default function CMSFormBuilder({
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Field Type *
             </label>
             <Select
@@ -345,7 +345,7 @@ export default function CMSFormBuilder({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Label *
             </label>
             <Input
@@ -355,7 +355,7 @@ export default function CMSFormBuilder({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Name (auto-generated from label)
             </label>
             <Input
@@ -365,7 +365,7 @@ export default function CMSFormBuilder({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Placeholder
             </label>
             <Input
@@ -376,7 +376,7 @@ export default function CMSFormBuilder({
           </div>
           {(newField.type === 'select' || newField.type === 'radio') && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Options (one per line)
               </label>
               <textarea
@@ -395,7 +395,7 @@ export default function CMSFormBuilder({
                 }}
                 placeholder="Option 1:value1\nOption 2:value2"
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
           )}
@@ -406,7 +406,7 @@ export default function CMSFormBuilder({
               onChange={(e) => setNewField({ ...newField, required: e.target.checked })}
               className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
             />
-            <label className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+            <label className="ml-2 text-sm text-foreground">
               Required field
             </label>
           </div>

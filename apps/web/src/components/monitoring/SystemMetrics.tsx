@@ -29,7 +29,7 @@ export default function SystemMetrics() {
   if (!metrics) {
     return (
       <Card>
-        <div className="p-6 text-center text-gray-500 dark:text-gray-400">
+        <div className="p-6 text-center text-muted-foreground">
           Loading system metrics...
         </div>
       </Card>
@@ -44,7 +44,7 @@ export default function SystemMetrics() {
           <div>
             <div className="flex justify-between mb-1">
               <span className="text-sm font-medium">CPU</span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-muted-foreground">
                 {metrics.cpu.toFixed(1)}%
               </span>
             </div>
@@ -54,7 +54,7 @@ export default function SystemMetrics() {
           <div>
             <div className="flex justify-between mb-1">
               <span className="text-sm font-medium">Memory</span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-muted-foreground">
                 {metrics.memory.toFixed(1)}%
               </span>
             </div>
@@ -64,24 +64,24 @@ export default function SystemMetrics() {
           <div>
             <div className="flex justify-between mb-1">
               <span className="text-sm font-medium">Disk</span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-muted-foreground">
                 {metrics.disk.toFixed(1)}%
               </span>
             </div>
             <Progress value={metrics.disk} />
           </div>
 
-          <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-2 border-t border-border">
             <div className="text-sm font-medium mb-2">Network</div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">In</div>
+                <div className="text-xs text-muted-foreground mb-1">In</div>
                 <div className="text-lg font-semibold">
                   {(metrics.network.in / 1024 / 1024).toFixed(2)} MB/s
                 </div>
               </div>
               <div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">Out</div>
+                <div className="text-xs text-muted-foreground mb-1">Out</div>
                 <div className="text-lg font-semibold">
                   {(metrics.network.out / 1024 / 1024).toFixed(2)} MB/s
                 </div>
@@ -89,7 +89,7 @@ export default function SystemMetrics() {
             </div>
           </div>
 
-          <div className="text-xs text-gray-500 dark:text-gray-400 mt-4">
+          <div className="text-xs text-muted-foreground mt-4">
             Last updated: {new Date(metrics.timestamp).toLocaleTimeString()}
           </div>
         </div>

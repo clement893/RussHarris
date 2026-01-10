@@ -129,14 +129,14 @@ export function NewsletterSignup({
         </div>
 
         {status === 'success' && (
-          <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+          <div className="flex items-center gap-2 text-sm text-success-600 dark:text-success-400">
             <CheckCircle className="h-4 w-4" />
             <span>{message}</span>
           </div>
         )}
 
         {status === 'error' && (
-          <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400">
+          <div className="flex items-center gap-2 text-sm text-error-600 dark:text-error-400">
             <AlertCircle className="h-4 w-4" />
             <span>{message}</span>
           </div>

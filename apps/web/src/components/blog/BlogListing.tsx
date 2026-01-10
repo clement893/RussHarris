@@ -49,7 +49,7 @@ export default function BlogListing({
     return (
       <div className={className}>
         <div className="text-center py-12">
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
+          <p className="text-muted-foreground text-lg">
             No blog posts found.
           </p>
         </div>
@@ -68,7 +68,7 @@ export default function BlogListing({
               className="h-full flex flex-col"
             >
               {/* Featured Image Placeholder */}
-              <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-t-lg mb-4" />
+              <div className="aspect-video bg-muted rounded-t-lg mb-4" />
 
               {/* Post Content */}
               <div className="flex-1 flex flex-col">
@@ -76,18 +76,18 @@ export default function BlogListing({
                   <Badge variant="default">{post.status}</Badge>
                 </div>
 
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
+                <h3 className="text-xl font-semibold text-foreground mb-2 line-clamp-2">
                   {post.title}
                 </h3>
 
                 {post.excerpt && (
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3 flex-1">
+                  <p className="text-muted-foreground mb-4 line-clamp-3 flex-1">
                     {post.excerpt}
                   </p>
                 )}
 
                 {/* Post Meta */}
-                <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-4 text-sm text-muted-foreground mt-auto pt-4 border-t border-border">
                   {post.author_name && (
                     <div className="flex items-center gap-1">
                       <User className="w-4 h-4" />

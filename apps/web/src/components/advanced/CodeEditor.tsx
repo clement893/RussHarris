@@ -83,13 +83,13 @@ export default function CodeEditor({
   };
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="space-y-4">
         {/* Toolbar */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Code className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <h3 className="text-lg font-semibold text-foreground">
               Code Editor
             </h3>
           </div>
@@ -159,7 +159,7 @@ export default function CodeEditor({
           />
           {readOnly && (
             <div className="absolute top-2 right-2">
-              <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-800 dark:bg-gray-900 px-2 py-1 rounded">
+              <span className="text-xs text-muted-foreground bg-gray-800 dark:bg-gray-900 px-2 py-1 rounded">
                 Read Only
               </span>
             </div>
@@ -167,7 +167,7 @@ export default function CodeEditor({
         </div>
 
         {/* Info */}
-        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
           <div>
             Language: <span className="font-medium">{selectedLanguage}</span>
           </div>

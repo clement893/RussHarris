@@ -110,11 +110,11 @@ export default function ActivityLog({
       label: 'Time',
       sortable: true,
       render: (value) => (
-        <div className="text-gray-900 dark:text-gray-100">
+        <div className="text-foreground">
           <div className="font-medium">
             {new Date(value as string).toLocaleDateString()}
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">
+          <div className="text-xs text-muted-foreground">
             {new Date(value as string).toLocaleTimeString()}
           </div>
         </div>
@@ -131,10 +131,10 @@ export default function ActivityLog({
             size="sm"
           />
           <div>
-            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+            <div className="text-sm font-medium text-foreground">
               {activity.user.name}
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-muted-foreground">
               {activity.user.email}
             </div>
           </div>
@@ -154,11 +154,11 @@ export default function ActivityLog({
       label: 'Resource',
       render: (value, activity) => (
         <div>
-          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+          <div className="text-sm font-medium text-foreground">
             {value as string}
           </div>
           {activity.resourceId && (
-            <div className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+            <div className="text-xs text-muted-foreground font-mono">
               ID: {activity.resourceId}
             </div>
           )}
@@ -169,7 +169,7 @@ export default function ActivityLog({
       key: 'details',
       label: 'Details',
       render: (value) => (
-        <span className="text-sm text-gray-700 dark:text-gray-300">
+        <span className="text-sm text-foreground">
           {value as string || '-'}
         </span>
       ),
@@ -178,7 +178,7 @@ export default function ActivityLog({
       key: 'ipAddress',
       label: 'IP Address',
       render: (value) => (
-        <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+        <span className="text-xs text-muted-foreground font-mono">
           {value as string || '-'}
         </span>
       ),
@@ -186,14 +186,14 @@ export default function ActivityLog({
   ];
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <User className="w-5 h-5" />
             Activity Log
           </h3>
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm text-muted-foreground">
             {filteredActivities.length} of {activities.length} entries
           </div>
         </div>
@@ -211,15 +211,15 @@ export default function ActivityLog({
                 className={clsx(
                   'w-full pl-10 pr-4 py-2 border rounded-lg text-sm',
                   'bg-white dark:bg-gray-700',
-                  'text-gray-900 dark:text-gray-100',
-                  'border-gray-300 dark:border-gray-600',
+                  'text-foreground',
+                  'border-border',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
                 )}
               />
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <Filter className="w-4 h-4 text-muted-foreground" />
             <select
               value={filters.user || ''}
               onChange={(e) => {
@@ -230,8 +230,8 @@ export default function ActivityLog({
               className={clsx(
                 'px-3 py-2 border rounded-lg text-sm',
                 'bg-white dark:bg-gray-700',
-                'text-gray-900 dark:text-gray-100',
-                'border-gray-300 dark:border-gray-600',
+                'text-foreground',
+                'border-border',
                 'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
               )}
             >
@@ -252,8 +252,8 @@ export default function ActivityLog({
               className={clsx(
                 'px-3 py-2 border rounded-lg text-sm',
                 'bg-white dark:bg-gray-700',
-                'text-gray-900 dark:text-gray-100',
-                'border-gray-300 dark:border-gray-600',
+                'text-foreground',
+                'border-border',
                 'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
               )}
             >

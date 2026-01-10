@@ -88,10 +88,10 @@ export default function PrivacySettings({
     <div className={clsx('space-y-6', className)}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Profile Visibility */}
-        <Card title="Profile Visibility" className="bg-white dark:bg-gray-800">
+        <Card title="Profile Visibility" className="bg-background">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Who can see your profile?
               </label>
               <select
@@ -102,8 +102,8 @@ export default function PrivacySettings({
                 className={clsx(
                   'w-full px-4 py-2 border rounded-lg',
                   'bg-white dark:bg-gray-700',
-                  'text-gray-900 dark:text-gray-100',
-                  'border-gray-300 dark:border-gray-600',
+                  'text-foreground',
+                  'border-border',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
                 )}
               >
@@ -112,13 +112,13 @@ export default function PrivacySettings({
                 <option value="private">Private - Only Me</option>
               </select>
             </div>
-            <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between pt-2 border-t border-border">
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <div className="text-sm font-medium text-foreground flex items-center gap-2">
                   <Eye className="w-4 h-4" />
                   Show Email
                 </div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted-foreground mt-1">
                   Display your email address on your profile
                 </div>
               </div>
@@ -129,11 +129,11 @@ export default function PrivacySettings({
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <div className="text-sm font-medium text-foreground flex items-center gap-2">
                   <Eye className="w-4 h-4" />
                   Show Phone
                 </div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted-foreground mt-1">
                   Display your phone number on your profile
                 </div>
               </div>
@@ -146,15 +146,15 @@ export default function PrivacySettings({
         </Card>
 
         {/* Data & Analytics */}
-        <Card title="Data & Analytics" className="bg-white dark:bg-gray-800">
+        <Card title="Data & Analytics" className="bg-background">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <div className="text-sm font-medium text-foreground flex items-center gap-2">
                   <Database className="w-4 h-4" />
                   Data Collection
                 </div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted-foreground mt-1">
                   Allow us to collect usage data to improve our services
                 </div>
               </div>
@@ -163,13 +163,13 @@ export default function PrivacySettings({
                 onChange={(e) => handleChange('allowDataCollection', e.target.checked)}
               />
             </div>
-            <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between pt-2 border-t border-border">
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <div className="text-sm font-medium text-foreground flex items-center gap-2">
                   <Shield className="w-4 h-4" />
                   Analytics
                 </div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted-foreground mt-1">
                   Help us understand how you use our platform
                 </div>
               </div>
@@ -179,12 +179,12 @@ export default function PrivacySettings({
                 disabled={!formData.allowDataCollection}
               />
             </div>
-            <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between pt-2 border-t border-border">
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                <div className="text-sm font-medium text-foreground">
                   Marketing Communications
                 </div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted-foreground mt-1">
                   Receive marketing emails and promotional content
                 </div>
               </div>
@@ -197,15 +197,15 @@ export default function PrivacySettings({
         </Card>
 
         {/* Data Management */}
-        <Card title="Data Management" className="bg-white dark:bg-gray-800">
+        <Card title="Data Management" className="bg-background">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <div className="text-sm font-medium text-foreground flex items-center gap-2">
                   <Download className="w-4 h-4" />
                   Export Your Data
                 </div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted-foreground mt-1">
                   Download a copy of all your data
                 </div>
               </div>
@@ -214,14 +214,14 @@ export default function PrivacySettings({
                 Export Data
               </Button>
             </div>
-            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="pt-4 border-t border-border">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-sm font-medium text-danger-600 dark:text-danger-400 flex items-center gap-2">
                     <Trash2 className="w-4 h-4" />
                     Delete Account
                   </div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                  <div className="text-xs text-muted-foreground mt-1">
                     Permanently delete your account and all associated data
                   </div>
                 </div>

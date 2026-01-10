@@ -170,8 +170,8 @@ export default function Mentions({
         className={clsx(
           'w-full px-4 py-3 border rounded-lg text-sm',
           'bg-white dark:bg-gray-700',
-          'text-gray-900 dark:text-gray-100',
-          'border-gray-300 dark:border-gray-600',
+          'text-foreground',
+          'border-border',
           'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
           'resize-none'
         )}
@@ -181,7 +181,7 @@ export default function Mentions({
       {showSuggestions && suggestions.length > 0 && (
         <div
           ref={suggestionsRef}
-          className="absolute z-50 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-64 overflow-y-auto"
+          className="absolute z-50 mt-1 w-full bg-background border border-border rounded-lg shadow-lg max-h-64 overflow-y-auto"
         >
           {suggestions.map((user, index) => (
             <button
@@ -191,15 +191,15 @@ export default function Mentions({
                 'w-full px-4 py-3 flex items-center gap-3 text-left transition-colors',
                 index === selectedIndex
                   ? 'bg-primary-50 dark:bg-primary-900/20'
-                  : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+                  : 'hover:bg-muted'
               )}
             >
               <Avatar src={user.avatar} name={user.name} size="sm" />
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-gray-900 dark:text-gray-100">
+                <div className="font-medium text-foreground">
                   {user.name}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                <div className="text-xs text-muted-foreground truncate">
                   {user.email}
                 </div>
               </div>
@@ -216,7 +216,7 @@ export default function Mentions({
       {/* Mentioned Users Display */}
       {value.includes('@') && (
         <div className="mt-2 flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-gray-600 dark:text-gray-400">Mentioned:</span>
+          <span className="text-xs text-muted-foreground">Mentioned:</span>
           {users
             .filter((user) => value.includes(`@${user.name}`))
             .map((user) => (

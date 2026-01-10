@@ -123,14 +123,14 @@ export default function BillingSettings({
     <div className={clsx('space-y-6', className)}>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Subscription Settings */}
-        <Card title="Subscription Settings" className="bg-white dark:bg-gray-800">
+        <Card title="Subscription Settings" className="bg-background">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                <div className="text-sm font-medium text-foreground">
                   Auto-Renewal
                 </div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted-foreground mt-1">
                   Automatically renew your subscription at the end of each billing period
                 </div>
               </div>
@@ -143,15 +143,15 @@ export default function BillingSettings({
         </Card>
 
         {/* Notification Settings */}
-        <Card title="Notifications" className="bg-white dark:bg-gray-800">
+        <Card title="Notifications" className="bg-background">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <div className="text-sm font-medium text-foreground flex items-center gap-2">
                   <Bell className="w-4 h-4" />
                   Email Notifications
                 </div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted-foreground mt-1">
                   Receive email notifications about billing and invoices
                 </div>
               </div>
@@ -175,7 +175,7 @@ export default function BillingSettings({
         </Card>
 
         {/* Billing Address */}
-        <Card title="Billing Address" className="bg-white dark:bg-gray-800">
+        <Card title="Billing Address" className="bg-background">
           <div className="space-y-4">
             <Input
               label="Address Line 1"
@@ -226,7 +226,7 @@ export default function BillingSettings({
         </Card>
 
         {/* Tax Information */}
-        <Card title="Tax Information" className="bg-white dark:bg-gray-800">
+        <Card title="Tax Information" className="bg-background">
           <Input
             label="Tax ID / VAT Number (Optional)"
             value={formData.taxId || ''}
@@ -237,7 +237,7 @@ export default function BillingSettings({
         </Card>
 
         {/* Regional Settings */}
-        <Card title="Regional Settings" className="bg-white dark:bg-gray-800">
+        <Card title="Regional Settings" className="bg-background">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Select
               label="Currency"

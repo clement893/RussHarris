@@ -80,7 +80,7 @@ export default function APISettings({
         <Card title="API Credentials">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 API Key
               </label>
               <div className="flex gap-2">
@@ -107,13 +107,13 @@ export default function APISettings({
                   <Copy className="w-4 h-4" />
                 </Button>
               </div>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Your API key for authenticating requests
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 API Secret
               </label>
               <div className="flex gap-2">
@@ -140,7 +140,7 @@ export default function APISettings({
                   <Copy className="w-4 h-4" />
                 </Button>
               </div>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Keep your API secret secure and never share it publicly
               </p>
             </div>
@@ -151,7 +151,7 @@ export default function APISettings({
         <Card title="API Configuration">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Base URL
               </label>
               <Input
@@ -162,7 +162,7 @@ export default function APISettings({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Rate Limit (requests per minute)
               </label>
               <Input
@@ -176,10 +176,10 @@ export default function APISettings({
 
             <div className="flex items-center justify-between">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-foreground">
                   Enable Webhooks
                 </label>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   Receive webhook notifications for events
                 </p>
               </div>
@@ -191,7 +191,7 @@ export default function APISettings({
 
             {formData.enableWebhooks && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Webhook URL
                 </label>
                 <Input
@@ -204,10 +204,10 @@ export default function APISettings({
 
             <div className="flex items-center justify-between">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-foreground">
                   Enable API Logging
                 </label>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   Log all API requests for debugging
                 </p>
               </div>

@@ -107,7 +107,7 @@ export function ShareList({ entityType, entityId, className = '' }: ShareListPro
           {shares.map((share) => (
             <div
               key={share.id}
-              className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
+              className="flex items-center justify-between p-3 border border-border rounded-lg"
             >
               <div className="flex items-center gap-3">
                 {share.is_public_link ? (
@@ -150,7 +150,7 @@ export function ShareList({ entityType, entityId, className = '' }: ShareListPro
                 )}
                 <button
                   onClick={() => handleDelete(share.id)}
-                  className="p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                  className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
                   title="Remove share"
                 >
                   <X className="h-4 w-4" />

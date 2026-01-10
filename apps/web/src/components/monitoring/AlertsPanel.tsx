@@ -64,7 +64,7 @@ export default function AlertsPanel() {
         </div>
 
         {alerts.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-muted-foreground">
             No active alerts
           </div>
         ) : (
@@ -90,7 +90,7 @@ export default function AlertsPanel() {
                       </Badge>
                       <span className="font-medium">{alert.title}</span>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    <p className="text-sm text-muted-foreground mb-2">
                       {alert.message}
                     </p>
                     <div className="text-xs text-gray-500 dark:text-gray-500">

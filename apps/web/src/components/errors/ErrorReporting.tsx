@@ -126,10 +126,10 @@ export default function ErrorReporting({
     <Card className={clsx('p-6', className)}>
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-foreground">
             Report an Error
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Help us improve by reporting bugs or issues you've encountered
           </p>
         </div>
@@ -222,7 +222,7 @@ export default function ErrorReporting({
           </div>
 
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-sm font-medium text-foreground">
               Additional Information
             </label>
             <div className="space-y-2">

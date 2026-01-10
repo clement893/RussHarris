@@ -36,11 +36,11 @@ const statusIcons = {
 };
 
 const statusColors = {
-  pending: 'text-yellow-600 dark:text-yellow-400',
-  running: 'text-blue-600 dark:text-blue-400',
-  completed: 'text-green-600 dark:text-green-400',
-  failed: 'text-red-600 dark:text-red-400',
-  cancelled: 'text-gray-600 dark:text-gray-400',
+  pending: 'text-warning-600 dark:text-warning-400',
+  running: 'text-primary-600 dark:text-primary-400',
+  completed: 'text-success-600 dark:text-success-400',
+  failed: 'text-error-600 dark:text-error-400',
+  cancelled: 'text-muted-foreground',
 };
 
 export function TaskManager({ className = '' }: TaskManagerProps) {
@@ -135,7 +135,7 @@ export function TaskManager({ className = '' }: TaskManagerProps) {
             return (
               <div
                 key={task.id}
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+                className="p-4 border border-border rounded-lg"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
@@ -146,13 +146,13 @@ export function TaskManager({ className = '' }: TaskManagerProps) {
                         {task.task_type.replace('_', ' ')}
                       </span>
                       {task.recurrence && (
-                        <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded">
+                        <span className="text-xs bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-0.5 rounded">
                           {task.recurrence}
                         </span>
                       )}
                     </div>
                     {task.description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      <p className="text-sm text-muted-foreground mb-2">
                         {task.description}
                       </p>
                     )}
@@ -163,7 +163,7 @@ export function TaskManager({ className = '' }: TaskManagerProps) {
                       )}
                     </div>
                     {task.error_message && (
-                      <div className="mt-2 p-2 bg-red-50 dark:bg-red-900/20 rounded text-sm text-red-600 dark:text-red-400">
+                      <div className="mt-2 p-2 bg-error-50 dark:bg-error-900/20 rounded text-sm text-error-600 dark:text-error-400">
                         {task.error_message}
                       </div>
                     )}
@@ -172,7 +172,7 @@ export function TaskManager({ className = '' }: TaskManagerProps) {
                     {task.status === 'pending' && (
                       <button
                         onClick={() => handleCancel(task.id)}
-                        className="p-1 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 rounded text-yellow-500"
+                        className="p-1 hover:bg-warning-50 dark:hover:bg-warning-900/20 rounded text-warning-500"
                         title="Cancel"
                       >
                         <Pause className="h-4 w-4" />
@@ -180,7 +180,7 @@ export function TaskManager({ className = '' }: TaskManagerProps) {
                     )}
                     <button
                       onClick={() => handleDelete(task.id)}
-                      className="p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                      className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
                       title="Delete"
                     >
                       <Trash2 className="h-4 w-4" />

@@ -174,14 +174,14 @@ export default function Dropdown({
           className={clsx(
             'absolute z-50 rounded-lg shadow-lg border py-1 min-w-[200px]',
             // Use glassmorphism background if enabled, otherwise use default
-            hasEffect('glassmorphism') ? '' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700',
+            hasEffect('glassmorphism') ? '' : 'bg-background border-border',
             positions[position]
           )}
           style={glassmorphismStyles}
         >
           {items.map((item, index) => {
             if ('divider' in item && item.divider) {
-              return <div key={index} className="border-t border-gray-200 dark:border-gray-700 my-1" role="separator" />;
+              return <div key={index} className="border-t border-border my-1" role="separator" />;
             }
 
             const dropdownItem = item as Exclude<DropdownItem, { divider: true }>;
@@ -209,7 +209,7 @@ export default function Dropdown({
                   'transition-colors focus:outline-none',
                   dropdownItem.variant === 'danger'
                     ? 'text-error-600 dark:text-error-400 hover:bg-error-50 dark:hover:bg-error-900/20 hover:text-error-700 dark:hover:text-error-300 focus:bg-error-50 dark:focus:bg-error-900/20 focus:ring-2 focus:ring-error-500 dark:focus:ring-error-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
+                    : 'text-foreground hover:bg-gray-100 dark:hover:bg-gray-700 focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
                   dropdownItem.disabled && 'opacity-50 cursor-not-allowed',
                   className
                 )}

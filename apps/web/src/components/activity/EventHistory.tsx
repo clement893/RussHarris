@@ -112,11 +112,11 @@ export default function EventHistory({
       label: 'Time',
       sortable: true,
       render: (value) => (
-        <div className="text-gray-900 dark:text-gray-100">
+        <div className="text-foreground">
           <div className="font-medium text-sm">
             {new Date(value as string).toLocaleDateString()}
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">
+          <div className="text-xs text-muted-foreground">
             {new Date(value as string).toLocaleTimeString()}
           </div>
         </div>
@@ -128,10 +128,10 @@ export default function EventHistory({
       sortable: true,
       render: (value, event) => (
         <div>
-          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+          <div className="text-sm font-medium text-foreground">
             {value as string}
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">
+          <div className="text-xs text-muted-foreground">
             {event.eventType}
           </div>
         </div>
@@ -141,7 +141,7 @@ export default function EventHistory({
       key: 'description',
       label: 'Description',
       render: (value) => (
-        <span className="text-sm text-gray-700 dark:text-gray-300">
+        <span className="text-sm text-foreground">
           {value as string}
         </span>
       ),
@@ -159,7 +159,7 @@ export default function EventHistory({
       key: 'source',
       label: 'Source',
       render: (value) => (
-        <span className="text-sm text-gray-700 dark:text-gray-300 font-mono">
+        <span className="text-sm text-foreground font-mono">
           {value as string}
         </span>
       ),
@@ -168,7 +168,7 @@ export default function EventHistory({
       key: 'userName',
       label: 'User',
       render: (value) => (
-        <span className="text-sm text-gray-700 dark:text-gray-300">
+        <span className="text-sm text-foreground">
           {value as string || '-'}
         </span>
       ),
@@ -176,14 +176,14 @@ export default function EventHistory({
   ];
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <History className="w-5 h-5" />
             Event History
           </h3>
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm text-muted-foreground">
             {filteredEvents.length} of {events.length} events
           </div>
         </div>
@@ -201,15 +201,15 @@ export default function EventHistory({
                 className={clsx(
                   'w-full pl-10 pr-4 py-2 border rounded-lg text-sm',
                   'bg-white dark:bg-gray-700',
-                  'text-gray-900 dark:text-gray-100',
-                  'border-gray-300 dark:border-gray-600',
+                  'text-foreground',
+                  'border-border',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
                 )}
               />
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <Filter className="w-4 h-4 text-muted-foreground" />
             <select
               value={filters.eventType || ''}
               onChange={(e) => {
@@ -220,8 +220,8 @@ export default function EventHistory({
               className={clsx(
                 'px-3 py-2 border rounded-lg text-sm',
                 'bg-white dark:bg-gray-700',
-                'text-gray-900 dark:text-gray-100',
-                'border-gray-300 dark:border-gray-600',
+                'text-foreground',
+                'border-border',
                 'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
               )}
             >
@@ -245,8 +245,8 @@ export default function EventHistory({
               className={clsx(
                 'px-3 py-2 border rounded-lg text-sm',
                 'bg-white dark:bg-gray-700',
-                'text-gray-900 dark:text-gray-100',
-                'border-gray-300 dark:border-gray-600',
+                'text-foreground',
+                'border-border',
                 'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
               )}
             >
@@ -266,8 +266,8 @@ export default function EventHistory({
               className={clsx(
                 'px-3 py-2 border rounded-lg text-sm',
                 'bg-white dark:bg-gray-700',
-                'text-gray-900 dark:text-gray-100',
-                'border-gray-300 dark:border-gray-600',
+                'text-foreground',
+                'border-border',
                 'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
               )}
             >

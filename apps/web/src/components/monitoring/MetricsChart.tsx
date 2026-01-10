@@ -74,7 +74,7 @@ export default function MetricsChart({ metricName, title, height = 200 }: Metric
           {latestMetric && (
             <div className="text-right">
               <div className="text-2xl font-bold">{latestMetric.value.toFixed(2)}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">{latestMetric.unit}</div>
+              <div className="text-sm text-muted-foreground">{latestMetric.unit}</div>
             </div>
           )}
         </div>
@@ -84,17 +84,17 @@ export default function MetricsChart({ metricName, title, height = 200 }: Metric
             <Chart data={chartData} type="line" height={height} />
             {threshold && (
               <div className="mt-4 flex gap-4 text-xs">
-                <div className="text-yellow-600 dark:text-yellow-400">
+                <div className="text-warning-600 dark:text-warning-400">
                   Warning: {threshold.warning}{latestMetric.unit}
                 </div>
-                <div className="text-red-600 dark:text-red-400">
+                <div className="text-error-600 dark:text-error-400">
                   Critical: {threshold.critical}{latestMetric.unit}
                 </div>
               </div>
             )}
           </>
         ) : (
-          <div className="flex items-center justify-center h-48 text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-center h-48 text-muted-foreground">
             No data available
           </div>
         )}

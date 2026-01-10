@@ -97,7 +97,7 @@ export default function LogsViewer() {
 
         <div className="space-y-2 max-h-96 overflow-y-auto">
           {logs.length === 0 ? (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <div className="text-center py-8 text-muted-foreground">
               No logs found
             </div>
           ) : (
@@ -111,13 +111,13 @@ export default function LogsViewer() {
                   {log.service && (
                     <Badge variant="default">{log.service}</Badge>
                   )}
-                  <span className="text-gray-500 dark:text-gray-400">
+                  <span className="text-muted-foreground">
                     {new Date(log.timestamp).toLocaleTimeString()}
                   </span>
                 </div>
-                <div className="text-gray-900 dark:text-gray-100">{log.message}</div>
+                <div className="text-foreground">{log.message}</div>
                 {log.context && Object.keys(log.context).length > 0 && (
-                  <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                  <div className="mt-2 text-xs text-muted-foreground">
                     {JSON.stringify(log.context, null, 2)}
                   </div>
                 )}

@@ -127,10 +127,10 @@ export default function OptimisticUpdates({ className }: OptimisticUpdatesProps)
     <Card className={clsx('p-6', className)}>
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-foreground">
             Optimistic Updates
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Updates UI immediately, then syncs with server. Automatically rolls back on error.
           </p>
         </div>
@@ -153,16 +153,16 @@ export default function OptimisticUpdates({ className }: OptimisticUpdatesProps)
               key={item.id}
               className={clsx(
                 'p-4 rounded-lg border',
-                'bg-gray-50 dark:bg-gray-900',
-                'border-gray-200 dark:border-gray-700',
+                'bg-muted',
+                'border-border',
                 'flex items-center justify-between'
               )}
             >
               <div>
-                <div className="font-medium text-gray-900 dark:text-gray-100">
+                <div className="font-medium text-foreground">
                   {item.name}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <div className="text-sm text-muted-foreground mt-1">
                   Count: <span className="font-semibold">{item.count}</span>
                 </div>
               </div>
@@ -189,8 +189,8 @@ export default function OptimisticUpdates({ className }: OptimisticUpdatesProps)
           ))}
         </div>
 
-        <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+        <div className="pt-4 border-t border-border">
+          <p className="text-xs text-muted-foreground">
             Try incrementing/decrementing items. The UI updates immediately, then syncs with the server.
             If the sync fails, changes are automatically rolled back.
           </p>

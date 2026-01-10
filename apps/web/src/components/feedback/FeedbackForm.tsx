@@ -97,7 +97,7 @@ export function FeedbackForm({ className = '', onSuccess }: FeedbackFormProps) {
                   className={`flex items-center gap-2 p-2 rounded-lg border transition-colors ${
                     type === ft.value
                       ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                      : 'border-border hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -110,7 +110,7 @@ export function FeedbackForm({ className = '', onSuccess }: FeedbackFormProps) {
 
         <div>
           <label className="block text-sm font-medium mb-2">
-            Subject <span className="text-red-500">*</span>
+            Subject <span className="text-error-500">*</span>
           </label>
           <Input
             value={subject}
@@ -122,14 +122,14 @@ export function FeedbackForm({ className = '', onSuccess }: FeedbackFormProps) {
 
         <div>
           <label className="block text-sm font-medium mb-2">
-            Message <span className="text-red-500">*</span>
+            Message <span className="text-error-500">*</span>
           </label>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Please provide details..."
             rows={6}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary-500"
             required
           />
         </div>
@@ -139,7 +139,7 @@ export function FeedbackForm({ className = '', onSuccess }: FeedbackFormProps) {
           <select
             value={priority}
             onChange={(e) => setPriority(Number(e.target.value))}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-background"
           >
             <option value={1}>Low</option>
             <option value={2}>Medium</option>

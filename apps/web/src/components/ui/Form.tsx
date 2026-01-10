@@ -140,7 +140,7 @@ export default function Form({
                   disabled={field.disabled}
                   className={clsx(
                     'w-4 h-4 text-primary-600 dark:text-primary-400 rounded',
-                    'border-gray-300 dark:border-gray-600',
+                    'border-border',
                     'focus:ring-primary-500 dark:focus:ring-primary-400',
                     field.disabled && 'opacity-50 cursor-not-allowed'
                   )}

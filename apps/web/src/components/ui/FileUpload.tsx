@@ -213,7 +213,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
         {label && (
           <label
             htmlFor={fileId}
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-foreground mb-1"
           >
             {label}
           </label>
@@ -233,8 +233,8 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             htmlFor={fileId}
             className={clsx(
               'flex flex-col items-center justify-center w-full h-32',
-              'border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg',
-              'cursor-pointer bg-gray-100 dark:bg-gray-800',
+              'border-2 border-border border-dashed rounded-lg',
+              'cursor-pointer bg-muted',
               'hover:bg-gray-200 dark:hover:bg-gray-700',
               'transition-colors',
               error && 'border-error-500 dark:border-error-400',
@@ -255,14 +255,14 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
                   d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                 />
               </svg>
-              <p className="mb-2 text-sm text-gray-700 dark:text-gray-300">
+              <p className="mb-2 text-sm text-foreground">
                 <span className="font-semibold">Cliquez pour télécharger</span> ou glissez-déposez
               </p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">
+              <p className="text-xs text-muted-foreground">
                 {accept ? `Types acceptés: ${accept}` : 'Tous les types de fichiers'}
               </p>
               {fileName && (
-                <p className="mt-2 text-sm text-gray-900 dark:text-gray-100 font-medium">
+                <p className="mt-2 text-sm text-foreground font-medium">
                   {fileName}
                 </p>
               )}
@@ -275,7 +275,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
           </p>
         )}
         {helperText && !error && (
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{helperText}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{helperText}</p>
         )}
       </div>
     );

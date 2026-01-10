@@ -79,14 +79,14 @@ export default function VirtualTable<T extends Record<string, unknown>>({
     <div
       ref={containerRef}
       className={clsx(
-        'border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800',
+        'border border-border rounded-lg overflow-hidden bg-background',
         className
       )}
       style={{ height: `${height}px`, overflowY: 'auto' }}
       onScroll={handleScroll}
     >
       <Table>
-        <TableHead className="sticky top-0 z-10 bg-white dark:bg-gray-800">
+        <TableHead className="sticky top-0 z-10 bg-background">
           <TableRow>
             {columns.map((column) => (
               <TableHeader
@@ -105,7 +105,7 @@ export default function VirtualTable<T extends Record<string, unknown>>({
           <div style={{ transform: `translateY(${offsetY}px)` }}>
             {visibleData.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={columns.length} className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <TableCell colSpan={columns.length} className="text-center py-8 text-muted-foreground">
                   {emptyMessage}
                 </TableCell>
               </TableRow>
@@ -116,7 +116,7 @@ export default function VirtualTable<T extends Record<string, unknown>>({
                   <TableRow
                     key={actualIndex}
                     onClick={() => onRowClick?.(row, actualIndex)}
-                    className={onRowClick ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700' : ''}
+                    className={onRowClick ? 'cursor-pointer hover:bg-muted' : ''}
                     style={{ height: `${rowHeight}px` }}
                   >
                     {columns.map((column) => {

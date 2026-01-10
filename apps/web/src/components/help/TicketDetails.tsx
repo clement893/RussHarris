@@ -79,7 +79,7 @@ export default function TicketDetails({
       <Card className="mb-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+            <h2 className="text-2xl font-bold text-foreground mb-4">
               {ticket.subject}
             </h2>
             <div className="flex flex-wrap gap-2 mb-4">
@@ -91,7 +91,7 @@ export default function TicketDetails({
               </Badge>
               <Badge variant="default">{ticket.category}</Badge>
             </div>
-            <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
                 <span>Created {new Date(ticket.created_at).toLocaleString()}</span>
@@ -110,7 +110,7 @@ export default function TicketDetails({
       <Card title="Conversation" className="mb-6">
         <div className="space-y-4">
           {messages.length === 0 ? (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <div className="text-center py-8 text-muted-foreground">
               No messages yet. Start the conversation below.
             </div>
           ) : (
@@ -130,17 +130,17 @@ export default function TicketDetails({
                 />
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="font-medium text-gray-900 dark:text-gray-100">
+                    <span className="font-medium text-foreground">
                       {message.user_name}
                     </span>
                     {message.is_staff && (
                       <Badge variant="default">Staff</Badge>
                     )}
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-muted-foreground">
                       {new Date(message.created_at).toLocaleString()}
                     </span>
                   </div>
-                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                  <p className="text-foreground whitespace-pre-wrap">
                     {message.message}
                   </p>
                 </div>

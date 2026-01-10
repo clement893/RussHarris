@@ -110,25 +110,25 @@ export default function MarkdownEditor({
   };
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="space-y-4">
         {/* Toolbar */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FileText className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <h3 className="text-lg font-semibold text-foreground">
               Markdown Editor
             </h3>
           </div>
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 border border-gray-300 dark:border-gray-600 rounded-lg">
+            <div className="flex items-center gap-1 border border-border rounded-lg">
               <button
                 onClick={() => setPreviewMode('edit')}
                 className={clsx(
                   'px-3 py-1 text-sm',
                   previewMode === 'edit'
                     ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-muted-foreground hover:bg-gray-100 dark:hover:bg-gray-700'
                 )}
               >
                 Edit
@@ -139,7 +139,7 @@ export default function MarkdownEditor({
                   'px-3 py-1 text-sm',
                   previewMode === 'split'
                     ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-muted-foreground hover:bg-gray-100 dark:hover:bg-gray-700'
                 )}
               >
                 Split
@@ -150,7 +150,7 @@ export default function MarkdownEditor({
                   'px-3 py-1 text-sm',
                   previewMode === 'preview'
                     ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    : 'text-muted-foreground hover:bg-gray-100 dark:hover:bg-gray-700'
                 )}
               >
                 Preview
@@ -185,7 +185,7 @@ export default function MarkdownEditor({
         <div className="grid gap-4" style={{ gridTemplateColumns: previewMode === 'split' ? '1fr 1fr' : '1fr' }}>
           {(previewMode === 'edit' || previewMode === 'split') && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Markdown
               </label>
               <textarea
@@ -195,8 +195,8 @@ export default function MarkdownEditor({
                 className={clsx(
                   'w-full h-96 p-4 font-mono text-sm border rounded-lg',
                   'bg-white dark:bg-gray-900',
-                  'text-gray-900 dark:text-gray-100',
-                  'border-gray-300 dark:border-gray-600',
+                  'text-foreground',
+                  'border-border',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
                   'resize-none'
                 )}
@@ -205,14 +205,14 @@ export default function MarkdownEditor({
           )}
           {(previewMode === 'preview' || previewMode === 'split') && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Preview
               </label>
               <div
                 className={clsx(
                   'w-full h-96 p-4 border rounded-lg overflow-y-auto',
                   'bg-white dark:bg-gray-900',
-                  'border-gray-300 dark:border-gray-600',
+                  'border-border',
                   'prose prose-sm dark:prose-invert max-w-none'
                 )}
                 dangerouslySetInnerHTML={{ __html: markdownToHtml(markdown) }}
@@ -222,7 +222,7 @@ export default function MarkdownEditor({
         </div>
 
         {/* Info */}
-        <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+        <div className="text-xs text-muted-foreground text-center">
           {markdown.length} characters • {markdown.split('\n').length} lines
         </div>
       </div>

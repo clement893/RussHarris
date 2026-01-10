@@ -125,11 +125,11 @@ export default function TimePicker({
       />
 
       {isOpen && (
-        <div className="absolute z-50 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4">
+        <div className="absolute z-50 mt-2 bg-background border border-border rounded-lg shadow-lg p-4">
           <div className="flex gap-4">
             {/* Hours */}
             <div className="flex flex-col">
-              <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 text-center">
+              <div className="text-xs font-medium text-muted-foreground mb-2 text-center">
                 Heures
               </div>
               <div className="max-h-48 overflow-y-auto">
@@ -152,7 +152,7 @@ export default function TimePicker({
 
             {/* Minutes */}
             <div className="flex flex-col">
-              <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 text-center">
+              <div className="text-xs font-medium text-muted-foreground mb-2 text-center">
                 Minutes
               </div>
               <div className="max-h-48 overflow-y-auto">
@@ -178,7 +178,7 @@ export default function TimePicker({
             {/* Period (12h format only) */}
             {format === '12h' && (
               <div className="flex flex-col">
-                <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 text-center">
+                <div className="text-xs font-medium text-muted-foreground mb-2 text-center">
                   PÃ©riode
                 </div>
                 <div className="flex flex-col gap-1">

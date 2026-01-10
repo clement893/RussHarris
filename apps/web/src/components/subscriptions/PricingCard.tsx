@@ -55,20 +55,20 @@ export function PricingCard({ plan, onSelect, isLoading, currentPlanId }: Pricin
 
       <div className="flex-1">
         <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">{plan.name}</h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-4">{plan.description}</p>
+        <p className="text-muted-foreground mb-4">{plan.description}</p>
 
         <div className="mb-6">
           <span className="text-4xl font-bold text-gray-900 dark:text-white">{formatPrice()}</span>
           {plan.amount > 0 && (
-            <span className="text-gray-600 dark:text-gray-400 ml-2">{formatInterval()}</span>
+            <span className="text-muted-foreground ml-2">{formatInterval()}</span>
           )}
         </div>
 
         <ul className="space-y-3 mb-6">
           {featureList.map(([key, value], index) => (
             <li key={index} className="flex items-start">
-              <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <Check className="w-5 h-5 text-success-500 mr-2 flex-shrink-0 mt-0.5" />
+              <span className="text-sm text-foreground">
                 {typeof value === 'boolean' 
                   ? key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
                   : `${key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}: ${value}`

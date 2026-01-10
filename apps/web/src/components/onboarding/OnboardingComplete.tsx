@@ -45,11 +45,11 @@ export default function OnboardingComplete({
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        <h1 className="text-3xl font-bold text-foreground mb-4">
           You're All Set!
         </h1>
 
-        <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+        <p className="text-lg text-muted-foreground mb-8">
           Your account has been set up successfully. You're ready to start using the platform.
         </p>
 
@@ -57,24 +57,24 @@ export default function OnboardingComplete({
           <div className="flex items-start gap-3">
             <CheckCircle className="w-5 h-5 text-success-600 dark:text-success-400 mt-0.5 flex-shrink-0" />
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-gray-100">Profile configured</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Your profile is ready</p>
+              <h3 className="font-medium text-foreground">Profile configured</h3>
+              <p className="text-sm text-muted-foreground">Your profile is ready</p>
             </div>
           </div>
 
           <div className="flex items-start gap-3">
             <CheckCircle className="w-5 h-5 text-success-600 dark:text-success-400 mt-0.5 flex-shrink-0" />
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-gray-100">Preferences saved</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Your settings are configured</p>
+              <h3 className="font-medium text-foreground">Preferences saved</h3>
+              <p className="text-sm text-muted-foreground">Your settings are configured</p>
             </div>
           </div>
 
           <div className="flex items-start gap-3">
             <CheckCircle className="w-5 h-5 text-success-600 dark:text-success-400 mt-0.5 flex-shrink-0" />
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-gray-100">Ready to go</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Start exploring the platform</p>
+              <h3 className="font-medium text-foreground">Ready to go</h3>
+              <p className="text-sm text-muted-foreground">Start exploring the platform</p>
             </div>
           </div>
         </div>

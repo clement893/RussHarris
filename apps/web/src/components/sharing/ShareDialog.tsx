@@ -83,7 +83,7 @@ export function ShareDialog({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+      <div className="bg-background rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Share2 className="h-5 w-5 text-primary-500" />
@@ -100,7 +100,7 @@ export function ShareDialog({
         <div className="space-y-4">
           {/* Share type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Share with
             </label>
             <div className="flex gap-2">
@@ -112,7 +112,7 @@ export function ShareDialog({
                 className={`flex-1 p-2 border rounded-lg ${
                   shareWithType === 'user' && !isPublicLink
                     ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                    : 'border-gray-300 dark:border-gray-600'
+                    : 'border-border'
                 }`}
               >
                 <User className="h-4 w-4 mx-auto mb-1" />
@@ -126,7 +126,7 @@ export function ShareDialog({
                 className={`flex-1 p-2 border rounded-lg ${
                   shareWithType === 'team' && !isPublicLink
                     ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                    : 'border-gray-300 dark:border-gray-600'
+                    : 'border-border'
                 }`}
               >
                 <Users className="h-4 w-4 mx-auto mb-1" />
@@ -137,7 +137,7 @@ export function ShareDialog({
                 className={`flex-1 p-2 border rounded-lg ${
                   isPublicLink
                     ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                    : 'border-gray-300 dark:border-gray-600'
+                    : 'border-border'
                 }`}
               >
                 <Share2 className="h-4 w-4 mx-auto mb-1" />
@@ -159,13 +159,13 @@ export function ShareDialog({
 
           {/* Permission level */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Permission Level
             </label>
             <select
               value={permissionLevel}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPermissionLevel(e.target.value as PermissionLevel)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-white dark:bg-gray-700"
             >
               <option value="view">View Only</option>
               <option value="comment">View & Comment</option>
@@ -183,7 +183,7 @@ export function ShareDialog({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRequiresPassword(e.target.checked)}
               className="rounded"
             />
-            <label htmlFor="requiresPassword" className="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-1">
+            <label htmlFor="requiresPassword" className="text-sm text-foreground flex items-center gap-1">
               <Lock className="h-3 w-3" />
               Require password
             </label>
@@ -201,7 +201,7 @@ export function ShareDialog({
 
           {/* Expiration */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-1">
+            <label className="block text-sm font-medium text-foreground mb-2 flex items-center gap-1">
               <Calendar className="h-3 w-3" />
               Expires At (Optional)
             </label>

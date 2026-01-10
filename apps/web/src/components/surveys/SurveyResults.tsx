@@ -405,7 +405,7 @@ export default function SurveyResults({
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{t('total_responses') || 'Total Responses'}</p>
+              <p className="text-sm text-muted-foreground">{t('total_responses') || 'Total Responses'}</p>
               <p className="text-2xl font-bold">{stats.totalResponses}</p>
             </div>
             <Users className="h-8 w-8 text-primary-500 dark:text-primary-400" />
@@ -415,7 +415,7 @@ export default function SurveyResults({
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{t('filtered_responses') || 'Filtered Responses'}</p>
+              <p className="text-sm text-muted-foreground">{t('filtered_responses') || 'Filtered Responses'}</p>
               <p className="text-2xl font-bold">{stats.filteredResponses}</p>
             </div>
             <CheckCircle className="h-8 w-8 text-success-500 dark:text-success-400" />
@@ -425,7 +425,7 @@ export default function SurveyResults({
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{t('completion_rate') || 'Completion Rate'}</p>
+              <p className="text-sm text-muted-foreground">{t('completion_rate') || 'Completion Rate'}</p>
               <p className="text-2xl font-bold">{stats.completionRate}%</p>
             </div>
             <TrendingUp className="h-8 w-8 text-purple-500 dark:text-purple-400" />
@@ -435,7 +435,7 @@ export default function SurveyResults({
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{t('questions') || 'Questions'}</p>
+              <p className="text-sm text-muted-foreground">{t('questions') || 'Questions'}</p>
               <p className="text-2xl font-bold">{survey.questions.length}</p>
             </div>
             <Calendar className="h-8 w-8 text-orange-500 dark:text-orange-400" />
@@ -452,7 +452,7 @@ export default function SurveyResults({
           return (
             <Card key={question.id} title={question.label}>
               {question.description && (
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{question.description}</p>
+                <p className="text-sm text-muted-foreground mb-4">{question.description}</p>
               )}
 
               {chartData.type === 'bar' && !chartData.isRanking && (
@@ -496,7 +496,7 @@ export default function SurveyResults({
                       return (
                         <div key={index} className="flex items-center gap-4">
                           <span className="w-20 text-sm">{item.name}</span>
-                          <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-6 relative">
+                          <div className="flex-1 bg-muted rounded-full h-6 relative">
                             <div
                               className={`${color} h-6 rounded-full flex items-center justify-end pr-2`}
                               style={{ width: `${(item.value / Math.max(...chartData.data.map((d: { value: number }) => d.value))) * 100}%` }}
@@ -534,9 +534,9 @@ export default function SurveyResults({
                     <table className="min-w-full border-collapse">
                       <thead>
                         <tr>
-                          <th className="border border-gray-300 dark:border-gray-600 p-2 text-left"></th>
+                          <th className="border border-border p-2 text-left"></th>
                           {chartData.columns?.map((col: string) => (
-                            <th key={col} className="border border-gray-300 dark:border-gray-600 p-2 text-center text-sm">
+                            <th key={col} className="border border-border p-2 text-center text-sm">
                               {col}
                             </th>
                           ))}
@@ -545,7 +545,7 @@ export default function SurveyResults({
                       <tbody>
                         {chartData.rows?.map((row: string) => (
                           <tr key={row}>
-                            <td className="border border-gray-300 dark:border-gray-600 p-2 text-sm font-medium">
+                            <td className="border border-border p-2 text-sm font-medium">
                               {row}
                             </td>
                             {chartData.columns?.map((col: string) => {
@@ -560,7 +560,7 @@ export default function SurveyResults({
                                 (d) => d.row === row && d.col === col
                               );
                               return (
-                                <td key={col} className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                                <td key={col} className="border border-border p-2 text-center">
                                   <div className="text-sm font-medium">{cellData?.value || 0}</div>
                                   <div className="text-xs text-gray-500">
                                     {cellData && typeof cellData.percentage === 'number' ? Math.round(cellData.percentage) : 0}%
@@ -578,14 +578,14 @@ export default function SurveyResults({
 
               {chartData.type === 'bar' && chartData.isRanking && (
                 <div className="mt-4">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                  <p className="text-sm text-muted-foreground mb-4">
                     {t('average_rank') || 'Average Rank (lower is better)'}
                   </p>
                   <div className="space-y-2">
                     {chartData.data.map((item: { name: string; value: number; count: number; percentage: number }, index: number) => (
                       <div key={index} className="flex items-center gap-4">
                         <span className="w-32 text-sm">{item.name}</span>
-                        <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-6 relative">
+                        <div className="flex-1 bg-muted rounded-full h-6 relative">
                           <div
                             className="bg-success-500 h-6 rounded-full flex items-center justify-end pr-2"
                             style={{ width: `${Math.min((item.value / Math.max(...chartData.data.map((d: { value: number }) => d.value))) * 100, 100)}%` }}
@@ -593,7 +593,7 @@ export default function SurveyResults({
                             <span className="text-white text-xs">{item.value.toFixed(1)}</span>
                           </div>
                         </div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400 w-16 text-right">
+                        <span className="text-sm text-muted-foreground w-16 text-right">
                           {item.count} {t('responses') || 'responses'}
                         </span>
                       </div>
@@ -617,7 +617,7 @@ export default function SurveyResults({
                             style={{ width: `${item.percentage}%` }}
                           />
                         </div>
-                        <span className="text-sm text-gray-600 dark:text-gray-400 w-12 text-right">
+                        <span className="text-sm text-muted-foreground w-12 text-right">
                           {Math.round(item.percentage)}%
                         </span>
                       </div>
@@ -632,7 +632,7 @@ export default function SurveyResults({
 
       {survey.questions.length === 0 && (
         <Card className="mt-8">
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-muted-foreground">
             <p>{t('no_questions') || 'No questions in this survey'}</p>
           </div>
         </Card>
@@ -640,7 +640,7 @@ export default function SurveyResults({
 
       {filteredSubmissions.length === 0 && survey.questions.length > 0 && (
         <Card className="mt-8">
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-muted-foreground">
             <p>{t('no_responses') || 'No responses yet'}</p>
           </div>
         </Card>

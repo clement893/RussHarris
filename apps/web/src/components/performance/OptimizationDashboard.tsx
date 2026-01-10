@@ -204,10 +204,10 @@ const PerformanceDashboardComponent = memo(function PerformanceDashboard({
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <h3 className="text-lg font-semibold text-foreground">
               Performance Dashboard
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Real-time performance metrics and monitoring
             </p>
           </div>
@@ -227,54 +227,54 @@ const PerformanceDashboardComponent = memo(function PerformanceDashboard({
 
         {/* Core Web Vitals */}
         <div>
-          <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+          <h4 className="text-sm font-medium text-foreground mb-3">
             Core Web Vitals
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <div className="p-4 bg-muted rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400">LCP</span>
+                <span className="text-sm text-muted-foreground">LCP</span>
                 <Badge variant={lcpStatus}>
                   {metrics.lcp > 0 ? `${Math.round(metrics.lcp)}ms` : 'N/A'}
                 </Badge>
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-muted-foreground">
                 Largest Contentful Paint
               </div>
             </div>
 
-            <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <div className="p-4 bg-muted rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400">FID</span>
+                <span className="text-sm text-muted-foreground">FID</span>
                 <Badge variant={fidStatus}>
                   {metrics.fid > 0 ? `${Math.round(metrics.fid)}ms` : 'N/A'}
                 </Badge>
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-muted-foreground">
                 First Input Delay
               </div>
             </div>
 
-            <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <div className="p-4 bg-muted rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400">CLS</span>
+                <span className="text-sm text-muted-foreground">CLS</span>
                 <Badge variant={clsStatus}>
                   {metrics.cls > 0 ? metrics.cls.toFixed(3) : 'N/A'}
                 </Badge>
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-muted-foreground">
                 Cumulative Layout Shift
               </div>
             </div>
 
-            <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+            <div className="p-4 bg-muted rounded-lg">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400">TTFB</span>
+                <span className="text-sm text-muted-foreground">TTFB</span>
                 <Badge variant={ttfbStatus}>
                   {metrics.ttfb > 0 ? `${Math.round(metrics.ttfb)}ms` : 'N/A'}
                 </Badge>
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-muted-foreground">
                 Time to First Byte
               </div>
             </div>
@@ -283,37 +283,37 @@ const PerformanceDashboardComponent = memo(function PerformanceDashboard({
 
         {/* Additional Metrics */}
         <div>
-          <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+          <h4 className="text-sm font-medium text-foreground mb-3">
             Additional Metrics
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">FCP</div>
-              <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <div className="p-4 bg-muted rounded-lg">
+              <div className="text-sm text-muted-foreground mb-1">FCP</div>
+              <div className="text-lg font-semibold text-foreground">
                 {metrics.fcp > 0 ? `${Math.round(metrics.fcp)}ms` : 'N/A'}
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <div className="text-xs text-muted-foreground mt-1">
                 First Contentful Paint
               </div>
             </div>
 
-            <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">TTI</div>
-              <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <div className="p-4 bg-muted rounded-lg">
+              <div className="text-sm text-muted-foreground mb-1">TTI</div>
+              <div className="text-lg font-semibold text-foreground">
                 {metrics.tti > 0 ? `${Math.round(metrics.tti)}ms` : 'N/A'}
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <div className="text-xs text-muted-foreground mt-1">
                 Time to Interactive
               </div>
             </div>
 
             {metrics.memory && (
-              <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Memory</div>
-                <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Memory</div>
+                <div className="text-lg font-semibold text-foreground">
                   {Math.round(metrics.memory.usedJSHeapSize)} MB
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <div className="text-xs text-muted-foreground mt-1">
                   Used / {Math.round(metrics.memory.jsHeapSizeLimit)} MB limit
                 </div>
               </div>
@@ -324,25 +324,25 @@ const PerformanceDashboardComponent = memo(function PerformanceDashboard({
         {/* Network Information */}
         {metrics.network && (
           <div>
-            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+            <h4 className="text-sm font-medium text-foreground mb-3">
               Network Information
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Connection Type</div>
-                <div className="text-lg font-semibold text-gray-900 dark:text-gray-100 capitalize">
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Connection Type</div>
+                <div className="text-lg font-semibold text-foreground capitalize">
                   {metrics.network.effectiveType}
                 </div>
               </div>
-              <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Downlink</div>
-                <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Downlink</div>
+                <div className="text-lg font-semibold text-foreground">
                   {metrics.network.downlink} Mbps
                 </div>
               </div>
-              <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">RTT</div>
-                <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">RTT</div>
+                <div className="text-lg font-semibold text-foreground">
                   {metrics.network.rtt} ms
                 </div>
               </div>
@@ -353,7 +353,7 @@ const PerformanceDashboardComponent = memo(function PerformanceDashboard({
         {/* Performance History Chart */}
         {history.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3">
+            <h4 className="text-sm font-medium text-foreground mb-3">
               Performance History
             </h4>
             <Card className="p-4">

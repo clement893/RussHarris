@@ -168,19 +168,19 @@ export function TemplateManager({
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <FileText className="h-5 w-5 text-primary-500" />
-                  <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                  <h4 className="font-semibold text-foreground">
                     {template.name}
                   </h4>
                 </div>
                 {template.is_public && (
-                  <span className="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">
+                  <span className="text-xs bg-success-100 dark:bg-success-900 text-success-800 dark:text-success-200 px-2 py-1 rounded">
                     Public
                   </span>
                 )}
               </div>
               
               {template.description && (
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
+                <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
                   {template.description}
                 </p>
               )}
@@ -208,7 +208,7 @@ export function TemplateManager({
                       e.stopPropagation();
                       handleDelete(template.id);
                     }}
-                    className="p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                    className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
                     title="Delete"
                   >
                     <Trash2 className="h-3 w-3" />

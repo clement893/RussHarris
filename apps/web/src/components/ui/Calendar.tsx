@@ -95,14 +95,14 @@ export default function Calendar({
         <div
           key={day}
           className={clsx(
-            'aspect-square border border-gray-200 dark:border-gray-700 p-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors',
+            'aspect-square border border-border p-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors',
             isCurrentDay && 'bg-primary-50 dark:bg-primary-900/40 border-primary-500 dark:border-primary-400'
           )}
           onClick={() => onDateClick?.(date)}
         >
           <div className={clsx(
             'text-sm font-medium mb-1',
-            isCurrentDay ? 'text-primary-600 dark:text-primary-400' : 'text-gray-900 dark:text-gray-100'
+            isCurrentDay ? 'text-primary-600 dark:text-primary-400' : 'text-foreground'
           )}>
             {day}
           </div>
@@ -125,7 +125,7 @@ export default function Calendar({
               </div>
             ))}
             {dayEvents.length > 3 && (
-              <div className="text-xs text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-muted-foreground">
                 +{dayEvents.length - 3} autres
               </div>
             )}
@@ -138,7 +138,7 @@ export default function Calendar({
   };
 
   return (
-    <div className={clsx('bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6', className)}>
+    <div className={clsx('bg-background rounded-lg border border-border p-6', className)}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -162,7 +162,7 @@ export default function Calendar({
         {dayNames.map((day) => (
           <div
             key={day}
-            className="text-center text-sm font-medium text-gray-500 dark:text-gray-400 py-2"
+            className="text-center text-sm font-medium text-muted-foreground py-2"
           >
             {day}
           </div>

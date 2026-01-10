@@ -38,8 +38,8 @@ export function ThemeToggleWithIcon() {
       onClick={toggle}
       className={clsx(
         'p-2 rounded-lg transition-colors',
-        'text-gray-700 dark:text-gray-300',
-        'hover:bg-gray-100 dark:hover:bg-gray-800',
+        'text-foreground',
+        'hover:bg-muted',
         'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2',
         'dark:focus:ring-offset-gray-800'
       )}

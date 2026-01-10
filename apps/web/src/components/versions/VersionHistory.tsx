@@ -165,7 +165,7 @@ export function VersionHistory({
               className={`p-3 border rounded-lg ${
                 version.is_current
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                  : 'border-gray-200 dark:border-gray-700'
+                  : 'border-border'
               } ${
                 selectedVersions.includes(version.version_number)
                   ? 'ring-2 ring-primary-500'
@@ -198,16 +198,16 @@ export function VersionHistory({
                       )}
                     </div>
                     {version.title && (
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
+                      <p className="text-sm font-medium text-foreground mb-1">
                         {version.title}
                       </p>
                     )}
                     {version.description && (
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                      <p className="text-xs text-muted-foreground mb-2">
                         {version.description}
                       </p>
                     )}
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                       {formatDistanceToNow(new Date(version.created_at))}
                     </p>
                   </div>

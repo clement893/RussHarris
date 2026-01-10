@@ -16,7 +16,7 @@ export default function RoleManagement({ className }: RoleManagementProps) {
     <Card className={className}>
       <div className="p-6">
         <h2 className="text-xl font-semibold mb-4">Role Management</h2>
-        <p className="text-gray-600 dark:text-gray-400">Role management functionality coming soon.</p>
+        <p className="text-muted-foreground">Role management functionality coming soon.</p>
       </div>
     </Card>
   );

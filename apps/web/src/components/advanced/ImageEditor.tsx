@@ -57,12 +57,12 @@ export default function ImageEditor({
   };
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="space-y-4">
         {/* Toolbar */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <h3 className="text-lg font-semibold text-foreground">
               Image Editor
             </h3>
           </div>
@@ -92,7 +92,7 @@ export default function ImageEditor({
             >
               <ZoomOut className="w-4 h-4" />
             </Button>
-            <span className="text-sm text-gray-600 dark:text-gray-400 min-w-[50px] text-center">
+            <span className="text-sm text-muted-foreground min-w-[50px] text-center">
               {zoom}%
             </span>
             <Button
@@ -127,7 +127,7 @@ export default function ImageEditor({
 
         {/* Image Canvas */}
         {image ? (
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900 overflow-auto">
+          <div className="border border-border rounded-lg p-4 bg-muted overflow-auto">
             <div className="flex items-center justify-center min-h-[400px]">
               <img
                 src={image}
@@ -143,8 +143,8 @@ export default function ImageEditor({
           </div>
         ) : (
           <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-12 text-center">
-            <Upload className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground mb-4">
               Upload an image to start editing
             </p>
             <Button
@@ -161,7 +161,7 @@ export default function ImageEditor({
 
         {/* Info */}
         {image && (
-          <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+          <div className="text-xs text-muted-foreground text-center">
             Use the toolbar to zoom, rotate, and edit your image
           </div>
         )}

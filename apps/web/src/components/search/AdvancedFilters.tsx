@@ -60,7 +60,7 @@ export function AdvancedFilters({
       </Button>
 
       {isOpen && (
-        <div className="mt-2 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
+        <div className="mt-2 p-4 bg-background border border-border rounded-lg shadow-lg">
           <div className="space-y-4">
             {/* Active Filters */}
             {filters.length > 0 && (
@@ -73,7 +73,7 @@ export function AdvancedFilters({
                     </span>
                     <button
                       onClick={() => removeFilter(index)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-error-500 hover:text-error-700"
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -89,7 +89,7 @@ export function AdvancedFilters({
                 <select
                   value={newFilter.field || ''}
                   onChange={(e) => setNewFilter({ ...newFilter, field: e.target.value })}
-                  className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                  className="px-3 py-2 border border-border rounded-lg bg-white dark:bg-gray-700"
                 >
                   <option value="">Select field</option>
                   {availableFields.map((field) => (
@@ -102,7 +102,7 @@ export function AdvancedFilters({
                 <select
                   value={newFilter.operator || 'equals'}
                   onChange={(e) => setNewFilter({ ...newFilter, operator: e.target.value as FilterConfig['operator'] })}
-                  className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                  className="px-3 py-2 border border-border rounded-lg bg-white dark:bg-gray-700"
                 >
                   <option value="equals">Equals</option>
                   <option value="contains">Contains</option>

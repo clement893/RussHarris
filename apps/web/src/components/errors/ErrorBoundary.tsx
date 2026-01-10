@@ -121,14 +121,14 @@ export class ErrorBoundary extends Component<Props, State> {
 
       // Default error UI
       return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-muted">
           <Card className="max-w-2xl w-full">
             <div className="space-y-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                <h1 className="text-2xl font-bold text-foreground">
                   Something went wrong
                 </h1>
-                <p className="text-gray-600 dark:text-gray-400 mt-2">
+                <p className="text-muted-foreground mt-2">
                   We're sorry, but something unexpected happened. Our team has been notified.
                 </p>
               </div>
@@ -140,14 +140,14 @@ export class ErrorBoundary extends Component<Props, State> {
               )}
 
               {this.props.showDetails && this.state.error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                  <h3 className="text-sm font-semibold text-red-900 dark:text-red-100 mb-2">
+                <div className="bg-error-50 dark:bg-error-900/20 border border-error-200 dark:border-error-800 rounded-lg p-4">
+                  <h3 className="text-sm font-semibold text-error-900 dark:text-error-100 mb-2">
                     Error Details
                   </h3>
-                  <pre className="text-xs text-red-800 dark:text-red-200 overflow-auto">
+                  <pre className="text-xs text-error-800 dark:text-error-200 overflow-auto">
                     {this.state.error.toString()}
                     {this.state.errorInfo?.componentStack && (
-                      <div className="mt-2 pt-2 border-t border-red-200 dark:border-red-800">
+                      <div className="mt-2 pt-2 border-t border-error-200 dark:border-error-800">
                         {this.state.errorInfo.componentStack}
                       </div>
                     )}

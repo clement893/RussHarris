@@ -177,7 +177,7 @@ export default function TreeView({
           )}
 
           {/* Node Label */}
-          <span className="flex-1 text-sm text-gray-900 dark:text-gray-100">
+          <span className="flex-1 text-sm text-foreground">
             {node.label}
           </span>
         </div>
@@ -196,8 +196,8 @@ export default function TreeView({
     <div
       className={clsx(
         'tree-view',
-        'bg-white dark:bg-gray-800',
-        'border border-gray-200 dark:border-gray-700 rounded-lg',
+        'bg-background',
+        'border border-border rounded-lg',
         'p-2',
         className
       )}

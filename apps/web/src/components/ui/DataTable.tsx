@@ -105,7 +105,7 @@ function DataTable<T extends Record<string, unknown>>({
     <div className={clsx('space-y-4', className)}>
       {/* Search and Filters */}
       {(searchable || filterable) && (
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="bg-background p-4 rounded-lg border border-border">
           <div className="flex flex-col md:flex-row gap-4">
             {searchable && (
               <div className="flex-1">
@@ -128,7 +128,7 @@ function DataTable<T extends Record<string, unknown>>({
           </div>
 
           {hasActiveFilters && filteredData.length !== data.length && (
-            <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="mt-2 text-sm text-muted-foreground">
               {filteredData.length} résultat(s) sur {data.length}
             </div>
           )}
@@ -136,9 +136,9 @@ function DataTable<T extends Record<string, unknown>>({
       )}
 
       {/* Table - Responsive wrapper for horizontal scroll on mobile */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-background rounded-lg border border-border overflow-hidden">
         {/* Scroll hint for mobile users */}
-        <div className="px-4 py-2 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 md:hidden">
+        <div className="px-4 py-2 text-xs text-muted-foreground bg-gray-50 dark:bg-gray-800/50 border-b border-border md:hidden">
           <span className="inline-flex items-center gap-1">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
@@ -176,14 +176,14 @@ function DataTable<T extends Record<string, unknown>>({
                 <TableCell colSpan={columns.length + (actions ? 1 : 0)} className="text-center py-8">
                   <div className="flex items-center justify-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 dark:border-primary-500"></div>
-                    <span className="ml-2 text-gray-600 dark:text-gray-400">Chargement...</span>
+                    <span className="ml-2 text-muted-foreground">Chargement...</span>
                   </div>
                 </TableCell>
               </TableRow>
             ) : paginatedData.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length + (actions ? 1 : 0)} className="text-center py-8">
-                  <div className="text-gray-500 dark:text-gray-400">{emptyMessage}</div>
+                  <div className="text-muted-foreground">{emptyMessage}</div>
                 </TableCell>
               </TableRow>
             ) : (

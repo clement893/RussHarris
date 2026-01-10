@@ -131,7 +131,7 @@ export function OnboardingWizard({ className = '', onComplete }: OnboardingWizar
         <div className="flex items-center justify-between mb-4">
           <div className="flex-1">
             <h2 className="text-xl font-semibold">Welcome! Let's get started</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Step {currentStepIndex + 1} of {steps.length}
             </p>
           </div>
@@ -145,7 +145,7 @@ export function OnboardingWizard({ className = '', onComplete }: OnboardingWizar
 
         {/* Progress bar */}
         <div className="mb-6">
-          <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
             <div
               className="h-full bg-primary-500 transition-all duration-300"
               style={{ width: `${progress}%` }}
@@ -157,19 +157,19 @@ export function OnboardingWizard({ className = '', onComplete }: OnboardingWizar
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-2">{currentStep.title}</h3>
           {currentStep.description && (
-            <p className="text-gray-600 dark:text-gray-400 mb-4">{currentStep.description}</p>
+            <p className="text-muted-foreground mb-4">{currentStep.description}</p>
           )}
           
           {/* Step-specific content based on step_type */}
           {currentStep.step_type === 'info' && (
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <div className="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
               <p className="text-sm">This is an informational step. Click "Next" to continue.</p>
             </div>
           )}
           
           {currentStep.step_type === 'form' && (
             <div className="space-y-4">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 Form content would be rendered here based on step_data configuration.
               </p>
             </div>

@@ -64,7 +64,7 @@ export function ClientNavigation({ className }: ClientNavigationProps) {
               'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors',
               isActive
                 ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300'
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                : 'text-foreground hover:bg-muted'
             )}
           >
             {item.icon && (

@@ -38,10 +38,10 @@ const statusIcons = {
 };
 
 const statusColors = {
-  open: 'text-blue-600 dark:text-blue-400',
-  in_progress: 'text-yellow-600 dark:text-yellow-400',
-  resolved: 'text-green-600 dark:text-green-400',
-  closed: 'text-gray-600 dark:text-gray-400',
+  open: 'text-primary-600 dark:text-primary-400',
+  in_progress: 'text-warning-600 dark:text-warning-400',
+  resolved: 'text-success-600 dark:text-success-400',
+  closed: 'text-muted-foreground',
 };
 
 export function FeedbackList({ className = '' }: FeedbackListProps) {
@@ -98,7 +98,7 @@ export function FeedbackList({ className = '' }: FeedbackListProps) {
           return (
             <div
               key={item.id}
-              className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+              className="p-4 border border-border rounded-lg"
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -111,7 +111,7 @@ export function FeedbackList({ className = '' }: FeedbackListProps) {
                 </div>
               </div>
               
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{item.message}</p>
+              <p className="text-sm text-muted-foreground mb-2">{item.message}</p>
               
               {item.response && (
                 <div className="mt-2 p-2 bg-gray-50 dark:bg-gray-800 rounded text-sm">

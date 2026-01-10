@@ -66,7 +66,7 @@ export default function ReportViewer({
         label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
         sortable: true,
         render: (value) => (
-          <span className="text-gray-900 dark:text-gray-100">
+          <span className="text-foreground">
             {typeof value === 'number' ? value.toLocaleString() : String(value)}
           </span>
         ),
@@ -76,21 +76,21 @@ export default function ReportViewer({
   return (
     <div className={clsx('space-y-6', className)}>
       {/* Header */}
-      <Card className="bg-white dark:bg-gray-800">
+      <Card className="bg-background">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <BarChart3 className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+              <h2 className="text-xl font-bold text-foreground">
                 {report.name}
               </h2>
             </div>
             {report.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+              <p className="text-sm text-muted-foreground mb-3">
                 {report.description}
               </p>
             )}
-            <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Calendar className="w-3 h-3" />
                 {new Date(report.dateRange.start).toLocaleDateString()} -{' '}
@@ -134,8 +134,8 @@ export default function ReportViewer({
                   className={clsx(
                     'px-2 py-1 border rounded text-xs',
                     'bg-white dark:bg-gray-700',
-                    'text-gray-900 dark:text-gray-100',
-                    'border-gray-300 dark:border-gray-600'
+                    'text-foreground',
+                    'border-border'
                   )}
                 >
                   <option value="csv">CSV</option>
@@ -161,7 +161,7 @@ export default function ReportViewer({
 
       {/* Chart */}
       {(report.format === 'chart' || report.format === 'both') && report.data.chart && (
-        <Card title="Chart Visualization" className="bg-white dark:bg-gray-800">
+        <Card title="Chart Visualization" className="bg-background">
           <Chart
             type={report.data.chartType || 'line'}
             data={report.data.chart}
@@ -172,7 +172,7 @@ export default function ReportViewer({
 
       {/* Table */}
       {(report.format === 'table' || report.format === 'both') && report.data.table && (
-        <Card title="Data Table" className="bg-white dark:bg-gray-800">
+        <Card title="Data Table" className="bg-background">
           <DataTable
             data={report.data.table}
             columns={columns}

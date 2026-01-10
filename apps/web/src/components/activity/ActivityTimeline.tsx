@@ -50,19 +50,19 @@ const getActivityIcon = (action: string) => {
   const iconClass = 'h-4 w-4';
   
   if (action.includes('create') || action.includes('add')) {
-    return <FileText className={`${iconClass} text-green-500`} />;
+    return <FileText className={`${iconClass} text-success-500`} />;
   }
   if (action.includes('update') || action.includes('edit')) {
-    return <Settings className={`${iconClass} text-blue-500`} />;
+    return <Settings className={`${iconClass} text-primary-500`} />;
   }
   if (action.includes('delete') || action.includes('remove')) {
-    return <FileText className={`${iconClass} text-red-500`} />;
+    return <FileText className={`${iconClass} text-error-500`} />;
   }
   if (action.includes('login') || action.includes('auth')) {
     return <Shield className={`${iconClass} text-purple-500`} />;
   }
   if (action.includes('payment') || action.includes('billing')) {
-    return <CreditCard className={`${iconClass} text-yellow-500`} />;
+    return <CreditCard className={`${iconClass} text-warning-500`} />;
   }
   if (action.includes('team') || action.includes('user')) {
     return <Users className={`${iconClass} text-indigo-500`} />;
@@ -149,47 +149,47 @@ export function ActivityTimeline({
       <div className={className}>
         {dateKeys.map((dateKey) => (
           <div key={dateKey} className="mb-8">
-            <div className="sticky top-0 bg-white dark:bg-gray-900 py-2 z-10 border-b border-gray-200 dark:border-gray-700 mb-4">
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <div className="sticky top-0 bg-white dark:bg-gray-900 py-2 z-10 border-b border-border mb-4">
+              <h3 className="text-sm font-semibold text-foreground">
                 {dateKey}
               </h3>
             </div>
             <div className="relative pl-8">
               {/* Timeline line */}
-              <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700" />
+              <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-muted" />
               
               {groupedActivities[dateKey]?.map((activity) => (
                 <div key={activity.id} className="relative mb-6 last:mb-0">
                   {/* Timeline dot */}
-                  <div className="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-gray-800 border-2 border-primary-500 flex items-center justify-center z-10">
+                  <div className="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-background border-2 border-primary-500 flex items-center justify-center z-10">
                     {getActivityIcon(activity.action)}
                   </div>
                   
                   {/* Activity content */}
                   <div className="ml-8">
-                    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm">
+                    <div className="bg-background border border-border rounded-lg p-4 shadow-sm">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                          <p className="text-sm font-medium text-foreground">
                             {formatActivityMessage(activity)}
                           </p>
                           {showUserInfo && activity.user_name && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            <p className="text-xs text-muted-foreground mt-1">
                               {activity.user_email}
                             </p>
                           )}
                           {activity.metadata && Object.keys(activity.metadata).length > 0 && (
-                            <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                            <div className="mt-2 text-xs text-muted-foreground">
                               <details className="cursor-pointer">
                                 <summary>View details</summary>
-                                <pre className="mt-2 p-2 bg-gray-50 dark:bg-gray-900 rounded text-xs overflow-auto">
+                                <pre className="mt-2 p-2 bg-muted rounded text-xs overflow-auto">
                                   {JSON.stringify(activity.metadata, null, 2)}
                                 </pre>
                               </details>
                             </div>
                           )}
                         </div>
-                  <div className="ml-4 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                  <div className="ml-4 text-xs text-muted-foreground whitespace-nowrap">
                     {formatDistanceToNow(new Date(activity.timestamp))}
                   </div>
                       </div>
@@ -209,40 +209,40 @@ export function ActivityTimeline({
     <div className={className}>
       <div className="relative pl-8">
         {/* Timeline line */}
-        <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700" />
+        <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-muted" />
         
         {flatActivities.map((activity) => (
           <div key={activity.id} className="relative mb-6 last:mb-0">
             {/* Timeline dot */}
-            <div className="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-white dark:bg-gray-800 border-2 border-primary-500 flex items-center justify-center z-10">
+            <div className="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-background border-2 border-primary-500 flex items-center justify-center z-10">
               {getActivityIcon(activity.action)}
             </div>
             
             {/* Activity content */}
             <div className="ml-8">
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm">
+              <div className="bg-background border border-border rounded-lg p-4 shadow-sm">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    <p className="text-sm font-medium text-foreground">
                       {formatActivityMessage(activity)}
                     </p>
                     {showUserInfo && activity.user_name && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {activity.user_email}
                       </p>
                     )}
                     {activity.metadata && Object.keys(activity.metadata).length > 0 && (
-                      <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                      <div className="mt-2 text-xs text-muted-foreground">
                         <details className="cursor-pointer">
                           <summary>View details</summary>
-                          <pre className="mt-2 p-2 bg-gray-50 dark:bg-gray-900 rounded text-xs overflow-auto">
+                          <pre className="mt-2 p-2 bg-muted rounded text-xs overflow-auto">
                             {JSON.stringify(activity.metadata, null, 2)}
                           </pre>
                         </details>
                       </div>
                     )}
                   </div>
-                  <div className="ml-4 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                  <div className="ml-4 text-xs text-muted-foreground whitespace-nowrap">
                     {formatDistanceToNow(new Date(activity.timestamp))}
                   </div>
                 </div>

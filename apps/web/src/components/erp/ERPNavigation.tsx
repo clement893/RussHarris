@@ -67,7 +67,7 @@ export function ERPNavigation({ className }: ERPNavigationProps) {
       {Object.entries(itemsByModule).map(([module, items]) => (
         <div key={module}>
           {module !== 'other' && (
-            <h3 className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <h3 className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               {module === 'crm' ? 'CRM' : 
                module === 'orders' ? 'Orders' :
                module === 'inventory' ? 'Inventory' :
@@ -88,7 +88,7 @@ export function ERPNavigation({ className }: ERPNavigationProps) {
                       'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors',
                       isActive
                         ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                        : 'text-foreground hover:bg-muted'
                     )}
                   >
                     {item.icon && (
@@ -118,7 +118,7 @@ export function ERPNavigation({ className }: ERPNavigationProps) {
                               'flex items-center gap-2 px-3 py-2 rounded text-sm transition-colors',
                               isChildActive
                                 ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                : 'text-muted-foreground hover:bg-gray-50 dark:hover:bg-gray-800'
                             )}
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-current" />

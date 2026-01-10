@@ -232,7 +232,7 @@ export default function Drawer({
       <div
         ref={drawerRef}
         className={clsx(
-          'fixed bg-white dark:bg-gray-800 shadow-strong',
+          'fixed bg-background shadow-strong',
           'flex flex-col',
           positionClasses[position],
           sizeClass,
@@ -248,7 +248,7 @@ export default function Drawer({
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between p-4 border-b border-border">
             {title && (
               <h2 id="drawer-title" className="text-lg font-semibold text-gray-900 dark:text-white">
                 {title}

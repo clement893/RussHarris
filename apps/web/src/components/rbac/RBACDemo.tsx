@@ -16,7 +16,7 @@ export default function RBACDemo({ className }: RBACDemoProps) {
     <Card className={className}>
       <div className="p-6">
         <h2 className="text-xl font-semibold mb-4">RBAC Demo</h2>
-        <p className="text-gray-600 dark:text-gray-400">RBAC demo functionality coming soon.</p>
+        <p className="text-muted-foreground">RBAC demo functionality coming soon.</p>
       </div>
     </Card>
   );

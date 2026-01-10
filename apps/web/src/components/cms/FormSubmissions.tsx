@@ -60,7 +60,7 @@ export default function FormSubmissions({
       label: 'Form',
       sortable: true,
       render: (_value: unknown, submission: FormSubmission) => (
-        <span className="font-medium text-gray-900 dark:text-gray-100">
+        <span className="font-medium text-foreground">
           {submission.form_name}
         </span>
       ),
@@ -70,7 +70,7 @@ export default function FormSubmissions({
       label: 'Submitted',
       sortable: true,
       render: (_value: unknown, submission: FormSubmission) => (
-        <span className="text-sm text-gray-600 dark:text-gray-400">
+        <span className="text-sm text-muted-foreground">
           {new Date(submission.submitted_at).toLocaleString()}
         </span>
       ),
@@ -81,7 +81,7 @@ export default function FormSubmissions({
       render: (_value: unknown, submission: FormSubmission) => {
         const dataKeys = Object.keys(submission.data || {});
         return (
-          <span className="text-sm text-gray-600 dark:text-gray-400">
+          <span className="text-sm text-muted-foreground">
             {dataKeys.length} field{dataKeys.length !== 1 ? 's' : ''}
           </span>
         );
@@ -149,31 +149,31 @@ export default function FormSubmissions({
         {selectedSubmission && (
           <div className="space-y-4">
             <div>
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <h3 className="text-sm font-medium text-foreground mb-2">
                 Form
               </h3>
-              <p className="text-gray-900 dark:text-gray-100">{selectedSubmission.form_name}</p>
+              <p className="text-foreground">{selectedSubmission.form_name}</p>
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <h3 className="text-sm font-medium text-foreground mb-2">
                 Submitted At
               </h3>
-              <p className="text-gray-900 dark:text-gray-100">
+              <p className="text-foreground">
                 {new Date(selectedSubmission.submitted_at).toLocaleString()}
               </p>
             </div>
             {selectedSubmission.data && (
               <div>
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <h3 className="text-sm font-medium text-foreground mb-2">
                   Submission Data
                 </h3>
                 <div className="space-y-2">
                   {Object.entries(selectedSubmission.data).map(([key, value]) => (
-                    <div key={key} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-                      <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                    <div key={key} className="border border-border rounded-lg p-3">
+                      <div className="text-xs font-medium text-muted-foreground mb-1">
                         {key}
                       </div>
-                      <div className="text-sm text-gray-900 dark:text-gray-100">
+                      <div className="text-sm text-foreground">
                         {String(value)}
                       </div>
                     </div>
@@ -183,10 +183,10 @@ export default function FormSubmissions({
             )}
             {selectedSubmission.ip_address && (
               <div>
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <h3 className="text-sm font-medium text-foreground mb-2">
                   IP Address
                 </h3>
-                <p className="text-gray-900 dark:text-gray-100">{selectedSubmission.ip_address}</p>
+                <p className="text-foreground">{selectedSubmission.ip_address}</p>
               </div>
             )}
           </div>

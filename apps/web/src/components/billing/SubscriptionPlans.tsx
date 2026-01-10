@@ -64,8 +64,8 @@ export default function SubscriptionPlans({
         <span className={clsx(
           'text-sm font-medium',
           billingInterval === 'month' 
-            ? 'text-gray-900 dark:text-gray-100' 
-            : 'text-gray-500 dark:text-gray-400'
+            ? 'text-foreground' 
+            : 'text-muted-foreground'
         )}>
           Monthly
         </span>
@@ -89,8 +89,8 @@ export default function SubscriptionPlans({
         <span className={clsx(
           'text-sm font-medium',
           billingInterval === 'year' 
-            ? 'text-gray-900 dark:text-gray-100' 
-            : 'text-gray-500 dark:text-gray-400'
+            ? 'text-foreground' 
+            : 'text-muted-foreground'
         )}>
           Yearly
           <Badge variant="success" className="ml-2">Save 20%</Badge>
@@ -107,7 +107,7 @@ export default function SubscriptionPlans({
             <Card
               key={plan.id}
               className={clsx(
-                'relative bg-white dark:bg-gray-800',
+                'relative bg-background',
                 isPopular && 'ring-2 ring-primary-500 dark:ring-primary-400',
                 isCurrentPlan && 'border-2 border-success-500 dark:border-success-400'
               )}
@@ -125,11 +125,11 @@ export default function SubscriptionPlans({
                     <div className="text-primary-600 dark:text-primary-400">
                       {getPlanIcon(plan)}
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                    <h3 className="text-xl font-bold text-foreground">
                       {plan.name}
                     </h3>
                   </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     {plan.description}
                   </p>
                 </div>
@@ -137,15 +137,15 @@ export default function SubscriptionPlans({
                 {/* Price */}
                 <div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-gray-900 dark:text-gray-100">
+                    <span className="text-4xl font-bold text-foreground">
                       {getDisplayPrice(plan)}
                     </span>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                    <span className="text-sm text-muted-foreground">
                       /{billingInterval === 'month' ? 'month' : 'year'}
                     </span>
                   </div>
                   {billingInterval === 'year' && (
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <div className="text-xs text-muted-foreground mt-1">
                       {plan.currency} {(plan.price * 10 / 12).toFixed(2)}/month billed annually
                     </div>
                   )}
@@ -158,13 +158,13 @@ export default function SubscriptionPlans({
                       {feature.included ? (
                         <Check className="w-5 h-5 text-success-600 dark:text-success-400 flex-shrink-0 mt-0.5" />
                       ) : (
-                        <X className="w-5 h-5 text-gray-400 dark:text-gray-500 flex-shrink-0 mt-0.5" />
+                        <X className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
                       )}
                       <span className={clsx(
                         'text-sm',
                         feature.included
-                          ? 'text-gray-900 dark:text-gray-100'
-                          : 'text-gray-400 dark:text-gray-500 line-through'
+                          ? 'text-foreground'
+                          : 'text-muted-foreground line-through'
                       )}>
                         {feature.name}
                       </span>

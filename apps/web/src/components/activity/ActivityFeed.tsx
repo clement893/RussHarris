@@ -119,9 +119,9 @@ export default function ActivityFeed({
   }));
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
           <Activity className="w-5 h-5" />
           Activity Feed
           {autoRefresh && (
@@ -137,7 +137,7 @@ export default function ActivityFeed({
             disabled={loading || !hasMore}
             className={clsx(
               'flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors',
-              'text-gray-700 dark:text-gray-300',
+              'text-foreground',
               'hover:bg-gray-100 dark:hover:bg-gray-700',
               'disabled:opacity-50 disabled:cursor-not-allowed'
             )}
@@ -150,8 +150,8 @@ export default function ActivityFeed({
 
       {activities.length === 0 ? (
         <div className="text-center py-12">
-          <Activity className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">No activity yet</p>
+          <Activity className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+          <p className="text-muted-foreground">No activity yet</p>
         </div>
       ) : (
         <Timeline items={timelineItems} orientation="vertical" />

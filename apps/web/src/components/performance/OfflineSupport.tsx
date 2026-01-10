@@ -147,10 +147,10 @@ export default function OfflineSupport({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <h3 className="text-lg font-semibold text-foreground">
               Offline Support
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Service worker and offline data synchronization
             </p>
           </div>
@@ -166,29 +166,29 @@ export default function OfflineSupport({
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Service Worker</div>
+          <div className="p-4 bg-muted rounded-lg">
+            <div className="text-sm text-muted-foreground">Service Worker</div>
             <div className="mt-1 flex items-center gap-2">
               <Badge variant={swRegistered ? 'success' : 'default'}>
                 {swRegistered ? 'Registered' : 'Not Registered'}
               </Badge>
               {isServiceWorkerSupported() ? (
-                <span className="text-xs text-gray-500 dark:text-gray-400">Supported</span>
+                <span className="text-xs text-muted-foreground">Supported</span>
               ) : (
-                <span className="text-xs text-gray-500 dark:text-gray-400">Not Supported</span>
+                <span className="text-xs text-muted-foreground">Not Supported</span>
               )}
             </div>
           </div>
 
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Pending Sync</div>
-            <div className="mt-1 text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <div className="p-4 bg-muted rounded-lg">
+            <div className="text-sm text-muted-foreground">Pending Sync</div>
+            <div className="mt-1 text-2xl font-bold text-foreground">
               {pendingCount}
             </div>
           </div>
 
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Failed Sync</div>
+          <div className="p-4 bg-muted rounded-lg">
+            <div className="text-sm text-muted-foreground">Failed Sync</div>
             <div className="mt-1 text-2xl font-bold text-error-600 dark:text-error-400">
               {failedCount}
             </div>
@@ -225,7 +225,7 @@ export default function OfflineSupport({
 
             {syncQueue.length > 0 && (
               <div className="space-y-2">
-                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                <h4 className="text-sm font-medium text-foreground">
                   Sync Queue ({syncQueue.length})
                 </h4>
                 <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -234,18 +234,18 @@ export default function OfflineSupport({
                       key={item.id}
                       className={clsx(
                         'p-3 rounded-lg border text-sm',
-                        'bg-white dark:bg-gray-800',
-                        'border-gray-200 dark:border-gray-700',
+                        'bg-background',
+                        'border-border',
                         item.status === 'synced' && 'opacity-60',
                         item.status === 'failed' && 'border-error-300 dark:border-error-700'
                       )}
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="font-medium text-gray-900 dark:text-gray-100">
+                          <div className="font-medium text-foreground">
                             {item.action}
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          <div className="text-xs text-muted-foreground mt-1">
                             {new Date(item.timestamp).toLocaleString()}
                           </div>
                         </div>

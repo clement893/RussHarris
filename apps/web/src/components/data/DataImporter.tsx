@@ -141,23 +141,23 @@ export function DataImporter({
         <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div className="flex items-start gap-3">
             {importResult.invalid_rows === 0 ? (
-              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+              <CheckCircle className="h-5 w-5 text-success-500 mt-0.5" />
             ) : (
-              <AlertCircle className="h-5 w-5 text-yellow-500 mt-0.5" />
+              <AlertCircle className="h-5 w-5 text-warning-500 mt-0.5" />
             )}
             <div className="flex-1">
               <p className="font-medium">
                 Imported {importResult.valid_rows} of {importResult.total_rows} rows
               </p>
               {importResult.invalid_rows > 0 && (
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   {importResult.invalid_rows} rows had errors
                 </p>
               )}
               {importResult.errors.length > 0 && (
                 <div className="mt-2 max-h-32 overflow-y-auto">
                   {importResult.errors.slice(0, 5).map((error, idx) => (
-                    <div key={idx} className="text-xs text-red-600 dark:text-red-400">
+                    <div key={idx} className="text-xs text-error-600 dark:text-error-400">
                       Row {error.row}: {error.error}
                     </div>
                   ))}

@@ -122,11 +122,11 @@ export default function AuditTrail({
       label: 'Time',
       sortable: true,
       render: (value) => (
-        <div className="text-gray-900 dark:text-gray-100">
+        <div className="text-foreground">
           <div className="font-medium text-sm">
             {new Date(value as string).toLocaleDateString()}
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">
+          <div className="text-xs text-muted-foreground">
             {new Date(value as string).toLocaleTimeString()}
           </div>
         </div>
@@ -143,10 +143,10 @@ export default function AuditTrail({
             size="sm"
           />
           <div>
-            <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+            <div className="text-sm font-medium text-foreground">
               {entry.user.name}
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-muted-foreground">
               {entry.user.email}
             </div>
           </div>
@@ -168,15 +168,15 @@ export default function AuditTrail({
       label: 'Resource',
       render: (value, entry) => (
         <div>
-          <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+          <div className="text-sm font-medium text-foreground">
             {value as string}
           </div>
           {entry.resourceName && (
-            <div className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-muted-foreground">
               {entry.resourceName}
             </div>
           )}
-          <div className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+          <div className="text-xs text-muted-foreground font-mono">
             ID: {entry.resourceId}
           </div>
         </div>
@@ -212,14 +212,14 @@ export default function AuditTrail({
 
   return (
     <>
-      <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+      <Card className={clsx('bg-background', className)}>
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Shield className="w-5 h-5" />
               Audit Trail
             </h3>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-muted-foreground">
               {filteredEntries.length} of {entries.length} entries
             </div>
           </div>
@@ -227,7 +227,7 @@ export default function AuditTrail({
           {/* Filters */}
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+              <Filter className="w-4 h-4 text-muted-foreground" />
               <select
                 value={filters.action || ''}
                 onChange={(e) => {
@@ -241,8 +241,8 @@ export default function AuditTrail({
                 className={clsx(
                   'px-3 py-2 border rounded-lg text-sm',
                   'bg-white dark:bg-gray-700',
-                  'text-gray-900 dark:text-gray-100',
-                  'border-gray-300 dark:border-gray-600',
+                  'text-foreground',
+                  'border-border',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
                 )}
               >
@@ -263,8 +263,8 @@ export default function AuditTrail({
                 className={clsx(
                   'px-3 py-2 border rounded-lg text-sm',
                   'bg-white dark:bg-gray-700',
-                  'text-gray-900 dark:text-gray-100',
-                  'border-gray-300 dark:border-gray-600',
+                  'text-foreground',
+                  'border-border',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
                 )}
               >
@@ -288,8 +288,8 @@ export default function AuditTrail({
                 className={clsx(
                   'px-3 py-2 border rounded-lg text-sm',
                   'bg-white dark:bg-gray-700',
-                  'text-gray-900 dark:text-gray-100',
-                  'border-gray-300 dark:border-gray-600',
+                  'text-foreground',
+                  'border-border',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
                 )}
               >
@@ -321,41 +321,41 @@ export default function AuditTrail({
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <div className="text-gray-600 dark:text-gray-400">Timestamp</div>
-                <div className="font-medium text-gray-900 dark:text-gray-100">
+                <div className="text-muted-foreground">Timestamp</div>
+                <div className="font-medium text-foreground">
                   {new Date(selectedEntry.timestamp).toLocaleString()}
                 </div>
               </div>
               <div>
-                <div className="text-gray-600 dark:text-gray-400">User</div>
-                <div className="font-medium text-gray-900 dark:text-gray-100">
+                <div className="text-muted-foreground">User</div>
+                <div className="font-medium text-foreground">
                   {selectedEntry.user.name}
                 </div>
               </div>
               <div>
-                <div className="text-gray-600 dark:text-gray-400">Action</div>
-                <div className="font-medium text-gray-900 dark:text-gray-100">
+                <div className="text-muted-foreground">Action</div>
+                <div className="font-medium text-foreground">
                   {selectedEntry.action}
                 </div>
               </div>
               <div>
-                <div className="text-gray-600 dark:text-gray-400">Resource</div>
-                <div className="font-medium text-gray-900 dark:text-gray-100">
+                <div className="text-muted-foreground">Resource</div>
+                <div className="font-medium text-foreground">
                   {selectedEntry.resourceType} ({selectedEntry.resourceId})
                 </div>
               </div>
               {selectedEntry.ipAddress && (
                 <div>
-                  <div className="text-gray-600 dark:text-gray-400">IP Address</div>
-                  <div className="font-medium text-gray-900 dark:text-gray-100 font-mono">
+                  <div className="text-muted-foreground">IP Address</div>
+                  <div className="font-medium text-foreground font-mono">
                     {selectedEntry.ipAddress}
                   </div>
                 </div>
               )}
               {selectedEntry.userAgent && (
                 <div>
-                  <div className="text-gray-600 dark:text-gray-400">User Agent</div>
-                  <div className="font-medium text-gray-900 dark:text-gray-100 text-xs">
+                  <div className="text-muted-foreground">User Agent</div>
+                  <div className="font-medium text-foreground text-xs">
                     {selectedEntry.userAgent}
                   </div>
                 </div>
@@ -364,28 +364,28 @@ export default function AuditTrail({
 
             {selectedEntry.changes && selectedEntry.changes.length > 0 && (
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
+                <div className="text-sm font-medium text-foreground mb-2">
                   Changes
                 </div>
                 <div className="space-y-2">
                   {selectedEntry.changes.map((change, index) => (
                     <div
                       key={index}
-                      className="p-3 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700"
+                      className="p-3 bg-muted rounded-lg border border-border"
                     >
-                      <div className="font-medium text-sm text-gray-900 dark:text-gray-100 mb-1">
+                      <div className="font-medium text-sm text-foreground mb-1">
                         {change.field}
                       </div>
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         <div>
-                          <div className="text-gray-600 dark:text-gray-400">Old Value</div>
-                          <div className="text-gray-900 dark:text-gray-100 font-mono">
+                          <div className="text-muted-foreground">Old Value</div>
+                          <div className="text-foreground font-mono">
                             {JSON.stringify(change.oldValue)}
                           </div>
                         </div>
                         <div>
-                          <div className="text-gray-600 dark:text-gray-400">New Value</div>
-                          <div className="text-gray-900 dark:text-gray-100 font-mono">
+                          <div className="text-muted-foreground">New Value</div>
+                          <div className="text-foreground font-mono">
                             {JSON.stringify(change.newValue)}
                           </div>
                         </div>
@@ -398,10 +398,10 @@ export default function AuditTrail({
 
             {selectedEntry.reason && (
               <div>
-                <div className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
+                <div className="text-sm font-medium text-foreground mb-2">
                   Reason
                 </div>
-                <div className="text-sm text-gray-700 dark:text-gray-300">
+                <div className="text-sm text-foreground">
                   {selectedEntry.reason}
                 </div>
               </div>

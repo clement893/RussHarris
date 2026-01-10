@@ -132,7 +132,7 @@ export default function AudioPlayer({
   return (
     <div
       className={clsx(
-        'bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4',
+        'bg-background rounded-lg border border-border p-4',
         className
       )}
     >
@@ -145,7 +145,7 @@ export default function AudioPlayer({
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
           )}
           {artist && (
-            <p className="text-sm text-gray-600 dark:text-gray-400">{artist}</p>
+            <p className="text-sm text-muted-foreground">{artist}</p>
           )}
         </div>
       )}
@@ -158,9 +158,9 @@ export default function AudioPlayer({
           max={duration || 0}
           value={currentTime}
           onChange={handleSeek}
-          className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary-500"
+          className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary-500"
         />
-        <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+        <div className="flex justify-between text-xs text-muted-foreground mt-1">
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>
@@ -211,7 +211,7 @@ export default function AudioPlayer({
             step="0.01"
             value={volume}
             onChange={handleVolumeChange}
-            className="w-24 h-1 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary-500"
+            className="w-24 h-1 bg-muted rounded-lg appearance-none cursor-pointer accent-primary-500"
           />
         </div>
       </div>

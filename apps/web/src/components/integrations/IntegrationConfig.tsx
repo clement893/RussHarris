@@ -102,7 +102,7 @@ export default function IntegrationConfig({
   };
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between">
@@ -115,10 +115,10 @@ export default function IntegrationConfig({
               </div>
             )}
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h3 className="text-lg font-semibold text-foreground">
                 Configure {integration.name}
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 {integration.description}
               </p>
             </div>
@@ -165,12 +165,12 @@ export default function IntegrationConfig({
 
         {/* Test Connection */}
         {onTest && fields.length > 0 && (
-          <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between p-4 bg-muted rounded-lg border border-border">
             <div>
-              <div className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
+              <div className="text-sm font-medium text-foreground mb-1">
                 Test Connection
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">
+              <div className="text-xs text-muted-foreground">
                 Verify your configuration before saving
               </div>
             </div>
@@ -206,7 +206,7 @@ export default function IntegrationConfig({
         )}
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
           {onCancel && (
             <Button variant="ghost" onClick={onCancel} disabled={loading}>
               Cancel

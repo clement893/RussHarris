@@ -126,7 +126,7 @@ export function TemplateEditor({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-foreground mb-1">
             Description
           </label>
           <textarea
@@ -134,20 +134,20 @@ export function TemplateEditor({
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
             placeholder="Describe what this template is for..."
             rows={2}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-white dark:bg-gray-700 text-foreground"
           />
         </div>
 
         {previewMode ? (
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="p-4 bg-muted rounded-lg border border-border">
             <div className="prose dark:prose-invert max-w-none">
               <pre className="whitespace-pre-wrap text-sm">{content}</pre>
             </div>
           </div>
         ) : (
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Template Content <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-foreground mb-1">
+              Template Content <span className="text-error-500">*</span>
             </label>
             <textarea
               value={content}
@@ -155,7 +155,7 @@ export function TemplateEditor({
               placeholder="Enter template content. Use {{variable}} for variables..."
               rows={10}
               required
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 font-mono text-sm"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-white dark:bg-gray-700 text-foreground font-mono text-sm"
             />
           </div>
         )}
@@ -168,12 +168,12 @@ export function TemplateEditor({
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIsPublic(e.target.checked)}
             className="rounded"
           />
-          <label htmlFor="isPublic" className="text-sm text-gray-700 dark:text-gray-300">
+          <label htmlFor="isPublic" className="text-sm text-foreground">
             Make this template public
           </label>
         </div>
 
-        <div className="text-xs text-gray-500 dark:text-gray-400">
+        <div className="text-xs text-muted-foreground">
           <p>Use variables in your template with <code>{'{{variable_name}}'}</code> syntax.</p>
           <p className="mt-1">Example: <code>Hello {'{{user_name}}'}, welcome to {'{{project_name}}'}!</code></p>
         </div>

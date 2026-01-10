@@ -135,14 +135,14 @@ export function AIChat({
           <Bot className="h-5 w-5 text-primary-500" />
           <h3 className="font-semibold">AI Assistant</h3>
           {currentProvider !== 'auto' && (
-            <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">({currentProvider})</span>
+            <span className="text-xs text-muted-foreground capitalize">({currentProvider})</span>
           )}
         </div>
         <div className="flex items-center gap-2">
           <select
             value={currentProvider}
             onChange={(e) => setCurrentProvider(e.target.value)}
-            className="text-xs px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            className="text-xs px-2 py-1 border border-border rounded bg-background text-foreground"
             disabled={isLoading}
           >
             <option value="auto">Auto</option>
@@ -165,9 +165,9 @@ export function AIChat({
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && (
-          <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-center h-full text-muted-foreground">
             <div className="text-center">
-              <Bot className="h-12 w-12 mx-auto mb-4 text-gray-400 dark:text-gray-500" />
+              <Bot className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <p>Start a conversation with AI</p>
               <p className="text-sm mt-2">Ask anything and get intelligent responses</p>
             </div>
@@ -191,7 +191,7 @@ export function AIChat({
               className={`max-w-[80%] rounded-lg p-3 ${
                 message.role === 'user'
                   ? 'bg-primary-500 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+                  : 'bg-muted text-foreground'
               }`}
             >
               <p className="whitespace-pre-wrap break-words">{message.content}</p>
@@ -203,8 +203,8 @@ export function AIChat({
             </div>
 
             {message.role === 'user' && (
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <User className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                <User className="h-4 w-4 text-muted-foreground" />
               </div>
             )}
           </div>
@@ -215,7 +215,7 @@ export function AIChat({
             <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
               <Bot className="h-4 w-4 text-primary-600 dark:text-primary-400" />
             </div>
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3">
+            <div className="bg-muted rounded-lg p-3">
               <Loader2 className="h-4 w-4 animate-spin" />
             </div>
           </div>
@@ -227,7 +227,7 @@ export function AIChat({
       {/* Input */}
       <div className="p-4 border-t">
         {error && (
-          <div className="mb-2 p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-600 dark:text-red-400">
+          <div className="mb-2 p-2 bg-error-50 dark:bg-error-900/20 border border-error-200 dark:border-error-800 rounded text-sm text-error-600 dark:text-error-400">
             {error}
           </div>
         )}

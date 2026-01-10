@@ -249,7 +249,7 @@ export default function SurveyTaker({
               {question.label} {question.required && <span className="text-danger-500">*</span>}
             </label>
             {question.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{question.description}</p>
+              <p className="text-sm text-muted-foreground mb-2">{question.description}</p>
             )}
             <div className="space-y-2">
               {question.options?.map((option) => (
@@ -272,7 +272,7 @@ export default function SurveyTaker({
               {question.label} {question.required && <span className="text-danger-500">*</span>}
             </label>
             {question.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{question.description}</p>
+              <p className="text-sm text-muted-foreground mb-2">{question.description}</p>
             )}
             <div className="space-y-2">
               {question.options?.map((option) => {
@@ -308,11 +308,11 @@ export default function SurveyTaker({
               {question.label} {question.required && <span className="text-danger-500">*</span>}
             </label>
             {question.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{question.description}</p>
+              <p className="text-sm text-muted-foreground mb-2">{question.description}</p>
             )}
             <div className="flex items-center gap-4">
               {question.scaleLabels?.min && (
-                <span className="text-sm text-gray-600 dark:text-gray-400">{question.scaleLabels.min}</span>
+                <span className="text-sm text-muted-foreground">{question.scaleLabels.min}</span>
               )}
               <div className="flex-1 flex items-center gap-2">
                 {Array.from({ length: Math.floor((max - min) / step) + 1 }, (_, i) => {
@@ -324,8 +324,8 @@ export default function SurveyTaker({
                       onClick={() => setResponses({ ...responses, [question.name]: optionValue })}
                       className={`px-4 py-2 rounded-lg border ${
                         Number(value) === optionValue
-                          ? 'bg-blue-500 text-white border-blue-500'
-                          : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'
+                          ? 'bg-primary-500 text-white border-primary-500'
+                          : 'bg-background border-border'
                       }`}
                     >
                       {optionValue}
@@ -334,7 +334,7 @@ export default function SurveyTaker({
                 })}
               </div>
               {question.scaleLabels?.max && (
-                <span className="text-sm text-gray-600 dark:text-gray-400">{question.scaleLabels.max}</span>
+                <span className="text-sm text-muted-foreground">{question.scaleLabels.max}</span>
               )}
             </div>
             {error && <p className="text-sm text-danger-500 mt-1">{error}</p>}
@@ -349,11 +349,11 @@ export default function SurveyTaker({
               {question.label} {question.required && <span className="text-danger-500">*</span>}
             </label>
             {question.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{question.description}</p>
+              <p className="text-sm text-muted-foreground mb-2">{question.description}</p>
             )}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400 w-24 text-left">
+                <span className="text-sm text-muted-foreground w-24 text-left">
                   {t('not_likely') || 'Not likely'}
                 </span>
                 <div className="flex-1 flex items-center gap-1 flex-wrap">
@@ -366,8 +366,8 @@ export default function SurveyTaker({
                         onClick={() => setResponses({ ...responses, [question.name]: optionValue })}
                         className={`px-3 py-2 rounded-lg border text-sm ${
                           Number(value) === optionValue
-                            ? 'bg-blue-500 text-white border-blue-500'
-                            : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:border-blue-300'
+                            ? 'bg-primary-500 text-white border-primary-500'
+                            : 'bg-background border-border hover:border-primary-300'
                         }`}
                       >
                         {optionValue}
@@ -375,12 +375,12 @@ export default function SurveyTaker({
                     );
                   })}
                 </div>
-                <span className="text-sm text-gray-600 dark:text-gray-400 w-24 text-right">
+                <span className="text-sm text-muted-foreground w-24 text-right">
                   {t('very_likely') || 'Very likely'}
                 </span>
               </div>
               {value !== undefined && value !== null && (
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-muted-foreground">
                   {Number(value) <= 6 && <span className="text-danger-500">{t('detractor') || 'Detractor'}</span>}
                   {Number(value) >= 7 && Number(value) <= 8 && (
                     <span className="text-warning-500">{t('passive') || 'Passive'}</span>
@@ -400,7 +400,7 @@ export default function SurveyTaker({
               {question.label} {question.required && <span className="text-danger-500">*</span>}
             </label>
             {question.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{question.description}</p>
+              <p className="text-sm text-muted-foreground mb-2">{question.description}</p>
             )}
             <div className="flex gap-4">
               <Radio
@@ -426,15 +426,15 @@ export default function SurveyTaker({
               {question.label} {question.required && <span className="text-danger-500">*</span>}
             </label>
             {question.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{question.description}</p>
+              <p className="text-sm text-muted-foreground mb-4">{question.description}</p>
             )}
             <div className="overflow-x-auto">
               <table className="min-w-full border-collapse">
                 <thead>
                   <tr>
-                    <th className="border border-gray-300 dark:border-gray-600 p-2 text-left"></th>
+                    <th className="border border-border p-2 text-left"></th>
                     {question.matrixColumns?.map((col) => (
-                      <th key={col} className="border border-gray-300 dark:border-gray-600 p-2 text-center text-sm">
+                      <th key={col} className="border border-border p-2 text-center text-sm">
                         {col}
                       </th>
                     ))}
@@ -443,14 +443,14 @@ export default function SurveyTaker({
                 <tbody>
                   {question.matrixRows?.map((row) => (
                     <tr key={row}>
-                      <td className="border border-gray-300 dark:border-gray-600 p-2 text-sm font-medium">
+                      <td className="border border-border p-2 text-sm font-medium">
                         {row}
                       </td>
                       {question.matrixColumns?.map((col) => {
                         const colKey = col || '';
                         const rowKey = row || '';
                         return (
-                          <td key={colKey} className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                          <td key={colKey} className="border border-border p-2 text-center">
                             <Radio
                               checked={matrixValue[rowKey] === colKey}
                               onChange={() => {
@@ -481,13 +481,13 @@ export default function SurveyTaker({
               {question.label} {question.required && <span className="text-danger-500">*</span>}
             </label>
             {question.description && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{question.description}</p>
+              <p className="text-sm text-muted-foreground mb-2">{question.description}</p>
             )}
             <div className="space-y-2">
               {rankingOptions.map((option) => {
                 const currentRank = rankingValue.indexOf(option.value) + 1;
                 return (
-                  <div key={option.value} className="flex items-center gap-2 p-2 border border-gray-200 dark:border-gray-700 rounded">
+                  <div key={option.value} className="flex items-center gap-2 p-2 border border-border rounded">
                     <span className="text-sm font-medium w-8">{currentRank || '—'}</span>
                     <span className="flex-1 text-sm">{option.label}</span>
                     <div className="flex gap-1">
@@ -551,7 +551,7 @@ export default function SurveyTaker({
         <div className="mb-6">
           <h1 className="text-2xl font-bold mb-2">{survey.name}</h1>
           {survey.description && (
-            <p className="text-gray-600 dark:text-gray-400">{survey.description}</p>
+            <p className="text-muted-foreground">{survey.description}</p>
           )}
         </div>
 

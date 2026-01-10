@@ -110,7 +110,7 @@ export default function MultiSelect({
       className={clsx('relative', fullWidth && 'w-full', className)}
     >
       {label && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-foreground mb-1">
           {label}
         </label>
       )}
@@ -118,12 +118,12 @@ export default function MultiSelect({
       <div
         className={clsx(
           'min-h-[42px] w-full px-3 py-2 border rounded-lg',
-          'bg-white dark:bg-gray-800',
-          'text-gray-900 dark:text-gray-100',
+          'bg-background',
+          'text-foreground',
           'focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-500 dark:focus-within:ring-primary-400 focus-within:border-transparent',
           error
             ? 'border-danger-500 dark:border-danger-400 focus-within:ring-danger-500 dark:focus-within:ring-danger-400'
-            : 'border-gray-300 dark:border-gray-600',
+            : 'border-border',
           disabled && 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed opacity-60',
           'cursor-text'
         )}
@@ -225,14 +225,14 @@ export default function MultiSelect({
       {isOpen && (
         <div
           className={clsx(
-            'absolute z-50 w-full mt-1 bg-white dark:bg-gray-800',
-            'border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg',
+            'absolute z-50 w-full mt-1 bg-background',
+            'border border-border rounded-lg shadow-lg',
             'max-h-60 overflow-y-auto'
           )}
           role="listbox"
         >
           {filteredOptions.length === 0 ? (
-            <div className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 text-center">
+            <div className="px-4 py-3 text-sm text-muted-foreground text-center">
               Aucune option trouvée
             </div>
           ) : (
@@ -240,7 +240,7 @@ export default function MultiSelect({
               {Object.entries(groupedOptions).map(([group, groupOptions]) => (
                 <div key={group}>
                   {Object.keys(groupedOptions).length > 1 && (
-                    <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                       {group}
                     </div>
                   )}
@@ -258,7 +258,7 @@ export default function MultiSelect({
                           'w-full text-left px-3 py-2 text-sm transition-colors',
                           isSelected
                             ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-900 dark:text-primary-100'
-                            : 'text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700',
+                            : 'text-foreground hover:bg-gray-100 dark:hover:bg-gray-700',
                           isDisabled && 'opacity-50 cursor-not-allowed'
                         )}
                         role="option"
@@ -270,7 +270,7 @@ export default function MultiSelect({
                               'w-4 h-4 border rounded flex items-center justify-center',
                               isSelected
                                 ? 'bg-primary-600 dark:bg-primary-500 border-primary-600 dark:border-primary-500'
-                                : 'border-gray-300 dark:border-gray-600'
+                                : 'border-border'
                             )}
                           >
                             {isSelected && (
@@ -308,7 +308,7 @@ export default function MultiSelect({
         </p>
       )}
       {helperText && !error && (
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-1 text-sm text-muted-foreground">
           {helperText}
         </p>
       )}

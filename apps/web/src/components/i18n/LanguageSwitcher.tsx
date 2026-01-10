@@ -64,7 +64,7 @@ export default function LanguageSwitcher() {
           />
           
           {/* Dropdown */}
-          <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
+          <div className="absolute right-0 mt-2 w-48 bg-background rounded-lg shadow-lg border border-border z-20">
             <div className="py-1">
               {locales.map((loc) => (
                 <button
@@ -78,7 +78,7 @@ export default function LanguageSwitcher() {
                 >
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{localeNativeNames[loc]}</span>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-muted-foreground">
                       {localeNames[loc]}
                     </span>
                   </div>

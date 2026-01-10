@@ -51,10 +51,10 @@ export default function ErrorTrackingDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <h2 className="text-2xl font-bold text-foreground">
             Error Tracking Dashboard
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Monitor application errors and performance issues
           </p>
         </div>
@@ -74,8 +74,8 @@ export default function ErrorTrackingDashboard() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Total Errors</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              <p className="text-sm text-muted-foreground">Total Errors</p>
+              <p className="text-2xl font-bold text-foreground">
                 {stats.totalErrors}
               </p>
             </div>
@@ -86,48 +86,48 @@ export default function ErrorTrackingDashboard() {
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Last 24h</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              <p className="text-sm text-muted-foreground">Last 24h</p>
+              <p className="text-2xl font-bold text-foreground">
                 {stats.errorsLast24h}
               </p>
             </div>
-            <TrendingUp className="w-8 h-8 text-blue-400" />
+            <TrendingUp className="w-8 h-8 text-primary-400" />
           </div>
         </Card>
 
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Last 7 Days</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              <p className="text-sm text-muted-foreground">Last 7 Days</p>
+              <p className="text-2xl font-bold text-foreground">
                 {stats.errorsLast7d}
               </p>
             </div>
-            <TrendingUp className="w-8 h-8 text-green-400" />
+            <TrendingUp className="w-8 h-8 text-success-400" />
           </div>
         </Card>
 
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Critical</p>
-              <p className="text-2xl font-bold text-red-600 dark:text-red-400">
+              <p className="text-sm text-muted-foreground">Critical</p>
+              <p className="text-2xl font-bold text-error-600 dark:text-error-400">
                 {stats.criticalErrors}
               </p>
             </div>
-            <XCircle className="w-8 h-8 text-red-400" />
+            <XCircle className="w-8 h-8 text-error-400" />
           </div>
         </Card>
 
         <Card className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Warnings</p>
-              <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
+              <p className="text-sm text-muted-foreground">Warnings</p>
+              <p className="text-2xl font-bold text-warning-600 dark:text-warning-400">
                 {stats.warningErrors}
               </p>
             </div>
-            <AlertTriangle className="w-8 h-8 text-yellow-400" />
+            <AlertTriangle className="w-8 h-8 text-warning-400" />
           </div>
         </Card>
       </div>
@@ -135,13 +135,13 @@ export default function ErrorTrackingDashboard() {
       {/* Recent Errors */}
       <Card className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-foreground">
             Recent Errors
           </h3>
         </div>
 
         {recentErrors.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-muted-foreground">
             <AlertCircle className="w-12 h-12 mx-auto mb-2 opacity-50" />
             <p>No errors recorded</p>
           </div>
@@ -154,21 +154,21 @@ export default function ErrorTrackingDashboard() {
               return (
                 <div
                   key={error.id}
-                  className="flex items-start justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+                  className="flex items-start justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-border"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <LevelIcon className="w-4 h-4" />
                       <Badge variant={levelConfig.color}>{error.level}</Badge>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs text-muted-foreground">
                         {new Date(error.timestamp).toLocaleString()}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-900 dark:text-gray-100 font-medium">
+                    <p className="text-sm text-foreground font-medium">
                       {error.message}
                     </p>
                     {error.url && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {error.url}
                       </p>
                     )}
@@ -181,14 +181,14 @@ export default function ErrorTrackingDashboard() {
       </Card>
 
       {/* Sentry Integration Note */}
-      <Card className="p-4 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+      <Card className="p-4 bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800">
         <div className="flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
+          <AlertCircle className="w-5 h-5 text-primary-600 dark:text-primary-400 mt-0.5" />
           <div className="flex-1">
-            <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+            <p className="text-sm font-medium text-primary-900 dark:text-primary-100">
               Sentry Integration
             </p>
-            <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+            <p className="text-xs text-primary-700 dark:text-primary-300 mt-1">
               For production error tracking, configure Sentry DSN in your environment variables.
               Errors will be automatically sent to Sentry for detailed analysis.
             </p>

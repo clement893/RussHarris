@@ -106,14 +106,14 @@ export default function IntegrationList({
   };
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <Settings className="w-5 h-5" />
             Integrations
           </h3>
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm text-muted-foreground">
             {filteredIntegrations.length} of {integrations.length} integrations
           </div>
         </div>
@@ -131,8 +131,8 @@ export default function IntegrationList({
                 className={clsx(
                   'w-full pl-10 pr-4 py-2 border rounded-lg text-sm',
                   'bg-white dark:bg-gray-700',
-                  'text-gray-900 dark:text-gray-100',
-                  'border-gray-300 dark:border-gray-600',
+                  'text-foreground',
+                  'border-border',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
                 )}
               />
@@ -144,8 +144,8 @@ export default function IntegrationList({
             className={clsx(
               'px-3 py-2 border rounded-lg text-sm',
               'bg-white dark:bg-gray-700',
-              'text-gray-900 dark:text-gray-100',
-              'border-gray-300 dark:border-gray-600',
+              'text-foreground',
+              'border-border',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
             )}
           >
@@ -162,8 +162,8 @@ export default function IntegrationList({
       {/* Integrations Grid */}
       {filteredIntegrations.length === 0 ? (
         <div className="text-center py-12">
-          <Settings className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">No integrations found</p>
+          <Settings className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+          <p className="text-muted-foreground">No integrations found</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -173,7 +173,7 @@ export default function IntegrationList({
               className={clsx(
                 'p-4 border rounded-lg transition-all',
                 'bg-white dark:bg-gray-900',
-                'border-gray-200 dark:border-gray-700',
+                'border-border',
                 'hover:border-primary-300 dark:hover:border-primary-600',
                 'hover:shadow-md'
               )}
@@ -188,7 +188,7 @@ export default function IntegrationList({
                     </div>
                   )}
                   <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                    <h4 className="font-semibold text-foreground">
                       {integration.name}
                     </h4>
                     <Badge
@@ -202,12 +202,12 @@ export default function IntegrationList({
                 {getStatusBadge(integration.status)}
               </div>
 
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+              <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                 {integration.description}
               </p>
 
               {integration.connectedAt && (
-                <div className="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                <div className="text-xs text-muted-foreground mb-4">
                   Connected {new Date(integration.connectedAt).toLocaleDateString()}
                 </div>
               )}

@@ -36,10 +36,10 @@ const severityIcons = {
 };
 
 const severityColors = {
-  info: 'text-blue-600 dark:text-blue-400',
-  warning: 'text-yellow-600 dark:text-yellow-400',
-  error: 'text-red-600 dark:text-red-400',
-  critical: 'text-red-800 dark:text-red-600',
+  info: 'text-primary-600 dark:text-primary-400',
+  warning: 'text-warning-600 dark:text-warning-400',
+  error: 'text-error-600 dark:text-error-400',
+  critical: 'text-error-800 dark:text-error-600',
 };
 
 const successIcons = {
@@ -49,9 +49,9 @@ const successIcons = {
 };
 
 const successColors = {
-  success: 'text-green-600 dark:text-green-400',
-  failure: 'text-red-600 dark:text-red-400',
-  unknown: 'text-gray-600 dark:text-gray-400',
+  success: 'text-success-600 dark:text-success-400',
+  failure: 'text-error-600 dark:text-error-400',
+  unknown: 'text-muted-foreground',
 };
 
 export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {
@@ -148,7 +148,7 @@ export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {
           <select
             value={filters.severity}
             onChange={(e) => setFilters({ ...filters, severity: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-sm"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-background text-sm"
           >
             <option value="">All</option>
             <option value="info">Info</option>
@@ -193,7 +193,7 @@ export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {
             return (
               <div
                 key={log.id}
-                className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                className="p-3 border border-border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2 flex-1">
@@ -207,7 +207,7 @@ export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {
                   </span>
                 </div>
                 
-                <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">{log.description}</p>
+                <p className="text-sm text-foreground mb-2">{log.description}</p>
                 
                 <div className="flex flex-wrap gap-4 text-xs text-gray-500">
                   {log.user_email && <span>User: {log.user_email}</span>}
@@ -220,7 +220,7 @@ export function AuditTrailViewer({ className = '' }: AuditTrailViewerProps) {
                 {log.event_metadata && Object.keys(log.event_metadata).length > 0 && (
                   <details className="mt-2">
                     <summary className="text-xs text-gray-500 cursor-pointer">View metadata</summary>
-                    <pre className="mt-1 p-2 bg-gray-50 dark:bg-gray-900 rounded text-xs overflow-x-auto">
+                    <pre className="mt-1 p-2 bg-muted rounded text-xs overflow-x-auto">
                       {JSON.stringify(log.event_metadata, null, 2)}
                     </pre>
                   </details>

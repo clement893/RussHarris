@@ -159,14 +159,14 @@ export default function AutomationRules({
 
   return (
     <>
-      <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+      <Card className={clsx('bg-background', className)}>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Zap className="w-5 h-5" />
               Automation Rules
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Configure rules to automate your workflows
             </p>
           </div>
@@ -181,20 +181,20 @@ export default function AutomationRules({
 
         {rules.length === 0 ? (
           <div className="text-center py-12">
-            <Zap className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400">No automation rules configured</p>
+            <Zap className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground">No automation rules configured</p>
           </div>
         ) : (
           <div className="space-y-4">
             {rules.map((rule) => (
               <div
                 key={rule.id}
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900"
+                className="p-4 border border-border rounded-lg bg-muted"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                      <h4 className="font-semibold text-foreground">
                         {rule.name}
                       </h4>
                       {rule.enabled ? (
@@ -204,11 +204,11 @@ export default function AutomationRules({
                       )}
                     </div>
                     {rule.description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      <p className="text-sm text-muted-foreground mb-2">
                         {rule.description}
                       </p>
                     )}
-                    <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                    <div className="space-y-1 text-sm text-muted-foreground">
                       <div>
                         <span className="font-medium">Trigger:</span> {rule.trigger.event}
                       </div>
@@ -259,10 +259,10 @@ export default function AutomationRules({
       {/* Create/Edit Modal */}
       {(showCreateModal || editingRule) && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-800">
+          <Card className="max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-background">
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <h3 className="text-lg font-semibold text-foreground">
                   {editingRule ? 'Edit Rule' : 'Create Automation Rule'}
                 </h3>
                 <Button
@@ -318,7 +318,7 @@ export default function AutomationRules({
                 required
               />
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
                 <Button
                   variant="ghost"
                   onClick={() => {

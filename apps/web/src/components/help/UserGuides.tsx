@@ -82,14 +82,14 @@ export default function UserGuides({
                   target={guide.external ? '_blank' : undefined}
                   rel={guide.external ? 'noopener noreferrer' : undefined}
                 >
-                  <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors h-full">
+                  <div className="p-4 border border-border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors h-full">
                     <div className="flex items-start gap-3">
                       <FileText className="w-5 h-5 text-primary-600 dark:text-primary-400 mt-0.5 flex-shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-1">
+                        <h3 className="font-medium text-foreground mb-1">
                           {guide.title}
                         </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <p className="text-sm text-muted-foreground">
                           {guide.description}
                         </p>
                         {guide.external && (

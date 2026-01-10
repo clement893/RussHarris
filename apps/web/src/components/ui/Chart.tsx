@@ -42,7 +42,7 @@ export default function Chart({
               }}
               title={`${point.label}: ${point.value}`}
             />
-            <div className="text-xs text-gray-600 dark:text-gray-400 mt-2 text-center truncate w-full">
+            <div className="text-xs text-muted-foreground mt-2 text-center truncate w-full">
               {point.label}
             </div>
           </div>
@@ -167,7 +167,7 @@ export default function Chart({
   };
 
   return (
-    <div className={clsx('bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6', className)}>
+    <div className={clsx('bg-background rounded-lg border border-border p-6', className)}>
       {title && (
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           {title}
@@ -184,7 +184,7 @@ export default function Chart({
                 className="w-4 h-4 rounded"
                 style={{ backgroundColor: point.color || `hsl(${(index * 360) / data.length}, 70%, 50%)` }}
               />
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-muted-foreground">
                 {point.label}: {point.value}
               </span>
             </div>

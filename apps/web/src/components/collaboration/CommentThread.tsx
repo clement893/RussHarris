@@ -149,7 +149,7 @@ export function CommentThread({
   const maxLevel = 3; // Maximum nesting level
 
   return (
-    <div className={`${level > 0 ? 'ml-8 mt-4 border-l-2 border-gray-200 dark:border-gray-700 pl-4' : ''}`}>
+    <div className={`${level > 0 ? 'ml-8 mt-4 border-l-2 border-border pl-4' : ''}`}>
       <div className="flex gap-3">
         <Avatar
           name={comment.user_name || comment.user_email || 'User'}
@@ -159,10 +159,10 @@ export function CommentThread({
           <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
             <div className="flex items-start justify-between mb-2">
               <div>
-                <span className="font-medium text-sm text-gray-900 dark:text-gray-100">
+                <span className="font-medium text-sm text-foreground">
                   {comment.user_name || comment.user_email || 'Anonymous'}
                 </span>
-                <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
+                <span className="text-xs text-muted-foreground ml-2">
                   {formatDistanceToNow(new Date(comment.created_at))}
                   {comment.is_edited && ' (edited)'}
                 </span>
@@ -177,7 +177,7 @@ export function CommentThread({
                   </button>
                   <button
                     onClick={handleDelete}
-                    className="p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                    className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
                   >
                     <Trash2 className="h-3 w-3" />
                   </button>
@@ -190,7 +190,7 @@ export function CommentThread({
                 <textarea
                   value={editContent}
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setEditContent(e.target.value)}
-                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm"
+                  className="w-full p-2 border border-border rounded-lg bg-white dark:bg-gray-700 text-sm"
                   rows={3}
                 />
                 <div className="flex gap-2">
@@ -204,7 +204,7 @@ export function CommentThread({
               </div>
             ) : (
               <>
-                <div className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap mb-2">
+                <div className="text-sm text-foreground whitespace-pre-wrap mb-2">
                   {comment.content_html ? (
                     <SafeHTML html={comment.content_html} />
                   ) : (
@@ -216,13 +216,13 @@ export function CommentThread({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setShowReactions(!showReactions)}
-                      className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                      className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
                     >
                       <ThumbsUp className="h-3 w-3" />
                       {comment.reactions_count > 0 && <span>{comment.reactions_count}</span>}
                     </button>
                     {showReactions && (
-                      <div className="absolute z-10 mt-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-2 flex gap-1">
+                      <div className="absolute z-10 mt-8 bg-background border border-border rounded-lg shadow-lg p-2 flex gap-1">
                         {REACTION_TYPES.map((type) => (
                           <button
                             key={type}
@@ -242,7 +242,7 @@ export function CommentThread({
                   {level < maxLevel && (
                     <button
                       onClick={() => setIsReplying(!isReplying)}
-                      className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                      className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
                     >
                       <Reply className="h-3 w-3" />
                       Reply
@@ -259,7 +259,7 @@ export function CommentThread({
                 value={replyContent}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReplyContent(e.target.value)}
                 placeholder="Write a reply..."
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm"
+                className="w-full p-2 border border-border rounded-lg bg-white dark:bg-gray-700 text-sm"
                 rows={3}
               />
               <div className="flex gap-2">

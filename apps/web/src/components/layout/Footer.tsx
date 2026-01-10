@@ -28,18 +28,18 @@ export default function Footer() {
             <h3 className="text-white font-bold text-xl mb-4">
               MODELE<span className="text-primary-400">FULLSTACK</span>
             </h3>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mb-6 leading-relaxed max-w-md">
+            <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-md">
               Template full-stack moderne pour démarrer rapidement vos projets avec Next.js 16, React 19, FastAPI et PostgreSQL.
             </p>
             
             {/* Social Media Links */}
             <div className="flex items-center gap-4 mb-6">
-              <span className="text-sm text-gray-400 dark:text-gray-500">Suivez-nous:</span>
+              <span className="text-sm text-muted-foreground">Suivez-nous:</span>
               <div className="flex items-center gap-3" role="list" aria-label="Réseaux sociaux">
                 {/* Placeholder social links - can be replaced with actual links */}
                 <a
                   href="#"
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 dark:bg-gray-800 hover:bg-primary-600 dark:hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-background hover:bg-primary-600 dark:hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900"
                   aria-label="Twitter (placeholder)"
                   role="listitem"
                 >
@@ -49,7 +49,7 @@ export default function Footer() {
                 </a>
                 <a
                   href="#"
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 dark:bg-gray-800 hover:bg-primary-600 dark:hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-background hover:bg-primary-600 dark:hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900"
                   aria-label="GitHub (placeholder)"
                   role="listitem"
                 >
@@ -59,7 +59,7 @@ export default function Footer() {
                 </a>
                 <a
                   href="#"
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 dark:bg-gray-800 hover:bg-primary-600 dark:hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-background hover:bg-primary-600 dark:hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900"
                   aria-label="LinkedIn (placeholder)"
                   role="listitem"
                 >
@@ -79,7 +79,7 @@ export default function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Votre email"
-                  className="flex-1 px-4 py-2 bg-gray-800 dark:bg-gray-800 border border-gray-700 dark:border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent text-sm"
+                  className="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent text-sm"
                   aria-label="Adresse email pour la newsletter"
                 />
                 <Button
@@ -105,22 +105,22 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4 text-base">Ressources</h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/docs" className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
+                <Link href="/docs" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
                   Documentation
                 </Link>
               </li>
               <li>
-                <Link href="/sitemap" className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
+                <Link href="/sitemap" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
                   Plan du Site
                 </Link>
               </li>
               <li>
-                <Link href="/components" className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
+                <Link href="/components" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
                   Composants
                 </Link>
               </li>
               <li>
-                <Link href="https://github.com/clement893/MODELE-NEXTJS-FULLSTACK" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="GitHub (ouvre dans un nouvel onglet)">
+                <Link href="https://github.com/clement893/MODELE-NEXTJS-FULLSTACK" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="GitHub (ouvre dans un nouvel onglet)">
                   GitHub
                 </Link>
               </li>
@@ -131,11 +131,11 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4 text-base">Technologies</h4>
             <ul className="space-y-3 text-sm" role="list">
-              <li className="text-gray-400 dark:text-gray-500">Next.js 16</li>
-              <li className="text-gray-400 dark:text-gray-500">React 19</li>
-              <li className="text-gray-400 dark:text-gray-500">FastAPI</li>
-              <li className="text-gray-400 dark:text-gray-500">PostgreSQL</li>
-              <li className="text-gray-400 dark:text-gray-500">TypeScript</li>
+              <li className="text-muted-foreground">Next.js 16</li>
+              <li className="text-muted-foreground">React 19</li>
+              <li className="text-muted-foreground">FastAPI</li>
+              <li className="text-muted-foreground">PostgreSQL</li>
+              <li className="text-muted-foreground">TypeScript</li>
             </ul>
           </div>
 
@@ -144,17 +144,17 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4 text-base">Contact</h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="https://github.com/clement893" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="GitHub du développeur (ouvre dans un nouvel onglet)">
+                <a href="https://github.com/clement893" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="GitHub du développeur (ouvre dans un nouvel onglet)">
                   GitHub
                 </a>
               </li>
               <li>
-                <a href="https://github.com/clement893/MODELE-NEXTJS-FULLSTACK/issues" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="Signaler un bug sur GitHub (ouvre dans un nouvel onglet)">
+                <a href="https://github.com/clement893/MODELE-NEXTJS-FULLSTACK/issues" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="Signaler un bug sur GitHub (ouvre dans un nouvel onglet)">
                   Signaler un bug
                 </a>
               </li>
               <li>
-                <Link href="/dashboard" className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
+                <Link href="/dashboard" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
                   Dashboard
                 </Link>
               </li>
@@ -164,7 +164,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 dark:border-gray-700 mt-10 pt-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-400 dark:text-gray-500">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
             <p>
               © {currentYear} Nukleo. Tous droits réservés.
             </p>

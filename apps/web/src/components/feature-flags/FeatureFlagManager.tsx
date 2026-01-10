@@ -114,7 +114,7 @@ export function FeatureFlagManager({ className = '' }: FeatureFlagManagerProps) 
           {flags.map((flag) => (
             <div
               key={flag.id}
-              className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
+              className="flex items-center justify-between p-3 border border-border rounded-lg"
             >
               <div className="flex items-center gap-3 flex-1">
                 <button
@@ -140,14 +140,14 @@ export function FeatureFlagManager({ className = '' }: FeatureFlagManagerProps) 
                     )}
                   </div>
                   {flag.description && (
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                       {flag.description}
                     </p>
                   )}
                   <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
                     <span>{flag.rollout_percentage}% rollout</span>
                     {flag.enabled && (
-                      <span className="text-green-600 dark:text-green-400">Active</span>
+                      <span className="text-success-600 dark:text-success-400">Active</span>
                     )}
                   </div>
                 </div>
@@ -161,7 +161,7 @@ export function FeatureFlagManager({ className = '' }: FeatureFlagManagerProps) 
                 </button>
                 <button
                   onClick={() => handleDelete(flag.id)}
-                  className="p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                  className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
                   title="Delete"
                 >
                   <Trash2 className="h-4 w-4" />

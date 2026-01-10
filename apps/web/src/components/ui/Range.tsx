@@ -69,9 +69,9 @@ export default function Range({
     <div className={clsx('flex flex-col gap-2', fullWidth && 'w-full', className)}>
       {label && (
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+          <label className="text-sm font-medium text-foreground">{label}</label>
           {showValues && (
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            <span className="text-sm text-muted-foreground">
               {minValue} - {maxValue}
             </span>
           )}
@@ -79,7 +79,7 @@ export default function Range({
       )}
       <div className="relative">
         {/* Track */}
-        <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-lg relative">
+        <div className="h-2 bg-muted rounded-lg relative">
           {/* Active range */}
           <div
             className="absolute h-2 bg-primary-600 rounded-lg"
@@ -136,7 +136,7 @@ export default function Range({
         />
       </div>
       {showValues && !label && (
-        <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex justify-between text-sm text-muted-foreground">
           <span>{minValue}</span>
           <span>{maxValue}</span>
         </div>

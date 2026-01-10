@@ -46,7 +46,7 @@ export const ClientDashboard = memo(function ClientDashboard() {
   if (error) {
     return (
       <Card title="Error">
-        <p className="text-red-600 dark:text-red-400">
+        <p className="text-error-600 dark:text-error-400">
           Failed to load dashboard statistics. Please try again later.
         </p>
       </Card>
@@ -64,17 +64,17 @@ export const ClientDashboard = memo(function ClientDashboard() {
         <StatsCard
           title="Total Orders"
           value={stats.total_orders.toString()}
-          className="bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-800"
+          className="bg-primary-100 dark:bg-primary-900/40 border-primary-200 dark:border-primary-800"
         />
         <StatsCard
           title="Pending Orders"
           value={stats.pending_orders.toString()}
-          className="bg-yellow-100 dark:bg-yellow-900/40 border-yellow-200 dark:border-yellow-800"
+          className="bg-warning-100 dark:bg-warning-900/40 border-warning-200 dark:border-warning-800"
         />
         <StatsCard
           title="Completed Orders"
           value={stats.completed_orders.toString()}
-          className="bg-green-100 dark:bg-green-900/40 border-green-200 dark:border-green-800"
+          className="bg-success-100 dark:bg-success-900/40 border-success-200 dark:border-success-800"
         />
         <StatsCard
           title="Open Tickets"
@@ -88,14 +88,14 @@ export const ClientDashboard = memo(function ClientDashboard() {
         <Card title="Financial Overview">
           <div className="space-y-4">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Total Spent</p>
+              <p className="text-sm text-muted-foreground">Total Spent</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 ${parseFloat(stats.total_spent).toFixed(2)}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Pending Amount</p>
-              <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
+              <p className="text-sm text-muted-foreground">Pending Amount</p>
+              <p className="text-2xl font-bold text-warning-600 dark:text-warning-400">
                 ${parseFloat(stats.pending_amount).toFixed(2)}
               </p>
             </div>
@@ -105,14 +105,14 @@ export const ClientDashboard = memo(function ClientDashboard() {
         <Card title="Projects & Invoices">
           <div className="space-y-4">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Active Projects</p>
+              <p className="text-sm text-muted-foreground">Active Projects</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 {stats.active_projects} / {stats.total_projects}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Paid Invoices</p>
-              <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+              <p className="text-sm text-muted-foreground">Paid Invoices</p>
+              <p className="text-2xl font-bold text-success-600 dark:text-success-400">
                 {stats.paid_invoices} / {stats.total_invoices}
               </p>
             </div>

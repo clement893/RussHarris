@@ -315,7 +315,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-semibold mb-2">Gestion des équipes</h2>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-muted-foreground">
                 Gérez vos équipes et leurs membres
               </p>
             </div>
@@ -328,7 +328,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
           {teams.length === 0 ? (
             <div className="text-center py-12">
               <Users className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-muted-foreground mb-4">
                 Aucune équipe pour le moment
               </p>
               <Button onClick={handleCreateTeam} variant="primary">
@@ -350,11 +350,11 @@ export default function TeamManagement({ className }: TeamManagementProps) {
                         )}
                       </div>
                       {team.description && (
-                        <p className="text-gray-600 dark:text-gray-400 mb-2">
+                        <p className="text-muted-foreground mb-2">
                           {team.description}
                         </p>
                       )}
-                      <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span>Slug: {team.slug}</span>
                         <span>Membres: {team.members?.length || 0}</span>
                         {team.owner && (
@@ -436,7 +436,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
               Description
             </label>
             <textarea
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
               rows={3}
               value={teamForm.description}
               onChange={(e) => setTeamForm({ ...teamForm, description: e.target.value })}
@@ -466,7 +466,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
         ) : teamMembers.length === 0 ? (
           <div className="text-center py-8">
             <Users className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-muted-foreground mb-4">
               Aucun membre dans cette équipe
             </p>
             <Button onClick={handleAddMember} variant="primary">
@@ -478,13 +478,13 @@ export default function TeamManagement({ className }: TeamManagementProps) {
             {teamMembers.map((member) => (
               <div
                 key={member.id}
-                className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
+                className="flex items-center justify-between p-3 border border-border rounded-lg"
               >
                 <div className="flex-1">
                   <div className="font-medium">
                     {member.user ? getUserName(member.user_id) : `User #${member.user_id}`}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-sm text-muted-foreground">
                     {member.user?.email}
                   </div>
                 </div>
@@ -592,7 +592,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
           </>
         }
       >
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-muted-foreground">
           Êtes-vous sûr de vouloir supprimer cette équipe ? Cette action est irréversible.
         </p>
       </Modal>
@@ -624,7 +624,7 @@ export default function TeamManagement({ className }: TeamManagementProps) {
           </>
         }
       >
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-muted-foreground">
           Êtes-vous sûr de vouloir retirer ce membre de l'équipe ?
         </p>
       </Modal>

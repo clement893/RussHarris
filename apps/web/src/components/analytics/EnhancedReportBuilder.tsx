@@ -134,7 +134,7 @@ export function EnhancedReportBuilder({
             required
           />
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-foreground mb-1">
               Description
             </label>
             <textarea
@@ -144,7 +144,7 @@ export function EnhancedReportBuilder({
               }
               placeholder="Describe what this report shows..."
               rows={2}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-white dark:bg-gray-700"
             />
           </div>
           <Input
@@ -181,7 +181,7 @@ export function EnhancedReportBuilder({
                 className="flex-1"
               />
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Operator
                 </label>
                 <select
@@ -189,7 +189,7 @@ export function EnhancedReportBuilder({
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                     updateFilter(index, { operator: e.target.value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-white dark:bg-gray-700"
                 >
                   <option value="equals">Equals</option>
                   <option value="contains">Contains</option>
@@ -209,7 +209,7 @@ export function EnhancedReportBuilder({
               />
               <button
                 onClick={() => removeFilter(index)}
-                className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                className="p-2 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
               >
                 <Trash2 className="h-4 w-4" />
               </button>
@@ -243,7 +243,7 @@ export function EnhancedReportBuilder({
                 className="flex-1"
               />
               <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Function
                 </label>
                 <select
@@ -253,7 +253,7 @@ export function EnhancedReportBuilder({
                       function: e.target.value as ReportConfig['aggregations'][0]['function'],
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-white dark:bg-gray-700"
                 >
                   <option value="sum">Sum</option>
                   <option value="avg">Average</option>
@@ -273,7 +273,7 @@ export function EnhancedReportBuilder({
               />
               <button
                 onClick={() => removeAggregation(index)}
-                className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                className="p-2 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
               >
                 <Trash2 className="h-4 w-4" />
               </button>
@@ -296,7 +296,7 @@ export function EnhancedReportBuilder({
               className={`p-4 border rounded-lg flex flex-col items-center gap-2 ${
                 config.chartType === type
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
-                  : 'border-gray-300 dark:border-gray-600'
+                  : 'border-border'
               }`}
             >
               {type === 'bar' && <BarChart3 className="h-6 w-6" />}

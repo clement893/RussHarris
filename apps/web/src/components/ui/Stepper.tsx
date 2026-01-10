@@ -94,7 +94,7 @@ export default function Stepper({
                   status === 'error' &&
                     'bg-danger-600 dark:bg-danger-500 text-white',
                   status === 'upcoming' &&
-                    'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400',
+                    'bg-muted text-muted-foreground',
                   isClickable && 'cursor-pointer hover:scale-105',
                   !isClickable && 'cursor-not-allowed'
                 )}
@@ -141,22 +141,22 @@ export default function Stepper({
                     status === 'current' &&
                       'text-primary-600 dark:text-primary-400',
                     status === 'completed' &&
-                      'text-gray-900 dark:text-gray-100',
+                      'text-foreground',
                     status === 'error' &&
                       'text-danger-600 dark:text-danger-400',
                     status === 'upcoming' &&
-                      'text-gray-500 dark:text-gray-400'
+                      'text-muted-foreground'
                   )}
                 >
                   {step.label}
                   {step.optional && (
-                    <span className="text-gray-400 dark:text-gray-500 ml-1">
+                    <span className="text-muted-foreground ml-1">
                       (optionnel)
                     </span>
                   )}
                 </span>
                 {step.description && (
-                  <span className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  <span className="text-xs text-muted-foreground mt-0.5">
                     {step.description}
                   </span>
                 )}
@@ -171,7 +171,7 @@ export default function Stepper({
                   isHorizontal ? 'mx-4 h-0.5' : 'my-2 w-0.5 h-8 ml-4',
                   index < currentStep
                     ? 'bg-primary-600 dark:bg-primary-500'
-                    : 'bg-gray-200 dark:bg-gray-700'
+                    : 'bg-muted'
                 )}
                 aria-hidden="true"
               />

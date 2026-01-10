@@ -139,16 +139,16 @@ export function PerformanceDashboard() {
           <div className="space-y-4">
             <div className="grid grid-cols-4 gap-4 text-sm">
               <div>
-                <span className="text-gray-600 dark:text-gray-400">Metric</span>
+                <span className="text-muted-foreground">Metric</span>
               </div>
               <div>
-                <span className="text-gray-600 dark:text-gray-400">Average</span>
+                <span className="text-muted-foreground">Average</span>
               </div>
               <div>
-                <span className="text-gray-600 dark:text-gray-400">P75</span>
+                <span className="text-muted-foreground">P75</span>
               </div>
               <div>
-                <span className="text-gray-600 dark:text-gray-400">P95</span>
+                <span className="text-muted-foreground">P95</span>
               </div>
             </div>
             {(['lcp', 'fcp', 'ttfb', 'cls', 'inp'] as const).map((metric) => (
@@ -159,7 +159,7 @@ export function PerformanceDashboard() {
                 <div>{formatValue(stats.p95[metric], metric === 'cls' ? '' : 'ms')}</div>
               </div>
             ))}
-            <div className="text-sm text-gray-600 dark:text-gray-400 mt-4">
+            <div className="text-sm text-muted-foreground mt-4">
               Total Samples: {stats.totalSamples}
             </div>
           </div>
@@ -170,7 +170,7 @@ export function PerformanceDashboard() {
         <Card>
           <div className="text-center py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600 dark:text-gray-400">Loading performance metrics...</p>
+            <p className="mt-4 text-muted-foreground">Loading performance metrics...</p>
           </div>
         </Card>
       )}

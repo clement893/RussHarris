@@ -179,7 +179,7 @@ export function TemplateAIChat({
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-gray-900/50">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/50">
           {messages.length === 0 && (
             <div className="flex items-center justify-center h-full text-muted-foreground">
               <div className="text-center">
@@ -215,7 +215,7 @@ export function TemplateAIChat({
                 className={`max-w-[85%] rounded-lg p-3 ${
                   message.role === 'user'
                     ? 'bg-primary-500 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700'
+                    : 'bg-background text-foreground border border-border'
                 }`}
               >
                 <div className="prose prose-sm dark:prose-invert max-w-none">
@@ -229,8 +229,8 @@ export function TemplateAIChat({
               </div>
 
               {message.role === 'user' && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                  <User className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                  <User className="h-4 w-4 text-muted-foreground" />
                 </div>
               )}
             </div>
@@ -241,7 +241,7 @@ export function TemplateAIChat({
               <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
                 <Bot className="h-4 w-4 text-primary-600 dark:text-primary-400" />
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700">
+              <div className="bg-background rounded-lg p-3 border border-border">
                 <Loader2 className="h-4 w-4 animate-spin text-primary-500" />
               </div>
             </div>
@@ -253,7 +253,7 @@ export function TemplateAIChat({
         {/* Input */}
         <div className="p-4 border-t bg-white dark:bg-gray-900">
           {error && (
-            <div className="mb-2 p-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded text-sm text-red-600 dark:text-red-400">
+            <div className="mb-2 p-2 bg-error-50 dark:bg-error-900/20 border border-error-200 dark:border-error-800 rounded text-sm text-error-600 dark:text-error-400">
               {error}
             </div>
           )}

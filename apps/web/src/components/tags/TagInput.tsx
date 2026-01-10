@@ -152,7 +152,7 @@ export function TagInput({
 
   return (
     <div className={`relative ${className}`}>
-      <div className="flex flex-wrap gap-2 p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 min-h-[42px]">
+      <div className="flex flex-wrap gap-2 p-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-background min-h-[42px]">
         {selectedTags.map((tag) => (
           <span
             key={tag.id}
@@ -163,7 +163,7 @@ export function TagInput({
             {tag.name}
             <button
               onClick={() => handleRemoveTag(tag.id)}
-              className="hover:text-red-500 dark:hover:text-red-400"
+              className="hover:text-error-500 dark:hover:text-error-400"
               type="button"
             >
               <X className="h-3 w-3" />
@@ -187,7 +187,7 @@ export function TagInput({
       </div>
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+        <div className="absolute z-50 w-full mt-1 bg-background border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto">
           {suggestions.map((tag) => (
             <button
               key={tag.id}

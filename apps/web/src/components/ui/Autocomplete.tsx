@@ -213,8 +213,8 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
           <div
             ref={dropdownRef}
             className={clsx(
-              'absolute z-50 w-full mt-1 bg-white dark:bg-gray-800',
-              'border border-gray-200 dark:border-gray-700 rounded-lg shadow-strong',
+              'absolute z-50 w-full mt-1 bg-background',
+              'border border-border rounded-lg shadow-strong',
               'overflow-y-auto',
               maxHeight,
               dropdownClassName
@@ -232,7 +232,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
                     'px-4 py-2 cursor-pointer transition-colors',
                     isHighlighted && !isDisabled
                       ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-900 dark:text-primary-100'
-                      : 'text-gray-900 dark:text-gray-100',
+                      : 'text-foreground',
                     isDisabled && 'opacity-50 cursor-not-allowed',
                     !isDisabled && 'hover:bg-gray-100 dark:hover:bg-gray-700'
                   )}
@@ -244,7 +244,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
                     <div className="flex items-center justify-between">
                       <span>{option.label}</span>
                       {option.group && (
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-muted-foreground">
                           {option.group}
                         </span>
                       )}
@@ -260,9 +260,9 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
         {isOpen && searchTerm.length >= minChars && filteredOptions.length === 0 && !loading && (
           <div
             className={clsx(
-              'absolute z-50 w-full mt-1 bg-white dark:bg-gray-800',
-              'border border-gray-200 dark:border-gray-700 rounded-lg shadow-strong',
-              'px-4 py-2 text-gray-500 dark:text-gray-400 text-sm'
+              'absolute z-50 w-full mt-1 bg-background',
+              'border border-border rounded-lg shadow-strong',
+              'px-4 py-2 text-muted-foreground text-sm'
             )}
           >
             Aucun résultat trouvé

@@ -86,7 +86,7 @@ export function LeadCaptureForm({
   return (
     <div className={className}>
       {title && <h3 className="text-xl font-semibold mb-2">{title}</h3>}
-      {description && <p className="text-gray-600 dark:text-gray-400 mb-6">{description}</p>}
+      {description && <p className="text-muted-foreground mb-6">{description}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {fields.includes('name') && (
@@ -151,7 +151,7 @@ export function LeadCaptureForm({
               value={formData.message || ''}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange('message', e.target.value)}
               disabled={isLoading}
-              className="w-full px-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-10 py-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
               rows={4}
             />
           </div>
@@ -174,14 +174,14 @@ export function LeadCaptureForm({
         </Button>
 
         {status === 'success' && (
-          <div className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <div className="flex items-center gap-2 text-sm text-success-600 dark:text-success-400 p-3 bg-success-50 dark:bg-success-900/20 rounded-lg">
             <CheckCircle className="h-4 w-4" />
             <span>{message}</span>
           </div>
         )}
 
         {status === 'error' && (
-          <div className="flex items-center gap-2 text-sm text-red-600 dark:text-red-400 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+          <div className="flex items-center gap-2 text-sm text-error-600 dark:text-error-400 p-3 bg-error-50 dark:bg-error-900/20 rounded-lg">
             <AlertCircle className="h-4 w-4" />
             <span>{message}</span>
           </div>

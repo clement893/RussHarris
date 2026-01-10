@@ -38,7 +38,7 @@ export default function UserProfile() {
           {session.user?.name ?? session.user?.email}
         </span>
         {session.user?.email && session.user?.name && (
-          <span className="text-xs text-gray-500 dark:text-gray-400">{session.user.email}</span>
+          <span className="text-xs text-muted-foreground">{session.user.email}</span>
         )}
       </div>
       <SignOutButton variant="secondary" />

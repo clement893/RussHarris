@@ -172,7 +172,7 @@ export default function FormBuilder({
         return (
           <div className="space-y-2">
             {field.label && (
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-foreground">
                 {field.label}
                 {field.required && <span className="text-error-500 dark:text-error-400 ml-1">*</span>}
               </label>
@@ -194,7 +194,7 @@ export default function FormBuilder({
               <p className="text-sm text-error-600 dark:text-error-400">{errors[field.name]}</p>
             )}
             {field.helperText && !errors[field.name] && (
-              <p className="text-sm text-gray-500 dark:text-gray-400">{field.helperText}</p>
+              <p className="text-sm text-muted-foreground">{field.helperText}</p>
             )}
           </div>
         );

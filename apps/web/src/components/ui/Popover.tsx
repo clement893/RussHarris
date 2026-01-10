@@ -126,8 +126,8 @@ export default function Popover({
             ref={contentRef}
             className={clsx(
               'absolute z-50',
-              'bg-white dark:bg-gray-800',
-              'border border-gray-200 dark:border-gray-700',
+              'bg-background',
+              'border border-border',
               'rounded-lg shadow-strong',
               'min-w-[200px]',
               placementClasses[placement],

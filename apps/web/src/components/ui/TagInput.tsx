@@ -103,12 +103,12 @@ export default function TagInput({
   return (
     <div className={clsx('flex flex-col gap-2', fullWidth && 'w-full', className)}>
       {label && (
-        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+        <label className="text-sm font-medium text-foreground">{label}</label>
       )}
       <div
         className={clsx(
-          'flex flex-wrap gap-2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg',
-          'bg-white dark:bg-gray-800',
+          'flex flex-wrap gap-2 p-2 border border-border rounded-lg',
+          'bg-background',
           'focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-transparent',
           disabled && 'opacity-50 cursor-not-allowed'
         )}
@@ -151,13 +151,13 @@ export default function TagInput({
           placeholder={tags.length === 0 ? placeholder : ''}
           className={clsx(
             'flex-1 min-w-[120px] outline-none bg-transparent',
-            'text-gray-900 dark:text-gray-100',
+            'text-foreground',
             'placeholder:text-gray-400 dark:placeholder:text-gray-500'
           )}
         />
       </div>
       {maxTags && (
-        <div className="text-xs text-gray-500 dark:text-gray-400">
+        <div className="text-xs text-muted-foreground">
           {tags.length} / {maxTags} tags
         </div>
       )}

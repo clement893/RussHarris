@@ -100,7 +100,7 @@ export default function PageEditor({
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-3">
           <Badge variant="default">{section.type}</Badge>
-          <span className="text-sm text-gray-900 dark:text-gray-100">
+          <span className="text-sm text-foreground">
             {section.title || `Section ${section.type}`}
           </span>
         </div>
@@ -184,7 +184,7 @@ export default function PageEditor({
             </div>
 
             {sections.length === 0 ? (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-12 text-muted-foreground">
                 <p>No sections yet. Add a section to get started.</p>
               </div>
             ) : (
@@ -200,7 +200,7 @@ export default function PageEditor({
             <Card title={`Edit ${selectedSection.type} Section`}>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-foreground mb-2">
                     Title
                   </label>
                   <Input
@@ -210,7 +210,7 @@ export default function PageEditor({
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-foreground mb-2">
                     Content
                   </label>
                   <textarea
@@ -218,7 +218,7 @@ export default function PageEditor({
                     onChange={(e) => handleUpdateSection(selectedSection.id, { content: e.target.value })}
                     placeholder="Section content"
                     rows={6}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
               </div>
@@ -255,19 +255,19 @@ export default function PageEditor({
           <Card title="Page Info">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Page Title
                 </label>
                 <Input placeholder="Page title" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Slug
                 </label>
                 <Input placeholder="page-slug" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Status
                 </label>
                 <Select

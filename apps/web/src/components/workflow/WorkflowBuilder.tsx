@@ -154,13 +154,13 @@ export default function WorkflowBuilder({
   };
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Workflow className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <h3 className="text-lg font-semibold text-foreground">
               Workflow Builder
             </h3>
           </div>
@@ -203,11 +203,11 @@ export default function WorkflowBuilder({
         </div>
 
         {/* Workflow Canvas */}
-        <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 min-h-[400px] bg-gray-50 dark:bg-gray-900/50">
+        <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 min-h-[400px] bg-muted/50">
           {formData.nodes.length === 0 ? (
             <div className="text-center py-12">
-              <Workflow className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-              <p className="text-gray-600 dark:text-gray-400 mb-4">No nodes in workflow</p>
+              <Workflow className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground mb-4">No nodes in workflow</p>
               <Button
                 variant="primary"
                 onClick={() => handleAddNode('trigger')}
@@ -231,7 +231,7 @@ export default function WorkflowBuilder({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {getNodeIcon(node.type)}
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
+                      <span className="font-medium text-foreground">
                         {node.label}
                       </span>
                       <Badge variant="default" className="text-xs px-2 py-0.5">
@@ -257,7 +257,7 @@ export default function WorkflowBuilder({
 
         {/* Add Node Buttons */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm text-gray-600 dark:text-gray-400">Add:</span>
+          <span className="text-sm text-muted-foreground">Add:</span>
           <Button
             variant="outline"
             size="sm"
@@ -286,9 +286,9 @@ export default function WorkflowBuilder({
 
         {/* Node Configuration */}
         {selectedNode && (
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="p-4 bg-muted rounded-lg border border-border">
             <div className="flex items-center justify-between mb-4">
-              <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+              <h4 className="font-semibold text-foreground">
                 Configure {selectedNode.type}
               </h4>
               <Button

@@ -107,7 +107,7 @@ export function ArticleViewer({ slug, className = '' }: ArticleViewerProps) {
         <header className="mb-6">
           <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
           {article.excerpt && (
-            <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">{article.excerpt}</p>
+            <p className="text-lg text-muted-foreground mb-4">{article.excerpt}</p>
           )}
           <div className="flex items-center gap-4 text-sm text-gray-500">
             <span className="flex items-center gap-1">
@@ -136,7 +136,7 @@ export function ArticleViewer({ slug, className = '' }: ArticleViewerProps) {
           </div>
         )}
 
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+        <div className="border-t border-border pt-6">
           <h3 className="text-sm font-semibold mb-3">Was this article helpful?</h3>
           <div className="flex items-center gap-4">
             <Button

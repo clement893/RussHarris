@@ -36,7 +36,7 @@ export default function List({
 }: ListProps) {
   const variantClasses = {
     default: '',
-    bordered: 'border border-gray-200 dark:border-gray-700 rounded-lg',
+    bordered: 'border border-border rounded-lg',
     divided: 'divide-y divide-gray-200 dark:divide-gray-700',
   };
 
@@ -66,14 +66,14 @@ export default function List({
               isClickable &&
                 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors',
               item.disabled && 'opacity-50 cursor-not-allowed',
-              variant === 'bordered' && index > 0 && 'border-t border-gray-200 dark:border-gray-700',
-              variant === 'divided' && index < items.length - 1 && 'border-b border-gray-200 dark:border-gray-700'
+              variant === 'bordered' && index > 0 && 'border-t border-border',
+              variant === 'divided' && index < items.length - 1 && 'border-b border-border'
             )}
             role={isClickable ? 'button' : 'listitem'}
             tabIndex={isClickable ? 0 : undefined}
           >
             {item.icon && (
-              <div className="flex-shrink-0 text-gray-500 dark:text-gray-400">{item.icon}</div>
+              <div className="flex-shrink-0 text-muted-foreground">{item.icon}</div>
             )}
             <div className="flex-1 min-w-0">{item.content}</div>
             {item.action && <div className="flex-shrink-0">{item.action}</div>}

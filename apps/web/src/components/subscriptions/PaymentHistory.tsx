@@ -21,7 +21,7 @@ export default function PaymentHistory({ payments }: PaymentHistoryProps) {
       label: 'Date',
       sortable: true,
       render: (value) => (
-        <span className="text-sm text-gray-900 dark:text-gray-100">
+        <span className="text-sm text-foreground">
           {new Date(String(value)).toLocaleDateString('fr-FR')}
         </span>
       ),
@@ -31,7 +31,7 @@ export default function PaymentHistory({ payments }: PaymentHistoryProps) {
       label: 'Amount',
       sortable: true,
       render: (value, _row) => (
-        <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+        <span className="text-sm font-medium text-foreground">
           {String(value)}€
         </span>
       ),
@@ -60,7 +60,7 @@ export default function PaymentHistory({ payments }: PaymentHistoryProps) {
               href={String(value)}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
+              className="text-primary-600 dark:text-primary-400 hover:underline text-sm"
             >
               Download Invoice
             </a>
@@ -73,11 +73,11 @@ export default function PaymentHistory({ payments }: PaymentHistoryProps) {
   return (
     <Card>
       <div className="p-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+        <h2 className="text-2xl font-bold text-foreground mb-6">
           Payment History
         </h2>
         {payments.length === 0 ? (
-          <p className="text-gray-600 dark:text-gray-400">No payments yet</p>
+          <p className="text-muted-foreground">No payments yet</p>
         ) : (
           <DataTable
             data={payments}

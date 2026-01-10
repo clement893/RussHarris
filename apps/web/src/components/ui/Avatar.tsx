@@ -70,7 +70,7 @@ export default function Avatar({
     <div
       className={clsx(
         'relative inline-flex items-center justify-center',
-        'rounded-full bg-gray-200 dark:bg-gray-700',
+        'rounded-full bg-muted',
         'text-gray-600 dark:text-gray-300',
         'overflow-hidden',
         sizeClasses[size],

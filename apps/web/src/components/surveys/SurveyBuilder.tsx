@@ -436,7 +436,7 @@ export default function SurveyBuilder({
             }
           >
             {currentSurvey.questions.length === 0 ? (
-              <div className="text-center text-gray-500 dark:text-gray-400 py-8">
+              <div className="text-center text-muted-foreground py-8">
                 <p>{t('no_questions_yet') || 'No questions yet'}</p>
                 <Button onClick={handleAddQuestion} className="mt-4">
                   <Plus className="h-4 w-4 mr-2" />
@@ -452,10 +452,10 @@ export default function SurveyBuilder({
                       <div className="flex items-center gap-2">
                         <span className="text-lg">{getQuestionIcon(question.type)}</span>
                         <span className="font-medium">{question.label || t('untitled_question') || 'Untitled Question'}</span>
-                        <span className="text-sm text-gray-500 dark:text-gray-400 capitalize">({question.type})</span>
+                        <span className="text-sm text-muted-foreground capitalize">({question.type})</span>
                         {question.required && <span className="text-danger-500 text-xs ml-1">*</span>}
                         {question.showIf && (
-                          <span className="text-xs text-blue-500 dark:text-blue-400" title={t('conditional') || 'Conditional'}>
+                          <span className="text-xs text-primary-500 dark:text-primary-400" title={t('conditional') || 'Conditional'}>
                             🔗
                           </span>
                         )}
@@ -490,7 +490,7 @@ export default function SurveyBuilder({
               ]}
               className="mb-4"
             />
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-muted-foreground">
               <p>{t('questions_count') || 'Questions'}: {currentSurvey.questions.length}</p>
             </div>
           </Card>

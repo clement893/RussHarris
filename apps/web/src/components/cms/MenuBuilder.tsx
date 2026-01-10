@@ -128,10 +128,10 @@ export default function MenuBuilder({
     content: (
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+          <span className="text-sm font-medium text-foreground">
             {item.label}
           </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-xs text-muted-foreground">
             {item.url}
           </span>
           {item.target === '_blank' && (
@@ -177,7 +177,7 @@ export default function MenuBuilder({
 
             <div className="mb-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Menu Name
                 </label>
                 <Input
@@ -187,7 +187,7 @@ export default function MenuBuilder({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Location
                 </label>
                 <Select
@@ -213,7 +213,7 @@ export default function MenuBuilder({
             </div>
 
             {currentMenu.items.length === 0 ? (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-12 text-muted-foreground">
                 <p>No menu items yet. Add an item to get started.</p>
               </div>
             ) : (
@@ -251,7 +251,7 @@ export default function MenuBuilder({
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Label *
             </label>
             <Input
@@ -261,7 +261,7 @@ export default function MenuBuilder({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               URL *
             </label>
             <Input
@@ -271,7 +271,7 @@ export default function MenuBuilder({
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Target
             </label>
             <Select

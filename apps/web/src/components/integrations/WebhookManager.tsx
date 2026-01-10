@@ -108,14 +108,14 @@ export default function WebhookManager({
 
   return (
     <>
-      <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+      <Card className={clsx('bg-background', className)}>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Webhook className="w-5 h-5" />
               Webhook Manager
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Manage webhook endpoints and monitor delivery status
             </p>
           </div>
@@ -132,20 +132,20 @@ export default function WebhookManager({
 
         {webhooks.length === 0 ? (
           <div className="text-center py-12">
-            <Webhook className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400">No webhooks configured</p>
+            <Webhook className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground">No webhooks configured</p>
           </div>
         ) : (
           <div className="space-y-4">
             {webhooks.map((webhook) => (
               <div
                 key={webhook.id}
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900"
+                className="p-4 border border-border rounded-lg bg-muted"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
+                      <span className="font-medium text-foreground">
                         {webhook.name}
                       </span>
                       {webhook.active ? (
@@ -166,10 +166,10 @@ export default function WebhookManager({
                         </Badge>
                       )}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-2 font-mono">
+                    <div className="text-sm text-muted-foreground mb-2 font-mono">
                       {webhook.url}
                     </div>
-                    <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400 mb-2">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground mb-2">
                       <div className="flex items-center gap-1">
                         <Activity className="w-3 h-3" />
                         Success: {webhook.successCount} ({getSuccessRate(webhook)}%)
@@ -240,7 +240,7 @@ export default function WebhookManager({
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Webhook Name
             </label>
             <input
@@ -251,14 +251,14 @@ export default function WebhookManager({
               className={clsx(
                 'w-full px-4 py-2 border rounded-lg',
                 'bg-white dark:bg-gray-700',
-                'text-gray-900 dark:text-gray-100',
-                'border-gray-300 dark:border-gray-600',
+                'text-foreground',
+                'border-border',
                 'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
               )}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Webhook URL
             </label>
             <input
@@ -269,21 +269,21 @@ export default function WebhookManager({
               className={clsx(
                 'w-full px-4 py-2 border rounded-lg',
                 'bg-white dark:bg-gray-700',
-                'text-gray-900 dark:text-gray-100',
-                'border-gray-300 dark:border-gray-600',
+                'text-foreground',
+                'border-border',
                 'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
               )}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Events to Subscribe
             </label>
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {availableEvents.map((event) => (
                 <label
                   key={event.id}
-                  className="flex items-center gap-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+                  className="flex items-center gap-3 p-3 border border-border rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
                   <input
                     type="checkbox"
@@ -299,7 +299,7 @@ export default function WebhookManager({
                       }
                     }}
                   />
-                  <span className="text-sm text-gray-900 dark:text-gray-100">{event.label}</span>
+                  <span className="text-sm text-foreground">{event.label}</span>
                 </label>
               ))}
             </div>

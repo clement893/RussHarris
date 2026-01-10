@@ -84,7 +84,7 @@ export function FormField({
       <div className="relative">
         {leftIcon && (
           <div
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 pointer-events-none z-10"
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground pointer-events-none z-10"
             aria-hidden="true"
           >
             {leftIcon}
@@ -104,7 +104,7 @@ export function FormField({
         
         {rightIcon && (
           <div
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 pointer-events-none z-10"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground pointer-events-none z-10"
             aria-hidden="true"
           >
             {rightIcon}

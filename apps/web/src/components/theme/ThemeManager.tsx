@@ -31,13 +31,13 @@ function ColorInput({
 }) {
   return (
     <div>
-      <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">{label}</label>
+      <label className="block text-xs text-muted-foreground mb-1">{label}</label>
       <div className="flex gap-2">
         <input
           type="color"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-10 w-20 rounded border border-gray-300 dark:border-gray-600 cursor-pointer"
+          className="h-10 w-20 rounded border border-border cursor-pointer"
         />
         <Input value={value} onChange={(e) => onChange(e.target.value)} className="flex-1" />
       </div>
@@ -93,7 +93,7 @@ export function ThemeManager() {
                 'px-4 py-2 rounded-lg border-2 text-sm font-medium transition-all',
                 selectedPreset === name
                   ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-900 dark:text-primary-100'
-                  : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                  : 'border-border bg-background text-foreground hover:border-gray-300 dark:hover:border-gray-600'
               )}
             >
               {name.charAt(0).toUpperCase() + name.slice(1)}
@@ -116,7 +116,7 @@ export function ThemeManager() {
       <div className="space-y-4">
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Typographie - Polices</h3>
         <div>
-          <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+          <label className="block text-xs text-muted-foreground mb-1">
             Police principale (corps de texte)
           </label>
           <Select
@@ -126,7 +126,7 @@ export function ThemeManager() {
           />
         </div>
         <div>
-          <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">Police des titres</label>
+          <label className="block text-xs text-muted-foreground mb-1">Police des titres</label>
           <Select
             options={FONT_OPTIONS}
             value={theme.fontFamilyHeading}
@@ -134,7 +134,7 @@ export function ThemeManager() {
           />
         </div>
         <div>
-          <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">Police des sous-titres</label>
+          <label className="block text-xs text-muted-foreground mb-1">Police des sous-titres</label>
           <Select
             options={FONT_OPTIONS}
             value={theme.fontFamilySubheading}
@@ -174,7 +174,7 @@ export function ThemeManager() {
       <div className="space-y-4">
         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Style</h3>
         <div>
-          <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">Border Radius</label>
+          <label className="block text-xs text-muted-foreground mb-1">Border Radius</label>
           <Select
             options={BORDER_RADIUS_OPTIONS}
             value={theme.borderRadius}
@@ -184,7 +184,7 @@ export function ThemeManager() {
       </div>
 
       {/* Actions */}
-      <div className="flex gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
+      <div className="flex gap-2 pt-4 border-t border-border">
         <Button onClick={resetTheme} variant="outline" className="flex-1">
           Réinitialiser
         </Button>

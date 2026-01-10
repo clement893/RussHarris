@@ -28,13 +28,13 @@ export default function EmptyState({
       )}
     >
       {icon && (
-        <div className="mb-4 text-gray-400 dark:text-gray-500">
+        <div className="mb-4 text-muted-foreground">
           {icon}
         </div>
       )}
-      <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">{title}</h3>
+      <h3 className="text-lg font-medium text-foreground mb-2">{title}</h3>
       {description && (
-        <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-md mb-6">
+        <p className="text-sm text-muted-foreground text-center max-w-md mb-6">
           {description}
         </p>
       )}

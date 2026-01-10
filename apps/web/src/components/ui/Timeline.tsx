@@ -31,7 +31,7 @@ const colorClasses = {
   success: 'text-success-600 dark:text-success-400',
   warning: 'text-warning-600 dark:text-warning-400',
   error: 'text-error-600 dark:text-error-400',
-  default: 'text-gray-600 dark:text-gray-400',
+  default: 'text-muted-foreground',
 };
 
 export default function Timeline({ items, orientation = 'vertical', className }: TimelineProps) {
@@ -81,7 +81,7 @@ export default function Timeline({ items, orientation = 'vertical', className }:
                 <div
                   className={clsx(
                     'text-sm font-medium',
-                    isCurrent ? 'text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400'
+                    isCurrent ? 'text-foreground' : 'text-muted-foreground'
                   )}
                 >
                   {item.title}
@@ -113,7 +113,7 @@ export default function Timeline({ items, orientation = 'vertical', className }:
           <div key={item.id} className="relative flex gap-4 pb-8 last:pb-0">
             {/* Line */}
             {!isLast && (
-              <div className="absolute left-4 top-8 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700" />
+              <div className="absolute left-4 top-8 bottom-0 w-0.5 bg-muted" />
             )}
             {!isLast && isCompleted && (
               <div className="absolute left-4 top-8 h-8 w-0.5 bg-primary-600 dark:bg-primary-400" />
@@ -139,13 +139,13 @@ export default function Timeline({ items, orientation = 'vertical', className }:
               <div
                 className={clsx(
                   'text-base font-medium',
-                  isCurrent ? 'text-gray-900 dark:text-gray-100' : 'text-gray-700 dark:text-gray-300'
+                  isCurrent ? 'text-foreground' : 'text-foreground'
                 )}
               >
                 {item.title}
               </div>
               {item.description && (
-                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.description}</div>
+                <div className="text-sm text-muted-foreground mt-1">{item.description}</div>
               )}
               {item.timestamp && (
                 <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">{item.timestamp}</div>

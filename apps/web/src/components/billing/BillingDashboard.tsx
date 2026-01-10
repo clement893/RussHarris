@@ -135,41 +135,41 @@ export default function BillingDashboard({
   return (
     <div className={clsx('space-y-6', className)}>
       {/* Subscription Overview */}
-      <Card title="Subscription Overview" className="bg-white dark:bg-gray-800">
+      <Card title="Subscription Overview" className="bg-background">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+          <div className="p-4 bg-muted rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Current Plan</span>
+              <span className="text-sm text-muted-foreground">Current Plan</span>
               {getStatusBadge(subscription?.status)}
             </div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <div className="text-2xl font-bold text-foreground">
               {subscription?.plan || 'Free Plan'}
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <div className="text-sm text-muted-foreground mt-1">
               {subscription?.amount ? `${subscription.currency} ${subscription.amount}/month` : 'No active subscription'}
             </div>
           </div>
 
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-            <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">Next Billing Date</div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <div className="p-4 bg-muted rounded-lg">
+            <div className="text-sm text-muted-foreground mb-2">Next Billing Date</div>
+            <div className="text-2xl font-bold text-foreground">
               {subscription?.currentPeriodEnd
                 ? new Date(subscription.currentPeriodEnd).toLocaleDateString()
                 : 'N/A'}
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-1">
+            <div className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
               <Calendar className="w-4 h-4" />
               Auto-renewal enabled
             </div>
           </div>
 
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-            <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">Payment Method</div>
-            <div className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+          <div className="p-4 bg-muted rounded-lg">
+            <div className="text-sm text-muted-foreground mb-2">Payment Method</div>
+            <div className="text-lg font-semibold text-foreground flex items-center gap-2">
               <CreditCard className="w-5 h-5" />
               {paymentMethod ? `${paymentMethod.brand} •••• ${paymentMethod.last4}` : 'No payment method'}
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <div className="text-sm text-muted-foreground mt-1">
               {paymentMethod?.type || 'Add payment method'}
             </div>
           </div>
@@ -178,17 +178,17 @@ export default function BillingDashboard({
 
       {/* Usage Overview */}
       {usage && (
-        <Card title="Usage This Month" className="bg-white dark:bg-gray-800">
+        <Card title="Usage This Month" className="bg-background">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-sm font-medium text-foreground">
                 {usage.current} / {usage.limit} {usage.unit}
               </span>
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-muted-foreground">
                 {Math.round(usagePercentage)}% used
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+            <div className="w-full bg-muted rounded-full h-3">
               <div
                 className={clsx(
                   'h-3 rounded-full transition-all',
@@ -213,13 +213,13 @@ export default function BillingDashboard({
 
       {/* Upcoming Invoice */}
       {upcomingInvoice && (
-        <Card title="Upcoming Invoice" className="bg-white dark:bg-gray-800">
+        <Card title="Upcoming Invoice" className="bg-background">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              <div className="text-2xl font-bold text-foreground">
                 {upcomingInvoice.currency} {upcomingInvoice.amount}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              <div className="text-sm text-muted-foreground mt-1">
                 Due on {new Date(upcomingInvoice.date).toLocaleDateString()}
               </div>
             </div>
@@ -230,7 +230,7 @@ export default function BillingDashboard({
 
       {/* Billing History Chart */}
       {billingHistory.length > 0 && (
-        <Card title="Billing History" className="bg-white dark:bg-gray-800">
+        <Card title="Billing History" className="bg-background">
           <Chart
             type="line"
             data={billingHistory}
@@ -241,7 +241,7 @@ export default function BillingDashboard({
       )}
 
       {/* Quick Actions */}
-      <Card title="Quick Actions" className="bg-white dark:bg-gray-800">
+      <Card title="Quick Actions" className="bg-background">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Button variant="outline" fullWidth>
             <CreditCard className="w-4 h-4 mr-2" />

@@ -53,9 +53,9 @@ export default function Slider({
     <div className={clsx('flex flex-col gap-2', fullWidth && 'w-full', className)}>
       {label && (
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
+          <label className="text-sm font-medium text-foreground">{label}</label>
           {showValue && (
-            <span className="text-sm text-gray-600 dark:text-gray-400">{currentValue}</span>
+            <span className="text-sm text-muted-foreground">{currentValue}</span>
           )}
         </div>
       )}
@@ -70,7 +70,7 @@ export default function Slider({
           onChange={handleChange}
           disabled={disabled}
           className={clsx(
-            'w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer',
+            'w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer',
             'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
             disabled && 'opacity-50 cursor-not-allowed',
             '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary-600 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:bg-primary-700',
@@ -91,14 +91,14 @@ export default function Slider({
                 style={{ left: `${((mark.value - min) / (max - min)) * 100}%` }}
               >
                 <div className="w-1 h-1 bg-gray-400 dark:bg-gray-500 rounded-full mb-1" />
-                <span className="text-xs text-gray-500 dark:text-gray-400">{mark.label}</span>
+                <span className="text-xs text-muted-foreground">{mark.label}</span>
               </div>
             ))}
           </div>
         )}
       </div>
       {showValue && !label && (
-        <div className="text-sm text-gray-600 dark:text-gray-400 text-right">{currentValue}</div>
+        <div className="text-sm text-muted-foreground text-right">{currentValue}</div>
       )}
     </div>
   );

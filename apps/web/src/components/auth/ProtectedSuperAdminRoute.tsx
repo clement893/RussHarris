@@ -202,10 +202,10 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
   // Show loader during verification
   if (isChecking || !isAuthorized) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-muted">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-4"></div>
-          <div className="text-xl text-gray-600 dark:text-gray-400">
+          <div className="text-xl text-muted-foreground">
             Vérification des permissions...
           </div>
         </div>
@@ -216,16 +216,16 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
   // Show unauthorized message if not superadmin (should not reach here, but safety check)
   if (!isSuperAdmin) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-muted p-4">
         <Card className="max-w-md w-full">
           <div className="p-6">
             <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-error-600 dark:text-error-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-red-900 dark:text-red-100 mb-1">
+                <h4 className="font-semibold text-error-900 dark:text-error-100 mb-1">
                   Accès Refusé
                 </h4>
-                <p className="text-sm text-red-800 dark:text-red-200">
+                <p className="text-sm text-error-800 dark:text-error-200">
                   Seuls les superadmins peuvent accéder à cette page.
                 </p>
               </div>

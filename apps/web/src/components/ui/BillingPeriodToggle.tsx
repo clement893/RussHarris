@@ -12,7 +12,7 @@ export default function BillingPeriodToggle({
   onChange,
 }: BillingPeriodToggleProps) {
   return (
-    <div className="inline-flex items-center bg-white dark:bg-gray-800 rounded-lg p-1 shadow-md">
+    <div className="inline-flex items-center bg-background rounded-lg p-1 shadow-md">
       <Button
         onClick={() => onChange('month')}
         variant={value === 'month' ? 'primary' : 'ghost'}

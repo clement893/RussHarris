@@ -69,7 +69,7 @@ export default function TeamSetup({
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Team Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Team Name
             </label>
             <Input
@@ -77,14 +77,14 @@ export default function TeamSetup({
               onChange={(e) => setTeamName(e.target.value)}
               placeholder="My Team"
             />
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-sm text-muted-foreground">
               You can create or join a team later if you skip this step
             </p>
           </div>
 
           {/* Invite Members */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Invite Team Members
             </label>
             <div className="flex gap-2 mb-4">
@@ -104,7 +104,7 @@ export default function TeamSetup({
               <select
                 value={newMemberRole}
                 onChange={(e) => setNewMemberRole(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                className="px-4 py-2 border border-border rounded-lg bg-background text-foreground"
               >
                 <option value="member">Member</option>
                 <option value="admin">Admin</option>
@@ -120,11 +120,11 @@ export default function TeamSetup({
                 {members.map((member) => (
                   <div
                     key={member.email}
-                    className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
+                    className="flex items-center justify-between p-3 border border-border rounded-lg"
                   >
                     <div className="flex items-center gap-3">
                       <Users className="w-5 h-5 text-gray-400" />
-                      <span className="text-gray-900 dark:text-gray-100">{member.email}</span>
+                      <span className="text-foreground">{member.email}</span>
                       <Badge variant="default">{member.role}</Badge>
                     </div>
                     <Button

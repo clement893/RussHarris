@@ -45,7 +45,7 @@ export default function PricingCardSimple({
     <Card
       className={clsx(
         'relative',
-        plan.popular && 'border-2 border-blue-500 shadow-xl scale-105'
+        plan.popular && 'border-2 border-primary-500 shadow-xl scale-105'
       )}
     >
       {plan.popular && (
@@ -56,17 +56,17 @@ export default function PricingCardSimple({
         </div>
       )}
       <div className="p-8">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+        <h2 className="text-2xl font-bold text-foreground mb-2">
           {plan.name}
         </h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">{plan.description}</p>
+        <p className="text-muted-foreground mb-6">{plan.description}</p>
         <div className="mb-6">
-          <span className="text-4xl font-bold text-gray-900 dark:text-gray-100">
+          <span className="text-4xl font-bold text-foreground">
             {calculatePrice()}€
           </span>
-          <span className="text-gray-600 dark:text-gray-400">/mois</span>
+          <span className="text-muted-foreground">/mois</span>
           {billingPeriod === 'year' && calculateYearlyPrice() && (
-            <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <div className="text-sm text-muted-foreground mt-1">
               {calculateYearlyPrice()}€/an
             </div>
           )}
@@ -75,7 +75,7 @@ export default function PricingCardSimple({
           <Button
             className={clsx(
               'w-full mb-6',
-              plan.popular && 'bg-blue-600 hover:bg-blue-700'
+              plan.popular && 'bg-primary-600 hover:bg-primary-700'
             )}
             variant={plan.popular ? 'primary' : 'outline'}
           >
@@ -85,8 +85,8 @@ export default function PricingCardSimple({
         <ul className="space-y-3">
           {plan.features.map((feature, index) => (
             <li key={index} className="flex items-start">
-              <Check className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-              <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+              <Check className="w-5 h-5 text-success-500 mr-2 mt-0.5 flex-shrink-0" />
+              <span className="text-foreground">{feature}</span>
             </li>
           ))}
         </ul>

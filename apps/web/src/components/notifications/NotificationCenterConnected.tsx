@@ -88,7 +88,7 @@ export default function NotificationCenterConnected({
     return (
       <div className={className}>
         <div className="p-8 text-center">
-          <p className="text-gray-600 dark:text-gray-400">Loading notifications...</p>
+          <p className="text-muted-foreground">Loading notifications...</p>
         </div>
       </div>
     );

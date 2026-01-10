@@ -67,7 +67,7 @@ export default function PreferencesSetup({
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Language */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Language
             </label>
             <Select
@@ -84,7 +84,7 @@ export default function PreferencesSetup({
 
           {/* Timezone */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Timezone
             </label>
             <Select
@@ -103,7 +103,7 @@ export default function PreferencesSetup({
 
           {/* Theme */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-foreground mb-2">
               Theme
             </label>
             <Select
@@ -118,10 +118,10 @@ export default function PreferencesSetup({
           </div>
 
           {/* Email Notifications */}
-          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <div className="flex items-center justify-between p-4 border border-border rounded-lg">
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-gray-100">Email Notifications</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h4 className="font-medium text-foreground">Email Notifications</h4>
+              <p className="text-sm text-muted-foreground">
                 Receive email notifications for important updates
               </p>
             </div>
@@ -132,10 +132,10 @@ export default function PreferencesSetup({
           </div>
 
           {/* Marketing Emails */}
-          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <div className="flex items-center justify-between p-4 border border-border rounded-lg">
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-gray-100">Marketing Emails</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h4 className="font-medium text-foreground">Marketing Emails</h4>
+              <p className="text-sm text-muted-foreground">
                 Receive emails about new features and promotions
               </p>
             </div>
@@ -146,10 +146,10 @@ export default function PreferencesSetup({
           </div>
 
           {/* Weekly Digest */}
-          <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <div className="flex items-center justify-between p-4 border border-border rounded-lg">
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-gray-100">Weekly Digest</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <h4 className="font-medium text-foreground">Weekly Digest</h4>
+              <p className="text-sm text-muted-foreground">
                 Receive a weekly summary of your activity
               </p>
             </div>

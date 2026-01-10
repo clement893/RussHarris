@@ -146,10 +146,10 @@ export default function MFA({
     <Card className={clsx('p-6', className)}>
       <div className="space-y-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <h2 className="text-2xl font-bold text-foreground">
             Two-Factor Authentication
           </h2>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-2 text-sm text-muted-foreground">
             {step === 'setup'
               ? 'Set up two-factor authentication for your account'
               : email
@@ -167,7 +167,7 @@ export default function MFA({
         {step === 'setup' ? (
           <div className="space-y-4">
             {qrCodeUrl && (
-              <div className="flex justify-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="flex justify-center p-4 bg-background rounded-lg border border-border">
                 <img
                   src={qrCodeUrl}
                   alt="QR Code for MFA setup"
@@ -178,11 +178,11 @@ export default function MFA({
 
             {secret && (
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-foreground">
                   Manual Entry Key
                 </label>
                 <div className="flex items-center gap-2">
-                  <code className="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg font-mono text-sm break-all">
+                  <code className="flex-1 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-foreground rounded-lg font-mono text-sm break-all">
                     {secret}
                   </code>
                   <Button
@@ -195,14 +195,14 @@ export default function MFA({
                     Copy
                   </Button>
                 </div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-muted-foreground">
                   If you can't scan the QR code, enter this key manually in your authenticator app
                 </p>
               </div>
             )}
 
             <div className="pt-4">
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              <p className="text-sm font-medium text-foreground mb-3">
                 Enter the code from your authenticator app to verify:
               </p>
               <div className="flex gap-2 justify-center">
@@ -221,11 +221,11 @@ export default function MFA({
                     onPaste={index === 0 ? handlePaste : undefined}
                     className={clsx(
                       'w-12 h-12 text-center text-lg font-semibold rounded-lg border transition-all',
-                      'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100',
+                      'bg-background text-foreground',
                       'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
                       error
                         ? 'border-error-500 dark:border-error-400'
-                        : 'border-gray-300 dark:border-gray-600'
+                        : 'border-border'
                     )}
                     disabled={loading}
                   />
@@ -274,11 +274,11 @@ export default function MFA({
                   onPaste={index === 0 ? handlePaste : undefined}
                   className={clsx(
                     'w-12 h-12 text-center text-lg font-semibold rounded-lg border transition-all',
-                    'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100',
+                    'bg-background text-foreground',
                     'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
                     error
                       ? 'border-error-500 dark:border-error-400'
-                      : 'border-gray-300 dark:border-gray-600'
+                      : 'border-border'
                   )}
                   disabled={loading}
                 />
@@ -314,7 +314,7 @@ export default function MFA({
             </div>
 
             {qrCodeUrl && (
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="pt-4 border-t border-border">
                 <Button
                   variant="ghost"
                   onClick={handleSetup}

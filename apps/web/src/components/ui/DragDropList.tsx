@@ -96,8 +96,8 @@ export default function DragDropList({
             onDragEnd={handleDragEnd}
             className={clsx(
               'flex items-center gap-3 p-4 rounded-lg border transition-all',
-              'bg-white dark:bg-gray-800',
-              'border-gray-200 dark:border-gray-700',
+              'bg-background',
+              'border-border',
               isDragging && 'opacity-50 cursor-grabbing',
               isDragOver && 'border-primary-500 dark:border-primary-400 bg-primary-50 dark:bg-primary-900/20',
               !item.disabled && 'cursor-grab hover:border-gray-300 dark:hover:border-gray-600',
@@ -106,7 +106,7 @@ export default function DragDropList({
             )}
           >
             {!item.disabled && (
-              <div className="text-gray-400 dark:text-gray-500 flex-shrink-0">
+              <div className="text-muted-foreground flex-shrink-0">
                 <GripVertical className="w-5 h-5" />
               </div>
             )}

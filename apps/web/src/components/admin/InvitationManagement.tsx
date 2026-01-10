@@ -16,7 +16,7 @@ export default function InvitationManagement({ className }: InvitationManagement
     <Card className={className}>
       <div className="p-6">
         <h2 className="text-xl font-semibold mb-4">Invitation Management</h2>
-        <p className="text-gray-600 dark:text-gray-400">Invitation management functionality coming soon.</p>
+        <p className="text-muted-foreground">Invitation management functionality coming soon.</p>
       </div>
     </Card>
   );

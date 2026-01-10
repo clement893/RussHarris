@@ -108,12 +108,12 @@ export default function SEOManager({
         <div className="space-y-6">
           {/* Basic SEO */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               Basic SEO
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Page Title *
                 </label>
                 <Input
@@ -122,12 +122,12 @@ export default function SEOManager({
                   placeholder="Page Title"
                   maxLength={60}
                 />
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                <p className="mt-1 text-xs text-muted-foreground">
                   {settings.title?.length || 0}/60 characters
                 </p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Meta Description *
                 </label>
                 <Textarea
@@ -137,12 +137,12 @@ export default function SEOManager({
                   rows={3}
                   maxLength={160}
                 />
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                <p className="mt-1 text-xs text-muted-foreground">
                   {settings.description?.length || 0}/160 characters
                 </p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Keywords
                 </label>
                 <Input
@@ -152,7 +152,7 @@ export default function SEOManager({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Canonical URL
                 </label>
                 <Input
@@ -162,7 +162,7 @@ export default function SEOManager({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Robots
                 </label>
                 <Input
@@ -170,7 +170,7 @@ export default function SEOManager({
                   onChange={(e) => setSettings({ ...settings, robots: e.target.value })}
                   placeholder="index, follow"
                 />
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                <p className="mt-1 text-xs text-muted-foreground">
                   e.g., "index, follow" or "noindex, nofollow"
                 </p>
               </div>
@@ -179,12 +179,12 @@ export default function SEOManager({
 
           {/* Open Graph */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               Open Graph (Facebook, LinkedIn)
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   OG Title
                 </label>
                 <Input
@@ -194,7 +194,7 @@ export default function SEOManager({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   OG Description
                 </label>
                 <Textarea
@@ -205,7 +205,7 @@ export default function SEOManager({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   OG Image URL
                 </label>
                 <Input
@@ -215,7 +215,7 @@ export default function SEOManager({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   OG Type
                 </label>
                 <Input
@@ -229,12 +229,12 @@ export default function SEOManager({
 
           {/* Twitter Card */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               Twitter Card
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Card Type
                 </label>
                 <Input
@@ -244,7 +244,7 @@ export default function SEOManager({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Twitter Title
                 </label>
                 <Input
@@ -254,7 +254,7 @@ export default function SEOManager({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Twitter Description
                 </label>
                 <Textarea
@@ -265,7 +265,7 @@ export default function SEOManager({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Twitter Image URL
                 </label>
                 <Input
@@ -279,11 +279,11 @@ export default function SEOManager({
 
           {/* Schema.org */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               Schema.org JSON-LD
             </h3>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Schema Markup (JSON)
               </label>
               <Textarea

@@ -36,11 +36,11 @@ export default function WelcomeScreen({
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        <h1 className="text-3xl font-bold text-foreground mb-4">
           Welcome to Our Platform!
         </h1>
 
-        <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
+        <p className="text-lg text-muted-foreground mb-6">
           We're excited to have you here. Let's get you set up in just a few simple steps.
         </p>
 
@@ -50,8 +50,8 @@ export default function WelcomeScreen({
               1
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-gray-100">Set up your profile</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Tell us a bit about yourself</p>
+              <h3 className="font-medium text-foreground">Set up your profile</h3>
+              <p className="text-sm text-muted-foreground">Tell us a bit about yourself</p>
             </div>
           </div>
 
@@ -60,8 +60,8 @@ export default function WelcomeScreen({
               2
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-gray-100">Configure preferences</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Customize your experience</p>
+              <h3 className="font-medium text-foreground">Configure preferences</h3>
+              <p className="text-sm text-muted-foreground">Customize your experience</p>
             </div>
           </div>
 
@@ -70,8 +70,8 @@ export default function WelcomeScreen({
               3
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-gray-100">Invite your team</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Get your team started (optional)</p>
+              <h3 className="font-medium text-foreground">Invite your team</h3>
+              <p className="text-sm text-muted-foreground">Get your team started (optional)</p>
             </div>
           </div>
         </div>

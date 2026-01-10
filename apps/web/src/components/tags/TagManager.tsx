@@ -118,7 +118,7 @@ export function TagManager({ entityType, className = '' }: TagManagerProps) {
           {tags.map((tag) => (
             <div
               key={tag.id}
-              className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800"
+              className="p-3 border border-border rounded-lg bg-background"
             >
               {editingTag === tag.id ? (
                 <div className="space-y-2">
@@ -163,14 +163,14 @@ export function TagManager({ entityType, className = '' }: TagManagerProps) {
                       </button>
                       <button
                         onClick={() => handleDeleteTag(tag.id)}
-                        className="p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                        className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
                       >
                         <Trash2 className="h-3 w-3" />
                       </button>
                     </div>
                   </div>
                   {tag.description && (
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                    <p className="text-xs text-muted-foreground mb-2">
                       {tag.description}
                     </p>
                   )}

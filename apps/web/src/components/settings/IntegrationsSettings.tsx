@@ -104,23 +104,23 @@ export default function IntegrationsSettings({
         <div className="space-y-6">
           {Object.entries(groupedIntegrations).map(([category, categoryIntegrations]) => (
             <div key={category}>
-              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              <h3 className="text-sm font-semibold text-foreground mb-3">
                 {category}
               </h3>
               <div className="space-y-3">
                 {categoryIntegrations.map((integration) => (
                   <div
                     key={integration.id}
-                    className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-3">
                         {integration.icon || <Puzzle className="w-5 h-5 text-gray-400" />}
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-gray-100">
+                          <h4 className="font-medium text-foreground">
                             {integration.name}
                           </h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-sm text-muted-foreground">
                             {integration.description}
                           </p>
                         </div>
@@ -128,12 +128,12 @@ export default function IntegrationsSettings({
                     </div>
                     <div className="flex items-center gap-3">
                       {integration.enabled ? (
-                        <span className="flex items-center gap-1 text-sm text-green-600 dark:text-green-400">
+                        <span className="flex items-center gap-1 text-sm text-success-600 dark:text-success-400">
                           <CheckCircle className="w-4 h-4" />
                           Enabled
                         </span>
                       ) : (
-                        <span className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+                        <span className="flex items-center gap-1 text-sm text-muted-foreground">
                           <XCircle className="w-4 h-4" />
                           Disabled
                         </span>

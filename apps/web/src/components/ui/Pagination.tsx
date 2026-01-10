@@ -84,8 +84,8 @@ export default function Pagination({
           'px-3 py-2 rounded-md text-sm font-medium',
           'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
           currentPage === 1
-            ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+            ? 'bg-muted text-muted-foreground cursor-not-allowed'
+            : 'bg-background text-foreground hover:bg-muted'
         )}
         aria-label="Previous page"
       >
@@ -148,8 +148,8 @@ export default function Pagination({
             'px-3 py-2 rounded-md text-sm font-medium',
             'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400',
             currentPage === totalPages
-              ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-              : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+              ? 'bg-muted text-muted-foreground cursor-not-allowed'
+              : 'bg-background text-foreground hover:bg-muted'
           )}
           aria-label="Last page"
         >

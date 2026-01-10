@@ -108,11 +108,11 @@ export default function PaymentHistory({
       label: 'Date',
       sortable: true,
       render: (value) => (
-        <div className="text-gray-900 dark:text-gray-100">
+        <div className="text-foreground">
           <div className="font-medium">
             {new Date(value as string).toLocaleDateString()}
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">
+          <div className="text-xs text-muted-foreground">
             {new Date(value as string).toLocaleTimeString()}
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function PaymentHistory({
       key: 'description',
       label: 'Description',
       render: (value) => (
-        <span className="text-gray-700 dark:text-gray-300">{value as string}</span>
+        <span className="text-foreground">{value as string}</span>
       ),
     },
     {
@@ -134,7 +134,7 @@ export default function PaymentHistory({
           'font-semibold',
           payment.status === 'refunded' 
             ? 'text-danger-600 dark:text-danger-400' 
-            : 'text-gray-900 dark:text-gray-100'
+            : 'text-foreground'
         )}>
           {payment.status === 'refunded' ? '-' : ''}
           {payment.currency} {Math.abs(payment.amount).toFixed(2)}
@@ -145,7 +145,7 @@ export default function PaymentHistory({
       key: 'paymentMethod',
       label: 'Payment Method',
       render: (value) => (
-        <span className="text-gray-700 dark:text-gray-300">{value as string}</span>
+        <span className="text-foreground">{value as string}</span>
       ),
     },
     {
@@ -160,14 +160,14 @@ export default function PaymentHistory({
       render: (_, payment) => (
         <div className="flex items-center gap-2">
           {payment.transactionId && (
-            <span className="text-xs text-gray-500 dark:text-gray-400">
+            <span className="text-xs text-muted-foreground">
               {payment.transactionId.slice(0, 8)}...
             </span>
           )}
           {onDownloadReceipt && payment.status === 'completed' && (
             <button
               onClick={() => onDownloadReceipt(payment)}
-              className="p-1 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+              className="p-1 text-muted-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
               title="Download Receipt"
             >
               <Download className="w-4 h-4" />
@@ -183,14 +183,14 @@ export default function PaymentHistory({
     .reduce((sum, p) => sum + p.amount, 0);
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-foreground">
             Payment History
           </h3>
-          <div className="text-sm text-gray-600 dark:text-gray-400">
-            Total: <span className="font-semibold text-gray-900 dark:text-gray-100">
+          <div className="text-sm text-muted-foreground">
+            Total: <span className="font-semibold text-foreground">
               ${totalAmount.toFixed(2)}
             </span>
           </div>
@@ -199,15 +199,15 @@ export default function PaymentHistory({
         {/* Filters */}
         <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+            <Filter className="w-4 h-4 text-muted-foreground" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               className={clsx(
                 'px-3 py-2 border rounded-lg text-sm',
                 'bg-white dark:bg-gray-700',
-                'text-gray-900 dark:text-gray-100',
-                'border-gray-300 dark:border-gray-600',
+                'text-foreground',
+                'border-border',
                 'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
               )}
             >
@@ -224,8 +224,8 @@ export default function PaymentHistory({
             className={clsx(
               'px-3 py-2 border rounded-lg text-sm',
               'bg-white dark:bg-gray-700',
-              'text-gray-900 dark:text-gray-100',
-              'border-gray-300 dark:border-gray-600',
+              'text-foreground',
+              'border-border',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
             )}
           >

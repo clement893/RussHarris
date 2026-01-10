@@ -112,7 +112,7 @@ export function FavoritesList({
         {favorites.map((favorite) => (
           <div
             key={favorite.id}
-            className="flex items-start gap-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+            className="flex items-start gap-3 p-3 border border-border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
             onClick={() => onFavoriteClick?.(favorite)}
           >
             <div className="flex-shrink-0 mt-1">
@@ -121,23 +121,23 @@ export function FavoritesList({
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="font-medium text-sm text-gray-900 dark:text-gray-100 capitalize">
+                  <p className="font-medium text-sm text-foreground capitalize">
                     {favorite.entity_type} #{favorite.entity_id}
                   </p>
                   {favorite.notes && (
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {favorite.notes}
                     </p>
                   )}
                   {favorite.tags && (
                     <div className="flex items-center gap-1 mt-2">
                       <Tag className="h-3 w-3 text-gray-400" />
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs text-muted-foreground">
                         {favorite.tags}
                       </span>
                     </div>
                   )}
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {formatDistanceToNow(new Date(favorite.created_at))}
                   </p>
                 </div>
@@ -146,7 +146,7 @@ export function FavoritesList({
                     e.stopPropagation();
                     handleRemove(favorite);
                   }}
-                  className="p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                  className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
                 >
                   <X className="h-4 w-4" />
                 </button>

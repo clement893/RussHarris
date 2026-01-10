@@ -85,7 +85,7 @@ export default function NotificationBell({
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
           'relative p-2 rounded-lg transition-colors',
-          'text-gray-700 dark:text-gray-300',
+          'text-foreground',
           'hover:bg-gray-100 dark:hover:bg-gray-700',
           'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
         )}
@@ -103,10 +103,10 @@ export default function NotificationBell({
 
       {isOpen && (
         <div className="absolute right-0 top-full mt-2 w-96 z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 max-h-[600px] flex flex-col">
+          <div className="bg-background rounded-lg shadow-xl border border-border max-h-[600px] flex flex-col">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h3 className="text-lg font-semibold text-foreground">
                 Notifications
               </h3>
               <Dropdown trigger={<button className="p-1">⋯</button>} items={dropdownItems} />
@@ -128,7 +128,7 @@ export default function NotificationBell({
 
             {/* Footer */}
             {notifications.length > 5 && (
-              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="p-4 border-t border-border">
                 <button
                   onClick={() => {
                     setIsOpen(false);

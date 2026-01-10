@@ -43,11 +43,11 @@ const statusIcons = {
 };
 
 const statusColors = {
-  pending: 'text-yellow-600 dark:text-yellow-400',
-  in_progress: 'text-blue-600 dark:text-blue-400',
-  completed: 'text-green-600 dark:text-green-400',
-  failed: 'text-red-600 dark:text-red-400',
-  expired: 'text-gray-600 dark:text-gray-400',
+  pending: 'text-warning-600 dark:text-warning-400',
+  in_progress: 'text-primary-600 dark:text-primary-400',
+  completed: 'text-success-600 dark:text-success-400',
+  failed: 'text-error-600 dark:text-error-400',
+  expired: 'text-muted-foreground',
 };
 
 export function BackupManager({ className = '' }: BackupManagerProps) {
@@ -150,7 +150,7 @@ export function BackupManager({ className = '' }: BackupManagerProps) {
             return (
               <div
                 key={backup.id}
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
+                className="p-4 border border-border rounded-lg"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
@@ -160,13 +160,13 @@ export function BackupManager({ className = '' }: BackupManagerProps) {
                       <StatusIcon className={`h-4 w-4 ${statusColor}`} />
                       <span className={`text-xs capitalize ${statusColor}`}>{backup.status}</span>
                       {backup.is_automatic && (
-                        <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded">
+                        <span className="text-xs bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-0.5 rounded">
                           Auto
                         </span>
                       )}
                     </div>
                     {backup.description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      <p className="text-sm text-muted-foreground mb-2">
                         {backup.description}
                       </p>
                     )}
@@ -188,14 +188,14 @@ export function BackupManager({ className = '' }: BackupManagerProps) {
                       <>
                         <button
                           onClick={() => handleRestore(backup.id)}
-                          className="p-1 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded text-blue-500"
+                          className="p-1 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded text-primary-500"
                           title="Restore"
                         >
                           <RotateCcw className="h-4 w-4" />
                         </button>
                         {backup.file_path && (
                           <button
-                            className="p-1 hover:bg-green-50 dark:hover:bg-green-900/20 rounded text-green-500"
+                            className="p-1 hover:bg-success-50 dark:hover:bg-success-900/20 rounded text-success-500"
                             title="Download"
                           >
                             <Download className="h-4 w-4" />
@@ -205,7 +205,7 @@ export function BackupManager({ className = '' }: BackupManagerProps) {
                     )}
                     <button
                       onClick={() => handleDelete(backup.id)}
-                      className="p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded text-red-500"
+                      className="p-1 hover:bg-error-50 dark:hover:bg-error-900/20 rounded text-error-500"
                       title="Delete"
                     >
                       <Trash2 className="h-4 w-4" />

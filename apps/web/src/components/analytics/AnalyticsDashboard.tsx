@@ -131,8 +131,8 @@ export default function AnalyticsDashboard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Analytics Dashboard</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <h2 className="text-2xl font-bold text-foreground">Analytics Dashboard</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             Track your business metrics and performance
           </p>
         </div>
@@ -168,8 +168,8 @@ export default function AnalyticsDashboard({
             className={clsx(
               'px-4 py-2 border rounded-lg text-sm',
               'bg-white dark:bg-gray-700',
-              'text-gray-900 dark:text-gray-100',
-              'border-gray-300 dark:border-gray-600',
+              'text-foreground',
+              'border-border',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
             )}
           >
@@ -193,7 +193,7 @@ export default function AnalyticsDashboard({
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {displayMetrics.map((metric, index) => (
-          <Card key={index} className="bg-white dark:bg-gray-800">
+          <Card key={index} className="bg-background">
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
@@ -202,11 +202,11 @@ export default function AnalyticsDashboard({
                       {metric.icon}
                     </div>
                   )}
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <span className="text-sm font-medium text-muted-foreground">
                     {metric.label}
                   </span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">
+                <div className="text-2xl font-bold text-foreground mb-1">
                   {formatValue(metric.value, metric.format)}
                 </div>
                 {metric.change !== undefined && (
@@ -226,7 +226,7 @@ export default function AnalyticsDashboard({
                     >
                       {Math.abs(metric.change)}% {metric.changeType === 'increase' ? 'increase' : 'decrease'}
                     </span>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">vs last period</span>
+                    <span className="text-sm text-muted-foreground">vs last period</span>
                   </div>
                 )}
               </div>
@@ -237,16 +237,16 @@ export default function AnalyticsDashboard({
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card title="Revenue Trend" className="bg-white dark:bg-gray-800">
+        <Card title="Revenue Trend" className="bg-background">
           <Chart type="line" data={revenueData} title="Revenue" height={250} />
         </Card>
-        <Card title="User Growth" className="bg-white dark:bg-gray-800">
+        <Card title="User Growth" className="bg-background">
           <Chart type="bar" data={userGrowthData} title="Active Users" height={250} />
         </Card>
       </div>
 
       {/* Additional Analytics */}
-      <Card title="Traffic Sources" className="bg-white dark:bg-gray-800">
+      <Card title="Traffic Sources" className="bg-background">
         <div className="space-y-4">
           {[
             { source: 'Direct', visitors: 45230, percentage: 45 },
@@ -256,12 +256,12 @@ export default function AnalyticsDashboard({
           ].map((item, index) => (
             <div key={index} className="space-y-2">
               <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-gray-900 dark:text-gray-100">{item.source}</span>
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="font-medium text-foreground">{item.source}</span>
+                <span className="text-muted-foreground">
                   {item.visitors.toLocaleString()} ({item.percentage}%)
                 </span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div className="w-full bg-muted rounded-full h-2">
                 <div
                   className="bg-primary-600 dark:bg-primary-500 h-2 rounded-full transition-all"
                   style={{ width: `${item.percentage}%` }}

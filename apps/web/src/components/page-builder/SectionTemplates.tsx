@@ -106,7 +106,7 @@ export default function SectionTemplates({
           {defaultTemplates.map((template) => (
             <div
               key={template.id}
-              className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-primary-500 dark:hover:border-primary-400 transition-colors cursor-pointer"
+              className="border border-border rounded-lg p-4 hover:border-primary-500 dark:hover:border-primary-400 transition-colors cursor-pointer"
               onClick={() => handleSelect(template)}
             >
               <div className="flex items-start gap-3 mb-2">
@@ -114,10 +114,10 @@ export default function SectionTemplates({
                   <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-1">
+                  <h3 className="font-medium text-foreground mb-1">
                     {template.name}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     {template.description}
                   </p>
                 </div>

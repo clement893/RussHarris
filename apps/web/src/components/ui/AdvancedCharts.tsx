@@ -331,7 +331,7 @@ export default function AdvancedCharts({
   return (
     <div
       className={clsx(
-        'bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6',
+        'bg-background rounded-lg border border-border p-6',
         className
       )}
     >
@@ -355,7 +355,7 @@ export default function AdvancedCharts({
                       : `hsl(${(index * 360) / data.length}, 70%, 50%)`),
                 }}
               />
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-muted-foreground">
                 {point.label || `Point ${index + 1}`}
                 {point.value !== undefined && `: ${point.value}`}
               </span>

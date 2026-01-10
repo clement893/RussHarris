@@ -104,7 +104,7 @@ export default function ContactSupport({
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Email *
                 </label>
                 <Input
@@ -117,7 +117,7 @@ export default function ContactSupport({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Category *
                 </label>
                 <Select
@@ -136,7 +136,7 @@ export default function ContactSupport({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Priority
                 </label>
                 <Select
@@ -152,7 +152,7 @@ export default function ContactSupport({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Subject *
                 </label>
                 <Input
@@ -164,7 +164,7 @@ export default function ContactSupport({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Message *
                 </label>
                 <Textarea
@@ -197,8 +197,8 @@ export default function ContactSupport({
               <div className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-primary-600 dark:text-primary-400 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-gray-100">Email</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <h4 className="font-medium text-foreground">Email</h4>
+                  <p className="text-sm text-muted-foreground">
                     support@example.com
                   </p>
                 </div>
@@ -207,8 +207,8 @@ export default function ContactSupport({
               <div className="flex items-start gap-3">
                 <MessageSquare className="w-5 h-5 text-primary-600 dark:text-primary-400 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-gray-900 dark:text-gray-100">Response Time</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <h4 className="font-medium text-foreground">Response Time</h4>
+                  <p className="text-sm text-muted-foreground">
                     We typically respond within 24 hours
                   </p>
                 </div>
@@ -217,7 +217,7 @@ export default function ContactSupport({
           </Card>
 
           <Card title="Before You Contact Us">
-            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <ul className="space-y-2 text-sm text-muted-foreground">
               <li>• Check our FAQ page for common questions</li>
               <li>• Search our knowledge base</li>
               <li>• Review our user guides</li>

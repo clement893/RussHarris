@@ -51,12 +51,12 @@ export default function BlogPost({ post, className }: BlogPostProps) {
             )}
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             {post.title}
           </h1>
 
           {/* Post Meta */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             {post.author_name && (
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4" />
@@ -84,11 +84,11 @@ export default function BlogPost({ post, className }: BlogPostProps) {
         </header>
 
         {/* Featured Image Placeholder */}
-        <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg mb-6" />
+        <div className="aspect-video bg-muted rounded-lg mb-6" />
 
         {/* Post Excerpt */}
         {post.excerpt && (
-          <div className="text-xl text-gray-700 dark:text-gray-300 mb-6 font-medium">
+          <div className="text-xl text-foreground mb-6 font-medium">
             {post.excerpt}
           </div>
         )}
@@ -104,7 +104,7 @@ export default function BlogPost({ post, className }: BlogPostProps) {
 
         {/* Tags */}
         {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex flex-wrap items-center gap-2 pt-6 border-t border-border">
             <Tag className="w-4 h-4 text-gray-400" />
             {post.tags.map((tag, index) => (
               <Link

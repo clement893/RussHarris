@@ -9,23 +9,23 @@ interface StatusCardProps {
 export default function StatusCard({ title, description, status = 'success' }: StatusCardProps) {
   const statusClasses = {
     success: 'border-secondary-200 dark:border-secondary-800 bg-secondary-100 dark:bg-secondary-900',
-    error: 'border-red-200 dark:border-red-800 bg-red-100 dark:bg-red-900',
-    warning: 'border-yellow-200 dark:border-yellow-800 bg-yellow-100 dark:bg-yellow-900',
-    info: 'border-blue-200 dark:border-blue-800 bg-blue-100 dark:bg-blue-900',
+    error: 'border-error-200 dark:border-error-800 bg-error-100 dark:bg-error-900',
+    warning: 'border-warning-200 dark:border-warning-800 bg-warning-100 dark:bg-warning-900',
+    info: 'border-primary-200 dark:border-primary-800 bg-primary-100 dark:bg-primary-900',
   };
 
   const textClasses = {
     success: 'text-secondary-900 dark:text-secondary-100',
-    error: 'text-red-900 dark:text-red-100',
-    warning: 'text-yellow-900 dark:text-yellow-100',
-    info: 'text-blue-900 dark:text-blue-100',
+    error: 'text-error-900 dark:text-error-100',
+    warning: 'text-warning-900 dark:text-warning-100',
+    info: 'text-primary-900 dark:text-primary-100',
   };
 
   const textSecondaryClasses = {
     success: 'text-secondary-800 dark:text-secondary-200',
-    error: 'text-red-800 dark:text-red-200',
-    warning: 'text-yellow-800 dark:text-yellow-200',
-    info: 'text-blue-800 dark:text-blue-200',
+    error: 'text-error-800 dark:text-error-200',
+    warning: 'text-warning-800 dark:text-warning-200',
+    info: 'text-primary-800 dark:text-primary-200',
   };
 
   return (

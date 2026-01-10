@@ -163,15 +163,15 @@ export default function APIDocumentation({
   const uniqueTags = Array.from(new Set(endpoints.flatMap((e) => e.tags || [])));
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
           <Book className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-foreground">
             API Documentation
           </h3>
         </div>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-muted-foreground">
           Base URL: <code className="text-xs bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded">
             {baseUrl}
           </code>
@@ -181,7 +181,7 @@ export default function APIDocumentation({
       {/* Tags Filter */}
       {uniqueTags.length > 0 && (
         <div className="mb-6 flex items-center gap-2 flex-wrap">
-          <span className="text-sm text-gray-600 dark:text-gray-400">Tags:</span>
+          <span className="text-sm text-muted-foreground">Tags:</span>
           {uniqueTags.map((tag) => (
             <Badge key={tag} variant="info">
               {tag}
@@ -200,7 +200,7 @@ export default function APIDocumentation({
           return (
             <div
               key={index}
-              className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+              className="border border-border rounded-lg overflow-hidden"
             >
               <button
                 onClick={() => toggleEndpoint(endpoint.path)}
@@ -215,10 +215,10 @@ export default function APIDocumentation({
                   <Badge variant={methodColors[endpoint.method]}>
                     {endpoint.method}
                   </Badge>
-                  <code className="text-sm font-mono text-gray-900 dark:text-gray-100">
+                  <code className="text-sm font-mono text-foreground">
                     {endpoint.path}
                   </code>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-sm text-muted-foreground">
                     {endpoint.description}
                   </span>
                 </div>
@@ -234,18 +234,18 @@ export default function APIDocumentation({
               </button>
 
               {isExpanded && (
-                <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 space-y-4">
+                <div className="p-4 border-t border-border bg-muted space-y-4">
                   {/* Parameters */}
                   {endpoint.parameters && endpoint.parameters.length > 0 && (
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                      <h4 className="text-sm font-semibold text-foreground mb-2">
                         Parameters
                       </h4>
                       <div className="space-y-2">
                         {endpoint.parameters.map((param, idx) => (
                           <div
                             key={idx}
-                            className="text-sm p-2 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700"
+                            className="text-sm p-2 bg-background rounded border border-border"
                           >
                             <div className="flex items-center gap-2">
                               <code className="font-mono text-primary-600 dark:text-primary-400">
@@ -260,7 +260,7 @@ export default function APIDocumentation({
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                            <p className="text-xs text-muted-foreground mt-1">
                               {param.description}
                             </p>
                           </div>
@@ -272,7 +272,7 @@ export default function APIDocumentation({
                   {/* Request Body */}
                   {endpoint.requestBody && (
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                      <h4 className="text-sm font-semibold text-foreground mb-2">
                         Request Body
                       </h4>
                       <div className="relative">
@@ -295,7 +295,7 @@ export default function APIDocumentation({
 
                   {/* Code Example */}
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
+                    <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
                       <Code className="w-4 h-4" />
                       Code Example
                     </h4>
@@ -319,14 +319,14 @@ export default function APIDocumentation({
                   {/* Responses */}
                   {endpoint.responses && endpoint.responses.length > 0 && (
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                      <h4 className="text-sm font-semibold text-foreground mb-2">
                         Responses
                       </h4>
                       <div className="space-y-2">
                         {endpoint.responses.map((response, idx) => (
                           <div
                             key={idx}
-                            className="p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700"
+                            className="p-3 bg-background rounded border border-border"
                           >
                             <div className="flex items-center gap-2 mb-2">
                               <Badge
@@ -340,7 +340,7 @@ export default function APIDocumentation({
                               >
                                 {response.status}
                               </Badge>
-                              <span className="text-sm text-gray-900 dark:text-gray-100">
+                              <span className="text-sm text-foreground">
                                 {response.description}
                               </span>
                             </div>

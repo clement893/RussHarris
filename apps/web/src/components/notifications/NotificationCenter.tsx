@@ -99,10 +99,10 @@ export default function NotificationCenter({
   };
 
   return (
-    <Card className={clsx('bg-white dark:bg-gray-800', className)}>
+    <Card className={clsx('bg-background', className)}>
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <Bell className="w-5 h-5" />
             Notifications
             {unreadCount > 0 && (
@@ -124,7 +124,7 @@ export default function NotificationCenter({
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex items-center gap-2 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-2 border-b border-border">
           {(['all', 'unread', 'read'] as const).map((filterType) => (
             <button
               key={filterType}
@@ -133,7 +133,7 @@ export default function NotificationCenter({
                 'px-4 py-2 text-sm font-medium border-b-2 transition-colors',
                 filter === filterType
                   ? 'border-primary-500 dark:border-primary-400 text-primary-600 dark:text-primary-400'
-                  : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                  : 'border-transparent text-muted-foreground hover:text-gray-900 dark:hover:text-gray-100'
               )}
             >
               {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
@@ -150,8 +150,8 @@ export default function NotificationCenter({
       {/* Notifications List */}
       {filteredNotifications.length === 0 ? (
         <div className="text-center py-12">
-          <Bell className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">
+          <Bell className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+          <p className="text-muted-foreground">
             {filter === 'unread' ? 'No unread notifications' : 'No notifications'}
           </p>
         </div>
@@ -189,18 +189,18 @@ export default function NotificationCenter({
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        <h4 className="text-sm font-semibold text-foreground">
                           {notification.title}
                         </h4>
                         {!notification.read && (
                           <div className="w-2 h-2 rounded-full bg-primary-600 dark:bg-primary-400" />
                         )}
                       </div>
-                      <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      <p className="text-sm text-foreground mb-2">
                         {notification.message}
                       </p>
                       <div className="flex items-center gap-3">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-muted-foreground">
                           {formatTimestamp(notification.created_at)}
                         </span>
                         {notification.action_url && (
