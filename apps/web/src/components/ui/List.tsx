@@ -37,7 +37,7 @@ export default function List({
   const variantClasses = {
     default: '',
     bordered: 'border border-border rounded-lg',
-    divided: 'divide-y divide-gray-200 dark:divide-gray-700',
+    divided: 'divide-y divide-border',
   };
 
   return (
@@ -64,7 +64,7 @@ export default function List({
               'flex items-center gap-3 px-4',
               sizeClasses[size],
               isClickable &&
-                'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors',
+                'cursor-pointer hover:bg-muted transition-colors',
               item.disabled && 'opacity-50 cursor-not-allowed',
               variant === 'bordered' && index > 0 && 'border-t border-border',
               variant === 'divided' && index < items.length - 1 && 'border-b border-border'
