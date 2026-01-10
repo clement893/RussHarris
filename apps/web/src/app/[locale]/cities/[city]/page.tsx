@@ -56,6 +56,10 @@ export default function CityDetailPage() {
     });
   };
 
+  const getEventDate = (event: CityEvent) => {
+    return event.event_date || event.start_date;
+  };
+
   const formatTime = (timeString: string) => {
     return timeString.substring(0, 5); // HH:MM format
   };
@@ -73,7 +77,7 @@ export default function CityDetailPage() {
               ← Retour aux villes
             </button>
             <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-black">
-              {city ? `${city.name}, ${city.country}` : 'Chargement...'}
+              {city ? `${city.name_fr || city.name_en || city.name}, ${city.country}` : 'Chargement...'}
             </h1>
             <SwissDivider />
           </div>
@@ -90,9 +94,11 @@ export default function CityDetailPage() {
           ) : (
             <div className="space-y-8">
               {cityEvents.map((event) => {
-                const available = (event.max_attendees || 0) - (event.current_attendees || 0);
-                const percentage = event.max_attendees > 0 
-                  ? ((available / event.max_attendees) * 100) 
+                const maxAttendees = event.max_attendees || event.total_capacity || 0;
+                const currentAttendees = event.current_attendees || 0;
+                const available = maxAttendees - currentAttendees;
+                const percentage = maxAttendees > 0 
+                  ? ((available / maxAttendees) * 100) 
                   : 0;
                 const isLowAvailability = percentage < 20;
 
@@ -100,12 +106,12 @@ export default function CityDetailPage() {
                   <SwissCard key={event.id} className="p-8">
                     <div className="mb-6">
                       <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <Calendar className="w-5 h-5 text-black" aria-hidden="true" />
-                          <h2 className="text-3xl font-black text-black">
-                            {formatDate(event.event_date)}
-                          </h2>
-                        </div>
+                          <div className="flex items-center gap-3">
+                            <Calendar className="w-5 h-5 text-black" aria-hidden="true" />
+                            <h2 className="text-3xl font-black text-black">
+                              {formatDate(getEventDate(event))}
+                            </h2>
+                          </div>
                         {isLowAvailability && <UrgencyBadge text="Places limitées" />}
                       </div>
 
@@ -136,29 +142,29 @@ export default function CityDetailPage() {
                           <div className="flex items-center gap-2">
                             <Users className="w-4 h-4 text-gray-600" aria-hidden="true" />
                             <span className="text-sm font-bold text-black">
-                              {available} places disponibles sur {event.max_attendees}
+                              {available} places disponibles sur {maxAttendees}
                             </span>
                           </div>
                         </div>
                         <AvailabilityBar 
                           available={available} 
-                          total={event.max_attendees || 0}
+                          total={maxAttendees}
                         />
                       </div>
 
                       {event.event && (
                         <div className="mb-6 p-4 bg-gray-50 border border-gray-200">
                           <h3 className="text-lg font-bold text-black mb-2">
-                            {event.event.title}
+                            {event.event.title_fr || event.event.title_en}
                           </h3>
-                          {event.event.description && (
+                          {(event.event.description_fr || event.event.description_en) && (
                             <p className="text-gray-600 text-sm">
-                              {event.event.description}
+                              {event.event.description_fr || event.event.description_en}
                             </p>
                           )}
                           <div className="mt-4 flex items-center justify-between">
                             <span className="text-2xl font-black text-black">
-                              {event.event.price} {event.event.currency}
+                              {event.price || event.regular_price || event.event.price} {event.currency || event.event.currency || 'EUR'}
                             </span>
                             <button
                               onClick={() => router.push(`/book?cityEventId=${event.id}`)}

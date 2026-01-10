@@ -45,6 +45,10 @@ export default function CitiesPage() {
     });
   };
 
+  const getEventDate = (event: CityEvent) => {
+    return event.event_date || event.start_date;
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Container className="py-20 md:py-32">
@@ -74,21 +78,23 @@ export default function CitiesPage() {
               {cities.map((city) => (
                 <SwissCard key={city.id} className="p-8 hover:border-black transition-colors">
                   <div className="mb-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <MapPin className="w-5 h-5 text-black" aria-hidden="true" />
-                      <h2 className="text-3xl font-black text-black">
-                        {city.name}
-                      </h2>
-                    </div>
+                      <div className="flex items-center gap-3 mb-4">
+                        <MapPin className="w-5 h-5 text-black" aria-hidden="true" />
+                        <h2 className="text-3xl font-black text-black">
+                          {city.name_fr || city.name_en || city.name}
+                        </h2>
+                      </div>
                     <p className="text-gray-600">{city.country}</p>
                   </div>
 
                   {city.events && city.events.length > 0 ? (
                     <div className="space-y-4">
                       {city.events.slice(0, 3).map((event) => {
-                        const available = (event.max_attendees || 0) - (event.current_attendees || 0);
-                        const percentage = event.max_attendees > 0 
-                          ? ((available / event.max_attendees) * 100) 
+                        const maxAttendees = event.max_attendees || event.total_capacity || 0;
+                        const currentAttendees = event.current_attendees || 0;
+                        const available = maxAttendees - currentAttendees;
+                        const percentage = maxAttendees > 0 
+                          ? ((available / maxAttendees) * 100) 
                           : 0;
 
                         return (
@@ -96,7 +102,7 @@ export default function CitiesPage() {
                             <div className="flex items-center gap-2 mb-2">
                               <Calendar className="w-4 h-4 text-gray-600" aria-hidden="true" />
                               <span className="text-sm font-bold text-black">
-                                {formatDate(event.event_date)}
+                                {formatDate(getEventDate(event))}
                               </span>
                             </div>
                             <div className="flex items-center gap-2 mb-3">
@@ -107,7 +113,7 @@ export default function CitiesPage() {
                             </div>
                             <AvailabilityBar 
                               available={available} 
-                              total={event.max_attendees || 0}
+                              total={maxAttendees || 0}
                             />
                             <button
                               onClick={() => router.push(`/cities/${city.id}`)}

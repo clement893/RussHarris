@@ -3,10 +3,10 @@ Masterclass Schemas
 Pydantic schemas for masterclass events, cities, and venues
 """
 
-from typing import Optional, List
+from typing import Optional, List, Any
 from datetime import datetime, date, time
 from decimal import Decimal
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from app.models.masterclass import EventStatus
 
@@ -153,9 +153,54 @@ class CityEventResponse(CityEventBase):
     event: Optional[MasterclassEventResponse] = None
     city: Optional[CityResponse] = None
     venue: Optional[VenueResponse] = None
+    # Aliases for frontend compatibility
+    event_date: Optional[date] = None  # Alias for start_date
+    max_attendees: Optional[int] = None  # Alias for total_capacity
+    current_attendees: Optional[int] = None  # Calculated: total_capacity - available_spots
+    is_active: Optional[bool] = None  # Alias for status == PUBLISHED
+    price: Optional[Decimal] = None  # Alias for regular_price
+    currency: Optional[str] = None  # Default to EUR
 
     class Config:
         from_attributes = True
+
+    @model_validator(mode='before')
+    @classmethod
+    def add_computed_fields(cls, data: Any) -> Any:
+        """Add computed fields for frontend compatibility"""
+        if isinstance(data, dict):
+            # Add computed fields
+            if 'start_date' in data:
+                data['event_date'] = data['start_date']
+            if 'total_capacity' in data:
+                data['max_attendees'] = data['total_capacity']
+                # Calculate current_attendees
+                total_cap = data.get('total_capacity', 0) or 0
+                available = data.get('available_spots', 0) or 0
+                data['current_attendees'] = max(0, total_cap - available)
+            if 'status' in data:
+                data['is_active'] = data['status'] == EventStatus.PUBLISHED
+            if 'regular_price' in data:
+                data['price'] = data['regular_price']
+            data['currency'] = data.get('currency', 'EUR')
+        elif hasattr(data, '__dict__'):
+            # SQLAlchemy model - convert to dict
+            obj_dict = {k: v for k, v in data.__dict__.items() if not k.startswith('_')}
+            # Add computed fields
+            if hasattr(data, 'start_date'):
+                obj_dict['event_date'] = data.start_date
+            if hasattr(data, 'total_capacity'):
+                obj_dict['max_attendees'] = data.total_capacity
+                total_cap = data.total_capacity or 0
+                available = data.available_spots or 0
+                obj_dict['current_attendees'] = max(0, total_cap - available)
+            if hasattr(data, 'status'):
+                obj_dict['is_active'] = data.status == EventStatus.PUBLISHED
+            if hasattr(data, 'regular_price'):
+                obj_dict['price'] = data.regular_price
+            obj_dict['currency'] = 'EUR'
+            return obj_dict
+        return data
 
 
 class CityWithEventsResponse(CityResponse):

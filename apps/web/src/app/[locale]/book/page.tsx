@@ -56,6 +56,10 @@ export default function BookPage() {
     });
   };
 
+  const getEventDate = (event: CityEvent) => {
+    return event.event_date || event.start_date;
+  };
+
   const formatTime = (timeString: string) => {
     return timeString.substring(0, 5);
   };
@@ -139,9 +143,11 @@ export default function BookPage() {
                 {selectedCity?.events && selectedCity.events.length > 0 ? (
                   <div className="space-y-6">
                     {selectedCity.events.map((event) => {
-                      const available = (event.max_attendees || 0) - (event.current_attendees || 0);
-                      const percentage = event.max_attendees > 0
-                        ? ((available / event.max_attendees) * 100)
+                      const maxAttendees = event.max_attendees || event.total_capacity || 0;
+                      const currentAttendees = event.current_attendees || 0;
+                      const available = maxAttendees - currentAttendees;
+                      const percentage = maxAttendees > 0
+                        ? ((available / maxAttendees) * 100)
                         : 0;
                       const isSelected = selectedEventId === event.id;
                       const isLowAvailability = percentage < 20;
@@ -159,7 +165,7 @@ export default function BookPage() {
                               <div className="flex items-center gap-3 mb-2">
                                 <Calendar className="w-5 h-5 text-black" aria-hidden="true" />
                                 <h3 className="text-2xl font-black text-black">
-                                  {formatDate(event.event_date)}
+                                  {formatDate(getEventDate(event))}
                                 </h3>
                               </div>
                               <div className="flex items-center gap-4 text-gray-600 mb-4">
@@ -192,18 +198,18 @@ export default function BookPage() {
                               <div className="flex items-center gap-2">
                                 <Users className="w-4 h-4 text-gray-600" aria-hidden="true" />
                                 <span className="text-sm font-bold text-black">
-                                  {available} places disponibles sur {event.max_attendees}
+                                  {available} places disponibles sur {maxAttendees}
                                 </span>
                               </div>
                             </div>
-                            <AvailabilityBar available={available} total={event.max_attendees || 0} />
+                            <AvailabilityBar available={available} total={maxAttendees} />
                           </div>
 
                           {event.event && (
                             <div className="mt-4 pt-4 border-t border-gray-200">
-                              <p className="text-sm text-gray-600 mb-2">{event.event.title}</p>
+                              <p className="text-sm text-gray-600 mb-2">{event.event.title_fr || event.event.title_en}</p>
                               <p className="text-2xl font-black text-black">
-                                {event.event.price} {event.event.currency}
+                                {event.price || event.regular_price || event.event.price} {event.currency || event.event.currency || 'EUR'}
                               </p>
                             </div>
                           )}

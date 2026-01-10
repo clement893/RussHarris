@@ -12,6 +12,8 @@ from app.core.config import settings
 from app.core.logging import logger
 from app.models import User, Plan, Subscription
 from app.models.subscription import SubscriptionStatus
+from app.models.booking import Booking
+from decimal import Decimal
 
 # Configure Stripe timeout (handled automatically in recent versions)
 # Stripe SDK handles timeouts internally

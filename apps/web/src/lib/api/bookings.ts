@@ -75,6 +75,13 @@ export interface BookingSummaryResponse {
   payment_status: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
 }
 
+export interface PaymentIntentResponse {
+  client_secret: string;
+  payment_intent_id: string;
+  amount: number;
+  currency: string;
+}
+
 /**
  * Bookings API client
  */

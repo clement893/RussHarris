@@ -22,8 +22,11 @@ export interface MasterclassEvent {
 
 export interface City {
   id: number;
-  name: string;
+  name_en: string;
+  name_fr: string;
+  name?: string;  // Alias for compatibility (will map to name_fr or name_en)
   country: string;
+  province?: string;
   timezone?: string;
 }
 
@@ -41,12 +44,24 @@ export interface CityEvent {
   event_id: number;
   city_id: number;
   venue_id: number;
-  event_date: string;
+  start_date: string;  // Primary date field
+  end_date: string;
+  event_date?: string;  // Optional alias for start_date (for compatibility)
   start_time: string;
   end_time: string;
-  max_attendees: number;
-  current_attendees: number;
-  is_active: boolean;
+  total_capacity?: number;
+  available_spots?: number;
+  max_attendees?: number;  // Alias for total_capacity
+  current_attendees?: number;  // Calculated: total_capacity - available_spots
+  is_active?: boolean;  // status == PUBLISHED
+  status?: string;  // draft, published, sold_out, cancelled
+  price?: number;  // Alias for regular_price
+  currency?: string;
+  regular_price?: number;
+  early_bird_price?: number;
+  early_bird_deadline?: string;
+  group_discount_percentage?: number;
+  group_minimum?: number;
   event?: MasterclassEvent;
   city?: City;
   venue?: Venue;
@@ -60,8 +75,16 @@ export interface Availability {
   percentage_available: number;
 }
 
-export interface CityWithEvents extends City {
-  events: CityEvent[];
+export interface CityWithEvents {
+  id: number;
+  name_en: string;
+  name_fr: string;
+  name?: string;  // Alias
+  country: string;
+  province?: string;
+  timezone?: string;
+  events?: CityEvent[];
+  city_events?: CityEvent[];  // Alias from backend
 }
 
 /**
@@ -93,18 +116,37 @@ export const masterclassAPI = {
    * Get list of cities with their events
    */
   listCitiesWithEvents: async (): Promise<CityWithEvents[]> => {
-    const response = await apiClient.get<CityWithEvents[]>('/v1/masterclass/cities');
-    const data = extractApiData<CityWithEvents[]>(response);
-    return Array.isArray(data) ? data : [];
+    const response = await apiClient.get<{cities: CityWithEvents[], total: number}>('/v1/masterclass/cities');
+    const result = extractApiData<{cities: CityWithEvents[], total: number}>(response);
+    if (!result || !result.cities) {
+      return [];
+    }
+    // Map city_events to events for frontend compatibility
+    return result.cities.map(city => ({
+      ...city,
+      name: city.name_fr || city.name_en,
+      events: city.city_events || city.events || [],
+    }));
   },
 
   /**
    * Get events for a specific city
    */
   listCityEvents: async (cityId: number): Promise<CityEvent[]> => {
-    const response = await apiClient.get<CityEvent[]>(`/v1/masterclass/cities/${cityId}/events`);
-    const data = extractApiData<CityEvent[]>(response);
-    return Array.isArray(data) ? data : [];
+    const response = await apiClient.get<{city_events: CityEvent[], total: number}>(`/v1/masterclass/cities/${cityId}/events`);
+    const result = extractApiData<{city_events: CityEvent[], total: number}>(response);
+    if (!result || !result.city_events) {
+      return [];
+    }
+    // Map fields for frontend compatibility
+    return result.city_events.map(event => ({
+      ...event,
+      event_date: event.start_date,
+      max_attendees: event.total_capacity,
+      current_attendees: (event.total_capacity || 0) - (event.available_spots || 0),
+      is_active: event.status === 'published',
+      price: event.regular_price,
+    }));
   },
 
   /**
@@ -116,7 +158,16 @@ export const masterclassAPI = {
     if (!data) {
       throw new Error(`City event not found: ${cityEventId}`);
     }
-    return data;
+    // Map fields for frontend compatibility
+    return {
+      ...data,
+      event_date: data.start_date,
+      max_attendees: data.total_capacity,
+      current_attendees: (data.total_capacity || 0) - (data.available_spots || 0),
+      is_active: data.status === 'published',
+      price: data.regular_price,
+      currency: data.currency || 'EUR',
+    };
   },
 
   /**
