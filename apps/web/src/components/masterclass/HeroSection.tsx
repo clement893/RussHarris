@@ -14,7 +14,7 @@
 import { ReactNode, HTMLAttributes } from 'react';
 import Image from 'next/image';
 import { clsx } from 'clsx';
-import { Button } from '@/components/ui';
+import Button from '@/components/ui/Button';
 
 interface HeroSectionProps extends HTMLAttributes<HTMLElement> {
   /**
