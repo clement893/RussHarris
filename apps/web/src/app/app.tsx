@@ -9,7 +9,7 @@ import React, { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { reportWebVitals } from '@/lib/performance';
 import { logger } from '@/lib/logger';
-import Header from '@/components/layout/Header';
+import { MasterclassNavigation } from '@/components/navigation';
 import Footer from '@/components/layout/Footer';
 
 function AppContent({ children }: { children: React.ReactNode }) {
@@ -25,6 +25,9 @@ function AppContent({ children }: { children: React.ReactNode }) {
   
   // Check if it's an auth page (login, register, etc.) - these should have their own backgrounds
   const isAuthPage = pathname?.includes('/auth/');
+  
+  // Check if it's a booking page - these should have minimal navigation
+  const isBookingPage = pathname?.includes('/book/');
 
   useEffect(() => {
     // Track page views
@@ -122,12 +125,25 @@ function AppContent({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  // For public pages, show Header and Footer
+  // For booking pages, show minimal navigation (logo only, no full menu)
+  if (isBookingPage) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <MasterclassNavigation variant="default" showCTA={false} />
+        <main id="main-content" className="flex-1">
+          {children}
+        </main>
+        {/* No footer on booking pages for focus */}
+      </div>
+    );
+  }
+
+  // For public pages, show MasterclassNavigation and Footer
   // Note: Background is handled by body tag in layout.tsx, so we don't override it here
   // This allows individual pages to set their own backgrounds (gradients, etc.)
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <MasterclassNavigation variant="default" showCTA={true} />
       <main id="main-content" className="flex-1">
         {children}
       </main>

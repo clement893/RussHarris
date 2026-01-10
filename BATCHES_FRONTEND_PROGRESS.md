@@ -2,7 +2,7 @@
 
 **Date de début:** 2025-01-27  
 **Statut global:** 🟡 En cours  
-**Batches terminés:** 0/10
+**Batches terminés:** 2/10 (20%)
 
 ---
 
@@ -184,9 +184,9 @@
 
 ## 📊 Statistiques
 
-- **Batches terminés:** 0/10
-- **Batches en cours:** 1/10
-- **Progression globale:** 0%
+- **Batches terminés:** 2/10
+- **Batches en cours:** 1/10 (BATCH 3)
+- **Progression globale:** 20%
 - **Dernière mise à jour:** 2025-01-27
 
 ---
