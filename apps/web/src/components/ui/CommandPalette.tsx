@@ -62,11 +62,11 @@ export default function CommandPalette({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={placeholder}
-            className="flex-1 bg-transparent border-none outline-none text-foreground placeholder-gray-400 dark:placeholder-gray-500"
+            className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground"
             autoFocus
             aria-label="Search commands"
           />
-          <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs font-semibold text-muted-foreground bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded">
+          <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs font-semibold text-muted-foreground bg-muted border border-border rounded">
             ESC
           </kbd>
         </div>
@@ -103,7 +103,7 @@ export default function CommandPalette({
                           'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors',
                           isSelected
                             ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-900 dark:text-primary-100'
-                            : 'text-foreground hover:bg-gray-100 dark:hover:bg-gray-700'
+                            : 'text-foreground hover:bg-muted'
                         )}
                       >
                         {command.icon && (
@@ -120,7 +120,7 @@ export default function CommandPalette({
                           )}
                         </div>
                         {command.shortcut && (
-                          <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs font-semibold text-muted-foreground bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded">
+                          <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs font-semibold text-muted-foreground bg-muted border border-border rounded">
                             {command.shortcut}
                           </kbd>
                         )}
@@ -137,16 +137,16 @@ export default function CommandPalette({
         <div className="flex items-center justify-between px-4 py-2 border-t border-border text-xs text-muted-foreground">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded">
+              <kbd className="px-1.5 py-0.5 bg-muted border border-border rounded">
                 ↑
               </kbd>
-              <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded">
+              <kbd className="px-1.5 py-0.5 bg-muted border border-border rounded">
                 ↓
               </kbd>
               <span>Naviguer</span>
             </div>
             <div className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded">
+              <kbd className="px-1.5 py-0.5 bg-muted border border-border rounded">
                 Enter
               </kbd>
               <span>Sélectionner</span>
