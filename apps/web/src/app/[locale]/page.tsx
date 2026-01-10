@@ -7,13 +7,16 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, Container } from '@/components/ui';
-import ButtonLink from '@/components/ui/ButtonLink';
+import { Container } from '@/components/ui';
 import HeroSection from '@/components/masterclass/HeroSection';
 import UrgencyBadge from '@/components/masterclass/UrgencyBadge';
 import BenefitsGrid, { type Benefit } from '@/components/masterclass/BenefitsGrid';
 import ProgramPreview from '@/components/masterclass/ProgramPreview';
 import CityCard from '@/components/masterclass/CityCard';
+import TestimonialPreview, { type Testimonial } from '@/components/masterclass/TestimonialPreview';
+import PricingPreview, { type PricingOption } from '@/components/masterclass/PricingPreview';
+import FAQPreview, { type FAQItem } from '@/components/masterclass/FAQPreview';
+import MasterclassFooter from '@/components/layout/MasterclassFooter';
 import { Calendar, MapPin, Users, Award, GraduationCap, BookOpen, UsersRound, Award as AwardIcon } from 'lucide-react';
 import { masterclassAPI, type CityWithEvents } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
@@ -75,6 +78,110 @@ export default function HomePage() {
   const topCities = cities
     .filter(city => city.events && city.events.length > 0)
     .slice(0, 3);
+
+  // Testimonials data
+  const testimonials: Testimonial[] = [
+    {
+      id: 1,
+      name: 'Marie Dubois',
+      role: 'Psychologue clinicienne',
+      location: 'Paris, France',
+      rating: 5,
+      text: 'Une formation exceptionnelle ! Russ Harris a une façon unique de rendre l\'ACT accessible et applicable. J\'ai pu immédiatement intégrer les techniques dans ma pratique.',
+    },
+    {
+      id: 2,
+      name: 'Jean Martin',
+      role: 'Thérapeute',
+      location: 'Lyon, France',
+      rating: 5,
+      text: 'La meilleure formation en ACT que j\'ai suivie. Russ est un formateur remarquable, clair et passionné. Les démonstrations pratiques m\'ont permis de vraiment comprendre les concepts.',
+    },
+    {
+      id: 3,
+      name: 'Sophie Laurent',
+      role: 'Psychothérapeute',
+      location: 'Marseille, France',
+      rating: 5,
+      text: 'Cette masterclass a transformé ma pratique professionnelle. Les outils partagés sont directement applicables. L\'accès aux enregistrements est un vrai plus.',
+    },
+  ];
+
+  // Pricing data
+  const pricingOptions: PricingOption[] = [
+    {
+      id: 'early-bird',
+      name: 'Early Bird',
+      price: 450,
+      currency: 'EUR',
+      description: 'Tarif préférentiel pour réservations anticipées',
+      popular: true,
+      badge: 'Tarif réduit',
+      features: [
+        'Accès complet à la masterclass (2 jours)',
+        'Manuel de formation (PDF)',
+        'Accès aux enregistrements vidéo (3 mois)',
+        'Certificat de participation',
+      ],
+    },
+    {
+      id: 'regular',
+      name: 'Tarif Standard',
+      price: 550,
+      currency: 'EUR',
+      description: 'Tarif standard pour réservations',
+      popular: false,
+      features: [
+        'Accès complet à la masterclass (2 jours)',
+        'Manuel de formation (PDF)',
+        'Accès aux enregistrements vidéo (3 mois)',
+        'Certificat de participation',
+      ],
+    },
+    {
+      id: 'group',
+      name: 'Tarif Groupe',
+      price: 400,
+      currency: 'EUR',
+      description: 'Tarif réduit pour groupes de 3+ personnes',
+      popular: false,
+      features: [
+        'Accès complet à la masterclass (2 jours)',
+        'Manuel de formation (PDF)',
+        'Accès aux enregistrements vidéo (3 mois)',
+        'Réduction de groupe appliquée',
+      ],
+    },
+  ];
+
+  // FAQ data
+  const faqItems: FAQItem[] = [
+    {
+      id: 1,
+      question: 'Qu\'est-ce que l\'ACT (Thérapie d\'Acceptation et d\'Engagement) ?',
+      answer: 'L\'ACT est une approche thérapeutique basée sur la pleine conscience qui aide les personnes à accepter leurs pensées et émotions difficiles tout en s\'engageant dans des actions alignées avec leurs valeurs.',
+    },
+    {
+      id: 2,
+      question: 'Qui est Russ Harris ?',
+      answer: 'Russ Harris est un médecin, psychothérapeute et formateur internationalement reconnu dans le domaine de l\'ACT. Il est l\'auteur de plusieurs best-sellers, dont "Le piège du bonheur", traduit en plus de 30 langues.',
+    },
+    {
+      id: 3,
+      question: 'Comment puis-je réserver ma place ?',
+      answer: 'Vous pouvez réserver votre place directement en ligne en sélectionnant une ville et une date sur la page "Villes & Dates". Le processus de réservation est simple et sécurisé.',
+    },
+    {
+      id: 4,
+      question: 'Y a-t-il un tarif réduit pour les groupes ?',
+      answer: 'Oui, nous offrons un tarif groupe pour les réservations de 3 personnes ou plus. Contactez-nous pour obtenir un devis personnalisé.',
+    },
+    {
+      id: 5,
+      question: 'Quelles ressources sont incluses dans le prix ?',
+      answer: 'Le prix comprend l\'accès complet à la masterclass de 2 jours, le manuel de formation, l\'accès aux enregistrements vidéo pendant 3 mois, toutes les ressources pratiques et le certificat de participation.',
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -179,6 +286,32 @@ export default function HomePage() {
           </Container>
         </section>
       )}
+
+      {/* Testimonials Preview Section */}
+      <TestimonialPreview
+        testimonials={testimonials}
+        title="Ce que disent nos participants"
+        subtitle="Découvrez les témoignages des professionnels ayant suivi la masterclass"
+        maxVisible={3}
+      />
+
+      {/* Pricing Preview Section */}
+      <PricingPreview
+        pricingOptions={pricingOptions}
+        title="Tarifs & Options"
+        subtitle="Choisissez l'option qui vous convient pour participer à la masterclass"
+      />
+
+      {/* FAQ Preview Section */}
+      <FAQPreview
+        faqItems={faqItems}
+        title="Questions fréquentes"
+        subtitle="Trouvez rapidement les réponses aux questions les plus courantes"
+        maxVisible={5}
+      />
+
+      {/* Footer */}
+      <MasterclassFooter />
     </div>
   );
 }
