@@ -856,4 +856,7 @@ export { checkFonts } from './api/theme-font';
 export { apiKeysAPI } from './api/apiKeys';
 export type { APIKeyCreate, APIKeyResponse, APIKeyListResponse, APIKeyRotateResponse, AdminAPIKeyListResponse } from './api/apiKeys';
 
+// Re-export API utilities
+export { extractApiData } from './api/utils';
+
 
