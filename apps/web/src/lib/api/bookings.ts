@@ -75,6 +75,13 @@ export interface BookingSummaryResponse {
   payment_status: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
 }
 
+export interface PaymentIntentResponse {
+  client_secret: string;
+  payment_intent_id: string;
+  amount: number;
+  currency: string;
+}
+
 /**
  * Bookings API client
  */
@@ -123,6 +130,18 @@ export const bookingsAPI = {
     const data = extractApiData<BookingResponse>(response);
     if (!data) {
       throw new Error(`Failed to cancel booking: ${reference}`);
+    }
+    return data;
+  },
+
+  /**
+   * Create payment intent for a booking
+   */
+  createPaymentIntent: async (bookingId: number): Promise<PaymentIntentResponse> => {
+    const response = await apiClient.post<PaymentIntentResponse>(`/v1/bookings/${bookingId}/create-payment-intent`);
+    const data = extractApiData<PaymentIntentResponse>(response);
+    if (!data) {
+      throw new Error(`Failed to create payment intent for booking: ${bookingId}`);
     }
     return data;
   },

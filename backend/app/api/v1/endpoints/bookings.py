@@ -9,10 +9,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.logging import logger
-from app.schemas.booking import BookingCreate, BookingResponse, BookingSummaryResponse
+from app.schemas.booking import BookingCreate, BookingResponse, BookingSummaryResponse, PaymentIntentResponse
 from app.services.booking_service import BookingService
 from app.services.availability_service import AvailabilityService
-from app.models.booking import Booking, BookingStatus
+from app.services.stripe_service import StripeService
+from app.models.booking import Booking, BookingStatus, PaymentStatus
 from app.models.masterclass import CityEvent
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
@@ -184,8 +185,8 @@ async def get_booking_summary(
         booking_reference=booking.booking_reference,
         city=city_event.city.name_en,
         city_fr=city_event.city.name_fr,
-        venue_name=city_event.venue.name,
-        venue_address=city_event.venue.address,
+        venue_name=city_event.venue.name if city_event.venue else "TBD",
+        venue_address=city_event.venue.address if city_event.venue else None,
         start_date=city_event.start_date.isoformat(),
         end_date=city_event.end_date.isoformat(),
         attendee_name=booking.attendee_name,
@@ -194,3 +195,101 @@ async def get_booking_summary(
         total=booking.total,
         payment_status=booking.payment_status,
     )
+
+
+@router.post("/{booking_id}/create-payment-intent", response_model=PaymentIntentResponse)
+async def create_payment_intent(
+    booking_id: int,
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Create Stripe PaymentIntent for a booking
+    
+    Args:
+        booking_id: Booking ID
+        
+    Returns:
+        PaymentIntent with client_secret for frontend
+    """
+    try:
+        # Get booking
+        result = await db.execute(
+            select(Booking).where(Booking.id == booking_id)
+        )
+        booking = result.scalar_one_or_none()
+        
+        if not booking:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Booking {booking_id} not found",
+            )
+        
+        # Check if booking already has a payment intent
+        if booking.payment_intent_id:
+            # Retrieve existing payment intent
+            stripe_service = StripeService(db)
+            try:
+                import stripe
+                payment_intent = stripe.PaymentIntent.retrieve(booking.payment_intent_id)
+                return PaymentIntentResponse(
+                    client_secret=payment_intent.client_secret,
+                    payment_intent_id=payment_intent.id,
+                    amount=booking.total,
+                    currency="EUR",
+                )
+            except Exception as e:
+                logger.warning(f"Could not retrieve existing payment intent: {e}")
+                # Continue to create new one
+        
+        # Check booking status
+        if booking.status == BookingStatus.CANCELLED:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Cannot create payment intent for cancelled booking",
+            )
+        
+        if booking.payment_status == PaymentStatus.PAID:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Booking is already paid",
+            )
+        
+        # Get currency from event
+        result = await db.execute(
+            select(CityEvent)
+            .options(selectinload(CityEvent.event))
+            .where(CityEvent.id == booking.city_event_id)
+        )
+        city_event = result.scalar_one_or_none()
+        # Currency is not stored in CityEvent, default to EUR for masterclass bookings
+        currency = "EUR"
+        
+        # Create PaymentIntent
+        stripe_service = StripeService(db)
+        payment_intent_data = await stripe_service.create_payment_intent_for_booking(
+            booking=booking,
+            currency=currency,
+        )
+        
+        # Update booking with payment_intent_id
+        booking.payment_intent_id = payment_intent_data["payment_intent_id"]
+        await db.commit()
+        await db.refresh(booking)
+        
+        from decimal import Decimal
+        
+        return PaymentIntentResponse(
+            client_secret=payment_intent_data["client_secret"],
+            payment_intent_id=payment_intent_data["payment_intent_id"],
+            amount=Decimal(str(booking.total)),
+            currency=currency,
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating payment intent for booking {booking_id}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create payment intent",
+        )

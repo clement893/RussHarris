@@ -47,6 +47,10 @@ export default function CheckoutPage() {
     }
   };
 
+  const getEventDate = (event: CityEvent) => {
+    return event.event_date || event.start_date;
+  };
+
   const handleSubmit = async (formData: any) => {
     if (!cityEvent || !cityEventIdParam) {
       setError('Événement non sélectionné');
@@ -58,18 +62,23 @@ export default function CheckoutPage() {
       setError(null);
 
       // Calculate pricing based on ticket type and quantity
-      const basePrice = cityEvent.event?.price || 550;
+      const basePrice = Number(cityEvent.regular_price || cityEvent.price || cityEvent.event?.price || 550);
       let ticketPrice = basePrice;
       
-      if (formData.ticket_type === 'EARLY_BIRD') {
-        ticketPrice = 450; // Early bird price
+      // Check if early bird deadline has passed
+      const isEarlyBird = cityEvent.early_bird_deadline 
+        ? new Date(cityEvent.early_bird_deadline) > new Date()
+        : false;
+      
+      if (formData.ticket_type === 'EARLY_BIRD' && isEarlyBird && cityEvent.early_bird_price) {
+        ticketPrice = Number(cityEvent.early_bird_price);
       } else if (formData.ticket_type === 'GROUP' && formData.quantity >= 3) {
-        ticketPrice = 400; // Group price
+        const groupDiscount = Number(cityEvent.group_discount_percentage || 0) / 100;
+        ticketPrice = basePrice * (1 - groupDiscount);
       }
 
       const subtotal = ticketPrice * formData.quantity;
-      // Calculate discount if any (for future use or display)
-      // const discount = basePrice * formData.quantity - subtotal;
+      const discount = basePrice * formData.quantity - subtotal;
       const total = subtotal;
 
       // Prepare booking data
@@ -133,13 +142,18 @@ export default function CheckoutPage() {
 
   // Calculate pricing for summary (default values, will be updated by form)
   const calculatePricing = (ticketType: string = 'REGULAR', quantity: number = 1) => {
-    const basePrice = cityEvent.event.price;
+    const basePrice = Number(cityEvent.regular_price || cityEvent.price || 550);
     let ticketPrice = basePrice;
     
-    if (ticketType === 'EARLY_BIRD') {
-      ticketPrice = 450;
+    const isEarlyBird = cityEvent.early_bird_deadline 
+      ? new Date(cityEvent.early_bird_deadline) > new Date()
+      : false;
+    
+    if (ticketType === 'EARLY_BIRD' && isEarlyBird && cityEvent.early_bird_price) {
+      ticketPrice = Number(cityEvent.early_bird_price);
     } else if (ticketType === 'GROUP' && quantity >= 3) {
-      ticketPrice = 400;
+      const groupDiscount = Number(cityEvent.group_discount_percentage || 0) / 100;
+      ticketPrice = basePrice * (1 - groupDiscount);
     }
 
     const subtotal = ticketPrice * quantity;
@@ -152,10 +166,10 @@ export default function CheckoutPage() {
   const defaultPricing = calculatePricing();
   
   const summaryData: BookingSummaryData = {
-    city: cityEvent.city?.name || '',
+    city: cityEvent.city?.name_fr || cityEvent.city?.name_en || '',
     venue_name: cityEvent.venue?.name || '',
     venue_address: cityEvent.venue?.address || undefined,
-    event_date: cityEvent.event_date,
+    event_date: getEventDate(cityEvent),
     start_time: cityEvent.start_time,
     end_time: cityEvent.end_time,
     quantity: 1,
@@ -163,7 +177,7 @@ export default function CheckoutPage() {
     subtotal: defaultPricing.subtotal,
     discount: defaultPricing.discount,
     total: defaultPricing.total,
-    currency: cityEvent.event.currency,
+    currency: cityEvent.currency || 'EUR',
   };
 
   return (
