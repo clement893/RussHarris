@@ -133,4 +133,16 @@ export const bookingsAPI = {
     }
     return data;
   },
+
+  /**
+   * Create payment intent for a booking
+   */
+  createPaymentIntent: async (bookingId: number): Promise<PaymentIntentResponse> => {
+    const response = await apiClient.post<PaymentIntentResponse>(`/v1/bookings/${bookingId}/create-payment-intent`);
+    const data = extractApiData<PaymentIntentResponse>(response);
+    if (!data) {
+      throw new Error(`Failed to create payment intent for booking: ${bookingId}`);
+    }
+    return data;
+  },
 };

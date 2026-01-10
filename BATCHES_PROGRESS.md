@@ -3,10 +3,10 @@
 ## 🎯 Statut Global
 
 **Dernière mise à jour:** 2025-01-27  
-**Progression:** 60% (6 batches terminés)  
+**Progression:** 70% (7 batches terminés - partiel)  
 **Batches terminés:** 6/10  
-**Batches en cours:** 0/10  
-**Prochain batch:** BATCH 7 (Intégration Stripe pour Bookings)
+**Batches en cours:** 1/10 (BATCH 7 - partiel)  
+**Prochain batch:** Finaliser BATCH 7 (Stripe Elements frontend), puis BATCH 8
 
 ---
 
@@ -410,7 +410,79 @@
 
 ---
 
-## 📦 BATCH 7-10: En attente
+## 📦 BATCH 7: Intégration Stripe pour Bookings 💳
+
+**Statut:** 🟡 En cours (Backend terminé, Frontend partiel)  
+**Date de début:** 2025-01-27  
+**Date de fin:** En cours  
+**Durée estimée:** 1.5 jours  
+**Durée réelle:** En cours
+
+### ✅ Checklist Complétée (Backend)
+
+- [x] Adapter StripeService pour PaymentIntent ✅
+  - [x] Méthode `create_payment_intent_for_booking()` ✅
+  - [x] Gérer montants EUR ✅
+  - [x] Metadata booking_id ✅
+
+- [x] Endpoint `POST /api/v1/bookings/{booking_id}/create-payment-intent` ✅
+  - [x] Créer PaymentIntent Stripe ✅
+  - [x] Associer à booking ✅
+  - [x] Retourner client_secret ✅
+
+- [x] Webhook Stripe pour bookings ✅
+  - [x] Handler `payment_intent.succeeded` → confirmer booking ✅
+  - [x] Handler `payment_intent.payment_failed` → marquer booking failed ✅
+  - [x] Envoyer email confirmation (EmailService) ✅
+  - [x] Envoyer email échec paiement ✅
+
+### ⏳ En attente (Frontend)
+
+- [ ] Page paiement Stripe (`/book/payment/page.tsx`)
+  - [ ] Installer `@stripe/stripe-js` et `@stripe/react-stripe-js` ⏳
+  - [ ] Stripe Elements (carte bancaire) ⏳
+  - [ ] Affichage montant ⏳
+  - [ ] État payment processing ⏳
+
+- [ ] Composant `BookingStripeCheckout.tsx`
+  - [ ] Intégration Stripe Elements ⏳
+  - [ ] Gestion erreurs paiement ⏳
+  - [ ] Redirection après succès ⏳
+
+- [ ] Tests paiements Stripe (test mode)
+  - [ ] Carte succès (4242 4242 4242 4242) ⏳
+  - [ ] Carte échec ⏳
+  - [ ] Webhooks testés (déjà configuré) ✅
+
+### 📝 Notes
+
+- ✅ Backend Stripe complètement fonctionnel
+- ✅ Webhooks configurés et testés
+- ✅ Email confirmation automatique après paiement
+- ⏳ Frontend Stripe Elements nécessite installation des packages npm
+- ⏳ Intégration frontend Stripe à finaliser
+
+### 🔗 Fichiers Créés/Modifiés
+
+**Backend:**
+- ✅ `backend/app/services/stripe_service.py` (modifié, ajout `create_payment_intent_for_booking`)
+- ✅ `backend/app/api/v1/endpoints/bookings.py` (modifié, ajout endpoint PaymentIntent)
+- ✅ `backend/app/api/webhooks/stripe.py` (modifié, handlers payment_intent.succeeded/failed)
+- ✅ `backend/app/schemas/booking.py` (modifié, PaymentIntentResponse)
+
+**Frontend:**
+- ✅ `apps/web/src/lib/api/bookings.ts` (modifié, ajout `createPaymentIntent`)
+- ✅ `apps/web/src/lib/api/masterclass.ts` (modifié, mapping champs compatibilité)
+- ✅ `apps/web/src/app/[locale]/book/page.tsx` (modifié, adaptation champs)
+- ✅ `apps/web/src/app/[locale]/cities/page.tsx` (modifié, adaptation champs)
+- ✅ `apps/web/src/app/[locale]/cities/[city]/page.tsx` (modifié, adaptation champs)
+- ✅ `apps/web/src/app/[locale]/book/checkout/page.tsx` (modifié, calcul prix correct)
+- ⏳ `apps/web/src/app/[locale]/book/payment/page.tsx` (à compléter avec Stripe Elements)
+- ⏳ `apps/web/src/components/masterclass/BookingStripeCheckout.tsx` (à créer)
+
+---
+
+## 📦 BATCH 8-10: En attente
 
 ---
 

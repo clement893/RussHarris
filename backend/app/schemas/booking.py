@@ -107,7 +107,7 @@ class PaymentIntentResponse(BaseModel):
     client_secret: str
     payment_intent_id: str
     amount: Decimal
-    currency: str = "CAD"
+    currency: str = "EUR"
 
 
 class PaymentResponse(BaseModel):

@@ -261,7 +261,8 @@ async def create_payment_intent(
             .where(CityEvent.id == booking.city_event_id)
         )
         city_event = result.scalar_one_or_none()
-        currency = city_event.event.currency if city_event and city_event.event else "EUR"
+        # Currency is not stored in CityEvent, default to EUR for masterclass bookings
+        currency = "EUR"
         
         # Create PaymentIntent
         stripe_service = StripeService(db)
@@ -275,10 +276,12 @@ async def create_payment_intent(
         await db.commit()
         await db.refresh(booking)
         
+        from decimal import Decimal
+        
         return PaymentIntentResponse(
             client_secret=payment_intent_data["client_secret"],
             payment_intent_id=payment_intent_data["payment_intent_id"],
-            amount=booking.total,
+            amount=Decimal(str(booking.total)),
             currency=currency,
         )
         

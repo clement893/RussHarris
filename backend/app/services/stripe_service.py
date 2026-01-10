@@ -235,3 +235,78 @@ class StripeService:
             logger.error(f"Invalid signature: {e}")
             raise
 
+    async def create_payment_intent_for_booking(
+        self,
+        booking: Booking,
+        currency: str = "EUR"
+    ) -> Dict[str, Any]:
+        """
+        Create Stripe PaymentIntent for a booking (one-time payment)
+        
+        Args:
+            booking: Booking object
+            currency: Currency code (default: EUR)
+            
+        Returns:
+            Dictionary with payment_intent_id and client_secret
+        """
+        try:
+            # Convert total to cents for Stripe (Stripe uses smallest currency unit)
+            # For EUR, it's cents (multiply by 100)
+            amount_cents = int(float(booking.total) * 100)
+            
+            # Create or get customer (using booking email)
+            customer = None
+            try:
+                # Try to find existing customer by email
+                customers = stripe.Customer.list(email=booking.attendee_email, limit=1)
+                if customers.data:
+                    customer = customers.data[0]
+                else:
+                    # Create new customer
+                    customer = stripe.Customer.create(
+                        email=booking.attendee_email,
+                        name=booking.attendee_name,
+                        metadata={
+                            "booking_id": str(booking.id),
+                            "booking_reference": booking.booking_reference,
+                        },
+                    )
+                    logger.info(f"Created Stripe customer {customer.id} for booking {booking.id}")
+            except stripe.StripeError as e:
+                logger.error(f"Error managing customer for booking {booking.id}: {e}")
+                # Continue without customer if creation fails
+                customer = None
+            
+            # Create PaymentIntent
+            payment_intent_params = {
+                "amount": amount_cents,
+                "currency": currency.lower(),
+                "metadata": {
+                    "booking_id": str(booking.id),
+                    "booking_reference": booking.booking_reference,
+                    "type": "booking",
+                },
+                "description": f"Masterclass ACT - Booking {booking.booking_reference}",
+            }
+            
+            if customer:
+                payment_intent_params["customer"] = customer.id
+            
+            payment_intent = stripe.PaymentIntent.create(**payment_intent_params)
+            
+            logger.info(
+                f"Created PaymentIntent {payment_intent.id} for booking {booking.id} "
+                f"(amount: {amount_cents} {currency})"
+            )
+            
+            return {
+                "payment_intent_id": payment_intent.id,
+                "client_secret": payment_intent.client_secret,
+                "amount": amount_cents,
+                "currency": currency,
+            }
+            
+        except stripe.StripeError as e:
+            logger.error(f"Stripe error creating payment intent for booking {booking.id}: {e}")
+            raise
