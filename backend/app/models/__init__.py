@@ -40,6 +40,12 @@ from app.models.post import Post
 from app.models.file import File
 from app.models.contact import Contact
 from app.models.company import Company
+from app.models.masterclass import (
+    MasterclassEvent, City, Venue, CityEvent, EventStatus
+)
+from app.models.booking import (
+    Booking, Attendee, BookingPayment, BookingStatus, PaymentStatus, TicketType
+)
 from app.core.security_audit import SecurityAuditLog
 
 __all__ = [
@@ -117,6 +123,17 @@ __all__ = [
     "File",
     "Contact",
     "Company",
+    "MasterclassEvent",
+    "City",
+    "Venue",
+    "CityEvent",
+    "EventStatus",
+    "Booking",
+    "Attendee",
+    "BookingPayment",
+    "BookingStatus",
+    "PaymentStatus",
+    "TicketType",
     "SecurityAuditLog",
 ]
 

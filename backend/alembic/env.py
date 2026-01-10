@@ -34,6 +34,8 @@ from app.models import menu  # noqa: F401
 from app.models import support_ticket  # noqa: F401
 from app.models import contact  # noqa: F401
 from app.models import company  # noqa: F401
+from app.models import masterclass  # noqa: F401
+from app.models import booking  # noqa: F401
 from app.core.security_audit import SecurityAuditLog  # noqa: F401
 
 # this is the Alembic Config object, which provides
