@@ -4,7 +4,7 @@ Authentication Endpoints
 
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse
 
 import httpx
 import bcrypt
@@ -720,6 +720,10 @@ async def get_google_auth_url(
             else:
                 try:
                     backend_base_url = str(request.base_url).rstrip("/")
+                    # Validate the URL is properly formed
+                    parsed = urlparse(backend_base_url)
+                    if not parsed.scheme or not parsed.netloc:
+                        raise ValueError("Invalid base_url from request")
                     logger.info(f"Using request.base_url: {backend_base_url}")
                 except Exception as e:
                     logger.error(f"Error getting base_url from request: {e}")
@@ -731,6 +735,18 @@ async def get_google_auth_url(
         
         # Ensure callback_uri doesn't have trailing slash (Google is strict about exact match)
         callback_uri = callback_uri.rstrip("/")
+        
+        # Validate callback_uri is a valid URL
+        try:
+            parsed_callback = urlparse(callback_uri)
+            if not parsed_callback.scheme or not parsed_callback.netloc:
+                raise ValueError(f"Invalid callback_uri format: {callback_uri}")
+        except Exception as e:
+            logger.error(f"Invalid callback_uri: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Invalid redirect URI configuration: {str(e)}. Please set BASE_URL or GOOGLE_REDIRECT_URI environment variable."
+            )
         
         logger.info(f"Google OAuth callback URI: {callback_uri}")
         logger.info(f"GOOGLE_REDIRECT_URI from settings: {settings.GOOGLE_REDIRECT_URI}")
@@ -805,12 +821,36 @@ async def google_oauth_callback(
             backend_base_url = settings.BASE_URL.rstrip("/")
             logger.info(f"Using BASE_URL from settings for redirect_uri: {backend_base_url}")
         else:
-            backend_base_url = str(request.base_url).rstrip("/")
-            logger.info(f"Using request.base_url for redirect_uri: {backend_base_url}")
+            # Try to get base URL from request, but handle potential DNS issues
+            try:
+                backend_base_url = str(request.base_url).rstrip("/")
+                # Validate the URL is properly formed
+                parsed = urlparse(backend_base_url)
+                if not parsed.scheme or not parsed.netloc:
+                    raise ValueError("Invalid base_url from request")
+                logger.info(f"Using request.base_url for redirect_uri: {backend_base_url}")
+            except Exception as e:
+                logger.error(f"Error getting base_url from request: {e}")
+                # Fallback to environment variable or default
+                import os
+                backend_base_url = os.getenv("BASE_URL", "http://localhost:8000")
+                logger.warning(f"Using fallback base_url: {backend_base_url}")
         redirect_uri = f"{backend_base_url}{settings.API_V1_STR}/auth/google/callback"
     
     # Ensure redirect_uri doesn't have trailing slash (Google is strict about exact match)
     redirect_uri = redirect_uri.rstrip("/")
+    
+    # Validate redirect_uri is a valid URL
+    try:
+        parsed_redirect = urlparse(redirect_uri)
+        if not parsed_redirect.scheme or not parsed_redirect.netloc:
+            raise ValueError(f"Invalid redirect_uri format: {redirect_uri}")
+    except Exception as e:
+        logger.error(f"Invalid redirect_uri: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Invalid redirect URI configuration: {str(e)}"
+        )
     
     logger.info(f"Google OAuth callback - redirect_uri: {redirect_uri}")
     logger.info(f"Google OAuth callback - code received: {code[:20]}... (truncated)")
@@ -818,7 +858,10 @@ async def google_oauth_callback(
     
     try:
         # Exchange authorization code for tokens
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        # Use a more robust httpx client configuration with proper timeout and limits
+        timeout = httpx.Timeout(30.0, connect=10.0)
+        limits = httpx.Limits(max_keepalive_connections=5, max_connections=10)
+        async with httpx.AsyncClient(timeout=timeout, limits=limits, follow_redirects=True) as client:
             token_request_data = {
                 "code": code,
                 "client_id": settings.GOOGLE_CLIENT_ID,
@@ -829,11 +872,42 @@ async def google_oauth_callback(
             logger.info(f"Google token exchange request - redirect_uri: {redirect_uri}")
             logger.info(f"Google token exchange request - client_id: {settings.GOOGLE_CLIENT_ID[:10]}... (truncated)")
             
-            token_response = await client.post(
-                "https://oauth2.googleapis.com/token",
-                data=token_request_data,
-                headers={"Content-Type": "application/x-www-form-urlencoded"},
-            )
+            try:
+                token_response = await client.post(
+                    "https://oauth2.googleapis.com/token",
+                    data=token_request_data,
+                    headers={"Content-Type": "application/x-www-form-urlencoded"},
+                )
+            except httpx.ConnectError as e:
+                logger.error(f"Failed to connect to Google OAuth token endpoint: {e}")
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="Unable to connect to Google authentication service. Please check your internet connection and try again."
+                )
+            except httpx.TimeoutException as e:
+                logger.error(f"Timeout connecting to Google OAuth token endpoint: {e}")
+                raise HTTPException(
+                    status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+                    detail="Google authentication service is taking too long to respond. Please try again."
+                )
+            except httpx.NetworkError as e:
+                logger.error(f"Network error connecting to Google OAuth token endpoint: {e}")
+                error_msg = str(e)
+                if "Name or service not known" in error_msg or "Errno -2" in error_msg:
+                    raise HTTPException(
+                        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                        detail="DNS resolution failed. Please check your network configuration and DNS settings."
+                    )
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail=f"Network error connecting to Google authentication service: {error_msg}"
+                )
+            except Exception as e:
+                logger.error(f"Unexpected error connecting to Google OAuth token endpoint: {e}", exc_info=True)
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail=f"Failed to connect to Google authentication service: {str(e)}"
+                )
             
             logger.info(f"Google token exchange response status: {token_response.status_code}")
             
@@ -868,10 +942,41 @@ async def google_oauth_callback(
                 )
             
             # Get user info from Google
-            userinfo_response = await client.get(
-                "https://www.googleapis.com/oauth2/v2/userinfo",
-                headers={"Authorization": f"Bearer {access_token}"},
-            )
+            try:
+                userinfo_response = await client.get(
+                    "https://www.googleapis.com/oauth2/v2/userinfo",
+                    headers={"Authorization": f"Bearer {access_token}"},
+                )
+            except httpx.ConnectError as e:
+                logger.error(f"Failed to connect to Google userinfo endpoint: {e}")
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="Unable to connect to Google user information service. Please try again."
+                )
+            except httpx.TimeoutException as e:
+                logger.error(f"Timeout connecting to Google userinfo endpoint: {e}")
+                raise HTTPException(
+                    status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+                    detail="Google user information service is taking too long to respond. Please try again."
+                )
+            except httpx.NetworkError as e:
+                logger.error(f"Network error connecting to Google userinfo endpoint: {e}")
+                error_msg = str(e)
+                if "Name or service not known" in error_msg or "Errno -2" in error_msg:
+                    raise HTTPException(
+                        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                        detail="DNS resolution failed when fetching user information. Please check your network configuration."
+                    )
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail=f"Network error connecting to Google user information service: {error_msg}"
+                )
+            except Exception as e:
+                logger.error(f"Unexpected error connecting to Google userinfo endpoint: {e}", exc_info=True)
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail=f"Failed to connect to Google user information service: {str(e)}"
+                )
             
             if userinfo_response.status_code != 200:
                 logger.error(f"Google userinfo failed: {userinfo_response.text}")
@@ -1017,10 +1122,40 @@ async def google_oauth_callback(
             
     except HTTPException:
         raise
+    except httpx.ConnectError as e:
+        logger.error(f"Connection error in Google OAuth callback: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Unable to connect to Google authentication service. Please check your internet connection and DNS settings."
+        )
+    except httpx.TimeoutException as e:
+        logger.error(f"Timeout error in Google OAuth callback: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            detail="Google authentication service is taking too long to respond. Please try again."
+        )
+    except httpx.NetworkError as e:
+        logger.error(f"Network error in Google OAuth callback: {e}", exc_info=True)
+        error_msg = str(e)
+        if "Name or service not known" in error_msg or "Errno -2" in error_msg:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="DNS resolution failed. Please check your network configuration, DNS settings, and ensure the backend server has internet connectivity."
+            )
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"Network error during Google authentication: {error_msg}"
+        )
     except Exception as e:
         logger.error(f"Google OAuth callback error: {e}", exc_info=True)
+        error_msg = str(e)
+        if "Name or service not known" in error_msg or "Errno -2" in error_msg:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="DNS resolution failed. Please check your network configuration and ensure the backend server has internet connectivity to reach Google's servers."
+            )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Authentication failed: {str(e)}"
+            detail=f"Authentication failed: {error_msg}"
         )
 

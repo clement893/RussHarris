@@ -4,6 +4,7 @@ import os
 from datetime import timedelta
 from urllib.parse import urlencode
 
+import httpx
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -180,12 +181,34 @@ async def google_callback(
             client_id=GOOGLE_CLIENT_ID,
             client_secret=GOOGLE_CLIENT_SECRET,
         ) as client:
-            token_endpoint = "https://oauth2.googleapis.com/token"
-            token_response = await client.fetch_token(
-                token_endpoint,
-                code=code,
-                redirect_uri=GOOGLE_REDIRECT_URI,
-            )
+            try:
+                token_endpoint = "https://oauth2.googleapis.com/token"
+                token_response = await client.fetch_token(
+                    token_endpoint,
+                    code=code,
+                    redirect_uri=GOOGLE_REDIRECT_URI,
+                )
+            except httpx.ConnectError as e:
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="Unable to connect to Google authentication service. Please check your internet connection and DNS settings."
+                )
+            except httpx.TimeoutException as e:
+                raise HTTPException(
+                    status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+                    detail="Google authentication service is taking too long to respond. Please try again."
+                )
+            except httpx.NetworkError as e:
+                error_msg = str(e)
+                if "Name or service not known" in error_msg or "Errno -2" in error_msg:
+                    raise HTTPException(
+                        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                        detail="DNS resolution failed. Please check your network configuration and DNS settings."
+                    )
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail=f"Network error connecting to Google authentication service: {error_msg}"
+                )
             
             access_token = token_response.get("access_token")
             if not access_token:
@@ -195,12 +218,34 @@ async def google_callback(
                 )
             
             # Get user info from Google
-            userinfo_endpoint = "https://www.googleapis.com/oauth2/v2/userinfo"
-            userinfo_response = await client.get(
-                userinfo_endpoint,
-                headers={"Authorization": f"Bearer {access_token}"}
-            )
-            userinfo = userinfo_response.json()
+            try:
+                userinfo_endpoint = "https://www.googleapis.com/oauth2/v2/userinfo"
+                userinfo_response = await client.get(
+                    userinfo_endpoint,
+                    headers={"Authorization": f"Bearer {access_token}"}
+                )
+                userinfo = userinfo_response.json()
+            except httpx.ConnectError as e:
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail="Unable to connect to Google user information service. Please try again."
+                )
+            except httpx.TimeoutException as e:
+                raise HTTPException(
+                    status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+                    detail="Google user information service is taking too long to respond. Please try again."
+                )
+            except httpx.NetworkError as e:
+                error_msg = str(e)
+                if "Name or service not known" in error_msg or "Errno -2" in error_msg:
+                    raise HTTPException(
+                        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                        detail="DNS resolution failed when fetching user information. Please check your network configuration."
+                    )
+                raise HTTPException(
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    detail=f"Network error connecting to Google user information service: {error_msg}"
+                )
             
             email = userinfo.get("email")
             name = userinfo.get("name", email.split("@")[0])
@@ -241,8 +286,37 @@ async def google_callback(
             redirect_url = f"{FRONTEND_URL}/auth/callback?{urlencode(params)}"
             return RedirectResponse(url=redirect_url)
             
-    except Exception as e:
+    except HTTPException:
+        raise
+    except httpx.ConnectError as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"OAuth error: {str(e)}",
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Unable to connect to Google authentication service. Please check your internet connection and DNS settings."
+        )
+    except httpx.TimeoutException as e:
+        raise HTTPException(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            detail="Google authentication service is taking too long to respond. Please try again."
+        )
+    except httpx.NetworkError as e:
+        error_msg = str(e)
+        if "Name or service not known" in error_msg or "Errno -2" in error_msg:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="DNS resolution failed. Please check your network configuration, DNS settings, and ensure the backend server has internet connectivity to reach Google's servers."
+            )
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"Network error during Google authentication: {error_msg}"
+        )
+    except Exception as e:
+        error_msg = str(e)
+        if "Name or service not known" in error_msg or "Errno -2" in error_msg:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="DNS resolution failed. Please check your network configuration and ensure the backend server has internet connectivity to reach Google's servers."
+            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"OAuth error: {error_msg}",
         )
