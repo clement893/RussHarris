@@ -45,7 +45,25 @@
     "contact": "Contact",
     "pricing": "Pricing",
     "features": "Features",
-    "analytics": "Analytics"
+    "analytics": "Analytics",
+    "program": "Program",
+    "cities": "Cities & Dates",
+    "testimonials": "Testimonials",
+    "faq": "FAQ",
+    "bookNow": "Book Now",
+    "menu": "Menu",
+    "close": "Close",
+    "program": {
+      "overview": "Overview",
+      "day1": "Day 1",
+      "day2": "Day 2",
+      "objectives": "Learning Objectives"
+    },
+    "about": {
+      "bio": "Biography",
+      "expertise": "Expertise",
+      "publications": "Publications"
+    }
   },
   "dashboard": {
     "analytics": {

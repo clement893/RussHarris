@@ -1,0 +1,199 @@
+# 📊 Suivi d'Avancement - Pages Frontend & Navigation
+
+**Date de début:** 2025-01-27  
+**Statut global:** 🟡 En cours  
+**Batches terminés:** 0/10
+
+---
+
+## 📋 BATCH 1: Configuration Navigation Centralisée
+
+**Statut:** 🟢 Terminé  
+**Priorité:** 🔴 Critique  
+**Date de début:** 2025-01-27  
+**Date de fin:** 2025-01-27
+
+### Checklist:
+- [x] Créer `lib/navigation/config.ts` avec configuration centralisée ✅
+- [x] Ajouter traductions i18n pour navigation (FR/EN) ✅
+- [x] Créer types TypeScript pour NavigationItem ✅
+
+### Fichiers créés/modifiés:
+- ✅ `apps/web/src/lib/navigation/config.ts` (nouveau)
+- ✅ `apps/web/messages/fr.json` (modifié, ajout traductions navigation)
+- ✅ `apps/web/messages/en.json` (modifié, ajout traductions navigation)
+
+### Notes:
+- Configuration centralisée avec support sous-menus, badges dynamiques, filtres auth/admin
+- Types TypeScript complets avec NavigationItem interface
+- Fonctions utilitaires: getFilteredNavigation, getActiveNavigationItem, isActivePath
+
+---
+
+## 📋 BATCH 2: Composants Navigation de Base
+
+**Statut:** 🟢 Terminé  
+**Priorité:** 🔴 Critique  
+**Date de début:** 2025-01-27  
+**Date de fin:** 2025-01-27  
+**Dépend de:** BATCH 1
+
+### Checklist:
+- [x] Créer `components/navigation/NavigationItem.tsx` ✅
+- [x] Créer `components/navigation/DesktopNavigation.tsx` ✅
+- [x] Créer `components/navigation/MobileNavigation.tsx` ✅
+- [x] Créer `components/navigation/CTAPrimary.tsx` ✅
+- [x] Créer `components/navigation/MasterclassNavigation.tsx` (composant principal) ✅
+- [x] Créer `components/navigation/index.ts` (exports) ✅
+
+### Fichiers créés:
+- ✅ `apps/web/src/components/navigation/NavigationItem.tsx` (nouveau)
+- ✅ `apps/web/src/components/navigation/DesktopNavigation.tsx` (nouveau)
+- ✅ `apps/web/src/components/navigation/MobileNavigation.tsx` (nouveau)
+- ✅ `apps/web/src/components/navigation/CTAPrimary.tsx` (nouveau)
+- ✅ `apps/web/src/components/navigation/MasterclassNavigation.tsx` (nouveau)
+- ✅ `apps/web/src/components/navigation/index.ts` (nouveau)
+
+### Notes:
+- Composants créés avec support desktop/mobile
+- Design Swiss Style appliqué (noir/blanc, Inter Bold)
+- Support sous-menus, badges, smooth scroll
+- Menu mobile avec slide-in animation
+- CTA "Réserver ma place" avec badge urgence optionnel
+- Accessibilité: ARIA labels, navigation clavier, focus trap
+
+---
+
+## 📋 BATCH 3: Intégration Navigation
+
+**Statut:** ⏳ En attente  
+**Priorité:** 🔴 Critique  
+**Dépend de:** BATCH 2
+
+### Checklist:
+- [ ] Remplacer Header.tsx par MasterclassNavigation
+- [ ] Intégrer dans layout.tsx principal
+- [ ] Adapter pour pages booking (mini-header)
+- [ ] Vérifier toutes les pages utilisent nouvelle navigation
+
+---
+
+## 📋 BATCH 4: Styling Swiss Navigation
+
+**Statut:** ⏳ En attente  
+**Priorité:** 🟡 Haute  
+**Dépend de:** BATCH 3
+
+### Checklist:
+- [ ] Appliquer design Swiss Style (noir/blanc)
+- [ ] Implémenter hover states et transitions
+- [ ] Implémenter active states (border bottom)
+- [ ] Sticky header avec backdrop blur
+- [ ] Animation menu mobile slide-in
+
+---
+
+## 📋 BATCH 5: Fonctionnalités Avancées Navigation
+
+**Statut:** ⏳ En attente  
+**Priorité:** 🟢 Moyenne  
+**Dépend de:** BATCH 4
+
+### Checklist:
+- [ ] Badges dynamiques (nombre villes, early bird)
+- [ ] Sous-menus dropdown (Programme, À propos)
+- [ ] Smooth scroll pour ancres (#day1, #day2)
+- [ ] Urgence badge sur CTA si places limitées
+
+---
+
+## 📋 BATCH 6: Page d'Accueil - Sections Principales
+
+**Statut:** ⏳ En attente  
+**Priorité:** 🔴 Critique  
+**Dépend de:** BATCH 4 (Navigation)
+
+### Checklist:
+- [ ] Améliorer Hero Section (image, texte)
+- [ ] Créer section "Pourquoi cette Masterclass?"
+- [ ] Créer section "Le Programme en Bref"
+- [ ] Améliorer section Villes (carrousel/grille)
+
+---
+
+## 📋 BATCH 7: Page d'Accueil - Sections Complémentaires
+
+**Statut:** ⏳ En attente  
+**Priorité:** 🟡 Haute  
+**Dépend de:** BATCH 6
+
+### Checklist:
+- [ ] Créer section Témoignages (prévisualisation)
+- [ ] Créer section Tarifs (prévisualisation)
+- [ ] Créer section FAQ Rapide
+- [ ] Améliorer Footer
+
+---
+
+## 📋 BATCH 8: Composants Réutilisables
+
+**Statut:** ⏳ En attente  
+**Priorité:** 🟡 Haute  
+**Dépend de:** BATCH 6
+
+### Checklist:
+- [ ] Créer/Améliorer `CityCard.tsx`
+- [ ] Créer `TestimonialCard.tsx`
+- [ ] Créer `TimelineDay.tsx`
+- [ ] Créer/Améliorer `PricingCard.tsx`
+- [ ] Créer `BenefitsGrid.tsx`
+- [ ] Créer `StatsSection.tsx`
+
+---
+
+## 📋 BATCH 9: Enrichissement Pages Contenu
+
+**Statut:** ⏳ En attente  
+**Priorité:** 🟡 Haute  
+**Dépend de:** BATCH 8
+
+### Checklist:
+- [ ] Enrichir page About Russ
+- [ ] Enrichir page Programme Masterclass
+- [ ] Enrichir page Villes avec filtres
+- [ ] Enrichir page Détail Ville
+- [ ] Enrichir page Tarifs
+- [ ] Enrichir page Témoignages
+
+---
+
+## 📋 BATCH 10: Pages Utilitaires & Finalisation
+
+**Statut:** ⏳ En attente  
+**Priorité:** 🟢 Moyenne  
+**Dépend de:** BATCH 9
+
+### Checklist:
+- [ ] Créer page Contact
+- [ ] Enrichir page FAQ (recherche, catégories)
+- [ ] Créer pages Légales (CGV, Mentions, Privacy, Cookies)
+- [ ] Tests responsive et accessibilité
+- [ ] Optimisations finales
+
+---
+
+## 📊 Statistiques
+
+- **Batches terminés:** 0/10
+- **Batches en cours:** 1/10
+- **Progression globale:** 0%
+- **Dernière mise à jour:** 2025-01-27
+
+---
+
+## 🚀 Prochaines Actions
+
+1. Commencer BATCH 1: Configuration Navigation Centralisée
+2. Créer structure de base
+3. Implémenter configuration centralisée
+4. Push et rapport d'avancement

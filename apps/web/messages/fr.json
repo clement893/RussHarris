@@ -44,7 +44,25 @@
     "about": "À propos",
     "contact": "Contact",
     "pricing": "Tarification",
-    "features": "Fonctionnalités"
+    "features": "Fonctionnalités",
+    "program": "Programme",
+    "cities": "Villes & Dates",
+    "testimonials": "Témoignages",
+    "faq": "FAQ",
+    "bookNow": "Réserver ma place",
+    "menu": "Menu",
+    "close": "Fermer",
+    "program": {
+      "overview": "Vue d'ensemble",
+      "day1": "Jour 1",
+      "day2": "Jour 2",
+      "objectives": "Objectifs pédagogiques"
+    },
+    "about": {
+      "bio": "Biographie",
+      "expertise": "Expertise",
+      "publications": "Publications"
+    }
   },
   "language": {
     "switchLanguage": "Changer de langue",
