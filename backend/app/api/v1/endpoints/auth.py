@@ -1233,13 +1233,41 @@ async def google_oauth_callback(
     except Exception as e:
         logger.error(f"Google OAuth callback error: {e}", exc_info=True)
         error_msg = str(e)
-        if "Name or service not known" in error_msg or "Errno -2" in error_msg:
+        error_type = type(e).__name__
+        
+        # Check if this is a database connection error (not Google-related)
+        is_database_error = (
+            "postgres" in error_msg.lower() or
+            "railway.internal" in error_msg.lower() or
+            "database" in error_msg.lower() or
+            "OperationalError" in error_type or
+            "asyncpg" in error_msg.lower() or
+            "sqlalchemy" in error_msg.lower()
+        )
+        
+        # Check if this is a Google API DNS error
+        is_google_dns_error = (
+            ("Name or service not known" in error_msg or "Errno -2" in error_msg) and
+            not is_database_error and
+            ("googleapis.com" in error_msg or "google.com" in error_msg or isinstance(e, (httpx.ConnectError, httpx.NetworkError)))
+        )
+        
+        if is_database_error:
+            # Database connection error - different issue
+            logger.error(f"Database connection error during Google OAuth: {error_msg}")
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="DNS resolution failed. Please check your network configuration and ensure the backend server has internet connectivity to reach Google's servers."
+                detail="Database connection failed. Please check your database configuration and ensure the database service is available."
             )
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Authentication failed: {error_msg}"
-        )
+        elif is_google_dns_error:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="DNS resolution failed when connecting to Google's servers. Please check your network configuration and ensure the backend server has internet connectivity."
+            )
+        else:
+            # Generic error
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Authentication failed: {error_msg}"
+            )
 
