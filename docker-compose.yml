@@ -53,6 +53,14 @@ services:
     volumes:
       - ./backend:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    # DNS configuration to ensure proper DNS resolution
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+      - 1.1.1.1
+    # Enable access to host network DNS as fallback
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   # Celery Worker
   celery_worker:
