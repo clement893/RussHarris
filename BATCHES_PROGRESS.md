@@ -96,9 +96,43 @@
 
 ## 📦 BATCH 2: Base de Données & Modèles Backend 🗄️
 
-**Statut:** 🔴 À faire  
-**Date prévue début:** 2025-01-27 (après BATCH 1)  
-**Durée estimée:** 1.5 jours
+**Statut:** 🟡 En cours  
+**Date de début:** 2025-01-27  
+**Date prévue fin:** 2025-01-27  
+**Durée estimée:** 1.5 jours  
+
+### ✅ Checklist Complétée
+
+- [x] Migration Alembic créée ✅
+  - [x] `backend/alembic/versions/029_create_masterclass_tables.py` ✅ (créé)
+  - [x] Tables: masterclass_events, cities, venues, city_events ✅
+  - [x] Tables: bookings, attendees, booking_payments ✅
+  - [x] Indexes créés pour toutes les tables ✅
+  - [x] Foreign keys configurés ✅
+
+- [x] Modèles SQLAlchemy ✅ (existant et complet)
+  - [x] `MasterclassEvent` ✅
+  - [x] `City` ✅
+  - [x] `Venue` ✅
+  - [x] `CityEvent` ✅
+  - [x] `Booking` ✅
+  - [x] `Attendee` ✅
+  - [x] `BookingPayment` ✅
+
+- [x] Schémas Pydantic ✅ (existant et complet)
+  - [x] Schemas masterclass ✅
+  - [x] Schemas booking ✅
+
+- [ ] Appliquer migration Alembic ⏳ (nécessite DB configurée)
+- [ ] Exécuter script seed data ⏳ (nécessite DB configurée)
+- [ ] Tests unitaires modèles ⏳ (à faire)
+
+### 📝 Notes
+
+- ✅ Migration Alembic créée et poussée
+- ⚠️ Migration ne peut pas être appliquée sans base de données configurée localement
+- ✅ Script de seed data existe déjà et est prêt
+- ✅ Modèles et schémas sont complets
 
 ---
 
