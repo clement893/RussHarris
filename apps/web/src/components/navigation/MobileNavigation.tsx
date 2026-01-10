@@ -78,13 +78,13 @@ export default function MobileNavigation({
         aria-hidden="true"
       />
 
-      {/* Menu panel */}
+      {/* Menu panel - Swiss Style: flat, border only, no shadow */}
       <div
         ref={menuRef}
         className={clsx(
           'fixed top-0 right-0 h-full w-full max-w-sm bg-white z-50 lg:hidden',
           'transform transition-transform duration-300 ease-out',
-          'shadow-2xl border-l border-black',
+          'border-l-2 border-black', // Swiss style: 2px border, no shadow
           isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
         role="dialog"

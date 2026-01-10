@@ -91,30 +91,52 @@
 
 ## 📋 BATCH 4: Styling Swiss Navigation
 
-**Statut:** ⏳ En attente  
+**Statut:** 🟢 Terminé  
 **Priorité:** 🟡 Haute  
+**Date de début:** 2025-01-27  
+**Date de fin:** 2025-01-27  
 **Dépend de:** BATCH 3
 
 ### Checklist:
-- [ ] Appliquer design Swiss Style (noir/blanc)
-- [ ] Implémenter hover states et transitions
-- [ ] Implémenter active states (border bottom)
-- [ ] Sticky header avec backdrop blur
-- [ ] Animation menu mobile slide-in
+- [x] Appliquer design Swiss Style (noir/blanc) ✅
+- [x] Implémenter hover states et transitions ✅
+- [x] Implémenter active states (border bottom) ✅
+- [x] Sticky header avec backdrop blur ✅
+- [x] Animation menu mobile slide-in ✅
+
+### Améliorations apportées:
+- ✅ Logo avec typographie Inter Bold (font-black)
+- ✅ Sous-menus dropdown style flat (border 2px, pas de shadow)
+- ✅ Hover underline animation corrigée (group hover)
+- ✅ Badges sans rounded corners (Swiss style)
+- ✅ CTA button avec font-black et active:scale-95
+- ✅ Menu mobile border 2px (pas de shadow)
+- ✅ Transitions smooth (200ms, ease-out)
+- ✅ Couleurs strictes: noir/blanc/gris (pas de couleurs accent)
 
 ---
 
 ## 📋 BATCH 5: Fonctionnalités Avancées Navigation
 
-**Statut:** ⏳ En attente  
+**Statut:** 🟢 Terminé  
 **Priorité:** 🟢 Moyenne  
+**Date de début:** 2025-01-27  
+**Date de fin:** 2025-01-27  
 **Dépend de:** BATCH 4
 
 ### Checklist:
-- [ ] Badges dynamiques (nombre villes, early bird)
-- [ ] Sous-menus dropdown (Programme, À propos)
-- [ ] Smooth scroll pour ancres (#day1, #day2)
-- [ ] Urgence badge sur CTA si places limitées
+- [x] Badges dynamiques (nombre villes avec événements disponibles) ✅
+- [x] Sous-menus dropdown (Programme, À propos) ✅
+- [x] Smooth scroll pour ancres (#day1, #day2) ✅
+- [x] Urgence badge sur CTA si places limitées (déjà implémenté dans CTAPrimary) ✅
+
+### Fonctionnalités implémentées:
+- ✅ Calcul dynamique du nombre de villes avec places disponibles
+- ✅ Badge affiché sur item "Villes & Dates" avec le nombre
+- ✅ Sous-menus dropdown fonctionnels (hover sur desktop, click sur mobile)
+- ✅ Smooth scroll vers ancres dans sous-menus (#day1, #day2, etc.)
+- ✅ Support urgence badge dans CTAPrimary (prop availablePlaces)
+- ✅ Hover states améliorés pour sous-menus (font-bold + bg-black/text-white)
 
 ---
 

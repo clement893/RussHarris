@@ -51,10 +51,11 @@ export default function CTAPrimary({
         <button
           onClick={handleClick}
           className={clsx(
-            'relative px-8 py-3 bg-black text-white font-bold text-base',
-            'border-2 border-black transition-all duration-200',
+            'relative px-8 py-3 bg-black text-white font-black text-base',
+            'border-2 border-black transition-all duration-200 rounded-none',
             'hover:bg-white hover:text-black hover:border-black',
             'focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2',
+            'active:scale-95',
             isUrgent && 'animate-pulse'
           )}
           aria-label={t('navigation.bookNow')}
@@ -78,10 +79,11 @@ export default function CTAPrimary({
     <button
       onClick={handleClick}
       className={clsx(
-        'w-full px-6 py-4 bg-black text-white font-bold text-lg',
-        'border-2 border-black transition-all duration-200',
+        'w-full px-6 py-4 bg-black text-white font-black text-lg',
+        'border-2 border-black transition-all duration-200 rounded-none',
         'hover:bg-white hover:text-black hover:border-black',
         'focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2',
+        'active:scale-95',
         'min-h-[56px] flex items-center justify-center gap-2',
         isUrgent && 'animate-pulse',
         className

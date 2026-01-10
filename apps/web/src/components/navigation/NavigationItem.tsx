@@ -67,25 +67,38 @@ export default function NavigationItem({
   // Desktop variant
   if (variant === 'desktop') {
     return (
-      <div className="relative" ref={subMenuRef}>
+      <div className="relative group" ref={subMenuRef}>
         <div className="relative">
           <Link
             href={item.href}
-            onClick={handleClick}
+            onClick={(e) => {
+              if (hasChildren) {
+                e.preventDefault();
+                setIsSubMenuOpen(!isSubMenuOpen);
+              } else {
+                handleClick();
+              }
+            }}
+            onMouseEnter={() => {
+              if (hasChildren && !isSubMenuOpen) {
+                setIsSubMenuOpen(true);
+              }
+            }}
             className={clsx(
               'relative flex items-center gap-2 px-4 py-3 text-base font-normal transition-all duration-200',
               'hover:font-bold',
               isActive
-                ? 'font-bold border-b-2 border-black'
+                ? 'font-bold text-black'
                 : 'text-gray-700 hover:text-black',
               hasChildren && 'cursor-pointer'
             )}
             aria-current={isActive ? 'page' : undefined}
+            aria-expanded={hasChildren ? isSubMenuOpen : undefined}
           >
             {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
             <span>{t(item.label)}</span>
             {item.badge && item.badge !== 'dynamic' && (
-              <span className="ml-1 px-2 py-0.5 text-xs font-bold bg-black text-white">
+              <span className="ml-1 px-2 py-0.5 text-xs font-black bg-black text-white rounded-none">
                 {item.badge}
               </span>
             )}
@@ -109,21 +122,40 @@ export default function NavigationItem({
           />
         </div>
 
-        {/* Sub-menu dropdown (desktop) */}
+        {/* Sub-menu dropdown (desktop) - Swiss Style: flat, no shadow, border only */}
         {hasChildren && showChildren && isSubMenuOpen && (
-          <div className="absolute top-full left-0 mt-1 w-56 bg-white border border-black shadow-lg z-50">
-            <div className="py-2">
-              {item.children!.map((child) => (
-                <NavigationItem
-                  key={child.id}
-                  item={child}
-                  variant="desktop"
-                  onNavigate={() => {
-                    setIsSubMenuOpen(false);
-                    if (onNavigate) onNavigate();
-                  }}
-                />
-              ))}
+          <div 
+            className="absolute top-full left-0 mt-0 w-56 bg-white border-2 border-black z-50"
+            onMouseLeave={() => setIsSubMenuOpen(false)}
+          >
+            <div className="py-1">
+              {item.children!.map((child) => {
+                const isChildActive = isActivePath(pathname, child);
+                return (
+                  <Link
+                    key={child.id}
+                    href={child.href}
+                    onClick={(e) => {
+                      if (child.anchor && child.href === pathname) {
+                        e.preventDefault();
+                        const element = document.querySelector(child.anchor);
+                        if (element) {
+                          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                      }
+                      setIsSubMenuOpen(false);
+                      if (onNavigate) onNavigate();
+                    }}
+                    className={clsx(
+                      'block px-4 py-2 text-sm font-normal transition-all duration-200',
+                      'hover:font-bold hover:bg-black hover:text-white',
+                      isChildActive && 'font-bold bg-gray-100'
+                    )}
+                  >
+                    {t(child.label)}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         )}
@@ -157,7 +189,7 @@ export default function NavigationItem({
           <span>{t(item.label)}</span>
         </div>
         {item.badge && item.badge !== 'dynamic' && (
-          <span className="px-2 py-0.5 text-xs font-bold bg-black text-white">
+          <span className="px-2 py-0.5 text-xs font-black bg-black text-white rounded-none">
             {item.badge}
           </span>
         )}
