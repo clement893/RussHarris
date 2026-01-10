@@ -60,7 +60,9 @@ export function getThemeColorShades(baseColorName: string): Record<string, strin
  * @returns Theme color helper functions
  */
 export function useThemeColors() {
-  const { theme } = useGlobalTheme();
+  // Note: useGlobalTheme() is called to ensure theme context is available
+  // but we don't need to destructure theme directly here
+  useGlobalTheme();
   
   return {
     /**
