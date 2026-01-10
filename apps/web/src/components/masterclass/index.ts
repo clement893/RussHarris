@@ -4,7 +4,8 @@
  */
 
 // Swiss Style Components (BATCH 4)
-export { default as HeroSection } from './HeroSection';
+// HeroSection exported separately to avoid TypeScript module resolution issues in Docker builds
+// Import directly: import HeroSection from '@/components/masterclass/HeroSection'
 export { default as UrgencyBadge } from './UrgencyBadge';
 export { default as AvailabilityBar } from './AvailabilityBar';
 export { default as SwissDivider } from './SwissDivider';
