@@ -26,11 +26,15 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <h3 className="text-white font-bold text-xl mb-4">
-              MODELE<span className="text-primary-400">FULLSTACK</span>
+              ContextPsy
             </h3>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-md">
-              Template full-stack moderne pour démarrer rapidement vos projets avec Next.js 16, React 19, FastAPI et PostgreSQL.
+              Masterclass ACT avec Russ Harris. Formation professionnelle en Thérapie d'Acceptation et d'Engagement.
             </p>
+            <div className="text-sm text-muted-foreground mb-4">
+              <p>Email: contact@contextpsy.fr</p>
+              <p>Téléphone: +33 (0)X XX XX XX XX</p>
+            </div>
             
             {/* Social Media Links */}
             <div className="flex items-center gap-4 mb-6">
@@ -100,42 +104,54 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Resources Navigation */}
-          <nav aria-label="Ressources">
-            <h4 className="text-white font-semibold mb-4 text-base">Ressources</h4>
+          {/* Masterclass Navigation */}
+          <nav aria-label="Masterclass">
+            <h4 className="text-white font-semibold mb-4 text-base">Masterclass</h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/docs" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  Documentation
+                <Link href="/masterclass" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
+                  Programme
                 </Link>
               </li>
               <li>
-                <Link href="/sitemap" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  Plan du Site
+                <Link href="/cities" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
+                  Villes & Dates
                 </Link>
               </li>
               <li>
-                <Link href="/components" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  Composants
+                <Link href="/about-russ" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
+                  À propos de Russ
                 </Link>
               </li>
               <li>
-                <Link href="https://github.com/clement893/MODELE-NEXTJS-FULLSTACK" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="GitHub (ouvre dans un nouvel onglet)">
-                  GitHub
+                <Link href="/pricing" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
+                  Tarifs
+                </Link>
+              </li>
+              <li>
+                <Link href="/testimonials" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
+                  Témoignages
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
+                  FAQ
                 </Link>
               </li>
             </ul>
           </nav>
 
-          {/* Technologies */}
+          {/* Contact */}
           <div>
-            <h4 className="text-white font-semibold mb-4 text-base">Technologies</h4>
+            <h4 className="text-white font-semibold mb-4 text-base">Contact</h4>
             <ul className="space-y-3 text-sm" role="list">
-              <li className="text-muted-foreground">Next.js 16</li>
-              <li className="text-muted-foreground">React 19</li>
-              <li className="text-muted-foreground">FastAPI</li>
-              <li className="text-muted-foreground">PostgreSQL</li>
-              <li className="text-muted-foreground">TypeScript</li>
+              <li className="text-muted-foreground">
+                <a href="mailto:contact@contextpsy.fr" className="hover:text-primary-400 transition-colors">
+                  contact@contextpsy.fr
+                </a>
+              </li>
+              <li className="text-muted-foreground">+33 (0)X XX XX XX XX</li>
+              <li className="text-muted-foreground">France</li>
             </ul>
           </div>
 

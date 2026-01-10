@@ -1,127 +1,179 @@
+/**
+ * Pricing Page - Masterclass ACT
+ * Pricing options: Early Bird, Regular, Group
+ */
+
 'use client';
 
-// Force dynamic rendering to avoid static generation
-export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
-
-import { useState } from 'react';
-import Container from '@/components/ui/Container';
-import PricingCardSimple from '@/components/ui/PricingCardSimple';
-import BillingPeriodToggle from '@/components/ui/BillingPeriodToggle';
-import FAQItem from '@/components/ui/FAQItem';
-
-interface Plan {
-  id: string;
-  name: string;
-  price: number;
-  period: 'month' | 'year';
-  description: string;
-  features: string[];
-  popular?: boolean;
-  buttonText: string;
-}
+import { Container } from '@/components/ui';
+import SwissDivider from '@/components/masterclass/SwissDivider';
+import SwissCard from '@/components/masterclass/SwissCard';
+import { CheckCircle } from 'lucide-react';
 
 export default function PricingPage() {
-  const [billingPeriod, setBillingPeriod] = useState<'month' | 'year'>('month');
-
-  const plans: Plan[] = [
+  const pricingOptions = [
     {
-      id: 'starter',
-      name: 'Starter',
-      price: 29,
-      period: billingPeriod,
-      description: 'Parfait pour les petites organisations',
-      features: [
-        'Jusqu\'à 100 utilisateurs',
-        '1 projet actif',
-        'Support email',
-        'Rapports de base',
-        'API limitée',
-      ],
-      buttonText: 'Commencer',
-    },
-    {
-      id: 'professional',
-      name: 'Professional',
-      price: 79,
-      period: billingPeriod,
-      description: 'Pour les organisations en croissance',
-      features: [
-        'Jusqu\'à 1,000 utilisateurs',
-        'Projets illimités',
-        'Support prioritaire',
-        'Rapports avancés',
-        'API complète',
-        'Intégrations tierces',
-        'Formulaires personnalisés',
-      ],
+      id: 'early-bird',
+      name: 'Early Bird',
+      price: 450,
+      currency: 'EUR',
+      description: 'Tarif préférentiel pour réservations anticipées',
       popular: true,
-      buttonText: 'Essayer gratuitement',
+      features: [
+        'Accès complet à la masterclass (2 jours)',
+        'Manuel de formation (PDF)',
+        'Accès aux enregistrements vidéo (3 mois)',
+        'Fiches pratiques et outils',
+        'Certificat de participation',
+        'Support et ressources en ligne',
+      ],
+      buttonText: 'Réserver maintenant',
     },
     {
-      id: 'enterprise',
-      name: 'Enterprise',
-      price: 199,
-      period: billingPeriod,
-      description: 'Pour les grandes organisations',
+      id: 'regular',
+      name: 'Tarif Standard',
+      price: 550,
+      currency: 'EUR',
+      description: 'Tarif standard pour réservations',
+      popular: false,
       features: [
-        'Utilisateurs illimités',
-        'Toutes les fonctionnalités',
-        'Support dédié 24/7',
-        'Rapports personnalisés',
-        'API illimitée',
-        'Intégrations personnalisées',
-        'Formulaires avancés',
-        'Multi-organisations',
-        'RBAC avancé',
+        'Accès complet à la masterclass (2 jours)',
+        'Manuel de formation (PDF)',
+        'Accès aux enregistrements vidéo (3 mois)',
+        'Fiches pratiques et outils',
+        'Certificat de participation',
+        'Support et ressources en ligne',
       ],
-      buttonText: 'Nous contacter',
+      buttonText: 'Réserver maintenant',
+    },
+    {
+      id: 'group',
+      name: 'Tarif Groupe',
+      price: 400,
+      currency: 'EUR',
+      description: 'Tarif réduit pour groupes de 3 personnes ou plus',
+      popular: false,
+      features: [
+        'Accès complet à la masterclass (2 jours)',
+        'Manuel de formation (PDF)',
+        'Accès aux enregistrements vidéo (3 mois)',
+        'Fiches pratiques et outils',
+        'Certificat de participation',
+        'Support et ressources en ligne',
+        'Réduction de groupe appliquée',
+      ],
+      buttonText: 'Contacter pour groupe',
+    },
+  ];
+
+  const faqItems = [
+    {
+      question: 'Quand se termine la période Early Bird ?',
+      answer: 'La période Early Bird se termine généralement 30 jours avant chaque événement. Les places sont limitées, nous vous recommandons de réserver tôt.',
+    },
+    {
+      question: 'Comment fonctionne le tarif groupe ?',
+      answer: 'Le tarif groupe s\'applique pour les réservations de 3 personnes ou plus. Contactez-nous pour obtenir un devis personnalisé et organiser votre réservation de groupe.',
+    },
+    {
+      question: 'Puis-je annuler ma réservation ?',
+      answer: 'Oui, vous pouvez annuler votre réservation jusqu\'à 14 jours avant l\'événement pour un remboursement complet. Les annulations après cette date peuvent être soumises à des frais.',
+    },
+    {
+      question: 'Que comprend le prix ?',
+      answer: 'Le prix comprend l\'accès complet à la masterclass de 2 jours, le manuel de formation, l\'accès aux enregistrements vidéo pendant 3 mois, toutes les ressources pratiques, le certificat de participation et le support en ligne.',
+    },
+    {
+      question: 'Y a-t-il des frais supplémentaires ?',
+      answer: 'Non, le prix indiqué est tout compris. Les repas et l\'hébergement ne sont pas inclus dans le prix.',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-muted dark:to-muted">
-      <Container className="py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-foreground mb-4">Tarifs</h1>
-          <p className="text-xl text-muted-foreground mb-8">
-            Choisissez le plan qui correspond à vos besoins
-          </p>
+    <div className="min-h-screen bg-white">
+      <Container className="py-20 md:py-32">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="mb-16 text-center">
+            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-black">
+              Tarifs
+            </h1>
+            <SwissDivider className="mx-auto max-w-md" />
+            <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
+              Choisissez l'option qui vous convient pour participer à la masterclass ACT avec Russ Harris.
+            </p>
+          </div>
 
-          <BillingPeriodToggle value={billingPeriod} onChange={setBillingPeriod} />
-        </div>
+          {/* Pricing Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {pricingOptions.map((option) => (
+              <SwissCard
+                key={option.id}
+                className={`p-8 ${option.popular ? 'border-2 border-black' : ''}`}
+              >
+                {option.popular && (
+                  <div className="mb-4">
+                    <span className="inline-block px-4 py-1 bg-black text-white text-sm font-bold">
+                      POPULAIRE
+                    </span>
+                  </div>
+                )}
+                <h2 className="text-3xl font-black text-black mb-2">{option.name}</h2>
+                <p className="text-gray-600 mb-6 text-sm">{option.description}</p>
+                <div className="mb-6">
+                  <span className="text-5xl font-black text-black">{option.price}</span>
+                  <span className="text-xl text-gray-600 ml-2">{option.currency}</span>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  {option.features.map((feature, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <CheckCircle className="w-5 h-5 text-black mt-0.5 flex-shrink-0" aria-hidden="true" />
+                      <span className="text-gray-700 text-sm">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={option.id === 'group' ? 'mailto:contact@contextpsy.fr' : '/cities'}
+                  className="block w-full px-6 py-3 bg-black text-white font-bold text-center hover:bg-gray-900 transition-colors"
+                >
+                  {option.buttonText}
+                </a>
+              </SwissCard>
+            ))}
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan) => (
-            <PricingCardSimple
-              key={plan.id}
-              plan={plan}
-              billingPeriod={billingPeriod}
-              onSelect={(_planId, _period) => {
-                // Navigation is handled by the PricingCardSimple component
-              }}
-            />
-          ))}
-        </div>
+          <SwissDivider className="my-16" />
 
-        {/* FAQ Section */}
-        <div className="mt-16 max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-foreground mb-8">
-            Questions fréquentes
-          </h2>
-          <div className="space-y-4">
-            <FAQItem
-              question="Puis-je changer de plan à tout moment ?"
-              answer="Oui, vous pouvez mettre à niveau ou rétrograder votre plan à tout moment. Les changements prendront effet immédiatement."
-            />
-            <FAQItem
-              question="Y a-t-il un essai gratuit ?"
-              answer="Oui, tous les plans incluent un essai gratuit de 14 jours. Aucune carte de crédit requise."
-            />
-            <FAQItem
-              question="Quels modes de paiement acceptez-vous ?"
-              answer="Nous acceptons les cartes de crédit (Visa, Mastercard, American Express) et les virements bancaires pour les plans Enterprise."
-            />
+          {/* FAQ Section */}
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-black text-black mb-12 text-center">
+              Questions Fréquentes
+            </h2>
+            <div className="space-y-6">
+              {faqItems.map((item, index) => (
+                <div key={index} className="border-b border-gray-200 pb-6">
+                  <h3 className="text-xl font-bold text-black mb-3">
+                    {item.question}
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    {item.answer}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="text-center mt-16">
+            <p className="text-lg text-gray-600 mb-6">
+              Des questions ? Contactez-nous pour plus d'informations.
+            </p>
+            <a
+              href="mailto:contact@contextpsy.fr"
+              className="inline-block px-12 py-4 bg-black text-white font-bold text-lg hover:bg-gray-900 transition-colors"
+            >
+              Nous contacter
+            </a>
           </div>
         </div>
       </Container>

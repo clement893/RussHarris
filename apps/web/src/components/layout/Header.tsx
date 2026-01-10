@@ -48,8 +48,23 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6" aria-label="Navigation principale">
-            <Link href="/components" className="text-muted-foreground hover:text-primary transition">
-              Composants
+            <Link href="/masterclass" className="text-muted-foreground hover:text-primary transition">
+              Programme
+            </Link>
+            <Link href="/cities" className="text-muted-foreground hover:text-primary transition">
+              Villes & Dates
+            </Link>
+            <Link href="/about-russ" className="text-muted-foreground hover:text-primary transition">
+              À propos
+            </Link>
+            <Link href="/pricing" className="text-muted-foreground hover:text-primary transition">
+              Tarifs
+            </Link>
+            <Link href="/testimonials" className="text-muted-foreground hover:text-primary transition">
+              Témoignages
+            </Link>
+            <Link href="/faq" className="text-muted-foreground hover:text-primary transition">
+              FAQ
             </Link>
           </nav>
 
@@ -126,11 +141,46 @@ export default function Header() {
                 Accueil
               </Link>
               <Link
-                href="/components"
+                href="/masterclass"
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
               >
-                Composants
+                Programme
+              </Link>
+              <Link
+                href="/cities"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
+              >
+                Villes & Dates
+              </Link>
+              <Link
+                href="/about-russ"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
+              >
+                À propos
+              </Link>
+              <Link
+                href="/pricing"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
+              >
+                Tarifs
+              </Link>
+              <Link
+                href="/testimonials"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
+              >
+                Témoignages
+              </Link>
+              <Link
+                href="/faq"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-foreground hover:text-primary-600 dark:hover:text-primary-400 transition-colors px-4 py-3 min-h-[44px] flex items-center rounded-lg hover:bg-muted/50"
+              >
+                FAQ
               </Link>
               {isAuthenticated() && (
                 <>
