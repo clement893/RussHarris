@@ -96,10 +96,11 @@
 
 ## 📦 BATCH 2: Base de Données & Modèles Backend 🗄️
 
-**Statut:** 🟡 En cours  
+**Statut:** 🟡 Presque terminé (tests créés, migration à appliquer)  
 **Date de début:** 2025-01-27  
 **Date prévue fin:** 2025-01-27  
 **Durée estimée:** 1.5 jours  
+**Progression:** ~90% (tests créés, migration créée, reste à appliquer migration)  
 
 ### ✅ Checklist Complétée
 
@@ -123,16 +124,40 @@
   - [x] Schemas masterclass ✅
   - [x] Schemas booking ✅
 
+- [x] Tests unitaires modèles ✅ (créés)
+  - [x] `test_masterclass_models.py` ✅
+  - [x] `test_booking_models.py` ✅
+  - [x] `test_booking_service.py` ✅
+  - [x] Tests API endpoints ✅
+    - [x] `test_masterclass_endpoints.py` ✅
+    - [x] `test_bookings_endpoints.py` ✅
+
 - [ ] Appliquer migration Alembic ⏳ (nécessite DB configurée)
 - [ ] Exécuter script seed data ⏳ (nécessite DB configurée)
-- [ ] Tests unitaires modèles ⏳ (à faire)
 
 ### 📝 Notes
 
 - ✅ Migration Alembic créée et poussée
+- ✅ Tests unitaires créés pour tous les modèles (masterclass et booking)
+- ✅ Tests unitaires créés pour les services (booking_service, availability_service)
+- ✅ Tests API créés pour les endpoints masterclass et bookings
 - ⚠️ Migration ne peut pas être appliquée sans base de données configurée localement
 - ✅ Script de seed data existe déjà et est prêt
 - ✅ Modèles et schémas sont complets
+
+### 🔗 Fichiers Créés/Modifiés
+
+**Migrations:**
+- ✅ `backend/alembic/versions/029_create_masterclass_tables.py` (nouveau)
+
+**Tests Unitaires:**
+- ✅ `backend/tests/unit/test_masterclass_models.py` (nouveau)
+- ✅ `backend/tests/unit/test_booking_models.py` (nouveau)
+- ✅ `backend/tests/unit/test_booking_service.py` (nouveau)
+
+**Tests API:**
+- ✅ `backend/tests/api/test_masterclass_endpoints.py` (nouveau)
+- ✅ `backend/tests/api/test_bookings_endpoints.py` (nouveau)
 
 ---
 
