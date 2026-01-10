@@ -12,6 +12,7 @@ import SwissDivider from '@/components/masterclass/SwissDivider';
 import SwissCard from '@/components/masterclass/SwissCard';
 import { CreditCard, Lock } from 'lucide-react';
 import { bookingsAPI, type BookingResponse } from '@/lib/api/bookings';
+import BookingStripeCheckout from '@/components/masterclass/BookingStripeCheckout';
 import { logger } from '@/lib/logger';
 
 export default function PaymentPage() {
@@ -22,6 +23,7 @@ export default function PaymentPage() {
   const [booking, setBooking] = useState<BookingResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   useEffect(() => {
     if (bookingReference) {
@@ -121,36 +123,39 @@ export default function PaymentPage() {
             </div>
           </SwissCard>
 
-          {/* Payment Form Placeholder */}
+          {/* Payment Form */}
           <SwissCard className="p-8 mb-8">
             <div className="flex items-center gap-3 mb-6">
               <Lock className="w-6 h-6 text-black" aria-hidden="true" />
               <h2 className="text-3xl font-black text-black">Paiement sécurisé</h2>
             </div>
             
-            <div className="bg-gray-50 border border-gray-200 p-12 text-center">
-              <CreditCard className="w-16 h-16 text-gray-400 mx-auto mb-4" aria-hidden="true" />
-              <p className="text-gray-600 mb-4">
-                L'intégration Stripe sera complétée dans le BATCH 7.
-              </p>
-              <p className="text-sm text-gray-500">
-                Pour l'instant, vous pouvez tester le flux de réservation jusqu'à cette étape.
-              </p>
-            </div>
+            {paymentError && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded">
+                <p className="text-sm text-red-600">{paymentError}</p>
+              </div>
+            )}
 
-            {/* Temporary action buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={() => router.push(`/book/confirmation?bookingReference=${bookingReference}`)}
-                className="flex-1 px-8 py-4 bg-black text-white font-bold hover:bg-gray-900 transition-colors"
-              >
-                Simuler le paiement (test)
-              </button>
+            <BookingStripeCheckout
+              bookingId={booking.id}
+              amount={Number(booking.total)}
+              currency="EUR"
+              onSuccess={() => {
+                // Redirect to confirmation page after successful payment
+                router.push(`/book/confirmation?bookingReference=${bookingReference}`);
+              }}
+              onError={(errorMessage) => {
+                setPaymentError(errorMessage);
+              }}
+            />
+
+            {/* Back button */}
+            <div className="mt-8">
               <button
                 onClick={() => router.push(`/book/checkout?cityEventId=${booking.city_event_id}`)}
-                className="flex-1 px-8 py-4 border border-black text-black font-bold hover:bg-black hover:text-white transition-colors"
+                className="w-full px-8 py-3 border border-black text-black font-bold hover:bg-black hover:text-white transition-colors"
               >
-                Retour
+                Retour au formulaire
               </button>
             </div>
           </SwissCard>

@@ -42,6 +42,8 @@
     "@axe-core/react": "^4.11.0",
     "@modele/types": "workspace:*",
     "@sentry/nextjs": "^10.32.1",
+    "@stripe/react-stripe-js": "^5.4.1",
+    "@stripe/stripe-js": "^8.6.1",
     "@tanstack/react-query": "^5.90.12",
     "@tanstack/react-query-devtools": "^5.91.1",
     "axios": "^1.6.2",
