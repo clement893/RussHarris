@@ -71,7 +71,10 @@ export default function MasterclassNavigation({
           }
         } catch (error) {
           // Silently fail - badge will not be shown
-          console.error('Failed to fetch cities for badge:', error);
+          // Only log in development
+          if (process.env.NODE_ENV === 'development') {
+            console.error('Failed to fetch cities for badge:', error);
+          }
         }
       }
       
@@ -79,7 +82,8 @@ export default function MasterclassNavigation({
     };
 
     calculateDynamicBadges();
-  }, [baseNavigationItems]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated(), user?.is_admin]); // Only recalculate when auth status changes
   
   // Use items with badges if calculated, otherwise use base items
   const navigationItems = navigationItemsWithBadges.length > 0 ? navigationItemsWithBadges : baseNavigationItems;
