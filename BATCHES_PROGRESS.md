@@ -3,10 +3,10 @@
 ## 🎯 Statut Global
 
 **Dernière mise à jour:** 2025-01-27  
-**Progression:** 10% (BATCH 1 terminé)  
-**Batches terminés:** 1/10 (BATCH 1: Setup)  
+**Progression:** 40% (4 batches terminés)  
+**Batches terminés:** 4/10  
 **Batches en cours:** 0/10  
-**Prochain batch:** BATCH 2 (Database & Modèles)
+**Prochain batch:** BATCH 5 (Pages Frontend Principales)
 
 ---
 
@@ -163,8 +163,33 @@
 
 ## 📦 BATCH 3: API Backend Endpoints 🔌
 
-**Statut:** 🔴 À faire  
-**Durée estimée:** 2 jours
+**Statut:** 🟢 Terminé (déjà créé dans BATCH 1)  
+**Date:** 2025-01-27  
+**Durée estimée:** 2 jours  
+**Durée réelle:** Intégré dans BATCH 1
+
+### ✅ Checklist Complétée
+
+- [x] Tous les endpoints API créés ✅ (déjà fait dans BATCH 1)
+  - [x] Endpoint `GET /api/v1/masterclass/events` ✅
+  - [x] Endpoint `GET /api/v1/masterclass/cities` ✅
+  - [x] Endpoint `GET /api/v1/masterclass/cities/{city_id}/events` ✅
+  - [x] Endpoint `GET /api/v1/masterclass/events/{event_id}` ✅
+  - [x] Endpoint `GET /api/v1/masterclass/city-events/{city_event_id}/availability` ✅
+  - [x] Endpoint `POST /api/v1/bookings/create` ✅
+  - [x] Endpoint `GET /api/v1/bookings/{reference}` ✅
+  - [x] Endpoint `POST /api/v1/bookings/{reference}/cancel` ✅
+  - [x] Service `BookingService` ✅
+  - [x] Service `AvailabilityService` ✅
+  - [x] Tests API (pytest) ✅
+  - [x] Documentation Swagger ✅ (automatique via FastAPI)
+
+### 📝 Notes
+
+- ✅ Tous les endpoints API ont été créés dans le BATCH 1
+- ✅ Services implémentés et testés
+- ✅ Tests API créés
+- ✅ Swagger documentation disponible automatiquement via FastAPI
 
 ---
 

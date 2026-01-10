@@ -10,6 +10,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Swiss Style colors for Masterclass
+        swiss: {
+          black: '#000000',
+          white: '#FFFFFF',
+          blue: '#1A3A52',
+          red: '#E74C3C', // Urgency color
+          green: '#27AE60', // Success color
+        },
         // Primary color palette - Uses CSS variables with fallbacks for theme support
         primary: {
           50: 'var(--color-primary-50, #eff6ff)',
@@ -148,6 +156,10 @@ const config: Config = {
         xl: '32px',   // 2rem - Very large spacing
         '2xl': '48px', // 3rem - Extra large spacing
         '3xl': '64px', // 4rem - Maximum spacing
+        // Swiss Style spacing - Large margins for breathing room
+        'swiss-sm': '80px',   // Swiss small margin
+        'swiss-md': '120px',  // Swiss standard margin (between sections)
+        'swiss-lg': '160px',  // Swiss large margin
         // Theme-aware spacing using CSS variables with fallbacks (backward compatibility)
         // These map to the theme's spacing scale
         'theme-xs': 'var(--spacing-xs, 0.5rem)',      // 8px default
@@ -217,6 +229,13 @@ const config: Config = {
         body: ['14px', { lineHeight: '22px', fontWeight: '400' }],     // Body text
         small: ['12px', { lineHeight: '18px', fontWeight: '400' }],   // Small text
         caption: ['11px', { lineHeight: '16px', fontWeight: '400' }],  // Caption/legend
+        // Swiss Style typography - Inter Bold 900 for headings
+        'swiss-display': ['72px', { lineHeight: '80px', fontWeight: '900' }],  // Hero headline
+        'swiss-h1': ['48px', { lineHeight: '56px', fontWeight: '900' }],      // Swiss h1
+        'swiss-h2': ['36px', { lineHeight: '44px', fontWeight: '600' }],       // Swiss h2
+        'swiss-h3': ['28px', { lineHeight: '36px', fontWeight: '600' }],      // Swiss h3
+        'swiss-body': ['18px', { lineHeight: '28px', fontWeight: '400' }],     // Swiss body
+        'swiss-cta': ['20px', { lineHeight: '28px', fontWeight: '700' }],      // CTA text
       },
       boxShadow: {
         // Custom shadows for depth
