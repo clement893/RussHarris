@@ -172,15 +172,32 @@
 
 ## 📋 BATCH 7: Page d'Accueil - Sections Complémentaires
 
-**Statut:** ⏳ En attente  
+**Statut:** 🟢 Terminé  
 **Priorité:** 🟡 Haute  
+**Date de début:** 2025-01-27  
+**Date de fin:** 2025-01-27  
 **Dépend de:** BATCH 6
 
 ### Checklist:
-- [ ] Créer section Témoignages (prévisualisation)
-- [ ] Créer section Tarifs (prévisualisation)
-- [ ] Créer section FAQ Rapide
-- [ ] Améliorer Footer
+- [x] Créer section Témoignages (TestimonialPreview) ✅
+- [x] Créer section Tarifs (PricingPreview) ✅
+- [x] Créer section FAQ Rapide (FAQPreview) ✅
+- [x] Améliorer Footer (MasterclassFooter) ✅
+
+### Fichiers créés/modifiés:
+- ✅ `apps/web/src/components/masterclass/TestimonialPreview.tsx` (nouveau)
+- ✅ `apps/web/src/components/masterclass/PricingPreview.tsx` (nouveau)
+- ✅ `apps/web/src/components/masterclass/FAQPreview.tsx` (nouveau)
+- ✅ `apps/web/src/components/layout/MasterclassFooter.tsx` (nouveau)
+- ✅ `apps/web/src/components/masterclass/index.ts` (modifié, exports)
+- ✅ `apps/web/src/app/[locale]/page.tsx` (modifié, intégration sections)
+
+### Notes:
+- TestimonialPreview: carousel avec 3 témoignages, navigation, indicateurs
+- PricingPreview: grille 3 colonnes (Early Bird, Standard, Groupe), badge "Populaire"
+- FAQPreview: accordéon avec 5 questions, expand/collapse, CTA
+- MasterclassFooter: design noir/blanc, newsletter, liens, contact, Swiss Style
+- Toutes les sections ont des CTA vers les pages complètes
 
 ---
 
