@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
 import SwissCard from '@/components/masterclass/SwissCard';
-import { CreditCard, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { bookingsAPI, type BookingResponse } from '@/lib/api/bookings';
 import BookingStripeCheckout from '@/components/masterclass/BookingStripeCheckout';
 import { logger } from '@/lib/logger';
