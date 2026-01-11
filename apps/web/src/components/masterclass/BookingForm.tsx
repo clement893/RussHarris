@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from '@/hooks/forms/useForm';
-import { Calendar, Mail, Phone, User, Users, BookOpen } from 'lucide-react';
+import { Mail, Phone, User, Users, BookOpen } from 'lucide-react';
 
 const experienceLevels = [
   { value: 'DÉBUTANT', label: 'Débutant' },
