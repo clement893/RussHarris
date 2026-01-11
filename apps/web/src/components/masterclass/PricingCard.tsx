@@ -45,7 +45,8 @@ export default function PricingCard({ pricing, className, variant = 'default' }:
       className={clsx(
         'p-8 border-2 border-black relative',
         pricing.popular && 'bg-black text-white',
-        !pricing.popular && 'hover:bg-black hover:text-white transition-all duration-200'
+        !pricing.popular && 'hover:bg-black hover:text-white transition-all duration-200',
+        className
       )}
     >
       {/* Popular Badge */}
