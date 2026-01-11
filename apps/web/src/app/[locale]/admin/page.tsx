@@ -6,10 +6,6 @@ import { ErrorBoundary } from '@/components/errors/ErrorBoundary';
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
-// Force dynamic rendering to avoid caching
-export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
-
 export default function AdminPage() {
   return (
     <ProtectedRoute requireAdmin>
