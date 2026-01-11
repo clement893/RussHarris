@@ -8,17 +8,8 @@
 import { useState } from 'react';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
+import TestimonialCard, { type Testimonial } from '@/components/masterclass/TestimonialCard';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
-
-interface Testimonial {
-  id: number;
-  name: string;
-  role: string;
-  location: string;
-  rating: number;
-  text: string;
-  photo?: string;
-}
 
 const testimonials: Testimonial[] = [
   {
@@ -172,38 +163,7 @@ export default function TestimonialsPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {testimonials.map((testimonial) => (
-                <div
-                  key={testimonial.id}
-                  className="border border-gray-200 p-6 hover:border-black transition-colors"
-                >
-                  <div className="flex items-center gap-1 mb-4">
-                    {Array.from({ length: testimonial.rating }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-4 h-4 fill-black text-black"
-                        aria-hidden="true"
-                      />
-                    ))}
-                  </div>
-                  <p className="text-gray-700 mb-4 leading-relaxed">
-                    "{testimonial.text}"
-                  </p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-                      <span className="text-gray-600 font-bold">
-                        {testimonial.name.charAt(0)}
-                      </span>
-                    </div>
-                    <div>
-                      <div className="font-bold text-black">
-                        {testimonial.name}
-                      </div>
-                      <div className="text-gray-600 text-sm">
-                        {testimonial.role} • {testimonial.location}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <TestimonialCard key={testimonial.id} testimonial={testimonial} />
               ))}
             </div>
           </div>

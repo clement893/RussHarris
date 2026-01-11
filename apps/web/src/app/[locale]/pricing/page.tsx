@@ -5,13 +5,15 @@
 
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
-import SwissCard from '@/components/masterclass/SwissCard';
-import { CheckCircle } from 'lucide-react';
+import PricingCard, { type PricingCardData } from '@/components/masterclass/PricingCard';
 
 export default function PricingPage() {
-  const pricingOptions = [
+  const router = useRouter();
+  
+  const pricingOptions: PricingCardData[] = [
     {
       id: 'early-bird',
       name: 'Early Bird',
@@ -19,15 +21,17 @@ export default function PricingPage() {
       currency: 'EUR',
       description: 'Tarif préférentiel pour réservations anticipées',
       popular: true,
+      badge: 'Tarif réduit',
       features: [
-        'Accès complet à la masterclass (2 jours)',
-        'Manuel de formation (PDF)',
-        'Accès aux enregistrements vidéo (3 mois)',
-        'Fiches pratiques et outils',
-        'Certificat de participation',
-        'Support et ressources en ligne',
+        { text: 'Accès complet à la masterclass (2 jours)' },
+        { text: 'Manuel de formation (PDF)' },
+        { text: 'Accès aux enregistrements vidéo (3 mois)' },
+        { text: 'Fiches pratiques et outils' },
+        { text: 'Certificat de participation' },
+        { text: 'Support et ressources en ligne' },
       ],
-      buttonText: 'Réserver maintenant',
+      ctaText: 'Réserver maintenant',
+      ctaHref: '/cities',
     },
     {
       id: 'regular',
@@ -37,14 +41,15 @@ export default function PricingPage() {
       description: 'Tarif standard pour réservations',
       popular: false,
       features: [
-        'Accès complet à la masterclass (2 jours)',
-        'Manuel de formation (PDF)',
-        'Accès aux enregistrements vidéo (3 mois)',
-        'Fiches pratiques et outils',
-        'Certificat de participation',
-        'Support et ressources en ligne',
+        { text: 'Accès complet à la masterclass (2 jours)' },
+        { text: 'Manuel de formation (PDF)' },
+        { text: 'Accès aux enregistrements vidéo (3 mois)' },
+        { text: 'Fiches pratiques et outils' },
+        { text: 'Certificat de participation' },
+        { text: 'Support et ressources en ligne' },
       ],
-      buttonText: 'Réserver maintenant',
+      ctaText: 'Réserver maintenant',
+      ctaHref: '/cities',
     },
     {
       id: 'group',
@@ -54,15 +59,16 @@ export default function PricingPage() {
       description: 'Tarif réduit pour groupes de 3 personnes ou plus',
       popular: false,
       features: [
-        'Accès complet à la masterclass (2 jours)',
-        'Manuel de formation (PDF)',
-        'Accès aux enregistrements vidéo (3 mois)',
-        'Fiches pratiques et outils',
-        'Certificat de participation',
-        'Support et ressources en ligne',
-        'Réduction de groupe appliquée',
+        { text: 'Accès complet à la masterclass (2 jours)' },
+        { text: 'Manuel de formation (PDF)' },
+        { text: 'Accès aux enregistrements vidéo (3 mois)' },
+        { text: 'Fiches pratiques et outils' },
+        { text: 'Certificat de participation' },
+        { text: 'Support et ressources en ligne' },
+        { text: 'Réduction de groupe appliquée' },
       ],
-      buttonText: 'Contacter pour groupe',
+      ctaText: 'Contacter pour groupe',
+      onCtaClick: () => window.location.href = 'mailto:contact@contextpsy.fr',
     },
   ];
 
@@ -107,38 +113,7 @@ export default function PricingPage() {
           {/* Pricing Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {pricingOptions.map((option) => (
-              <SwissCard
-                key={option.id}
-                className={`p-8 ${option.popular ? 'border-2 border-black' : ''}`}
-              >
-                {option.popular && (
-                  <div className="mb-4">
-                    <span className="inline-block px-4 py-1 bg-black text-white text-sm font-bold">
-                      POPULAIRE
-                    </span>
-                  </div>
-                )}
-                <h2 className="text-3xl font-black text-black mb-2">{option.name}</h2>
-                <p className="text-gray-600 mb-6 text-sm">{option.description}</p>
-                <div className="mb-6">
-                  <span className="text-5xl font-black text-black">{option.price}</span>
-                  <span className="text-xl text-gray-600 ml-2">{option.currency}</span>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {option.features.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <CheckCircle className="w-5 h-5 text-black mt-0.5 flex-shrink-0" aria-hidden="true" />
-                      <span className="text-gray-700 text-sm">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href={option.id === 'group' ? 'mailto:contact@contextpsy.fr' : '/cities'}
-                  className="block w-full px-6 py-3 bg-black text-white font-bold text-center hover:bg-gray-900 transition-colors"
-                >
-                  {option.buttonText}
-                </a>
-              </SwissCard>
+              <PricingCard key={option.id} pricing={option} />
             ))}
           </div>
 

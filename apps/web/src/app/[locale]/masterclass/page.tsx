@@ -7,6 +7,7 @@
 
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
+import TimelineDay, { type TimelineItem } from '@/components/masterclass/TimelineDay';
 import { Clock, Target, BookOpen, CheckCircle } from 'lucide-react';
 
 export default function MasterclassPage() {
@@ -39,118 +40,44 @@ export default function MasterclassPage() {
 
           <SwissDivider className="my-16" />
 
-          {/* Day 1 */}
-          <div className="mb-16">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center text-2xl font-black">
-                1
-              </div>
-              <h2 className="text-4xl md:text-5xl font-black text-black">
-                Jour 1 : Fondements de l'ACT
-              </h2>
-            </div>
-
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <Clock className="w-5 h-5 text-gray-400 mt-1 flex-shrink-0" aria-hidden="true" />
-                <div>
-                  <h3 className="text-xl font-bold text-black mb-2">Matin (9h-12h30)</h3>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>Introduction à l'ACT : historique et philosophie</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>Le modèle hexaflex : les 6 processus fondamentaux</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>Démonstrations pratiques et exercices</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <Clock className="w-5 h-5 text-gray-400 mt-1 flex-shrink-0" aria-hidden="true" />
-                <div>
-                  <h3 className="text-xl font-bold text-black mb-2">Après-midi (14h-17h30)</h3>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>L'acceptation psychologique et la défusion cognitive</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>Le contact avec le moment présent</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>Exercices pratiques et études de cas</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <SwissDivider className="my-16" />
-
-          {/* Day 2 */}
-          <div className="mb-16">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-16 h-16 bg-black text-white flex items-center justify-center text-2xl font-black">
-                2
-              </div>
-              <h2 className="text-4xl md:text-5xl font-black text-black">
-                Jour 2 : Applications Avancées
-              </h2>
-            </div>
-
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <Clock className="w-5 h-5 text-gray-400 mt-1 flex-shrink-0" aria-hidden="true" />
-                <div>
-                  <h3 className="text-xl font-bold text-black mb-2">Matin (9h-12h30)</h3>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>Le soi comme contexte et les valeurs</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>L'engagement dans l'action</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>Intégration des processus ACT dans la pratique</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <Clock className="w-5 h-5 text-gray-400 mt-1 flex-shrink-0" aria-hidden="true" />
-                <div>
-                  <h3 className="text-xl font-bold text-black mb-2">Après-midi (14h-17h30)</h3>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>Applications spécifiques : anxiété, dépression, douleur chronique</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>Défis courants et pièges à éviter</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-black mt-1 flex-shrink-0" aria-hidden="true" />
-                      <span>Questions-réponses et cas cliniques</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          {/* Day 1 & Day 2 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <TimelineDay
+              dayNumber={1}
+              title="Fondements de l'ACT"
+              items={[
+                {
+                  time: '9h-12h30',
+                  title: 'Matin',
+                  description: 'Introduction à l\'ACT : historique et philosophie • Le modèle hexaflex : les 6 processus fondamentaux • Démonstrations pratiques et exercices',
+                  icon: <Clock className="w-5 h-5" />,
+                },
+                {
+                  time: '14h-17h30',
+                  title: 'Après-midi',
+                  description: 'L\'acceptation psychologique et la défusion cognitive • Le contact avec le moment présent • Exercices pratiques et études de cas',
+                  icon: <Clock className="w-5 h-5" />,
+                },
+              ]}
+            />
+            <TimelineDay
+              dayNumber={2}
+              title="Applications Avancées"
+              items={[
+                {
+                  time: '9h-12h30',
+                  title: 'Matin',
+                  description: 'Le soi comme contexte et les valeurs • L\'engagement dans l\'action • Intégration des processus ACT dans la pratique',
+                  icon: <Clock className="w-5 h-5" />,
+                },
+                {
+                  time: '14h-17h30',
+                  title: 'Après-midi',
+                  description: 'Applications spécifiques : anxiété, dépression, douleur chronique • Défis courants et pièges à éviter • Questions-réponses et cas cliniques',
+                  icon: <Clock className="w-5 h-5" />,
+                },
+              ]}
+            />
           </div>
 
           <SwissDivider className="my-16" />
