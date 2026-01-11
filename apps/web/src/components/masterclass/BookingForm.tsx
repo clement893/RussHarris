@@ -52,7 +52,7 @@ interface BookingFormProps {
 }
 
 export default function BookingForm({
-  cityEventId,
+  cityEventId: _cityEventId,
   onSubmit,
   isLoading = false,
   initialValues = {},
