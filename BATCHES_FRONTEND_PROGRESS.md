@@ -2,7 +2,7 @@
 
 **Date de début:** 2025-01-27  
 **Statut global:** 🟡 En cours  
-**Batches terminés:** 7/10 (70%)
+**Batches terminés:** 8/10 (80%)
 
 ---
 
@@ -203,17 +203,34 @@
 
 ## 📋 BATCH 8: Composants Réutilisables
 
-**Statut:** ⏳ En attente  
+**Statut:** 🟢 Terminé  
 **Priorité:** 🟡 Haute  
+**Date de début:** 2025-01-27  
+**Date de fin:** 2025-01-27  
 **Dépend de:** BATCH 6
 
 ### Checklist:
-- [ ] Créer/Améliorer `CityCard.tsx`
-- [ ] Créer `TestimonialCard.tsx`
-- [ ] Créer `TimelineDay.tsx`
-- [ ] Créer/Améliorer `PricingCard.tsx`
-- [ ] Créer `BenefitsGrid.tsx`
-- [ ] Créer `StatsSection.tsx`
+- [x] CityCard.tsx (déjà créé dans BATCH 6) ✅
+- [x] Créer `TestimonialCard.tsx` ✅
+- [x] Créer `TimelineDay.tsx` ✅
+- [x] Créer `PricingCard.tsx` ✅
+- [x] BenefitsGrid.tsx (déjà créé dans BATCH 6) ✅
+- [x] Créer `StatsSection.tsx` ✅
+
+### Fichiers créés/modifiés:
+- ✅ `apps/web/src/components/masterclass/TestimonialCard.tsx` (nouveau)
+- ✅ `apps/web/src/components/masterclass/TimelineDay.tsx` (nouveau)
+- ✅ `apps/web/src/components/masterclass/PricingCard.tsx` (nouveau)
+- ✅ `apps/web/src/components/masterclass/StatsSection.tsx` (nouveau)
+- ✅ `apps/web/src/components/masterclass/index.ts` (modifié, exports)
+
+### Notes:
+- TestimonialCard: card témoignage individuel, variants (default/compact), hover states
+- TimelineDay: affichage jour programme, items avec time/icon, variants
+- PricingCard: card tarif réutilisable, badge "Populaire", features list, CTA
+- StatsSection: section stats réutilisable, grid responsive (2/3/4 colonnes), variants
+- Tous les composants suivent Swiss Style (noir/blanc, border 2px, font-black)
+- Support variants (default/compact) pour flexibilité
 
 ---
 
@@ -250,9 +267,9 @@
 
 ## 📊 Statistiques
 
-- **Batches terminés:** 7/10
+- **Batches terminés:** 8/10
 - **Batches en cours:** 0/10
-- **Progression globale:** 70%
+- **Progression globale:** 80%
 - **Dernière mise à jour:** 2025-01-27
 
 ---
