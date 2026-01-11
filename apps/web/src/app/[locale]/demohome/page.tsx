@@ -2,247 +2,216 @@
 
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
-import { CheckCircle, Users, BookOpen, Award, Globe } from 'lucide-react';
+import { Heart, Compass, Sparkles } from 'lucide-react';
 
 export default function DemoHomePage() {
   return (
-    <div className="bg-white text-gray-900">
-      {/* Hero Section - ULTRA PERCUTANT */}
-      <section className="relative bg-gradient-to-br from-red-600 via-red-700 to-black text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <Image
-            src="/images/russ/SSjqkHFlqMG2.jpg"
-            alt="Russ Harris presenting"
-            fill
-            style={{ objectFit: 'cover' }}
-          />
-        </div>
-        <Container className="relative z-10 py-24 md:py-40 text-center">
-          <div className="inline-block bg-yellow-400 text-black px-6 py-2 rounded-full font-black text-sm md:text-base mb-6 uppercase tracking-wider">
-            🏆 Formateur ACT #1 au monde
+    <div className="bg-white text-gray-800">
+      {/* Hero Section - L'Invitation */}
+      <section className="bg-[#F3EFEA] py-20 md:py-32">
+        <Container>
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+            <div className="order-2 md:order-1">
+              <h1 className="font-serif text-4xl md:text-6xl text-[#2C3E50] mb-6 leading-tight">
+                Une invitation à la transformation
+              </h1>
+              <p className="text-xl md:text-2xl text-[#34495E] mb-8 leading-relaxed">
+                Rejoignez Dr. Russ Harris, auteur du best-seller <span className="italic">The Happiness Trap</span>, pour une formation immersive en Thérapie d'Acceptation et d'Engagement.
+              </p>
+              <p className="text-lg text-[#34495E] mb-10 leading-relaxed">
+                Deux jours pour enrichir votre pratique, approfondir votre compréhension de l'ACT et découvrir des outils concrets qui transformeront la vie de vos clients.
+              </p>
+              <Button 
+                size="lg" 
+                className="bg-[#E87A5D] hover:bg-[#D66A4D] text-white font-medium text-lg px-10 py-6 rounded-full shadow-lg transition-all"
+              >
+                Découvrir la tournée canadienne
+              </Button>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/images/russ/SSjqkHFlqMG2.jpg"
+                  alt="Dr. Russ Harris"
+                  width={600}
+                  height={700}
+                  className="w-full h-auto"
+                />
+              </div>
+            </div>
           </div>
-          <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-6 leading-none">
-            RUSS HARRIS
-            <br />
-            <span className="text-yellow-400">CANADIAN TOUR 2026</span>
-          </h1>
-          <p className="text-2xl md:text-4xl font-bold mb-4 max-w-4xl mx-auto">
-            Rejoignez les 90 000+ professionnels de la santé déjà formés
-          </p>
-          <p className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto opacity-90">
-            Formation intensive de 2 jours en Thérapie d'Acceptation et d'Engagement (ACT)
-          </p>
-          <Button 
-            size="lg" 
-            className="bg-yellow-400 hover:bg-yellow-500 text-black font-black text-xl md:text-2xl px-12 py-8 rounded-full shadow-2xl transform hover:scale-105 transition-all"
-          >
-            RÉSERVEZ VOTRE PLACE MAINTENANT
-          </Button>
-          <p className="mt-6 text-lg font-bold">⚡ Places limitées à 200 par ville</p>
         </Container>
       </section>
 
-      {/* Section Villes - LES 4 VILLES EN GRAND */}
-      <section className="py-20 md:py-32 bg-gray-50">
-        <Container>
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-7xl font-black mb-6">
-              4 VILLES. 800 PLACES.
-            </h2>
-            <p className="text-2xl md:text-3xl font-bold text-red-600">
-              UNE OPPORTUNITÉ UNIQUE.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      {/* Section Tournée - L'Itinéraire */}
+      <section className="py-20 md:py-32">
+        <Container className="max-w-6xl mx-auto">
+          <h2 className="font-serif text-4xl md:text-5xl text-[#2C3E50] text-center mb-4">
+            La tournée canadienne 2026
+          </h2>
+          <p className="text-xl text-[#34495E] text-center mb-16 max-w-3xl mx-auto">
+            Quatre villes, une expérience unique. Choisissez la destination qui vous convient.
+          </p>
+          <div className="grid md:grid-cols-2 gap-8">
             {[
-              { city: 'MONTRÉAL', province: 'QC', date: 'Printemps 2026', places: 200 },
-              { city: 'CALGARY', province: 'AB', date: 'Printemps 2026', places: 200 },
-              { city: 'VANCOUVER', province: 'BC', date: 'Printemps 2026', places: 200 },
-              { city: 'TORONTO', province: 'ON', date: 'Printemps 2026', places: 200 },
+              { city: 'Montréal', province: 'Québec', date: 'Printemps 2026', places: 200 },
+              { city: 'Calgary', province: 'Alberta', date: 'Printemps 2026', places: 200 },
+              { city: 'Vancouver', province: 'Colombie-Britannique', date: 'Printemps 2026', places: 200 },
+              { city: 'Toronto', province: 'Ontario', date: 'Printemps 2026', places: 200 },
             ].map((location) => (
               <div 
                 key={location.city}
-                className="bg-white border-4 border-black p-10 hover:shadow-2xl transition-all hover:scale-105 cursor-pointer"
+                className="bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-xl transition-all hover:border-[#E87A5D] group"
               >
-                <h3 className="text-4xl md:text-6xl font-black mb-2">{location.city}</h3>
-                <p className="text-2xl font-bold text-gray-600 mb-4">{location.province}</p>
-                <p className="text-xl font-bold mb-4">{location.date}</p>
-                <div className="bg-red-600 text-white px-6 py-3 rounded-lg inline-block mb-6">
-                  <span className="text-3xl font-black">{location.places}</span>
-                  <span className="text-lg font-bold ml-2">PLACES</span>
+                <h3 className="font-serif text-3xl text-[#2C3E50] mb-2">{location.city}</h3>
+                <p className="text-lg text-[#34495E] mb-4">{location.province}</p>
+                <p className="text-base text-[#34495E] mb-6">{location.date}</p>
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-2xl font-semibold text-[#E87A5D]">{location.places}</span>
+                  <span className="text-base text-[#34495E]">places disponibles</span>
                 </div>
-                <Button className="w-full bg-black hover:bg-gray-800 text-white font-black text-xl py-6">
-                  INSCRIPTION {location.city}
-                </Button>
+                <a 
+                  href="#inscription" 
+                  className="text-[#E87A5D] font-medium hover:underline group-hover:text-[#D66A4D] transition-colors"
+                >
+                  S'inscrire à {location.city} →
+                </a>
               </div>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* Section Pourquoi Russ Harris - L'AUTORITÉ */}
-      <section className="py-20 md:py-32 bg-black text-white">
+      {/* Section Qui est Russ Harris - La Confiance */}
+      <section className="bg-[#F3EFEA] py-20 md:py-32">
         <Container>
-          <h2 className="text-4xl md:text-6xl font-black text-center mb-16">
-            Pourquoi se former avec <span className="text-yellow-400">Dr. Russ Harris</span>?
-          </h2>
-          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur">
-              <Users className="w-16 h-16 text-yellow-400 mb-4" />
-              <h3 className="text-3xl font-black mb-4">90 000+ Professionnels Formés</h3>
-              <p className="text-xl">
-                Rejoignez une communauté mondiale d'experts qui ont transformé leur pratique clinique avec l'ACT.
-              </p>
+          <div className="grid md:grid-cols-5 gap-12 items-center max-w-7xl mx-auto">
+            <div className="md:col-span-2">
+              <div className="relative rounded-3xl overflow-hidden shadow-xl">
+                <Image
+                  src="/images/russ/russ-harris-photo.jpg"
+                  alt="Dr. Russ Harris"
+                  width={500}
+                  height={600}
+                  className="w-full h-auto"
+                />
+              </div>
             </div>
-            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur">
-              <BookOpen className="w-16 h-16 text-yellow-400 mb-4" />
-              <h3 className="text-3xl font-black mb-4">Auteur Best-Seller Mondial</h3>
-              <p className="text-xl">
-                "The Happiness Trap" : 1 million+ d'exemplaires vendus, traduit en 30 langues.
+            <div className="md:col-span-3">
+              <h2 className="font-serif text-4xl md:text-5xl text-[#2C3E50] mb-6">
+                Rencontrez votre formateur, Dr. Russ Harris
+              </h2>
+              <p className="text-lg text-[#34495E] mb-6 leading-relaxed">
+                Avec plus de 90 000 professionnels de la santé formés et un million de lecteurs à travers le monde, Russ Harris est l'une des voix les plus respectées de la psychologie moderne.
               </p>
-            </div>
-            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur">
-              <Award className="w-16 h-16 text-yellow-400 mb-4" />
-              <h3 className="text-3xl font-black mb-4">Approuvé par les Fondateurs de l'ACT</h3>
-              <p className="text-xl">
-                Reconnu par Dr. Steven Hayes et Dr. Kirk Strosahl comme "le clinicien ACT par excellence".
+              <p className="text-lg text-[#34495E] mb-6 leading-relaxed">
+                Médecin de formation, psychothérapeute et auteur de renommée internationale, il a créé un protocole ACT pour l'Organisation Mondiale de la Santé, validé par trois études randomisées contrôlées.
               </p>
-            </div>
-            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur">
-              <Globe className="w-16 h-16 text-yellow-400 mb-4" />
-              <h3 className="text-3xl font-black mb-4">Protocole pour l'OMS</h3>
-              <p className="text-xl">
-                Créateur d'un protocole ACT utilisé dans les camps de réfugiés, validé par 3 études randomisées.
+              <p className="text-lg text-[#34495E] mb-8 leading-relaxed">
+                Son approche unique rend les concepts complexes de l'ACT simples, accessibles et immédiatement applicables dans votre pratique quotidienne.
               </p>
+              <div className="grid grid-cols-3 gap-6">
+                <div>
+                  <div className="text-3xl font-semibold text-[#E87A5D] mb-1">90 000+</div>
+                  <div className="text-sm text-[#34495E]">Professionnels formés</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-semibold text-[#E87A5D] mb-1">1M+</div>
+                  <div className="text-sm text-[#34495E]">Livres vendus</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-semibold text-[#E87A5D] mb-1">30</div>
+                  <div className="text-sm text-[#34495E]">Langues traduites</div>
+                </div>
+              </div>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* Section Qu'est-ce que l'ACT - LA SOLUTION */}
+      {/* Section L'Approche ACT - L'Intelligence */}
       <section className="py-20 md:py-32">
-        <Container className="max-w-5xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-black text-center mb-12">
-            L'ACT : Une révolution pour votre pratique clinique
+        <Container className="max-w-6xl mx-auto">
+          <h2 className="font-serif text-4xl md:text-5xl text-[#2C3E50] text-center mb-6">
+            L'intelligence de l'Acceptation et de l'Engagement
           </h2>
-          <div className="bg-gradient-to-br from-red-50 to-yellow-50 p-10 md:p-16 rounded-3xl mb-12">
-            <p className="text-2xl md:text-3xl font-bold mb-8 leading-relaxed">
-              La Thérapie d'Acceptation et d'Engagement (ACT) est une approche transdiagnostique basée sur la science qui aide vos clients à accepter ce qu'ils ne peuvent pas contrôler et à s'engager dans des actions alignées avec leurs valeurs.
-            </p>
-            <div className="grid md:grid-cols-3 gap-8 text-center">
-              <div>
-                <div className="text-5xl font-black text-red-600 mb-2">✓</div>
-                <p className="text-xl font-bold">Efficacité prouvée</p>
-                <p className="text-lg">Dépression, anxiété, TOC, douleur chronique, PTSD</p>
-              </div>
-              <div>
-                <div className="text-5xl font-black text-red-600 mb-2">✓</div>
-                <p className="text-xl font-bold">Engagement client</p>
-                <p className="text-lg">Des techniques qui fonctionnent vraiment</p>
-              </div>
-              <div>
-                <div className="text-5xl font-black text-red-600 mb-2">✓</div>
-                <p className="text-xl font-bold">Flexibilité</p>
-                <p className="text-lg">Un seul modèle pour multiples conditions</p>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Section Pour Qui - LA CIBLE */}
-      <section className="py-20 md:py-32 bg-gray-50">
-        <Container>
-          <h2 className="text-4xl md:text-6xl font-black text-center mb-16">
-            Cette formation est pour <span className="text-red-600">VOUS</span>
-          </h2>
-          <div className="grid md:grid-cols-4 gap-8 max-w-7xl mx-auto">
-            {[
-              { title: 'Thérapeutes & Psychologues', desc: 'Allez au-delà des approches traditionnelles' },
-              { title: 'Médecins & Infirmières', desc: 'Intégrez le psychologique dans vos soins' },
-              { title: 'Conseillers & Travailleurs Sociaux', desc: 'Obtenez des outils concrets et efficaces' },
-              { title: 'Coachs & Professionnels', desc: 'Guidez vos clients vers une vie riche de sens' },
-            ].map((persona) => (
-              <div key={persona.title} className="bg-white p-8 rounded-xl border-2 border-gray-200 hover:border-red-600 transition-all">
-                <h3 className="text-2xl font-black mb-4">{persona.title}</h3>
-                <p className="text-lg">{persona.desc}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Section Ce que vous apprendrez - LE CONTENU */}
-      <section className="py-20 md:py-32">
-        <Container className="max-w-5xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-black text-center mb-16">
-            Ce que vous maîtriserez en 2 jours
-          </h2>
-          <div className="space-y-6">
-            {[
-              'Les 6 processus centraux de l\'ACT et comment les appliquer en séance',
-              'Techniques d\'acceptation et de pleine conscience adaptées à votre clientèle',
-              'Comment utiliser les valeurs pour motiver le changement comportemental',
-              'Application pratique à des cas cliniques complexes',
-              'Stratégies de prévention du burnout pour vous-même en tant que thérapeute',
-              'Protocoles courts (1 à 6 sessions) pour contextes médicaux',
-            ].map((item, index) => (
-              <div key={index} className="flex items-start bg-gradient-to-r from-red-50 to-transparent p-6 rounded-xl">
-                <CheckCircle className="w-8 h-8 text-red-600 mr-4 mt-1 flex-shrink-0" />
-                <p className="text-xl md:text-2xl font-bold">{item}</p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Section Témoignages - PREUVE SOCIALE */}
-      <section className="py-20 md:py-32 bg-black text-white">
-        <Container>
-          <h2 className="text-4xl md:text-6xl font-black text-center mb-16">
-            Ce que disent les <span className="text-yellow-400">90 000 professionnels</span> formés
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur">
-              <p className="text-xl mb-6 italic">
-                "Russ Harris rend les concepts ACT simples, accessibles et faciles à mettre en œuvre. Sa formation a transformé ma pratique clinique."
-              </p>
-              <p className="font-bold text-yellow-400">– Dr. Steven Hayes, Co-fondateur de l'ACT</p>
-            </div>
-            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur">
-              <p className="text-xl mb-6 italic">
-                "Le clinicien ACT par excellence et un formateur dynamite. Je recommande vivement sa formation à quiconque veut vraiment apprendre l'ACT."
-              </p>
-              <p className="font-bold text-yellow-400">– Dr. Kirk D. Strosahl, Co-fondateur de l'ACT</p>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Final CTA - L'URGENCE */}
-      <section className="py-20 md:py-40 bg-gradient-to-br from-red-600 via-red-700 to-black text-white text-center">
-        <Container className="max-w-4xl mx-auto">
-          <h2 className="text-5xl md:text-7xl font-black mb-8 leading-tight">
-            LE CANADA ATTEND.
-            <br />
-            <span className="text-yellow-400">VOTRE PRATIQUE AUSSI.</span>
-          </h2>
-          <p className="text-2xl md:text-3xl font-bold mb-12">
-            Les places partent vite. Ne manquez pas cette chance unique de vous former avec le meilleur.
+          <p className="text-xl text-[#34495E] text-center mb-16 max-w-3xl mx-auto leading-relaxed">
+            L'ACT est une approche transdiagnostique fondée sur la science, qui aide vos clients à développer la flexibilité psychologique nécessaire pour vivre une vie riche et pleine de sens.
           </p>
-          <div className="bg-white/20 backdrop-blur p-8 rounded-2xl mb-12 inline-block">
-            <p className="text-lg font-bold mb-2">Places restantes au Canada</p>
-            <p className="text-6xl font-black text-yellow-400">800</p>
-            <p className="text-lg font-bold mt-2">sur 4 villes</p>
+          <div className="grid md:grid-cols-3 gap-12">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#F3EFEA] mb-6">
+                <Heart className="w-8 h-8 text-[#E87A5D]" />
+              </div>
+              <h3 className="font-serif text-2xl text-[#2C3E50] mb-4">Accepter avec courage</h3>
+              <p className="text-base text-[#34495E] leading-relaxed">
+                Apprendre à faire de la place aux pensées et émotions difficiles, plutôt que de lutter contre elles.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#F3EFEA] mb-6">
+                <Sparkles className="w-8 h-8 text-[#E87A5D]" />
+              </div>
+              <h3 className="font-serif text-2xl text-[#2C3E50] mb-4">Être présent</h3>
+              <p className="text-base text-[#34495E] leading-relaxed">
+                Cultiver une attention flexible au moment présent, avec ouverture et curiosité.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#F3EFEA] mb-6">
+                <Compass className="w-8 h-8 text-[#E87A5D]" />
+              </div>
+              <h3 className="font-serif text-2xl text-[#2C3E50] mb-4">S'engager avec sens</h3>
+              <p className="text-base text-[#34495E] leading-relaxed">
+                Clarifier ses valeurs profondes et agir en accord avec elles, même face aux obstacles.
+              </p>
+            </div>
           </div>
-          <br />
+        </Container>
+      </section>
+
+      {/* Section Témoignages - La Résonance */}
+      <section className="bg-[#F3EFEA] py-20 md:py-32">
+        <Container className="max-w-5xl mx-auto">
+          <h2 className="font-serif text-4xl md:text-5xl text-[#2C3E50] text-center mb-16">
+            Ce qu'ils en disent
+          </h2>
+          <div className="space-y-12">
+            <blockquote className="border-l-4 border-[#E87A5D] pl-8 py-4">
+              <p className="text-xl md:text-2xl text-[#34495E] mb-6 leading-relaxed italic">
+                "Russ Harris est brillant dans sa capacité à éliminer la complexité inutile et à présenter des idées cliniques complexes de manière accessible. Il a apporté sa créativité clinique à de nouvelles méthodes et de nouvelles façons d'aller au cœur des problèmes avec les clients."
+              </p>
+              <footer className="text-base text-[#2C3E50] font-medium">
+                — Dr. Steven Hayes, Co-fondateur de l'ACT, Université du Nevada
+              </footer>
+            </blockquote>
+            <blockquote className="border-l-4 border-[#E87A5D] pl-8 py-4">
+              <p className="text-xl md:text-2xl text-[#34495E] mb-6 leading-relaxed italic">
+                "Russ Harris est le clinicien ACT par excellence et un formateur dynamique. Il rend les concepts ACT faciles à comprendre et à mettre en œuvre dans la pratique clinique en temps réel. Sa passion pour le travail ACT et ses méthodes de formation sont absolument de premier ordre."
+              </p>
+              <footer className="text-base text-[#2C3E50] font-medium">
+                — Dr. Kirk D. Strosahl, Co-fondateur de l'ACT
+              </footer>
+            </blockquote>
+          </div>
+        </Container>
+      </section>
+
+      {/* Final CTA - L'Appel Doux */}
+      <section className="py-20 md:py-32">
+        <Container className="max-w-4xl mx-auto text-center">
+          <h2 className="font-serif text-4xl md:text-5xl text-[#2C3E50] mb-6">
+            Prêt à transformer votre pratique?
+          </h2>
+          <p className="text-xl text-[#34495E] mb-10 leading-relaxed max-w-2xl mx-auto">
+            Rejoignez cette formation exceptionnelle et découvrez comment l'ACT peut enrichir votre travail et votre vie. Les places sont limitées à 200 participants par ville.
+          </p>
           <Button 
             size="lg" 
-            className="bg-yellow-400 hover:bg-yellow-500 text-black font-black text-2xl md:text-3xl px-16 py-10 rounded-full shadow-2xl transform hover:scale-105 transition-all"
+            className="bg-[#E87A5D] hover:bg-[#D66A4D] text-white font-medium text-lg px-12 py-6 rounded-full shadow-lg transition-all"
           >
-            RÉSERVEZ MAINTENANT
+            Voir les dates et s'inscrire
           </Button>
-          <p className="mt-8 text-xl font-bold">🔥 Inscription ouverte - Places limitées</p>
         </Container>
       </section>
     </div>
