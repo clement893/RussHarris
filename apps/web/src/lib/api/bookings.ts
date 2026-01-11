@@ -5,6 +5,7 @@
  */
 
 import { apiClient, extractApiData } from '@/lib/api';
+import type { ApiResponse } from '@modele/types';
 
 export interface AttendeeCreate {
   first_name: string;
@@ -90,7 +91,7 @@ export const bookingsAPI = {
    * Create a new booking
    */
   create: async (data: BookingCreate): Promise<BookingResponse> => {
-    const response = await apiClient.post<BookingResponse>('/v1/bookings/create', data);
+    const response: ApiResponse<BookingResponse> = await apiClient.post<BookingResponse>('/v1/bookings/create', data);
     const result = extractApiData<BookingResponse>(response);
     if (!result) {
       throw new Error('Failed to create booking: no data returned');
