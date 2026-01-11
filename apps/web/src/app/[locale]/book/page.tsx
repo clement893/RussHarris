@@ -208,7 +208,7 @@ export default function BookPage() {
                             <div className="mt-4 pt-4 border-t border-gray-200">
                               <p className="text-sm text-gray-600 mb-2">{event.event.title_fr || event.event.title_en}</p>
                               <p className="text-2xl font-black text-black">
-                                {event.price || event.regular_price || event.event.price} {event.currency || event.event.currency || 'EUR'}
+                                {event.price || event.regular_price} {event.currency || 'EUR'}
                               </p>
                             </div>
                           )}
