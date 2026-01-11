@@ -66,7 +66,7 @@ export default function LanguageSwitcher() {
                   onClick={() => handleLocaleChange(loc)}
                   className={clsx(
                     'w-full px-4 py-2 text-left text-sm flex items-center justify-between hover:bg-muted transition-colors',
-                    locale === loc && 'bg-muted',
+                    locale === loc && 'bg-muted'
                   )}
                   dir={isRTL(loc) ? 'rtl' : 'ltr'}
                 >

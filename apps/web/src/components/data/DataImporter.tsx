@@ -39,9 +39,7 @@ export function DataImporter({
     if (!file) return;
 
     // Validate file type
-    if (
-      !acceptedFormats.some((format) => file.name.toLowerCase().endsWith(format.toLowerCase()))
-    ) {
+    if (!acceptedFormats.some((format) => file.name.toLowerCase().endsWith(format.toLowerCase()))) {
       showToast({
         message: `Please select a file with one of these formats: ${acceptedFormats.join(',')}`,
         type: 'error',
@@ -65,15 +63,11 @@ export function DataImporter({
         errors: Array<{ row: number; data: unknown; error: string }>;
         warnings: unknown[];
         data: Record<string, unknown>[];
-      }>(
-        '/api/v1/imports/import',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+      }>('/api/v1/imports/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
-      );
+      });
 
       if (!response.data) {
         throw new Error('No data received from import');
