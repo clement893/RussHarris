@@ -5,7 +5,6 @@
 
 'use client';
 
-import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from '@/hooks/forms/useForm';
 import { Mail, Phone, User, Users, BookOpen } from 'lucide-react';
@@ -57,8 +56,6 @@ export default function BookingForm({
   isLoading = false,
   initialValues = {},
 }: BookingFormProps) {
-  const [isGroupBooking, setIsGroupBooking] = useState(false);
-
   const {
     values,
     errors,
@@ -85,10 +82,8 @@ export default function BookingForm({
     setValue('quantity', newQuantity);
     if (newQuantity >= 3) {
       setValue('ticket_type', 'GROUP');
-      setIsGroupBooking(true);
     } else {
       setValue('ticket_type', 'REGULAR');
-      setIsGroupBooking(false);
     }
   };
 
