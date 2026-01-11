@@ -20,7 +20,7 @@ import { SchemaMarkup } from '@/components/seo';
 import { GoogleAnalytics } from '@/components/marketing/GoogleAnalytics';
 import RTLProvider from '@/components/i18n/RTLProvider';
 import SkipLink from '@/components/ui/SkipLink';
-import { LocaleSync } from '@/components/preferences/LocaleSync';
+import { LocaleSync } from '@/components/preferences';
 import type { Locale } from '@/i18n/routing';
 import { themeCacheInlineScript } from '@/lib/theme/theme-inline-cache-script';
 
