@@ -29,7 +29,7 @@ export default function MobileNavigation({
 }: MobileNavigationProps) {
   const t = useTranslations();
   const menuRef = useRef<HTMLDivElement>(null);
-  const firstLinkRef = useRef<HTMLAnchorElement>(null);
+  const firstItemRef = useRef<HTMLDivElement>(null);
 
   // Handle Escape key
   useEffect(() => {
@@ -47,10 +47,11 @@ export default function MobileNavigation({
 
   // Focus management
   useEffect(() => {
-    if (isOpen && firstLinkRef.current) {
+    if (isOpen && firstItemRef.current) {
       // Small delay to ensure menu is visible
       setTimeout(() => {
-        firstLinkRef.current?.focus();
+        const firstLink = firstItemRef.current?.querySelector('a') as HTMLAnchorElement | null;
+        firstLink?.focus();
       }, 100);
     }
   }, [isOpen]);
@@ -106,7 +107,7 @@ export default function MobileNavigation({
         {/* Navigation items */}
         <nav className="flex-1 overflow-y-auto py-4" aria-label="Menu mobile">
           {items.map((item, index) => (
-            <div key={item.id} ref={index === 0 ? firstLinkRef : undefined}>
+            <div key={item.id} ref={index === 0 ? firstItemRef : undefined}>
               <NavigationItem
                 item={item}
                 variant="mobile"
