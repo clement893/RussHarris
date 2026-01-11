@@ -91,8 +91,8 @@ export const bookingsAPI = {
    * Create a new booking
    */
   create: async (data: BookingCreate): Promise<BookingResponse> => {
-    const response: ApiResponse<BookingResponse> = await apiClient.post<BookingResponse>('/v1/bookings/create', data);
-    const result = extractApiData<BookingResponse>(response);
+    const response = await apiClient.post<BookingResponse>('/v1/bookings/create', data);
+    const result = extractApiData<BookingResponse>(response as ApiResponse<BookingResponse>);
     if (!result) {
       throw new Error('Failed to create booking: no data returned');
     }
