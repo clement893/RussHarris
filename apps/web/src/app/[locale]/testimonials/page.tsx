@@ -8,7 +8,8 @@
 import { useState } from 'react';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
-import TestimonialCard, { type Testimonial } from '@/components/masterclass/TestimonialCard';
+import TestimonialCard from '@/components/masterclass/TestimonialCard';
+import type { Testimonial } from '@/components/masterclass/TestimonialPreview';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
 const testimonials: Testimonial[] = [
