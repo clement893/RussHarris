@@ -5,8 +5,7 @@
 
 'use client';
 
-import { Container } from '@/components/ui';
-import { Card } from '@/components/ui/Card';
+import { Container, Card } from '@/components/ui';
 
 export default function DemoHomePage() {
   return (
