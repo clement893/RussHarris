@@ -263,7 +263,7 @@ export default function AdminMasterclassContent() {
 
       {/* Delete Confirmation Modal */}
       <Modal
-        open={deleteModalOpen}
+        isOpen={deleteModalOpen}
         onClose={() => {
           setDeleteModalOpen(false);
           setSelectedCityEvent(null);
