@@ -62,10 +62,13 @@ export default function MasterclassNavigation({
           ).length;
           
           if (availableCitiesCount > 0) {
-            itemsWithBadges[citiesItemIndex] = {
-              ...itemsWithBadges[citiesItemIndex],
-              badge: availableCitiesCount,
-            };
+            const citiesItem = itemsWithBadges[citiesItemIndex];
+            if (citiesItem) {
+              itemsWithBadges[citiesItemIndex] = {
+                ...citiesItem,
+                badge: availableCitiesCount,
+              };
+            }
           }
         } catch (error) {
           // Silently fail - badge will not be shown
