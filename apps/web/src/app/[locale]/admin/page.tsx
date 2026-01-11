@@ -6,8 +6,9 @@ import { ErrorBoundary } from '@/components/errors/ErrorBoundary';
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
-// Disable static generation to avoid hydration issues
-export const revalidate = 0;
+// Force dynamic rendering to avoid caching
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 export default function AdminPage() {
   return (

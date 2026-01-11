@@ -2,8 +2,9 @@ import { ErrorBoundary } from '@/components/errors/ErrorBoundary';
 import { ProtectedSuperAdminRoute } from '@/components/auth/ProtectedRoute';
 import AdminMasterclassContent from './AdminMasterclassContent';
 
-// Disable static generation to avoid hydration issues
-export const revalidate = 0;
+// Force dynamic rendering to avoid caching
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 export default function AdminMasterclassPage() {
   return (

@@ -45,10 +45,16 @@ class CacheHeadersMiddleware(BaseHTTPMiddleware):
         if not hasattr(response, 'body'):
             # Still add cache headers but skip ETag
             max_age = self._get_cache_max_age(path)
-            response.headers["Cache-Control"] = f"public, max-age={max_age}, must-revalidate"
-            response.headers["Vary"] = "Accept, Accept-Encoding"
-            expires = datetime.now(timezone.utc) + timedelta(seconds=max_age)
-            response.headers["Expires"] = expires.strftime("%a, %d %b %Y %H:%M:%S GMT")
+            if max_age == 0:
+                # No cache for admin/masterclass endpoints
+                response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response.headers["Pragma"] = "no-cache"
+                response.headers["Expires"] = "0"
+            else:
+                response.headers["Cache-Control"] = f"public, max-age={max_age}, must-revalidate"
+                response.headers["Vary"] = "Accept, Accept-Encoding"
+                expires = datetime.now(timezone.utc) + timedelta(seconds=max_age)
+                response.headers["Expires"] = expires.strftime("%a, %d %b %Y %H:%M:%S GMT")
             return response
         
         # Generate ETag from response body
@@ -70,17 +76,35 @@ class CacheHeadersMiddleware(BaseHTTPMiddleware):
         max_age = self._get_cache_max_age(path)
         
         # Add cache headers
-        response.headers["Cache-Control"] = f"public, max-age={max_age}, must-revalidate"
-        response.headers["Vary"] = "Accept, Accept-Encoding"
-        
-        # Add Expires header
-        expires = datetime.now(timezone.utc) + timedelta(seconds=max_age)
-        response.headers["Expires"] = expires.strftime("%a, %d %b %Y %H:%M:%S GMT")
+        if max_age == 0:
+            # No cache for admin/masterclass endpoints
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
+        else:
+            response.headers["Cache-Control"] = f"public, max-age={max_age}, must-revalidate"
+            response.headers["Vary"] = "Accept, Accept-Encoding"
+            
+            # Add Expires header
+            expires = datetime.now(timezone.utc) + timedelta(seconds=max_age)
+            response.headers["Expires"] = expires.strftime("%a, %d %b %Y %H:%M:%S GMT")
         
         return response
 
     def _get_cache_max_age(self, path: str) -> int:
         """Determine cache max-age based on endpoint"""
+        # Admin endpoints - no cache
+        if "/admin" in path or "/v1/admin" in path:
+            return 0  # No cache
+        
+        # Masterclass endpoints - no cache (frequent updates)
+        if "/masterclass" in path:
+            return 0  # No cache
+        
+        # Bookings endpoints - no cache (real-time data)
+        if "/bookings" in path:
+            return 0  # No cache
+        
         # Static/rarely changing data - longer cache
         if "/health" in path or "/docs" in path:
             return 60  # 1 minute

@@ -283,6 +283,8 @@ async def create_event(
         await db.refresh(event)
         
         logger.info(f"User {current_user.id} created masterclass event {event.id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return MasterclassEventResponse.model_validate(event)
     except Exception as e:
         await db.rollback()
@@ -326,6 +328,8 @@ async def update_event(
         await db.refresh(event)
         
         logger.info(f"User {current_user.id} updated masterclass event {event_id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return MasterclassEventResponse.model_validate(event)
     except Exception as e:
         await db.rollback()
@@ -364,6 +368,8 @@ async def delete_event(
         await db.commit()
         
         logger.info(f"User {current_user.id} deleted masterclass event {event_id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return None
     except IntegrityError:
         await db.rollback()
@@ -460,6 +466,8 @@ async def update_city(
         await db.refresh(city)
         
         logger.info(f"User {current_user.id} updated city {city_id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return CityResponse.model_validate(city)
     except Exception as e:
         await db.rollback()
@@ -498,6 +506,8 @@ async def delete_city(
         await db.commit()
         
         logger.info(f"User {current_user.id} deleted city {city_id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return None
     except Exception as e:
         await db.rollback()
@@ -640,6 +650,8 @@ async def update_venue(
         await db.refresh(venue)
         
         logger.info(f"User {current_user.id} updated venue {venue_id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return VenueResponse.model_validate(venue)
     except Exception as e:
         await db.rollback()
@@ -678,6 +690,8 @@ async def delete_venue(
         await db.commit()
         
         logger.info(f"User {current_user.id} deleted venue {venue_id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return None
     except Exception as e:
         await db.rollback()
@@ -864,6 +878,8 @@ async def update_city_event(
         await db.refresh(city_event, ["event", "city", "venue"])
         
         logger.info(f"User {current_user.id} updated city event {city_event_id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return CityEventResponse.model_validate(city_event)
     except Exception as e:
         await db.rollback()
@@ -902,6 +918,8 @@ async def delete_city_event(
         await db.commit()
         
         logger.info(f"User {current_user.id} deleted city event {city_event_id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return None
     except Exception as e:
         await db.rollback()
