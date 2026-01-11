@@ -72,6 +72,18 @@ export default function TestimonialsPage() {
 
   const currentTestimonial = testimonials[currentIndex];
 
+  if (!currentTestimonial) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Container className="py-20 md:py-32">
+          <div className="text-center">
+            <p className="text-gray-600">Aucun témoignage disponible.</p>
+          </div>
+        </Container>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <Container className="py-20 md:py-32">
