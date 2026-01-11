@@ -20,7 +20,7 @@ export default function DemoHomePage() {
           />
         </div>
         <Container className="relative z-10 text-center py-32">
-          <div className="inline-block bg-[#39FF14] text-black px-4 py-1 text-sm font-bold mb-8 tracking-wider">
+          <div className="inline-block bg-[#F97316] text-black px-4 py-1 text-sm font-bold mb-8 tracking-wider">
             WORLD TOUR 2026
           </div>
           <h1 className="text-7xl md:text-9xl font-black tracking-tighter mb-6 leading-none">
@@ -28,12 +28,12 @@ export default function DemoHomePage() {
             <br />
             HARRIS
           </h1>
-          <p className="text-2xl md:text-4xl font-bold text-[#39FF14] mb-12 tracking-wide">
+          <p className="text-2xl md:text-4xl font-bold text-[#F97316] mb-12 tracking-wide">
             THE CANADIAN ACT TOUR
           </p>
           <Button 
             size="lg" 
-            className="bg-[#39FF14] hover:bg-[#2EE010] text-black font-black text-lg px-12 py-7 rounded-none transition-all hover:scale-105"
+            className="bg-[#F97316] hover:bg-[#EA580C] text-black font-black text-lg px-12 py-7 rounded-full transition-all hover:scale-105"
           >
             VOIR LES DATES
           </Button>
@@ -41,7 +41,7 @@ export default function DemoHomePage() {
       </section>
 
       {/* Section Marquee - Le Mouvement */}
-      <div className="bg-[#39FF14] text-black py-6 overflow-hidden whitespace-nowrap">
+      <div className="bg-[#F97316] text-black py-6 overflow-hidden whitespace-nowrap">
         <div className="animate-marquee inline-block">
           <span className="text-4xl font-black mx-8">MONTRÉAL</span>
           <span className="text-4xl font-black mx-8">•</span>
@@ -77,11 +77,11 @@ export default function DemoHomePage() {
             ].map((show) => (
               <div 
                 key={show.city}
-                className="group border-b border-gray-800 pb-6 hover:border-[#39FF14] transition-all cursor-pointer"
+                className="group border-b border-gray-800 pb-6 hover:border-[#F97316] transition-all cursor-pointer"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <h3 className="text-5xl md:text-8xl font-black tracking-tighter group-hover:text-[#39FF14] transition-colors leading-none mb-2">
+                    <h3 className="text-5xl md:text-8xl font-black tracking-tighter group-hover:text-[#F97316] transition-colors leading-none mb-2">
                       {show.city}
                     </h3>
                     <div className="flex items-center gap-6 text-gray-400 text-sm md:text-base">
@@ -93,13 +93,13 @@ export default function DemoHomePage() {
                         <MapPin className="w-4 h-4" />
                         <span>{show.venue}</span>
                       </div>
-                      <div className="text-[#39FF14] font-bold">
+                      <div className="text-[#F97316] font-bold">
                         {show.places} places
                       </div>
                     </div>
                   </div>
                   <Button 
-                    className="bg-transparent border-2 border-white hover:bg-[#39FF14] hover:border-[#39FF14] hover:text-black text-white font-black px-8 py-6 rounded-none transition-all"
+                    className="bg-transparent border-2 border-white hover:bg-[#F97316] hover:border-[#F97316] hover:text-black text-white font-black px-8 py-6 rounded-full transition-all"
                   >
                     S'INSCRIRE
                     <ArrowRight className="ml-2 w-5 h-5" />
@@ -132,7 +132,7 @@ export default function DemoHomePage() {
                 <br />
                 DERRIÈRE
                 <br />
-                <span className="text-[#39FF14]">L'ACT</span>
+                <span className="text-[#F97316]">L'ACT</span>
               </h2>
               <p className="text-xl text-gray-300 mb-6 leading-relaxed">
                 Dr. Russ Harris n'est pas qu'un thérapeute. C'est un pionnier, un innovateur qui a transformé la façon dont 90 000 professionnels de la santé pratiquent la psychothérapie.
@@ -142,15 +142,15 @@ export default function DemoHomePage() {
               </p>
               <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-800">
                 <div>
-                  <div className="text-4xl font-black text-[#39FF14] mb-2">90K+</div>
+                  <div className="text-4xl font-black text-[#F97316] mb-2">90K+</div>
                   <div className="text-sm text-gray-400 uppercase tracking-wider">Professionnels formés</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-black text-[#39FF14] mb-2">1M+</div>
+                  <div className="text-4xl font-black text-[#F97316] mb-2">1M+</div>
                   <div className="text-sm text-gray-400 uppercase tracking-wider">Livres vendus</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-black text-[#39FF14] mb-2">30</div>
+                  <div className="text-4xl font-black text-[#F97316] mb-2">30</div>
                   <div className="text-sm text-gray-400 uppercase tracking-wider">Langues</div>
                 </div>
               </div>
@@ -165,7 +165,7 @@ export default function DemoHomePage() {
           <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-center">
             PLUS QU'UNE THÉRAPIE,
             <br />
-            <span className="text-[#39FF14]">UNE PHILOSOPHIE</span>
+            <span className="text-[#F97316]">UNE PHILOSOPHIE</span>
           </h2>
           <p className="text-xl text-gray-400 text-center mb-16 max-w-3xl mx-auto">
             La Thérapie d'Acceptation et d'Engagement (ACT) est une approche révolutionnaire qui aide vos clients à développer la flexibilité psychologique pour vivre une vie riche et pleine de sens.
@@ -176,9 +176,9 @@ export default function DemoHomePage() {
               { title: 'ÊTRE PRÉSENT', desc: 'Cultiver une attention flexible au moment présent avec ouverture et curiosité.' },
               { title: 'S\'ENGAGER', desc: 'Clarifier ses valeurs profondes et agir en accord avec elles, même face aux obstacles.' },
             ].map((pillar, index) => (
-              <div key={index} className="bg-[#111111] p-8 border border-gray-800 hover:border-[#39FF14] transition-all group">
-                <div className="text-6xl font-black text-[#39FF14] mb-4">0{index + 1}</div>
-                <h3 className="text-2xl font-black mb-4 group-hover:text-[#39FF14] transition-colors">{pillar.title}</h3>
+              <div key={index} className="bg-[#111111] p-8 border border-gray-800 hover:border-[#F97316] rounded-3xl transition-all group">
+                <div className="text-6xl font-black text-[#F97316] mb-4">0{index + 1}</div>
+                <h3 className="text-2xl font-black mb-4 group-hover:text-[#F97316] transition-colors">{pillar.title}</h3>
                 <p className="text-gray-400 leading-relaxed">{pillar.desc}</p>
               </div>
             ))}
@@ -187,7 +187,7 @@ export default function DemoHomePage() {
       </section>
 
       {/* Final CTA - Le Rappel */}
-      <section className="py-32 bg-[#39FF14] text-black">
+      <section className="py-32 bg-[#F97316] text-black">
         <Container className="max-w-4xl mx-auto text-center">
           <h2 className="text-6xl md:text-9xl font-black mb-8 tracking-tighter leading-none">
             PRÊT?
@@ -197,7 +197,7 @@ export default function DemoHomePage() {
           </p>
           <Button 
             size="lg" 
-            className="bg-black hover:bg-gray-900 text-white font-black text-xl px-16 py-8 rounded-none transition-all hover:scale-105"
+            className="bg-black hover:bg-gray-900 text-white font-black text-xl px-16 py-8 rounded-full transition-all hover:scale-105"
           >
             RÉSERVER MA PLACE
           </Button>
