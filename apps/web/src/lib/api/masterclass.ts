@@ -8,16 +8,16 @@ import { apiClient, extractApiData } from '@/lib/api';
 
 export interface MasterclassEvent {
   id: number;
-  title: string;
-  description?: string;
-  start_date: string;
-  end_date: string;
-  price: number;
-  currency: string;
-  max_attendees: number;
-  is_active: boolean;
+  title_en: string;
+  title_fr: string;
+  description_en?: string;
+  description_fr?: string;
+  duration_days: number;
+  language: string;
   created_at: string;
   updated_at: string;
+  title?: string;  // Alias for compatibility (will map to title_fr or title_en)
+  description?: string;  // Alias for compatibility (will map to description_fr or description_en)
 }
 
 export interface City {
