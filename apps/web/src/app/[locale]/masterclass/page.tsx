@@ -7,7 +7,7 @@
 
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
-import TimelineDay, { type TimelineItem } from '@/components/masterclass/TimelineDay';
+import TimelineDay from '@/components/masterclass/TimelineDay';
 import { Clock, Target, BookOpen, CheckCircle } from 'lucide-react';
 
 export default function MasterclassPage() {
