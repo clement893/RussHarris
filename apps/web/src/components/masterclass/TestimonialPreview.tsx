@@ -7,7 +7,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Container } from '@/components/ui';
 import SwissDivider from './SwissDivider';
 import SwissCard from './SwissCard';
@@ -40,7 +39,6 @@ export default function TestimonialPreview({
   maxVisible = 3,
   className,
 }: TestimonialPreviewProps) {
-  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const visibleTestimonials = testimonials.slice(0, maxVisible);
 
