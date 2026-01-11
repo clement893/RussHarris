@@ -6,7 +6,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
 import CityCard from '@/components/masterclass/CityCard';
@@ -14,7 +13,6 @@ import { masterclassAPI, type CityWithEvents } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
 
 export default function CitiesPage() {
-  const router = useRouter();
   const [cities, setCities] = useState<CityWithEvents[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
