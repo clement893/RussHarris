@@ -92,7 +92,7 @@ export const bookingsAPI = {
    */
   create: async (data: BookingCreate): Promise<BookingResponse> => {
     const response = await apiClient.post<BookingResponse>('/v1/bookings/create', data);
-    const result = extractApiData<BookingResponse>(response as ApiResponse<BookingResponse>);
+    const result = extractApiData<BookingResponse>(response as unknown as ApiResponse<BookingResponse>);
     if (!result) {
       throw new Error('Failed to create booking: no data returned');
     }
