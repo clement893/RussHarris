@@ -7,7 +7,6 @@
 
 import { masterclassNavigationConfig, type NavigationItem as NavigationItemType } from '@/lib/navigation/config';
 import NavigationItem from './NavigationItem';
-import { usePathname } from 'next/navigation';
 
 interface DesktopNavigationProps {
   items?: NavigationItemType[];
@@ -18,7 +17,6 @@ export default function DesktopNavigation({
   items = masterclassNavigationConfig,
   onNavigate,
 }: DesktopNavigationProps) {
-  const pathname = usePathname();
 
   return (
     <nav
