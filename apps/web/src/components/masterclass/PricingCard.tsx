@@ -11,6 +11,7 @@ import { CheckCircle, Tag } from 'lucide-react';
 import { clsx } from 'clsx';
 import SwissCard from './SwissCard';
 import ButtonLink from '@/components/ui/ButtonLink';
+import Button from '@/components/ui/Button';
 
 export interface PricingFeature {
   text: string;
@@ -117,10 +118,9 @@ export default function PricingCard({ pricing, className, variant = 'default' }:
       </ul>
 
       {/* CTA */}
-      {(pricing.ctaHref || pricing.onCtaClick) && (
+      {pricing.ctaHref ? (
         <ButtonLink
           href={pricing.ctaHref}
-          onClick={pricing.onCtaClick}
           variant={pricing.popular ? 'primary' : 'outline'}
           className={clsx(
             'w-full px-6 py-3 font-black border-2 transition-all duration-200 rounded-none',
@@ -131,7 +131,20 @@ export default function PricingCard({ pricing, className, variant = 'default' }:
         >
           {pricing.ctaText || 'Choisir ce tarif'}
         </ButtonLink>
-      )}
+      ) : pricing.onCtaClick ? (
+        <Button
+          onClick={pricing.onCtaClick}
+          variant={pricing.popular ? 'primary' : 'outline'}
+          className={clsx(
+            'w-full px-6 py-3 font-black border-2 transition-all duration-200 rounded-none',
+            pricing.popular
+              ? 'bg-white text-black border-white hover:bg-gray-100'
+              : 'border-black hover:bg-black hover:text-white'
+          )}
+        >
+          {pricing.ctaText || 'Choisir ce tarif'}
+        </Button>
+      ) : null}
     </SwissCard>
   );
 }
