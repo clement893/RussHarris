@@ -7,9 +7,33 @@
 
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
+import BenefitsGrid, { type Benefit } from '@/components/masterclass/BenefitsGrid';
 import { Award, Book, Globe, Users } from 'lucide-react';
 
 export default function AboutRussPage() {
+  const keyPoints: Benefit[] = [
+    {
+      icon: <Book className="w-12 h-12" />,
+      title: 'Auteur Best-Seller',
+      description: 'Auteur de "Le piège du bonheur" et de nombreux autres ouvrages sur l\'ACT, traduits dans plus de 30 langues.',
+    },
+    {
+      icon: <Globe className="w-12 h-12" />,
+      title: 'Formateur International',
+      description: 'Formé des milliers de professionnels dans plus de 30 pays à travers le monde.',
+    },
+    {
+      icon: <Award className="w-12 h-12" />,
+      title: 'Expert Reconnu',
+      description: 'Reconnu comme l\'un des principaux experts mondiaux en ACT avec plus de 20 ans d\'expérience clinique.',
+    },
+    {
+      icon: <Users className="w-12 h-12" />,
+      title: 'Pratique Clinique',
+      description: 'Pratique clinique active avec une approche pragmatique et centrée sur l\'efficacité thérapeutique.',
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-white">
       <Container className="py-20 md:py-32">
@@ -61,58 +85,12 @@ export default function AboutRussPage() {
           <SwissDivider className="my-16" />
 
           {/* Key Points */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-black text-white">
-                <Book className="w-6 h-6" aria-hidden="true" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-black text-black mb-2">Auteur Best-Seller</h3>
-                <p className="text-gray-600">
-                  Auteur de "Le piège du bonheur" et de nombreux autres ouvrages sur l'ACT, 
-                  traduits dans plus de 30 langues.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-black text-white">
-                <Globe className="w-6 h-6" aria-hidden="true" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-black text-black mb-2">Formateur International</h3>
-                <p className="text-gray-600">
-                  Formé des milliers de professionnels dans plus de 30 pays à travers le monde.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-black text-white">
-                <Award className="w-6 h-6" aria-hidden="true" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-black text-black mb-2">Expert Reconnu</h3>
-                <p className="text-gray-600">
-                  Reconnu comme l'un des principaux experts mondiaux en ACT avec plus de 20 ans 
-                  d'expérience clinique.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-black text-white">
-                <Users className="w-6 h-6" aria-hidden="true" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-black text-black mb-2">Pratique Clinique</h3>
-                <p className="text-gray-600">
-                  Pratique clinique active avec une approche pragmatique et centrée sur 
-                  l'efficacité thérapeutique.
-                </p>
-              </div>
-            </div>
-          </div>
+          <BenefitsGrid
+            benefits={keyPoints}
+            title={undefined}
+            subtitle={undefined}
+            className="!py-0"
+          />
 
           <SwissDivider className="my-16" />
 
