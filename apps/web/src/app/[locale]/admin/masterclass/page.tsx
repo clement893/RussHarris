@@ -1,5 +1,5 @@
 import { ErrorBoundary } from '@/components/errors/ErrorBoundary';
-import { ProtectedSuperAdminRoute } from '@/components/auth/ProtectedRoute';
+import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
 import AdminMasterclassContent from './AdminMasterclassContent';
 
 // Force dynamic rendering to avoid caching
