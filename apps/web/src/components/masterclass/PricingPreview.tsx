@@ -6,7 +6,6 @@
 
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Container } from '@/components/ui';
 import SwissDivider from './SwissDivider';
 import SwissCard from './SwissCard';
@@ -38,8 +37,6 @@ export default function PricingPreview({
   subtitle,
   className,
 }: PricingPreviewProps) {
-  const router = useRouter();
-
   if (pricingOptions.length === 0) {
     return null;
   }
