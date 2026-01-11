@@ -293,7 +293,7 @@ export default function AdminMasterclassContent() {
             >
               Annuler
             </Button>
-            <Button variant="destructive" onClick={handleDelete}>
+            <Button variant="danger" onClick={handleDelete}>
               Supprimer
             </Button>
           </div>
