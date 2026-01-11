@@ -5,6 +5,7 @@
  */
 
 import { apiClient, extractApiData } from '@/lib/api';
+import type { ApiResponse } from '@modele/types';
 
 export interface MasterclassEvent {
   id: number;
@@ -96,7 +97,7 @@ export const masterclassAPI = {
    */
   listEvents: async (): Promise<MasterclassEvent[]> => {
     const response = await apiClient.get<MasterclassEvent[]>('/v1/masterclass/events');
-    const data = extractApiData<MasterclassEvent[]>(response);
+    const data = extractApiData<MasterclassEvent[]>(response as unknown as ApiResponse<MasterclassEvent[]>);
     return Array.isArray(data) ? data : [];
   },
 
@@ -105,7 +106,7 @@ export const masterclassAPI = {
    */
   getEvent: async (eventId: number): Promise<MasterclassEvent> => {
     const response = await apiClient.get<MasterclassEvent>(`/v1/masterclass/events/${eventId}`);
-    const data = extractApiData<MasterclassEvent>(response);
+    const data = extractApiData<MasterclassEvent>(response as unknown as ApiResponse<MasterclassEvent>);
     if (!data) {
       throw new Error(`Event not found: ${eventId}`);
     }
@@ -117,7 +118,7 @@ export const masterclassAPI = {
    */
   listCitiesWithEvents: async (): Promise<CityWithEvents[]> => {
     const response = await apiClient.get<{cities: CityWithEvents[], total: number}>('/v1/masterclass/cities');
-    const result = extractApiData<{cities: CityWithEvents[], total: number}>(response);
+    const result = extractApiData<{cities: CityWithEvents[], total: number}>(response as unknown as ApiResponse<{cities: CityWithEvents[], total: number}>);
     if (!result || !result.cities) {
       return [];
     }
@@ -134,7 +135,7 @@ export const masterclassAPI = {
    */
   listCityEvents: async (cityId: number): Promise<CityEvent[]> => {
     const response = await apiClient.get<{city_events: CityEvent[], total: number}>(`/v1/masterclass/cities/${cityId}/events`);
-    const result = extractApiData<{city_events: CityEvent[], total: number}>(response);
+    const result = extractApiData<{city_events: CityEvent[], total: number}>(response as unknown as ApiResponse<{city_events: CityEvent[], total: number}>);
     if (!result || !result.city_events) {
       return [];
     }
@@ -154,7 +155,7 @@ export const masterclassAPI = {
    */
   getCityEvent: async (cityEventId: number): Promise<CityEvent> => {
     const response = await apiClient.get<CityEvent>(`/v1/masterclass/city-events/${cityEventId}`);
-    const data = extractApiData<CityEvent>(response);
+    const data = extractApiData<CityEvent>(response as unknown as ApiResponse<CityEvent>);
     if (!data) {
       throw new Error(`City event not found: ${cityEventId}`);
     }
@@ -175,7 +176,7 @@ export const masterclassAPI = {
    */
   getAvailability: async (cityEventId: number): Promise<Availability> => {
     const response = await apiClient.get<Availability>(`/v1/masterclass/city-events/${cityEventId}/availability`);
-    const data = extractApiData<Availability>(response);
+    const data = extractApiData<Availability>(response as unknown as ApiResponse<Availability>);
     if (!data) {
       throw new Error(`Availability not found for city event: ${cityEventId}`);
     }
@@ -198,7 +199,7 @@ export const masterclassAPI = {
     language?: string;
   }): Promise<MasterclassEvent> => {
     const response = await apiClient.post<MasterclassEvent>('/v1/masterclass/events', data);
-    return extractApiData<MasterclassEvent>(response);
+    return extractApiData<MasterclassEvent>(response as unknown as ApiResponse<MasterclassEvent>);
   },
 
   /**
@@ -213,7 +214,7 @@ export const masterclassAPI = {
     language?: string;
   }): Promise<MasterclassEvent> => {
     const response = await apiClient.put<MasterclassEvent>(`/v1/masterclass/events/${eventId}`, data);
-    return extractApiData<MasterclassEvent>(response);
+    return extractApiData<MasterclassEvent>(response as unknown as ApiResponse<MasterclassEvent>);
   },
 
   /**
@@ -228,7 +229,7 @@ export const masterclassAPI = {
    */
   listAllCities: async (): Promise<City[]> => {
     const response = await apiClient.get<City[]>('/v1/masterclass/cities/all');
-    const data = extractApiData<City[]>(response);
+    const data = extractApiData<City[]>(response as unknown as ApiResponse<City[]>);
     return Array.isArray(data) ? data : [];
   },
 
@@ -244,7 +245,7 @@ export const masterclassAPI = {
     image_url?: string;
   }): Promise<City> => {
     const response = await apiClient.post<City>('/v1/masterclass/cities', data);
-    return extractApiData<City>(response);
+    return extractApiData<City>(response as unknown as ApiResponse<City>);
   },
 
   /**
@@ -259,7 +260,7 @@ export const masterclassAPI = {
     image_url?: string;
   }): Promise<City> => {
     const response = await apiClient.put<City>(`/v1/masterclass/cities/${cityId}`, data);
-    return extractApiData<City>(response);
+    return extractApiData<City>(response as unknown as ApiResponse<City>);
   },
 
   /**
@@ -276,7 +277,7 @@ export const masterclassAPI = {
     const response = await apiClient.get<Venue[]>('/v1/masterclass/venues', {
       params: cityId ? { city_id: cityId } : undefined,
     });
-    const data = extractApiData<Venue[]>(response);
+    const data = extractApiData<Venue[]>(response as unknown as ApiResponse<Venue[]>);
     return Array.isArray(data) ? data : [];
   },
 
@@ -285,7 +286,7 @@ export const masterclassAPI = {
    */
   getVenue: async (venueId: number): Promise<Venue> => {
     const response = await apiClient.get<Venue>(`/v1/masterclass/venues/${venueId}`);
-    const data = extractApiData<Venue>(response);
+    const data = extractApiData<Venue>(response as unknown as ApiResponse<Venue>);
     if (!data) {
       throw new Error(`Venue not found: ${venueId}`);
     }
@@ -304,7 +305,7 @@ export const masterclassAPI = {
     amenities?: any;
   }): Promise<Venue> => {
     const response = await apiClient.post<Venue>('/v1/masterclass/venues', data);
-    return extractApiData<Venue>(response);
+    return extractApiData<Venue>(response as unknown as ApiResponse<Venue>);
   },
 
   /**
@@ -319,7 +320,7 @@ export const masterclassAPI = {
     amenities?: any;
   }): Promise<Venue> => {
     const response = await apiClient.put<Venue>(`/v1/masterclass/venues/${venueId}`, data);
-    return extractApiData<Venue>(response);
+    return extractApiData<Venue>(response as unknown as ApiResponse<Venue>);
   },
 
   /**
@@ -336,7 +337,7 @@ export const masterclassAPI = {
     const response = await apiClient.get<{city_events: CityEvent[], total: number}>('/v1/masterclass/city-events/all', {
       params: { skip, limit, status_filter: status },
     });
-    const result = extractApiData<{city_events: CityEvent[], total: number}>(response);
+    const result = extractApiData<{city_events: CityEvent[], total: number}>(response as unknown as ApiResponse<{city_events: CityEvent[], total: number}>);
     if (!result) {
       return { city_events: [], total: 0 };
     }
@@ -376,7 +377,7 @@ export const masterclassAPI = {
     group_minimum?: number;
   }): Promise<CityEvent> => {
     const response = await apiClient.post<CityEvent>('/v1/masterclass/city-events', data);
-    const event = extractApiData<CityEvent>(response);
+    const event = extractApiData<CityEvent>(response as unknown as ApiResponse<CityEvent>);
     // Map fields for frontend compatibility
     return {
       ...event,
@@ -410,7 +411,7 @@ export const masterclassAPI = {
     group_minimum?: number;
   }): Promise<CityEvent> => {
     const response = await apiClient.put<CityEvent>(`/v1/masterclass/city-events/${cityEventId}`, data);
-    const event = extractApiData<CityEvent>(response);
+    const event = extractApiData<CityEvent>(response as unknown as ApiResponse<CityEvent>);
     // Map fields for frontend compatibility
     return {
       ...event,
