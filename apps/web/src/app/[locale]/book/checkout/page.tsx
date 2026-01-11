@@ -61,23 +61,8 @@ export default function CheckoutPage() {
       setIsSubmitting(true);
       setError(null);
 
-      // Calculate pricing based on ticket type and quantity
-      const basePrice = Number(cityEvent.regular_price || cityEvent.price || 550);
-      let ticketPrice = basePrice;
-      
-      // Check if early bird deadline has passed
-      const isEarlyBird = cityEvent.early_bird_deadline 
-        ? new Date(cityEvent.early_bird_deadline) > new Date()
-        : false;
-      
-      if (formData.ticket_type === 'EARLY_BIRD' && isEarlyBird && cityEvent.early_bird_price) {
-        ticketPrice = Number(cityEvent.early_bird_price);
-      } else if (formData.ticket_type === 'GROUP' && formData.quantity >= 3) {
-        const groupDiscount = Number(cityEvent.group_discount_percentage || 0) / 100;
-        ticketPrice = basePrice * (1 - groupDiscount);
-      }
-
       // Prepare booking data
+      // Note: Pricing is calculated by the backend based on ticket_type and quantity
       const bookingData: BookingCreate = {
         city_event_id: parseInt(cityEventIdParam, 10),
         attendee_name: formData.attendee_name,
