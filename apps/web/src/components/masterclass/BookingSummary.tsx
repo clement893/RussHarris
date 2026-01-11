@@ -5,7 +5,7 @@
 
 'use client';
 
-import { Calendar, MapPin, Users, CreditCard } from 'lucide-react';
+import { Calendar, MapPin, Users } from 'lucide-react';
 import SwissCard from './SwissCard';
 
 export interface BookingSummaryData {
