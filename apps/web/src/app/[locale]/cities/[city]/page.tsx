@@ -164,7 +164,7 @@ export default function CityDetailPage() {
                           )}
                           <div className="mt-4 flex items-center justify-between">
                             <span className="text-2xl font-black text-black">
-                              {event.price || event.regular_price || event.event.price} {event.currency || event.event.currency || 'EUR'}
+                              {event.price || event.regular_price} {event.currency || 'EUR'}
                             </span>
                             <button
                               onClick={() => router.push(`/book?cityEventId=${event.id}`)}
