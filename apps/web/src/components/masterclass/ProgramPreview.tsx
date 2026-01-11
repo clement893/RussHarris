@@ -6,7 +6,6 @@
 
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Clock, Target, BookOpen } from 'lucide-react';
 import { Container } from '@/components/ui';
 import SwissDivider from './SwissDivider';
@@ -18,8 +17,6 @@ interface ProgramPreviewProps {
 }
 
 export default function ProgramPreview({ className }: ProgramPreviewProps) {
-  const router = useRouter();
-
   return (
     <section className={`bg-gray-50 py-20 md:py-32 ${className || ''}`} aria-labelledby="program-preview-heading">
       <Container>
