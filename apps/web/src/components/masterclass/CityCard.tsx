@@ -12,7 +12,7 @@ import { clsx } from 'clsx';
 import SwissCard from './SwissCard';
 import AvailabilityBar from './AvailabilityBar';
 import UrgencyBadge from './UrgencyBadge';
-import type { CityWithEvents, CityEvent } from '@/lib/api/masterclass';
+import type { CityWithEvents } from '@/lib/api/masterclass';
 
 interface CityCardProps {
   city: CityWithEvents;
