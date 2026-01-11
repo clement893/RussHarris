@@ -78,7 +78,6 @@ export default function CheckoutPage() {
       }
 
       const subtotal = ticketPrice * formData.quantity;
-      const discount = basePrice * formData.quantity - subtotal;
       const total = subtotal;
 
       // Prepare booking data
