@@ -255,8 +255,8 @@ export default function AdminMasterclassContent() {
         </div>
 
         <DataTable
-          columns={columns}
-          data={filteredCityEvents}
+          columns={columns as unknown as Column<Record<string, unknown>>[]}
+          data={filteredCityEvents as unknown as Record<string, unknown>[]}
           emptyMessage="Aucun événement trouvé"
         />
       </Card>
