@@ -24,7 +24,6 @@ import { logger } from '@/lib/logger';
 export default function HomePage() {
   const router = useRouter();
   const [cities, setCities] = useState<CityWithEvents[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     loadCities();
@@ -32,13 +31,10 @@ export default function HomePage() {
 
   const loadCities = async () => {
     try {
-      setIsLoading(true);
       const data = await masterclassAPI.listCitiesWithEvents();
       setCities(data);
     } catch (error) {
       logger.error('Failed to load cities', error instanceof Error ? error : new Error(String(error)));
-    } finally {
-      setIsLoading(false);
     }
   };
 
