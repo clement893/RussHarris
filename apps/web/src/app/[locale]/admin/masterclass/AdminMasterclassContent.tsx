@@ -72,7 +72,7 @@ export default function AdminMasterclassContent() {
     ce.venue?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getStatusBadgeVariant = (status?: string) => {
+  const getStatusBadgeVariant = (status?: string): 'default' | 'success' | 'warning' | 'error' => {
     switch (status) {
       case 'published':
         return 'success';
@@ -81,7 +81,7 @@ export default function AdminMasterclassContent() {
       case 'sold_out':
         return 'default';
       case 'cancelled':
-        return 'destructive';
+        return 'error';
       default:
         return 'default';
     }
