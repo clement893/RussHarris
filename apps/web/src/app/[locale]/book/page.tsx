@@ -71,7 +71,6 @@ export default function BookPage() {
   };
 
   const selectedCity = cities.find((c) => c.id === selectedCityId);
-  const selectedEvent = selectedCity?.events?.find((e) => e.id === selectedEventId);
 
   return (
     <div className="min-h-screen bg-white">
