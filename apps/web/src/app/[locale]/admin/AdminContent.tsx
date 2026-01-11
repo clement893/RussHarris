@@ -92,6 +92,17 @@ export default function AdminContent() {
           </Link>
         </Card>
 
+        <Card title="Masterclass" className="flex flex-col">
+          <p className="text-muted-foreground mb-4">
+            Gérer les événements masterclass, villes, lieux et réservations.
+          </p>
+          <Link href="/admin/masterclass">
+            <Button variant="primary" className="w-full">
+              Gérer les masterclass
+            </Button>
+          </Link>
+        </Card>
+
         <Card title="Paramètres" className="flex flex-col">
           <p className="text-muted-foreground mb-4">
             Configuration générale du système.

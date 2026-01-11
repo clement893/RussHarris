@@ -181,4 +181,252 @@ export const masterclassAPI = {
     }
     return data;
   },
+
+  // ============================================================================
+  // Admin endpoints (require admin or superadmin)
+  // ============================================================================
+
+  /**
+   * Create a new masterclass event (admin only)
+   */
+  createEvent: async (data: {
+    title_en: string;
+    title_fr: string;
+    description_en?: string;
+    description_fr?: string;
+    duration_days?: number;
+    language?: string;
+  }): Promise<MasterclassEvent> => {
+    const response = await apiClient.post<MasterclassEvent>('/v1/masterclass/events', data);
+    return extractApiData<MasterclassEvent>(response);
+  },
+
+  /**
+   * Update a masterclass event (admin only)
+   */
+  updateEvent: async (eventId: number, data: {
+    title_en?: string;
+    title_fr?: string;
+    description_en?: string;
+    description_fr?: string;
+    duration_days?: number;
+    language?: string;
+  }): Promise<MasterclassEvent> => {
+    const response = await apiClient.put<MasterclassEvent>(`/v1/masterclass/events/${eventId}`, data);
+    return extractApiData<MasterclassEvent>(response);
+  },
+
+  /**
+   * Delete a masterclass event (admin only)
+   */
+  deleteEvent: async (eventId: number): Promise<void> => {
+    await apiClient.delete(`/v1/masterclass/events/${eventId}`);
+  },
+
+  /**
+   * List all cities (admin only, without filtering)
+   */
+  listAllCities: async (): Promise<City[]> => {
+    const response = await apiClient.get<City[]>('/v1/masterclass/cities/all');
+    const data = extractApiData<City[]>(response);
+    return Array.isArray(data) ? data : [];
+  },
+
+  /**
+   * Create a new city (admin only)
+   */
+  createCity: async (data: {
+    name_en: string;
+    name_fr: string;
+    province?: string;
+    country?: string;
+    timezone?: string;
+    image_url?: string;
+  }): Promise<City> => {
+    const response = await apiClient.post<City>('/v1/masterclass/cities', data);
+    return extractApiData<City>(response);
+  },
+
+  /**
+   * Update a city (admin only)
+   */
+  updateCity: async (cityId: number, data: {
+    name_en?: string;
+    name_fr?: string;
+    province?: string;
+    country?: string;
+    timezone?: string;
+    image_url?: string;
+  }): Promise<City> => {
+    const response = await apiClient.put<City>(`/v1/masterclass/cities/${cityId}`, data);
+    return extractApiData<City>(response);
+  },
+
+  /**
+   * Delete a city (admin only)
+   */
+  deleteCity: async (cityId: number): Promise<void> => {
+    await apiClient.delete(`/v1/masterclass/cities/${cityId}`);
+  },
+
+  /**
+   * List all venues (admin only)
+   */
+  listVenues: async (cityId?: number): Promise<Venue[]> => {
+    const response = await apiClient.get<Venue[]>('/v1/masterclass/venues', {
+      params: cityId ? { city_id: cityId } : undefined,
+    });
+    const data = extractApiData<Venue[]>(response);
+    return Array.isArray(data) ? data : [];
+  },
+
+  /**
+   * Get a venue by ID (admin only)
+   */
+  getVenue: async (venueId: number): Promise<Venue> => {
+    const response = await apiClient.get<Venue>(`/v1/masterclass/venues/${venueId}`);
+    const data = extractApiData<Venue>(response);
+    if (!data) {
+      throw new Error(`Venue not found: ${venueId}`);
+    }
+    return data;
+  },
+
+  /**
+   * Create a new venue (admin only)
+   */
+  createVenue: async (data: {
+    city_id: number;
+    name: string;
+    address?: string;
+    postal_code?: string;
+    capacity: number;
+    amenities?: any;
+  }): Promise<Venue> => {
+    const response = await apiClient.post<Venue>('/v1/masterclass/venues', data);
+    return extractApiData<Venue>(response);
+  },
+
+  /**
+   * Update a venue (admin only)
+   */
+  updateVenue: async (venueId: number, data: {
+    city_id?: number;
+    name?: string;
+    address?: string;
+    postal_code?: string;
+    capacity?: number;
+    amenities?: any;
+  }): Promise<Venue> => {
+    const response = await apiClient.put<Venue>(`/v1/masterclass/venues/${venueId}`, data);
+    return extractApiData<Venue>(response);
+  },
+
+  /**
+   * Delete a venue (admin only)
+   */
+  deleteVenue: async (venueId: number): Promise<void> => {
+    await apiClient.delete(`/v1/masterclass/venues/${venueId}`);
+  },
+
+  /**
+   * List all city events (admin only, without filtering)
+   */
+  listAllCityEvents: async (skip = 0, limit = 100, status?: string): Promise<{city_events: CityEvent[], total: number}> => {
+    const response = await apiClient.get<{city_events: CityEvent[], total: number}>('/v1/masterclass/city-events/all', {
+      params: { skip, limit, status_filter: status },
+    });
+    const result = extractApiData<{city_events: CityEvent[], total: number}>(response);
+    if (!result) {
+      return { city_events: [], total: 0 };
+    }
+    // Map fields for frontend compatibility
+    return {
+      city_events: result.city_events.map(event => ({
+        ...event,
+        event_date: event.start_date,
+        max_attendees: event.total_capacity,
+        current_attendees: (event.total_capacity || 0) - (event.available_spots || 0),
+        is_active: event.status === 'published',
+        price: event.regular_price,
+        currency: event.currency || 'EUR',
+      })),
+      total: result.total,
+    };
+  },
+
+  /**
+   * Create a new city event (admin only)
+   */
+  createCityEvent: async (data: {
+    event_id: number;
+    city_id: number;
+    venue_id: number;
+    start_date: string;
+    end_date: string;
+    start_time?: string;
+    end_time?: string;
+    total_capacity: number;
+    available_spots: number;
+    status?: string;
+    early_bird_deadline?: string;
+    early_bird_price?: number;
+    regular_price: number;
+    group_discount_percentage?: number;
+    group_minimum?: number;
+  }): Promise<CityEvent> => {
+    const response = await apiClient.post<CityEvent>('/v1/masterclass/city-events', data);
+    const event = extractApiData<CityEvent>(response);
+    // Map fields for frontend compatibility
+    return {
+      ...event,
+      event_date: event.start_date,
+      max_attendees: event.total_capacity,
+      current_attendees: (event.total_capacity || 0) - (event.available_spots || 0),
+      is_active: event.status === 'published',
+      price: event.regular_price,
+      currency: event.currency || 'EUR',
+    };
+  },
+
+  /**
+   * Update a city event (admin only)
+   */
+  updateCityEvent: async (cityEventId: number, data: {
+    event_id?: number;
+    city_id?: number;
+    venue_id?: number;
+    start_date?: string;
+    end_date?: string;
+    start_time?: string;
+    end_time?: string;
+    total_capacity?: number;
+    available_spots?: number;
+    status?: string;
+    early_bird_deadline?: string;
+    early_bird_price?: number;
+    regular_price?: number;
+    group_discount_percentage?: number;
+    group_minimum?: number;
+  }): Promise<CityEvent> => {
+    const response = await apiClient.put<CityEvent>(`/v1/masterclass/city-events/${cityEventId}`, data);
+    const event = extractApiData<CityEvent>(response);
+    // Map fields for frontend compatibility
+    return {
+      ...event,
+      event_date: event.start_date,
+      max_attendees: event.total_capacity,
+      current_attendees: (event.total_capacity || 0) - (event.available_spots || 0),
+      is_active: event.status === 'published',
+      price: event.regular_price,
+      currency: event.currency || 'EUR',
+    };
+  },
+
+  /**
+   * Delete a city event (admin only)
+   */
+  deleteCityEvent: async (cityEventId: number): Promise<void> => {
+    await apiClient.delete(`/v1/masterclass/city-events/${cityEventId}`);
+  },
 };
