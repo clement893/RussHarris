@@ -34,9 +34,7 @@ export default function LogsViewer() {
     return () => clearInterval(interval);
   }, [search, levelFilter]);
 
-  const getLevelColor = (
-    level: LogEntry['level'],
-  ): 'error' | 'warning' | 'info' | 'default' => {
+  const getLevelColor = (level: LogEntry['level']): 'error' | 'warning' | 'info' | 'default' => {
     switch (level) {
       case 'error':
         return 'error';
@@ -97,10 +95,7 @@ export default function LogsViewer() {
             <div className="text-center py-8 text-muted-foreground">No logs found</div>
           ) : (
             logs.map((log) => (
-              <div
-                key={log.id}
-                className="p-3 bg-muted rounded-lg text-sm font-mono"
-              >
+              <div key={log.id} className="p-3 bg-muted rounded-lg text-sm font-mono">
                 <div className="flex items-center gap-2 mb-1">
                   <Badge variant={getLevelColor(log.level)}>{log.level}</Badge>
                   {log.service && <Badge variant="default">{log.service}</Badge>}

@@ -29,7 +29,7 @@ export default function HealthStatus() {
           setIsVisible(entry.isIntersecting);
         }
       },
-      { threshold: 0.1 },
+      { threshold: 0.1 }
     );
 
     observer.observe(elementRef.current);

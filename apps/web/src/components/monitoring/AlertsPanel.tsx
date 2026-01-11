@@ -38,7 +38,7 @@ export default function AlertsPanel() {
   };
 
   const getSeverityColor = (
-    severity: Alert['severity'],
+    severity: Alert['severity']
   ): 'error' | 'warning' | 'info' | 'default' => {
     switch (severity) {
       case 'critical':
@@ -59,9 +59,7 @@ export default function AlertsPanel() {
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold">Active Alerts</h3>
-          <Badge variant={alerts.length > 0 ? 'error' : 'success'}>
-            {alerts.length} active
-          </Badge>
+          <Badge variant={alerts.length > 0 ? 'error' : 'success'}>{alerts.length} active</Badge>
         </div>
 
         {alerts.length === 0 ? (
@@ -84,9 +82,7 @@ export default function AlertsPanel() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <Badge variant={getSeverityColor(alert.severity)}>
-                        {alert.severity}
-                      </Badge>
+                      <Badge variant={getSeverityColor(alert.severity)}>{alert.severity}</Badge>
                       <span className="font-medium">{alert.title}</span>
                     </div>
                     <p className="text-sm text-muted-foreground mb-2">{alert.message}</p>
