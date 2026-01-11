@@ -10,7 +10,7 @@ export { default as NavigationItem } from './NavigationItem';
 export { default as CTAPrimary } from './CTAPrimary';
 
 // Re-export config types and functions
-export type { NavigationItem } from '@/lib/navigation/config';
+export type { NavigationItem as NavigationItemType } from '@/lib/navigation/config';
 export {
   masterclassNavigationConfig,
   getFilteredNavigation,
