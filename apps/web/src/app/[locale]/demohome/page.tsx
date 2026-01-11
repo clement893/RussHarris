@@ -9,31 +9,31 @@ export default function DemoHomePage() {
     <div className="bg-[#0A0A0A] text-white">
       {/* Hero Section - L'Affiche de Tournée */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0A0A]/50 to-[#0A0A0A]" />
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/30 via-[#0A0A0A]/70 to-[#0A0A0A]" />
+        <div className="absolute inset-0 opacity-20">
           <Image
             src="/images/russ/SSjqkHFlqMG2.jpg"
             alt="Russ Harris"
             fill
             style={{ objectFit: 'cover' }}
-            className="grayscale"
+            className="grayscale opacity-50"
           />
         </div>
         <Container className="relative z-10 text-center py-32">
-          <div className="inline-block bg-[#F97316] text-black px-4 py-1 text-sm font-bold mb-8 tracking-wider">
+          <div className="inline-block border border-[#F97316] text-[#F97316] px-4 py-1 text-xs font-bold mb-10 tracking-widest rounded-full">
             WORLD TOUR 2026
           </div>
-          <h1 className="text-7xl md:text-9xl font-black tracking-tighter mb-6 leading-none">
+          <h1 className="text-7xl md:text-9xl font-black mb-6 leading-none" style={{ letterSpacing: '0.02em' }}>
             RUSS
             <br />
             HARRIS
           </h1>
-          <p className="text-2xl md:text-4xl font-bold text-[#F97316] mb-12 tracking-wide">
+          <p className="text-2xl md:text-3xl font-semibold text-[#F97316] mb-14 tracking-wide">
             THE CANADIAN ACT TOUR
           </p>
           <Button 
             size="lg" 
-            className="bg-[#F97316] hover:bg-[#EA580C] text-black font-black text-lg px-12 py-7 rounded-full transition-all hover:scale-105"
+            className="bg-transparent border-2 border-[#F97316] text-[#F97316] hover:bg-[#F97316] hover:text-black font-bold text-base px-10 py-6 rounded-full transition-all"
           >
             VOIR LES DATES
           </Button>
@@ -41,24 +41,24 @@ export default function DemoHomePage() {
       </section>
 
       {/* Section Marquee - Le Mouvement */}
-      <div className="bg-[#F97316] text-black py-6 overflow-hidden whitespace-nowrap">
-        <div className="animate-marquee inline-block">
-          <span className="text-4xl font-black mx-8">MONTRÉAL</span>
-          <span className="text-4xl font-black mx-8">•</span>
-          <span className="text-4xl font-black mx-8">CALGARY</span>
-          <span className="text-4xl font-black mx-8">•</span>
-          <span className="text-4xl font-black mx-8">VANCOUVER</span>
-          <span className="text-4xl font-black mx-8">•</span>
-          <span className="text-4xl font-black mx-8">TORONTO</span>
-          <span className="text-4xl font-black mx-8">•</span>
-          <span className="text-4xl font-black mx-8">MONTRÉAL</span>
-          <span className="text-4xl font-black mx-8">•</span>
-          <span className="text-4xl font-black mx-8">CALGARY</span>
-          <span className="text-4xl font-black mx-8">•</span>
-          <span className="text-4xl font-black mx-8">VANCOUVER</span>
-          <span className="text-4xl font-black mx-8">•</span>
-          <span className="text-4xl font-black mx-8">TORONTO</span>
-          <span className="text-4xl font-black mx-8">•</span>
+      <div className="bg-[#0A0A0A] border-y border-gray-800 py-5 overflow-hidden whitespace-nowrap">
+        <div className="animate-marquee inline-block opacity-80">
+          <span className="text-3xl font-black mx-8 text-[#F97316]">MONTRÉAL</span>
+          <span className="text-3xl font-black mx-8 text-gray-600">•</span>
+          <span className="text-3xl font-black mx-8 text-[#F97316]">CALGARY</span>
+          <span className="text-3xl font-black mx-8 text-gray-600">•</span>
+          <span className="text-3xl font-black mx-8 text-[#F97316]">VANCOUVER</span>
+          <span className="text-3xl font-black mx-8 text-gray-600">•</span>
+          <span className="text-3xl font-black mx-8 text-[#F97316]">TORONTO</span>
+          <span className="text-3xl font-black mx-8 text-gray-600">•</span>
+          <span className="text-3xl font-black mx-8 text-[#F97316]">MONTRÉAL</span>
+          <span className="text-3xl font-black mx-8 text-gray-600">•</span>
+          <span className="text-3xl font-black mx-8 text-[#F97316]">CALGARY</span>
+          <span className="text-3xl font-black mx-8 text-gray-600">•</span>
+          <span className="text-3xl font-black mx-8 text-[#F97316]">VANCOUVER</span>
+          <span className="text-3xl font-black mx-8 text-gray-600">•</span>
+          <span className="text-3xl font-black mx-8 text-[#F97316]">TORONTO</span>
+          <span className="text-3xl font-black mx-8 text-gray-600">•</span>
         </div>
       </div>
 
@@ -81,16 +81,16 @@ export default function DemoHomePage() {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <h3 className="text-5xl md:text-8xl font-black tracking-tighter group-hover:text-[#F97316] transition-colors leading-none mb-2">
+                    <h3 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-3 transition-colors duration-300 group-hover:text-[#F97316]">
                       {show.city}
                     </h3>
-                    <div className="flex items-center gap-6 text-gray-400 text-sm md:text-base">
+                    <div className="flex items-center gap-6 text-gray-400 text-base md:text-lg">
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
+                        <Calendar className="w-5 h-5" />
                         <span className="font-bold">{show.date} 2026</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4" />
+                        <MapPin className="w-5 h-5" />
                         <span>{show.venue}</span>
                       </div>
                       <div className="text-[#F97316] font-bold">
@@ -122,7 +122,7 @@ export default function DemoHomePage() {
                   alt="Dr. Russ Harris"
                   fill
                   style={{ objectFit: 'cover' }}
-                  className="grayscale contrast-125"
+                  className="grayscale contrast-110"
                 />
               </div>
             </div>
@@ -132,7 +132,7 @@ export default function DemoHomePage() {
                 <br />
                 DERRIÈRE
                 <br />
-                <span className="text-[#F97316]">L'ACT</span>
+                <span className="text-[#F97316] italic">L'ACT</span>
               </h2>
               <p className="text-xl text-gray-300 mb-6 leading-relaxed">
                 Dr. Russ Harris n'est pas qu'un thérapeute. C'est un pionnier, un innovateur qui a transformé la façon dont 90 000 professionnels de la santé pratiquent la psychothérapie.
@@ -140,7 +140,7 @@ export default function DemoHomePage() {
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                 Auteur du best-seller mondial "The Happiness Trap" (1 million d'exemplaires vendus, traduit en 30 langues), il a créé un protocole ACT pour l'Organisation Mondiale de la Santé, validé par la science.
               </p>
-              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-800">
+              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-[#F97316]/30">
                 <div>
                   <div className="text-4xl font-black text-[#F97316] mb-2">90K+</div>
                   <div className="text-sm text-gray-400 uppercase tracking-wider">Professionnels formés</div>
@@ -187,17 +187,18 @@ export default function DemoHomePage() {
       </section>
 
       {/* Final CTA - Le Rappel */}
-      <section className="py-32 bg-[#F97316] text-black">
-        <Container className="max-w-4xl mx-auto text-center">
-          <h2 className="text-6xl md:text-9xl font-black mb-8 tracking-tighter leading-none">
+      <section className="py-32 bg-gradient-to-b from-[#0A0A0A] via-[#F97316]/20 to-[#0A0A0A] relative">
+        <div className="absolute inset-0 bg-[#F97316]/10" />
+        <Container className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter leading-none">
             PRÊT?
           </h2>
-          <p className="text-2xl font-bold mb-12">
+          <p className="text-xl font-semibold mb-12 text-gray-300">
             800 places disponibles au total pour le Canada
           </p>
           <Button 
             size="lg" 
-            className="bg-black hover:bg-gray-900 text-white font-black text-xl px-16 py-8 rounded-full transition-all hover:scale-105"
+            className="bg-[#F97316] hover:bg-[#EA580C] text-black font-black text-lg px-14 py-7 rounded-full transition-all hover:scale-105"
           >
             RÉSERVER MA PLACE
           </Button>
