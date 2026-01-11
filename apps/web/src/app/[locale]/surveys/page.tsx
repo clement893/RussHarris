@@ -83,7 +83,7 @@ export default function SurveysPage() {
           survey={editingSurvey || undefined}
           onSave={handleSave}
           onPublish={handlePublish}
-          onPreview={(survey) => router.push(`/surveys/${survey.id}/preview`)}
+          onPreview={(survey: Survey) => router.push(`/surveys/${survey.id}/preview`)}
         />
       </ProtectedRoute>
     );
