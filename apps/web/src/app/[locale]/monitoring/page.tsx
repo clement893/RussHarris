@@ -12,7 +12,7 @@ import AlertsPanel from '@/components/monitoring/AlertsPanel';
 import LogsViewer from '@/components/monitoring/LogsViewer';
 import SystemMetrics from '@/components/monitoring/SystemMetrics';
 import PerformanceProfiler from '@/components/monitoring/PerformanceProfiler';
-import { PerformanceDashboard } from '@/components/performance/PerformanceDashboard';
+import { PerformanceDashboard } from '@/components/performance';
 import { trackWebVital } from '@/lib/monitoring/metrics';
 import { profiler } from '@/lib/monitoring/profiler';
 import { createLog } from '@/lib/monitoring/logs';

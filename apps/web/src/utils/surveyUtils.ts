@@ -4,7 +4,7 @@
  * Utility functions for survey/questionnaire data conversion and manipulation
  */
 
-import type { Survey, SurveySettings } from '@/components/surveys/SurveyBuilder';
+import type { Survey, SurveySettings } from '@/components/surveys';
 
 /**
  * Default survey settings
