@@ -5,12 +5,12 @@
 
 'use client';
 
-import { masterclassNavigationConfig, type NavigationItem } from '@/lib/navigation/config';
+import { masterclassNavigationConfig, type NavigationItem as NavigationItemType } from '@/lib/navigation/config';
 import NavigationItem from './NavigationItem';
 import { usePathname } from 'next/navigation';
 
 interface DesktopNavigationProps {
-  items?: NavigationItem[];
+  items?: NavigationItemType[];
   onNavigate?: () => void;
 }
 
