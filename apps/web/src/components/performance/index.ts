@@ -7,6 +7,7 @@ export { default as OptimisticUpdates } from './OptimisticUpdates';
 export { default as OptimizationDashboard } from './OptimizationDashboard';
 export { PerformanceScripts } from './PerformanceScripts';
 export { WebVitalsReporter } from './WebVitalsReporter';
+export { PerformanceDashboard } from './PerformanceDashboard';
 
 export type { OfflineSupportProps } from './OfflineSupport';
 export type { OptimisticUpdatesProps } from './OptimisticUpdates';

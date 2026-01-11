@@ -1,14 +1,35 @@
 {
   "version": "1.0.0",
-  "generated": "2025-12-29T16:23:39.075Z",
+  "generated": "2026-01-11T04:07:42.955Z",
   "summary": {
-    "total": 169,
-    "connected": 51,
-    "partial": 22,
-    "needsIntegration": 118,
-    "static": 118
+    "total": 148,
+    "connected": 63,
+    "partial": 32,
+    "needsIntegration": 85,
+    "static": 85
   },
   "pages": [
+    {
+      "path": "app\\[locale]\\about-russ\\page.tsx",
+      "url": "/about-russ",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\admin\\api-keys\\page.tsx",
+      "url": "/admin/api-keys",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\admin\\articles\\page.tsx",
+      "url": "/admin/articles",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
     {
       "path": "app\\[locale]\\admin\\invitations\\page.tsx",
       "url": "/admin/invitations",
@@ -34,8 +55,15 @@
       "imports": []
     },
     {
-      "path": "app\\[locale]\\admin\\logs\\page.tsx",
-      "url": "/admin/logs",
+      "path": "app\\[locale]\\admin\\masterclass\\page.tsx",
+      "url": "/admin/masterclass",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\admin\\media\\page.tsx",
+      "url": "/admin/media",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": []
@@ -50,6 +78,13 @@
     {
       "path": "app\\[locale]\\admin\\page.tsx",
       "url": "/admin",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\admin\\pages\\page.tsx",
+      "url": "/admin/pages",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": []
@@ -133,6 +168,13 @@
       "imports": []
     },
     {
+      "path": "app\\[locale]\\admin-logs\\testing\\page.tsx",
+      "url": "/admin-logs/testing",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app\\[locale]\\ai\\chat\\page.tsx",
       "url": "/ai/chat",
       "apiCalls": [],
@@ -140,8 +182,8 @@
       "imports": []
     },
     {
-      "path": "app\\[locale]\\ai\\test\\page.tsx",
-      "url": "/ai/test",
+      "path": "app\\[locale]\\ai\\testing\\page.tsx",
+      "url": "/ai/testing",
       "apiCalls": [
         {
           "method": "MODULE",
@@ -160,6 +202,32 @@
       "imports": []
     },
     {
+      "path": "app\\[locale]\\api-connections\\testing\\page.tsx",
+      "url": "/api-connections/testing",
+      "apiCalls": [
+        {
+          "method": "GET",
+          "endpoint": "/v1/auth/me"
+        },
+        {
+          "method": "GET",
+          "endpoint": "/v1/nonexistent-endpoint-12345"
+        },
+        {
+          "method": "GET",
+          "endpoint": "/v1/health/health"
+        },
+        {
+          "method": "POST",
+          "endpoint": "/v1/media/validate"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "client"
+      ]
+    },
+    {
       "path": "app\\[locale]\\auth\\callback\\page.tsx",
       "url": "/auth/callback",
       "apiCalls": [
@@ -172,8 +240,8 @@
       "imports": []
     },
     {
-      "path": "app\\[locale]\\auth\\google\\test\\page.tsx",
-      "url": "/auth/google/test",
+      "path": "app\\[locale]\\auth\\google\\testing\\page.tsx",
+      "url": "/auth/google/testing",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": [
@@ -305,12 +373,101 @@
       ]
     },
     {
+      "path": "app\\[locale]\\book\\checkout\\page.tsx",
+      "url": "/book/checkout",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "masterclassAPI.getCityEvent"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "bookingsAPI.create"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "masterclass",
+        "bookings"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\book\\confirmation\\page.tsx",
+      "url": "/book/confirmation",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "bookingsAPI.getSummary"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "bookings"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\book\\page.tsx",
+      "url": "/book",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "masterclassAPI.listCitiesWithEvents"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "masterclass"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\book\\payment\\page.tsx",
+      "url": "/book/payment",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "bookingsAPI.getByReference"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "bookings"
+      ]
+    },
+    {
       "path": "app\\[locale]\\check-my-superadmin-status\\page.tsx",
       "url": "/check-my-superadmin-status",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": [
         "admin"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\cities\\page.tsx",
+      "url": "/cities",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "masterclassAPI.listCitiesWithEvents"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "masterclass"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\cities\\[city]\\page.tsx",
+      "url": "/cities/[city]",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "masterclassAPI.listCityEvents"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "masterclass"
       ]
     },
     {
@@ -347,344 +504,8 @@
       "imports": []
     },
     {
-      "path": "app\\[locale]\\components\\activity\\page.tsx",
-      "url": "/components/activity",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\admin\\page.tsx",
-      "url": "/components/admin",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\advanced\\page.tsx",
-      "url": "/components/advanced",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\ai\\page.tsx",
-      "url": "/components/ai",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\analytics\\page.tsx",
-      "url": "/components/analytics",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\auth\\page.tsx",
-      "url": "/components/auth",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\billing\\page.tsx",
-      "url": "/components/billing",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\blog\\page.tsx",
-      "url": "/components/blog",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\charts\\page.tsx",
-      "url": "/components/charts",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\client\\page.tsx",
-      "url": "/components/client",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\cms\\page.tsx",
-      "url": "/components/cms",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\collaboration\\page.tsx",
-      "url": "/components/collaboration",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\content\\page.tsx",
-      "url": "/components/content",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\data\\page.tsx",
-      "url": "/components/data",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\erp\\page.tsx",
-      "url": "/components/erp",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\errors\\page.tsx",
-      "url": "/components/errors",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\favorites\\page.tsx",
-      "url": "/components/favorites",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\feedback\\page.tsx",
-      "url": "/components/feedback",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\forms\\page.tsx",
-      "url": "/components/forms",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\help\\page.tsx",
-      "url": "/components/help",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\i18n\\page.tsx",
-      "url": "/components/i18n",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\integrations\\page.tsx",
-      "url": "/components/integrations",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\layout\\page.tsx",
-      "url": "/components/layout",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\marketing\\page.tsx",
-      "url": "/components/marketing",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\media\\page.tsx",
-      "url": "/components/media",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\monitoring\\page.tsx",
-      "url": "/components/monitoring",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\navigation\\page.tsx",
-      "url": "/components/navigation",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\notifications\\page.tsx",
-      "url": "/components/notifications",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\page-builder\\page.tsx",
-      "url": "/components/page-builder",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\page.tsx",
-      "url": "/components",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\performance\\page.tsx",
-      "url": "/components/performance",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\profile\\page.tsx",
-      "url": "/components/profile",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\providers\\page.tsx",
-      "url": "/components/providers",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\rbac\\page.tsx",
-      "url": "/components/rbac",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\search\\page.tsx",
-      "url": "/components/search",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\sections\\page.tsx",
-      "url": "/components/sections",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\seo\\page.tsx",
-      "url": "/components/seo",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\settings\\page.tsx",
-      "url": "/components/settings",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\sharing\\page.tsx",
-      "url": "/components/sharing",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\subscriptions\\page.tsx",
-      "url": "/components/subscriptions",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\surveys\\page.tsx",
-      "url": "/components/surveys",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\tags\\page.tsx",
-      "url": "/components/tags",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\templates\\page.tsx",
-      "url": "/components/templates",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\theme\\page.tsx",
-      "url": "/components/theme",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\theme-showcase\\page.tsx",
-      "url": "/components/theme-showcase",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\theme-showcase\\[style]\\page.tsx",
-      "url": "/components/theme-showcase/[style]",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\utils\\page.tsx",
-      "url": "/components/utils",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\versions\\page.tsx",
-      "url": "/components/versions",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
-      "path": "app\\[locale]\\components\\workflow\\page.tsx",
-      "url": "/components/workflow",
+      "path": "app\\[locale]\\contact\\page.tsx",
+      "url": "/contact",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": []
@@ -895,6 +716,13 @@
       "imports": []
     },
     {
+      "path": "app\\[locale]\\cookies\\page.tsx",
+      "url": "/cookies",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app\\[locale]\\dashboard\\activity\\page.tsx",
       "url": "/dashboard/activity",
       "apiCalls": [],
@@ -996,6 +824,120 @@
       ]
     },
     {
+      "path": "app\\[locale]\\dashboard\\reseau\\contacts\\page.tsx",
+      "url": "/dashboard/reseau/contacts",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "reseauContactsAPI.import"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "reseauContactsAPI.export"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "reseauContactsAPI.downloadTemplate"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "reseauContactsAPI.downloadZipTemplate"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\reseau\\contacts\\[id]\\edit\\page.tsx",
+      "url": "/dashboard/reseau/contacts/[id]/edit",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "reseauContactsAPI.get"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "reseauContactsAPI.update"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\reseau\\contacts\\[id]\\page.tsx",
+      "url": "/dashboard/reseau/contacts/[id]",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "reseauContactsAPI.get"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "reseauContactsAPI.delete"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\reseau\\entreprises\\page.tsx",
+      "url": "/dashboard/reseau/entreprises",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "companiesAPI.import"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "companiesAPI.export"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "companiesAPI.downloadTemplate"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "companiesAPI.downloadZipTemplate"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "companies"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\reseau\\entreprises\\[id]\\page.tsx",
+      "url": "/dashboard/reseau/entreprises/[id]",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "companiesAPI.get"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "companiesAPI.delete"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "companies"
+      ]
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\reseau\\page.tsx",
+      "url": "/dashboard/reseau",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\dashboard\\reseau\\temoignages\\page.tsx",
+      "url": "/dashboard/reseau/temoignages",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app\\[locale]\\db\\test\\page.tsx",
       "url": "/db/test",
       "apiCalls": [],
@@ -1012,8 +954,8 @@
       "imports": []
     },
     {
-      "path": "app\\[locale]\\email\\test\\page.tsx",
-      "url": "/email/test",
+      "path": "app\\[locale]\\email\\testing\\page.tsx",
+      "url": "/email/testing",
       "apiCalls": [
         {
           "method": "MODULE",
@@ -1162,6 +1104,13 @@
       "imports": []
     },
     {
+      "path": "app\\[locale]\\faq\\page.tsx",
+      "url": "/faq",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app\\[locale]\\forms\\page.tsx",
       "url": "/forms",
       "apiCalls": [
@@ -1198,18 +1147,6 @@
       "imports": [
         "utils"
       ]
-    },
-    {
-      "path": "app\\[locale]\\help\\contact\\page.tsx",
-      "url": "/help/contact",
-      "apiCalls": [
-        {
-          "method": "MODULE",
-          "endpoint": "supportTicketsAPI.create"
-        }
-      ],
-      "hasApiCalls": true,
-      "imports": []
     },
     {
       "path": "app\\[locale]\\help\\faq\\page.tsx",
@@ -1269,6 +1206,20 @@
     {
       "path": "app\\[locale]\\help\\videos\\page.tsx",
       "url": "/help/videos",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\legal\\page.tsx",
+      "url": "/legal",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\masterclass\\page.tsx",
+      "url": "/masterclass",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": []
@@ -1359,9 +1310,16 @@
     {
       "path": "app\\[locale]\\page.tsx",
       "url": "app",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "masterclassAPI.listCitiesWithEvents"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "masterclass"
+      ]
     },
     {
       "path": "app\\[locale]\\pages\\[slug]\\edit\\page.tsx",
@@ -1412,6 +1370,13 @@
     {
       "path": "app\\[locale]\\pricing\\page.tsx",
       "url": "/pricing",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\privacy\\page.tsx",
+      "url": "/privacy",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": []
@@ -1472,7 +1437,7 @@
         },
         {
           "method": "MODULE",
-          "endpoint": "apiKeysAPI.getMyKeys"
+          "endpoint": "apiKeysAPI.list"
         },
         {
           "method": "MODULE",
@@ -1480,7 +1445,7 @@
         },
         {
           "method": "MODULE",
-          "endpoint": "apiKeysAPI.delete"
+          "endpoint": "apiKeysAPI.revoke"
         }
       ],
       "hasApiCalls": true,
@@ -1503,8 +1468,8 @@
       "imports": []
     },
     {
-      "path": "app\\[locale]\\sentry\\test\\page.tsx",
-      "url": "/sentry/test",
+      "path": "app\\[locale]\\sentry\\testing\\page.tsx",
+      "url": "/sentry/testing",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": []
@@ -1662,8 +1627,8 @@
       ]
     },
     {
-      "path": "app\\[locale]\\stripe\\test\\page.tsx",
-      "url": "/stripe/test",
+      "path": "app\\[locale]\\stripe\\testing\\page.tsx",
+      "url": "/stripe/testing",
       "apiCalls": [
         {
           "method": "MODULE",
@@ -1761,6 +1726,20 @@
       "imports": []
     },
     {
+      "path": "app\\[locale]\\terms\\page.tsx",
+      "url": "/terms",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\test\\admin-logs\\page.tsx",
+      "url": "/test/admin-logs",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app\\[locale]\\test\\api-connections\\page.tsx",
       "url": "/test/api-connections",
       "apiCalls": [
@@ -1789,6 +1768,13 @@
     {
       "path": "app\\[locale]\\test-sentry\\page.tsx",
       "url": "/test-sentry",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app\\[locale]\\testimonials\\page.tsx",
+      "url": "/testimonials",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": []

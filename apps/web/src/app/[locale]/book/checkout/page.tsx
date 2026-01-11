@@ -77,8 +77,6 @@ export default function CheckoutPage() {
         ticketPrice = basePrice * (1 - groupDiscount);
       }
 
-      const subtotal = ticketPrice * formData.quantity;
-
       // Prepare booking data
       const bookingData: BookingCreate = {
         city_event_id: parseInt(cityEventIdParam, 10),
