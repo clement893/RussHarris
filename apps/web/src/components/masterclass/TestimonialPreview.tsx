@@ -56,7 +56,7 @@ export default function TestimonialPreview({
 
   const currentTestimonial = visibleTestimonials[currentIndex];
 
-  if (visibleTestimonials.length === 0) {
+  if (visibleTestimonials.length === 0 || !currentTestimonial) {
     return null;
   }
 
