@@ -16,7 +16,6 @@ import CityCard from '@/components/masterclass/CityCard';
 import TestimonialPreview, { type Testimonial } from '@/components/masterclass/TestimonialPreview';
 import PricingPreview, { type PricingOption } from '@/components/masterclass/PricingPreview';
 import FAQPreview, { type FAQItem } from '@/components/masterclass/FAQPreview';
-import MasterclassFooter from '@/components/layout/MasterclassFooter';
 import { Calendar, MapPin, Users, Award, GraduationCap, BookOpen, UsersRound, Award as AwardIcon } from 'lucide-react';
 import { masterclassAPI, type CityWithEvents } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
@@ -305,9 +304,6 @@ export default function HomePage() {
         subtitle="Trouvez rapidement les réponses aux questions les plus courantes"
         maxVisible={5}
       />
-
-      {/* Footer */}
-      <MasterclassFooter />
     </div>
   );
 }
