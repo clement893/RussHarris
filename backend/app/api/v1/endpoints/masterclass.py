@@ -13,6 +13,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app.core.database import get_db
 from app.core.logging import logger
+from app.core.cache import invalidate_cache_pattern_async
 from app.dependencies import get_current_user, require_admin_or_superadmin
 from app.models.masterclass import MasterclassEvent, City, Venue, CityEvent, EventStatus
 from app.models import User
@@ -423,6 +424,8 @@ async def create_city(
         await db.refresh(city)
         
         logger.info(f"User {current_user.id} created city {city.id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return CityResponse.model_validate(city)
     except Exception as e:
         await db.rollback()
@@ -596,6 +599,8 @@ async def create_venue(
         await db.refresh(venue)
         
         logger.info(f"User {current_user.id} created venue {venue.id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return VenueResponse.model_validate(venue)
     except Exception as e:
         await db.rollback()
@@ -798,6 +803,8 @@ async def create_city_event(
         await db.refresh(city_event, ["event", "city", "venue"])
         
         logger.info(f"User {current_user.id} created city event {city_event.id}")
+        # Invalidate cache for masterclass endpoints
+        await invalidate_cache_pattern_async("masterclass:*")
         return CityEventResponse.model_validate(city_event)
     except Exception as e:
         await db.rollback()
