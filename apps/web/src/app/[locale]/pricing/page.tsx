@@ -5,13 +5,11 @@
 
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
 import PricingCard, { type PricingCardData } from '@/components/masterclass/PricingCard';
 
 export default function PricingPage() {
-  const router = useRouter();
   
   const pricingOptions: PricingCardData[] = [
     {
