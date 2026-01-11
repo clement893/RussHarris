@@ -8,7 +8,6 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from '@/i18n/routing';
-import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -34,7 +33,6 @@ export default function MasterclassNavigation({
 }: MasterclassNavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [navigationItemsWithBadges, setNavigationItemsWithBadges] = useState<NavigationItem[]>([]);
-  const pathname = usePathname();
   const t = useTranslations();
   const { isAuthenticated, user } = useAuthStore();
 
