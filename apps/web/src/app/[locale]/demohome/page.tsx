@@ -8,17 +8,7 @@ export default function DemoHomePage() {
   return (
     <div className="bg-[#0A0A0A] text-white">
       {/* Hero Section - Enrichi avec plus de substance */}
-      <section className="relative min-h-screen flex items-center overflow-hidden py-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] via-[#0A0A0A]/95 to-[#F97316]/10" />
-        <div className="absolute inset-0 opacity-15">
-          <Image
-            src="/images/russ/SSjqkHFlqMG2.jpg"
-            alt="Russ Harris"
-            fill
-            style={{ objectFit: 'cover' }}
-            className="grayscale"
-          />
-        </div>
+      <section className="relative min-h-screen flex items-center overflow-hidden py-20 bg-[#0A0A0A]">
         <Container className="relative z-10 max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             {/* Colonne gauche - Contenu principal */}
@@ -72,26 +62,16 @@ export default function DemoHomePage() {
               </Button>
             </div>
 
-            {/* Colonne droite - Villes et dates */}
-            <div className="bg-[#111111]/80 backdrop-blur-sm rounded-3xl p-8 border border-gray-800">
-              <h3 className="text-2xl font-black mb-6 text-[#F97316]">4 VILLES • 800 PLACES</h3>
-              <div className="space-y-4">
-                {[
-                  { city: 'Montréal', date: '24-25 mai 2026', places: 200 },
-                  { city: 'Calgary', date: '31 mai - 1 juin 2026', places: 200 },
-                  { city: 'Vancouver', date: '7-8 juin 2026', places: 200 },
-                  { city: 'Toronto', date: '14-15 juin 2026', places: 200 },
-                ].map((location) => (
-                  <div key={location.city} className="flex items-center justify-between py-3 border-b border-gray-800 last:border-0">
-                    <div>
-                      <div className="text-xl font-bold">{location.city}</div>
-                      <div className="text-sm text-gray-400">{location.date}</div>
-                    </div>
-                    <div className="text-[#F97316] font-bold text-sm">
-                      {location.places} places
-                    </div>
-                  </div>
-                ))}
+            {/* Colonne droite - Photo ronde de Russ Harris */}
+            <div className="flex items-center justify-center">
+              <div className="relative w-96 h-96 rounded-full overflow-hidden border-4 border-[#F97316] shadow-2xl shadow-[#F97316]/30">
+                <Image
+                  src="/images/russ/8obb1myXAohZ.jpg"
+                  alt="Dr. Russ Harris"
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  className=""
+                />
               </div>
             </div>
           </div>
