@@ -104,7 +104,7 @@ export const bookingsAPI = {
    */
   getByReference: async (reference: string): Promise<BookingResponse> => {
     const response = await apiClient.get<BookingResponse>(`/v1/bookings/${reference}`);
-    const data = extractApiData<BookingResponse>(response);
+    const data = extractApiData<BookingResponse>(response as unknown as ApiResponse<BookingResponse>);
     if (!data) {
       throw new Error(`Booking not found: ${reference}`);
     }
@@ -116,7 +116,7 @@ export const bookingsAPI = {
    */
   getSummary: async (reference: string): Promise<BookingSummaryResponse> => {
     const response = await apiClient.get<BookingSummaryResponse>(`/v1/bookings/${reference}/summary`);
-    const data = extractApiData<BookingSummaryResponse>(response);
+    const data = extractApiData<BookingSummaryResponse>(response as unknown as ApiResponse<BookingSummaryResponse>);
     if (!data) {
       throw new Error(`Booking summary not found: ${reference}`);
     }
@@ -128,7 +128,7 @@ export const bookingsAPI = {
    */
   cancel: async (reference: string): Promise<BookingResponse> => {
     const response = await apiClient.post<BookingResponse>(`/v1/bookings/${reference}/cancel`);
-    const data = extractApiData<BookingResponse>(response);
+    const data = extractApiData<BookingResponse>(response as unknown as ApiResponse<BookingResponse>);
     if (!data) {
       throw new Error(`Failed to cancel booking: ${reference}`);
     }
@@ -140,7 +140,7 @@ export const bookingsAPI = {
    */
   createPaymentIntent: async (bookingId: number): Promise<PaymentIntentResponse> => {
     const response = await apiClient.post<PaymentIntentResponse>(`/v1/bookings/${bookingId}/create-payment-intent`);
-    const data = extractApiData<PaymentIntentResponse>(response);
+    const data = extractApiData<PaymentIntentResponse>(response as unknown as ApiResponse<PaymentIntentResponse>);
     if (!data) {
       throw new Error(`Failed to create payment intent for booking: ${bookingId}`);
     }
