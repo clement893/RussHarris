@@ -6,7 +6,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { masterclassNavigationConfig, type NavigationItem } from '@/lib/navigation/config';
+import { masterclassNavigationConfig, type NavigationItem as NavigationItemType } from '@/lib/navigation/config';
 import NavigationItem from './NavigationItem';
 import CTAPrimary from './CTAPrimary';
 import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
@@ -17,7 +17,7 @@ import { useTranslations } from 'next-intl';
 interface MobileNavigationProps {
   isOpen: boolean;
   onClose: () => void;
-  items?: NavigationItem[];
+  items?: NavigationItemType[];
   showCTA?: boolean;
 }
 
