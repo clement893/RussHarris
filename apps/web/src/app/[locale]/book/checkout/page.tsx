@@ -62,7 +62,7 @@ export default function CheckoutPage() {
       setError(null);
 
       // Calculate pricing based on ticket type and quantity
-      const basePrice = Number(cityEvent.regular_price || cityEvent.price || cityEvent.event?.price || 550);
+      const basePrice = Number(cityEvent.regular_price || cityEvent.price || 550);
       let ticketPrice = basePrice;
       
       // Check if early bird deadline has passed
