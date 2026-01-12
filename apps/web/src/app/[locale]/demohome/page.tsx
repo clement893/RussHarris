@@ -6,9 +6,9 @@ import { ArrowRight, Calendar, MapPin } from 'lucide-react';
 
 export default function DemoHomePage() {
   return (
-    <div className="bg-white text-black">
+    <div className="bg-[#0A0A0A] text-white">
       {/* Hero Section - Enrichi avec plus de substance */}
-      <section className="relative min-h-screen flex items-center overflow-hidden py-20 bg-white">
+      <section className="relative min-h-screen flex items-center overflow-hidden py-20 bg-[#0A0A0A]">
         <Container className="relative z-10 max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             {/* Colonne gauche - Contenu principal */}
@@ -24,7 +24,7 @@ export default function DemoHomePage() {
               <p className="text-2xl md:text-3xl font-semibold text-[#FF8C42] mb-8">
                 Formation intensive en ACT
               </p>
-              <p className="text-xl text-gray-700 mb-10 leading-relaxed max-w-xl">
+              <p className="text-xl text-gray-300 mb-10 leading-relaxed max-w-xl">
                 Deux jours pour maîtriser la Thérapie d'Acceptation et d'Engagement avec l'un des formateurs ACT les plus respectés au monde. Une opportunité unique de transformer votre pratique clinique.
               </p>
 
