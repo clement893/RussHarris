@@ -1,6 +1,6 @@
 import DemoHeader from "@/components/layout/DemoHeader";
 import { Badge, Button } from "@/components/ui";
-import { ArrowRight, Award, Book, Globe, Users, Heart, Stethoscope, BrainCircuit, UserCheck } from "lucide-react";
+import { ArrowRight, Book, Users, Heart, Stethoscope, BrainCircuit, UserCheck } from "lucide-react";
 import Image from "next/image";
 
 export default function DemoHomePage() {
