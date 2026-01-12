@@ -2,35 +2,50 @@
 
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
-import { ArrowRight, Calendar, MapPin } from 'lucide-react';
+import { ArrowRight, Calendar, MapPin, Circle } from 'lucide-react';
 
 export default function DemoHomePage() {
   return (
-    <div className="bg-[#0A0A0A] text-white">
-      {/* Hero Section - Enrichi avec plus de substance */}
-      <section className="relative min-h-screen flex items-center overflow-hidden py-20 bg-[#0A0A0A]">
+    <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
+      {/* Hero Section - Finesse et précision */}
+      <section className="relative min-h-screen flex items-center overflow-hidden py-20 bg-gradient-to-br from-[#2C3E50] to-[#34495E]">
+        {/* Motif de vagues subtil en arrière-plan */}
+        <div className="absolute inset-0 opacity-5">
+          <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,400 Q300,300 600,400 T1200,400" stroke="white" strokeWidth="2" fill="none" />
+            <path d="M0,450 Q300,350 600,450 T1200,450" stroke="white" strokeWidth="2" fill="none" />
+            <path d="M0,500 Q300,400 600,500 T1200,500" stroke="white" strokeWidth="2" fill="none" />
+          </svg>
+        </div>
+
         <Container className="relative z-10 max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             {/* Colonne gauche - Contenu principal */}
             <div>
-              <h1 className="text-6xl md:text-8xl font-black mb-4 leading-none">
+              <h1 className="text-6xl md:text-8xl font-bold mb-4 leading-none text-white tracking-tight">
                 RUSS
                 <br />
                 HARRIS
               </h1>
-              <div className="inline-block border border-[#FF8C42] text-[#FF8C42] px-4 py-1 text-xs font-bold mb-6 tracking-widest rounded-full">
+              <div className="inline-block border-2 border-[#FF8C42] text-[#FF8C42] px-6 py-2 text-sm font-semibold mb-8 tracking-wide rounded-full backdrop-blur-sm bg-white/10">
                 TOURNÉE CANADIENNE 2026
               </div>
-              <p className="text-2xl md:text-3xl font-semibold text-[#FF8C42] mb-8">
-                Formation intensive en ACT
+              <p className="text-3xl md:text-4xl font-light text-white mb-8 leading-tight">
+                Maîtrisez la flexibilité psychologique avec l'ACT
               </p>
-              <p className="text-xl text-gray-300 mb-10 leading-relaxed max-w-xl">
-                Deux jours pour maîtriser la Thérapie d'Acceptation et d'Engagement avec l'un des formateurs ACT les plus respectés au monde. Une opportunité unique de transformer votre pratique clinique.
+              <p className="text-lg text-gray-200 mb-6 leading-relaxed max-w-xl">
+                Deux jours intensifs pour découvrir la Thérapie d'Acceptation et d'Engagement avec l'un des formateurs les plus respectés au monde. Apprenez à intégrer la pleine conscience, les valeurs et l'action engagée dans votre pratique clinique.
               </p>
+              
+              {/* Citation emblématique */}
+              <div className="border-l-4 border-[#FF8C42] pl-6 mb-10 italic text-gray-300 text-lg">
+                "Embrace your demons and follow your heart"
+                <span className="block text-sm not-italic text-gray-400 mt-2">— Dr. Russ Harris</span>
+              </div>
 
               <Button 
                 size="lg" 
-                className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-bold text-base px-10 py-6 rounded-full transition-all hover:scale-105"
+                className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-semibold text-base px-10 py-4 rounded-full transition-all hover:scale-105"
               >
                 Découvrir les dates
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -39,7 +54,7 @@ export default function DemoHomePage() {
 
             {/* Colonne droite - Photo rectangle verticale de Russ Harris */}
             <div className="flex items-center justify-center">
-              <div className="relative w-96 h-[600px] rounded-3xl overflow-hidden border-4 border-[#FF8C42]">
+              <div className="relative w-96 h-[600px] rounded-3xl overflow-hidden border-4 border-[#FF8C42] ring-4 ring-white/10">
                 <Image
                   src="/images/russ/8obb1myXAohZ.jpg"
                   alt="Dr. Russ Harris"
@@ -53,96 +68,160 @@ export default function DemoHomePage() {
         </Container>
       </section>
 
-      {/* Section Dates/Villes - LE COEUR DE LA TOURNÉE */}
-      <section className="py-20 md:py-32">
+      {/* Section Dates de Tournée - Villes en grand */}
+      <section className="py-32 bg-white">
         <Container className="max-w-7xl mx-auto">
-          <h2 className="text-5xl md:text-7xl font-black mb-16 tracking-tight">
-            LA TOURNÉE
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-5xl md:text-6xl font-bold text-[#2C3E50] mb-4">La tournée canadienne</h2>
+            <p className="text-xl text-gray-600">4 villes • 800 places • Mai-Juin 2026</p>
+          </div>
+
           <div className="space-y-6">
-            {[
-              { city: 'MONTRÉAL', province: 'QC', date: '24-25 MAI', venue: 'Palais des Congrès', places: 200 },
-              { city: 'CALGARY', province: 'AB', date: '31 MAI - 1 JUIN', venue: 'Calgary Convention Centre', places: 200 },
-              { city: 'VANCOUVER', province: 'BC', date: '7-8 JUIN', venue: 'Vancouver Convention Centre', places: 200 },
-              { city: 'TORONTO', province: 'ON', date: '14-15 JUIN', venue: 'Metro Toronto Convention Centre', places: 200 },
-            ].map((show) => (
-              <div 
-                key={show.city}
-                className="group border-b border-gray-800 pb-6 hover:border-[#FF8C42] transition-all cursor-pointer"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <h3 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-3 transition-colors duration-300 group-hover:text-[#FF8C42]">
-                      {show.city}
-                    </h3>
-                    <div className="flex items-center gap-6 text-gray-400 text-base md:text-lg">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-5 h-5" />
-                        <span className="font-bold">{show.date} 2026</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-5 h-5" />
-                        <span>{show.venue}</span>
-                      </div>
-                      <div className="text-[#FF8C42] font-bold">
-                        {show.places} places
-                      </div>
-                    </div>
+            {/* Montréal */}
+            <div className="group border-2 border-gray-200 rounded-3xl p-8 hover:border-[#FF8C42] transition-all duration-300 hover:scale-[1.02]">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div className="flex-1">
+                  <h3 className="text-6xl md:text-7xl font-black text-[#2C3E50] mb-2 group-hover:text-[#FF8C42] transition-colors">
+                    MONTRÉAL
+                  </h3>
+                  <div className="flex items-center gap-4 text-gray-600 mb-2">
+                    <Calendar className="w-5 h-5" />
+                    <span className="text-lg">24-25 mai 2026</span>
                   </div>
-                  <Button 
-                    className="bg-transparent border-2 border-white hover:bg-[#FF8C42] hover:border-[#FF8C42] hover:text-black text-white font-black px-8 py-6 rounded-full transition-all"
-                  >
-                    S'INSCRIRE
-                    <ArrowRight className="ml-2 w-5 h-5" />
+                  <div className="flex items-center gap-4 text-gray-600">
+                    <MapPin className="w-5 h-5" />
+                    <span className="text-lg">Palais des Congrès</span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-4">
+                  <span className="text-2xl font-bold text-[#FF8C42]">200 places</span>
+                  <Button className="bg-[#2C3E50] hover:bg-[#FF8C42] text-white px-8 py-3 rounded-full transition-all">
+                    Inscription Montréal
                   </Button>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Calgary */}
+            <div className="group border-2 border-gray-200 rounded-3xl p-8 hover:border-[#FF8C42] transition-all duration-300 hover:scale-[1.02]">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div className="flex-1">
+                  <h3 className="text-6xl md:text-7xl font-black text-[#2C3E50] mb-2 group-hover:text-[#FF8C42] transition-colors">
+                    CALGARY
+                  </h3>
+                  <div className="flex items-center gap-4 text-gray-600 mb-2">
+                    <Calendar className="w-5 h-5" />
+                    <span className="text-lg">31 mai - 1 juin 2026</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-gray-600">
+                    <MapPin className="w-5 h-5" />
+                    <span className="text-lg">Calgary Convention Centre</span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-4">
+                  <span className="text-2xl font-bold text-[#FF8C42]">200 places</span>
+                  <Button className="bg-[#2C3E50] hover:bg-[#FF8C42] text-white px-8 py-3 rounded-full transition-all">
+                    Inscription Calgary
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Vancouver */}
+            <div className="group border-2 border-gray-200 rounded-3xl p-8 hover:border-[#FF8C42] transition-all duration-300 hover:scale-[1.02]">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div className="flex-1">
+                  <h3 className="text-6xl md:text-7xl font-black text-[#2C3E50] mb-2 group-hover:text-[#FF8C42] transition-colors">
+                    VANCOUVER
+                  </h3>
+                  <div className="flex items-center gap-4 text-gray-600 mb-2">
+                    <Calendar className="w-5 h-5" />
+                    <span className="text-lg">7-8 juin 2026</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-gray-600">
+                    <MapPin className="w-5 h-5" />
+                    <span className="text-lg">Vancouver Convention Centre</span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-4">
+                  <span className="text-2xl font-bold text-[#FF8C42]">200 places</span>
+                  <Button className="bg-[#2C3E50] hover:bg-[#FF8C42] text-white px-8 py-3 rounded-full transition-all">
+                    Inscription Vancouver
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Toronto */}
+            <div className="group border-2 border-gray-200 rounded-3xl p-8 hover:border-[#FF8C42] transition-all duration-300 hover:scale-[1.02]">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div className="flex-1">
+                  <h3 className="text-6xl md:text-7xl font-black text-[#2C3E50] mb-2 group-hover:text-[#FF8C42] transition-colors">
+                    TORONTO
+                  </h3>
+                  <div className="flex items-center gap-4 text-gray-600 mb-2">
+                    <Calendar className="w-5 h-5" />
+                    <span className="text-lg">14-15 juin 2026</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-gray-600">
+                    <MapPin className="w-5 h-5" />
+                    <span className="text-lg">Metro Toronto Convention Centre</span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-4">
+                  <span className="text-2xl font-bold text-[#FF8C42]">200 places</span>
+                  <Button className="bg-[#2C3E50] hover:bg-[#FF8C42] text-white px-8 py-3 rounded-full transition-all">
+                    Inscription Toronto
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* Section L'Artiste - Qui est Russ Harris */}
-      <section className="py-20 md:py-32 bg-[#111111]">
-        <Container>
-          <div className="grid md:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
-            <div>
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden">
+      {/* Section L'homme derrière l'ACT */}
+      <section className="py-32 bg-gray-50">
+        <Container className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-5 gap-12 items-center">
+            {/* Photo */}
+            <div className="md:col-span-2">
+              <div className="relative w-full aspect-[3/4] rounded-3xl overflow-hidden">
                 <Image
                   src="/images/russ/8obb1myXAohZ.jpg"
                   alt="Dr. Russ Harris"
                   fill
                   style={{ objectFit: 'cover' }}
-                  className="grayscale contrast-110"
+                  className="grayscale-[30%] contrast-110"
                 />
               </div>
             </div>
-            <div>
-              <h2 className="text-5xl md:text-7xl font-black mb-8 tracking-tight leading-none">
-                L'HOMME
-                <br />
-                DERRIÈRE
-                <br />
-                <span className="text-[#FF8C42] italic">L'ACT</span>
+
+            {/* Contenu */}
+            <div className="md:col-span-3">
+              <h2 className="text-5xl md:text-6xl font-bold text-[#2C3E50] mb-6">
+                L'homme derrière <span className="text-[#FF8C42] italic">l'ACT</span>
               </h2>
-              <p className="text-xl text-gray-300 mb-6 leading-relaxed">
-                Dr. Russ Harris n'est pas qu'un thérapeute. C'est un pionnier, un innovateur qui a transformé la façon dont 90 000 professionnels de la santé pratiquent la psychothérapie.
+              <p className="text-xl text-gray-700 mb-8 leading-relaxed">
+                Dr. Russ Harris est médecin, psychothérapeute et l'un des formateurs ACT les plus respectés au monde. Auteur du best-seller international "The Happiness Trap", traduit en plus de 30 langues, il a formé plus de 90 000 professionnels de la santé à travers le monde.
               </p>
-              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                Auteur du best-seller mondial "The Happiness Trap" (1 million d'exemplaires vendus, traduit en 30 langues), il a créé un protocole ACT pour l'Organisation Mondiale de la Santé, validé par la science.
+              <p className="text-xl text-gray-700 mb-8 leading-relaxed">
+                Son approche unique combine rigueur scientifique et accessibilité pratique, rendant les concepts complexes de l'ACT immédiatement applicables en contexte clinique.
               </p>
-              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-[#FF8C42]/30">
+              
+              {/* Stats avec design épuré */}
+              <div className="grid grid-cols-3 gap-6 pt-8 border-t-2 border-[#FF8C42]/30">
                 <div>
-                  <div className="text-4xl font-black text-[#FF8C42] mb-2">90K+</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wider">Professionnels formés</div>
+                  <div className="text-4xl font-bold text-[#FF8C42] mb-1">90K+</div>
+                  <div className="text-sm text-gray-600">Professionnels formés</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-black text-[#FF8C42] mb-2">1M+</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wider">Livres vendus</div>
+                  <div className="text-4xl font-bold text-[#FF8C42] mb-1">1M+</div>
+                  <div className="text-sm text-gray-600">Livres vendus</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-black text-[#FF8C42] mb-2">30</div>
-                  <div className="text-sm text-gray-400 uppercase tracking-wider">Langues</div>
+                  <div className="text-4xl font-bold text-[#FF8C42] mb-1">30</div>
+                  <div className="text-sm text-gray-600">Langues</div>
                 </div>
               </div>
             </div>
@@ -150,67 +229,231 @@ export default function DemoHomePage() {
         </Container>
       </section>
 
-      {/* Section L'Album - Qu'est-ce que l'ACT */}
-      <section className="py-20 md:py-32">
-        <Container className="max-w-6xl mx-auto">
-          <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-center">
-            PLUS QU'UNE THÉRAPIE,
-            <br />
-            <span className="text-[#FF8C42]">UNE PHILOSOPHIE</span>
-          </h2>
-          <p className="text-xl text-gray-400 text-center mb-16 max-w-3xl mx-auto">
-            La Thérapie d'Acceptation et d'Engagement (ACT) est une approche révolutionnaire qui aide vos clients à développer la flexibilité psychologique pour vivre une vie riche et pleine de sens.
-          </p>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { title: 'ACCEPTER', desc: 'Faire de la place aux pensées et émotions difficiles plutôt que de lutter contre elles.' },
-              { title: 'ÊTRE PRÉSENT', desc: 'Cultiver une attention flexible au moment présent avec ouverture et curiosité.' },
-              { title: 'S\'ENGAGER', desc: 'Clarifier ses valeurs profondes et agir en accord avec elles, même face aux obstacles.' },
-            ].map((pillar, index) => (
-              <div key={index} className="bg-[#111111] p-8 border border-gray-800 hover:border-[#FF8C42] rounded-3xl transition-all group">
-                <div className="text-6xl font-black text-[#FF8C42] mb-4">0{index + 1}</div>
-                <h3 className="text-2xl font-black mb-4 group-hover:text-[#FF8C42] transition-colors">{pillar.title}</h3>
-                <p className="text-gray-400 leading-relaxed">{pillar.desc}</p>
+      {/* Section Hexaflex - Les 6 processus de l'ACT */}
+      <section className="py-32 bg-white">
+        <Container className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl md:text-6xl font-bold text-[#2C3E50] mb-6">
+              Le modèle Hexaflex
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              L'ACT repose sur six processus fondamentaux qui cultivent la flexibilité psychologique, permettant de vivre une vie riche et pleine de sens malgré les difficultés inévitables.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Processus 1 */}
+            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
+                  <Circle className="w-6 h-6" />
+                </div>
+                <span className="text-sm font-bold text-[#FF8C42]">01</span>
               </div>
-            ))}
+              <h3 className="text-2xl font-bold mb-3">Moment présent</h3>
+              <p className="text-gray-300 leading-relaxed">
+                Être pleinement conscient et connecté à l'ici et maintenant, plutôt que perdu dans les pensées du passé ou du futur.
+              </p>
+            </div>
+
+            {/* Processus 2 */}
+            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
+                  <Circle className="w-6 h-6" />
+                </div>
+                <span className="text-sm font-bold text-[#FF8C42]">02</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Acceptation</h3>
+              <p className="text-gray-300 leading-relaxed">
+                Accueillir les pensées et émotions difficiles sans lutter contre elles, libérant ainsi de l'énergie pour l'action.
+              </p>
+            </div>
+
+            {/* Processus 3 */}
+            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
+                  <Circle className="w-6 h-6" />
+                </div>
+                <span className="text-sm font-bold text-[#FF8C42]">03</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Défusion cognitive</h3>
+              <p className="text-gray-300 leading-relaxed">
+                Observer les pensées comme des événements mentaux plutôt que des vérités absolues, réduisant leur emprise.
+              </p>
+            </div>
+
+            {/* Processus 4 */}
+            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
+                  <Circle className="w-6 h-6" />
+                </div>
+                <span className="text-sm font-bold text-[#FF8C42]">04</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Soi comme contexte</h3>
+              <p className="text-gray-300 leading-relaxed">
+                Développer une perspective transcendante, le "soi observateur" qui peut accueillir toutes les expériences.
+              </p>
+            </div>
+
+            {/* Processus 5 */}
+            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
+                  <Circle className="w-6 h-6" />
+                </div>
+                <span className="text-sm font-bold text-[#FF8C42]">05</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Valeurs</h3>
+              <p className="text-gray-300 leading-relaxed">
+                Clarifier ce qui compte vraiment dans la vie et utiliser ces valeurs comme boussole pour guider l'action.
+              </p>
+            </div>
+
+            {/* Processus 6 */}
+            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
+                  <Circle className="w-6 h-6" />
+                </div>
+                <span className="text-sm font-bold text-[#FF8C42]">06</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Action engagée</h3>
+              <p className="text-gray-300 leading-relaxed">
+                Agir de manière cohérente avec ses valeurs, même en présence de pensées et d'émotions difficiles.
+              </p>
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* Final CTA - Le Rappel */}
-      <section className="py-32 bg-gradient-to-b from-[#0A0A0A] via-[#FF8C42]/20 to-[#0A0A0A] relative">
-        <div className="absolute inset-0 bg-[#FF8C42]/10" />
-        <Container className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter leading-none">
-            PRÊT À TRANSFORMER
-            <br />
-            VOTRE PRATIQUE?
+      {/* Section Pour qui */}
+      <section className="py-32 bg-gray-50">
+        <Container className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl md:text-6xl font-bold text-[#2C3E50] mb-6">
+              Pour les professionnels de la santé
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Cette formation s'adresse aux thérapeutes, psychologues, médecins, conseillers et coachs qui souhaitent enrichir leur pratique avec l'ACT.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors">
+              <h3 className="text-2xl font-bold text-[#2C3E50] mb-3">Psychothérapeutes</h3>
+              <p className="text-gray-600">
+                Intégrez l'ACT dans votre pratique pour aider vos clients à développer leur flexibilité psychologique.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors">
+              <h3 className="text-2xl font-bold text-[#2C3E50] mb-3">Médecins</h3>
+              <p className="text-gray-600">
+                Apprenez des outils pratiques pour accompagner vos patients face à la douleur chronique et aux maladies.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors">
+              <h3 className="text-2xl font-bold text-[#2C3E50] mb-3">Conseillers</h3>
+              <p className="text-gray-600">
+                Enrichissez votre boîte à outils avec des interventions basées sur les valeurs et l'action engagée.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors">
+              <h3 className="text-2xl font-bold text-[#2C3E50] mb-3">Coachs</h3>
+              <p className="text-gray-600">
+                Aidez vos clients à surmonter les obstacles internes et à vivre en accord avec leurs valeurs profondes.
+              </p>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Section Témoignages */}
+      <section className="py-32 bg-white">
+        <Container className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl md:text-6xl font-bold text-[#2C3E50] mb-6">
+              Ce qu'en disent les experts
+            </h2>
+          </div>
+
+          <div className="space-y-8">
+            <div className="bg-gray-50 rounded-3xl p-10 border-l-4 border-[#FF8C42]">
+              <p className="text-xl text-gray-700 mb-6 leading-relaxed italic">
+                "Russ Harris est un formateur exceptionnel qui rend l'ACT accessible et applicable. Ses ateliers transforment la pratique clinique."
+              </p>
+              <div className="flex items-center gap-4">
+                <div>
+                  <div className="font-bold text-[#2C3E50]">Dr. Steven Hayes</div>
+                  <div className="text-sm text-gray-600">Co-fondateur de l'ACT</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 rounded-3xl p-10 border-l-4 border-[#FF8C42]">
+              <p className="text-xl text-gray-700 mb-6 leading-relaxed italic">
+                "La capacité de Russ à enseigner l'ACT avec clarté et compassion est remarquable. Une formation à ne pas manquer."
+              </p>
+              <div className="flex items-center gap-4">
+                <div>
+                  <div className="font-bold text-[#2C3E50]">Dr. Kirk Strosahl</div>
+                  <div className="text-sm text-gray-600">Co-fondateur de l'ACT</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* CTA Final */}
+      <section className="py-32 bg-gradient-to-br from-[#2C3E50] to-[#34495E] text-white relative overflow-hidden">
+        {/* Motif de vagues subtil */}
+        <div className="absolute inset-0 opacity-5">
+          <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,400 Q300,300 600,400 T1200,400" stroke="white" strokeWidth="2" fill="none" />
+            <path d="M0,450 Q300,350 600,450 T1200,450" stroke="white" strokeWidth="2" fill="none" />
+            <path d="M0,500 Q300,400 600,500 T1200,500" stroke="white" strokeWidth="2" fill="none" />
+          </svg>
+        </div>
+
+        <Container className="max-w-5xl mx-auto text-center relative z-10">
+          <h2 className="text-5xl md:text-7xl font-bold mb-8">
+            Prêt à transformer votre pratique ?
           </h2>
-          <p className="text-xl font-semibold mb-12 text-gray-300">
-            800 places disponibles • 4 villes • 2 jours intensifs
+          <p className="text-2xl text-gray-300 mb-4">
+            800 places disponibles au total
+          </p>
+          <p className="text-lg text-gray-400 mb-12">
+            Les places sont limitées. Réservez dès maintenant pour garantir votre participation.
           </p>
           <Button 
             size="lg" 
-            className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-bold text-lg px-14 py-7 rounded-full transition-all hover:scale-105"
+            className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-bold text-lg px-12 py-6 rounded-full transition-all hover:scale-105"
           >
-            RÉSERVER MA PLACE
+            Réserver ma place
             <ArrowRight className="ml-2 w-6 h-6" />
           </Button>
         </Container>
       </section>
 
       {/* Section Organisateur */}
-      <section className="py-16 bg-[#0A0A0A] border-t border-gray-800">
-        <Container className="max-w-4xl mx-auto text-center">
-          <p className="text-sm text-gray-400 mb-6 uppercase tracking-wider">Organisé par</p>
-          <div className="flex justify-center">
-            <Image
-              src="/images/ips-logo.png"
-              alt="Institut de psychologie contextuelle"
-              width={400}
-              height={100}
-              className="opacity-90 hover:opacity-100 transition-opacity"
-            />
+      <section className="py-16 bg-white border-t border-gray-200">
+        <Container className="max-w-7xl mx-auto">
+          <div className="flex flex-col items-center gap-6">
+            <p className="text-sm text-gray-500 uppercase tracking-wider">Organisé par</p>
+            <div className="relative w-[400px] h-[100px] opacity-80 hover:opacity-100 transition-opacity">
+              <Image
+                src="/images/ips-logo.png"
+                alt="Institut de psychologie contextuelle"
+                fill
+                style={{ objectFit: 'contain' }}
+              />
+            </div>
           </div>
         </Container>
       </section>
