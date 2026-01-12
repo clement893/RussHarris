@@ -1,3 +1,5 @@
+'use client';
+
 import DemoHeader from "@/components/layout/DemoHeader";
 import { Badge, Button } from "@/components/ui";
 import { ArrowRight, Book, Users, Heart, Stethoscope, BrainCircuit, UserCheck } from "lucide-react";
