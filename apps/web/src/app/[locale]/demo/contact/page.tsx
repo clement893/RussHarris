@@ -1,8 +1,5 @@
 import { DemoHeader } from "@/components/layout/DemoHeader";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button, Input, Textarea, Select } from "@/components/ui";
 import { MapPin, Mail, Phone, Clock } from "lucide-react";
 
 export default function DemoContactPage() {
@@ -61,17 +58,16 @@ export default function DemoContactPage() {
               <form className="space-y-6">
                 <Input placeholder="Nom complet *" className="bg-gray-800 border-gray-700" />
                 <Input type="email" placeholder="Email *" className="bg-gray-800 border-gray-700" />
-                <Select>
-                  <SelectTrigger className="bg-gray-800 border-gray-700">
-                    <SelectValue placeholder="Sélectionnez un sujet" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-700 text-white">
-                    <SelectItem value="reservation">Réservation</SelectItem>
-                    <SelectItem value="tarifs">Tarifs</SelectItem>
-                    <SelectItem value="programme">Programme</SelectItem>
-                    <SelectItem value="groupe">Réservation de groupe</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Select
+                  placeholder="Sélectionnez un sujet"
+                  options={[
+                    { label: "Réservation", value: "reservation" },
+                    { label: "Tarifs", value: "tarifs" },
+                    { label: "Programme", value: "programme" },
+                    { label: "Réservation de groupe", value: "groupe" },
+                  ]}
+                  className="bg-gray-800 border-gray-700"
+                />
                 <Textarea placeholder="Votre message *" className="bg-gray-800 border-gray-700" rows={5} />
                 <Button type="submit" size="lg" className="w-full bg-orange-500 hover:bg-orange-600 text-white">
                   Envoyer le message
