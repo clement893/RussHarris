@@ -3,17 +3,6 @@
  * Centralized configuration for masterclass navigation menu
  */
 
-import { 
-  Home, 
-  BookOpen, 
-  User, 
-  MapPin, 
-  CreditCard, 
-  Star, 
-  HelpCircle,
-  Mail
-} from 'lucide-react';
-
 export interface NavigationItem {
   id: string;
   label: string; // Key for i18n translation
