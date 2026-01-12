@@ -13,7 +13,7 @@ export default function DemoHomePage() {
           <div className="grid md:grid-cols-2 gap-16 items-center">
             {/* Colonne gauche - Contenu principal */}
             <div>
-              <div className="inline-block border border-[#F97316] text-[#F97316] px-4 py-1 text-xs font-bold mb-6 tracking-widest rounded-full">
+              <div className="inline-block border border-[#FF8C42] text-[#FF8C42] px-4 py-1 text-xs font-bold mb-6 tracking-widest rounded-full">
                 TOURNÉE CANADIENNE 2026
               </div>
               <h1 className="text-6xl md:text-8xl font-black mb-6 leading-none">
@@ -21,7 +21,7 @@ export default function DemoHomePage() {
                 <br />
                 HARRIS
               </h1>
-              <p className="text-2xl md:text-3xl font-semibold text-[#F97316] mb-8">
+              <p className="text-2xl md:text-3xl font-semibold text-[#FF8C42] mb-8">
                 Formation intensive en ACT
               </p>
               <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-xl">
@@ -31,21 +31,21 @@ export default function DemoHomePage() {
               {/* Stats rapides */}
               <div className="grid grid-cols-3 gap-6 mb-10 pb-8 border-b border-gray-800">
                 <div>
-                  <div className="flex items-center gap-2 text-[#F97316] mb-1">
+                  <div className="flex items-center gap-2 text-[#FF8C42] mb-1">
                     <Users className="w-5 h-5" />
                     <span className="text-2xl font-black">90K+</span>
                   </div>
                   <div className="text-sm text-gray-400">Professionnels formés</div>
                 </div>
                 <div>
-                  <div className="flex items-center gap-2 text-[#F97316] mb-1">
+                  <div className="flex items-center gap-2 text-[#FF8C42] mb-1">
                     <Award className="w-5 h-5" />
                     <span className="text-2xl font-black">1M+</span>
                   </div>
                   <div className="text-sm text-gray-400">Livres vendus</div>
                 </div>
                 <div>
-                  <div className="flex items-center gap-2 text-[#F97316] mb-1">
+                  <div className="flex items-center gap-2 text-[#FF8C42] mb-1">
                     <Globe className="w-5 h-5" />
                     <span className="text-2xl font-black">30</span>
                   </div>
@@ -55,7 +55,7 @@ export default function DemoHomePage() {
 
               <Button 
                 size="lg" 
-                className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold text-base px-10 py-6 rounded-full transition-all hover:scale-105"
+                className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-bold text-base px-10 py-6 rounded-full transition-all hover:scale-105"
               >
                 Découvrir les dates
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -64,7 +64,7 @@ export default function DemoHomePage() {
 
             {/* Colonne droite - Photo rectangle verticale de Russ Harris */}
             <div className="flex items-center justify-center">
-              <div className="relative w-80 h-[500px] rounded-3xl overflow-hidden border-4 border-[#F97316] shadow-2xl shadow-[#F97316]/30">
+              <div className="relative w-80 h-[500px] rounded-3xl overflow-hidden border-4 border-[#FF8C42]">
                 <Image
                   src="/images/russ/8obb1myXAohZ.jpg"
                   alt="Dr. Russ Harris"
@@ -93,11 +93,11 @@ export default function DemoHomePage() {
             ].map((show) => (
               <div 
                 key={show.city}
-                className="group border-b border-gray-800 pb-6 hover:border-[#F97316] transition-all cursor-pointer"
+                className="group border-b border-gray-800 pb-6 hover:border-[#FF8C42] transition-all cursor-pointer"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <h3 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-3 transition-colors duration-300 group-hover:text-[#F97316]">
+                    <h3 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-3 transition-colors duration-300 group-hover:text-[#FF8C42]">
                       {show.city}
                     </h3>
                     <div className="flex items-center gap-6 text-gray-400 text-base md:text-lg">
@@ -109,13 +109,13 @@ export default function DemoHomePage() {
                         <MapPin className="w-5 h-5" />
                         <span>{show.venue}</span>
                       </div>
-                      <div className="text-[#F97316] font-bold">
+                      <div className="text-[#FF8C42] font-bold">
                         {show.places} places
                       </div>
                     </div>
                   </div>
                   <Button 
-                    className="bg-transparent border-2 border-white hover:bg-[#F97316] hover:border-[#F97316] hover:text-black text-white font-black px-8 py-6 rounded-full transition-all"
+                    className="bg-transparent border-2 border-white hover:bg-[#FF8C42] hover:border-[#FF8C42] hover:text-black text-white font-black px-8 py-6 rounded-full transition-all"
                   >
                     S'INSCRIRE
                     <ArrowRight className="ml-2 w-5 h-5" />
@@ -148,7 +148,7 @@ export default function DemoHomePage() {
                 <br />
                 DERRIÈRE
                 <br />
-                <span className="text-[#F97316] italic">L'ACT</span>
+                <span className="text-[#FF8C42] italic">L'ACT</span>
               </h2>
               <p className="text-xl text-gray-300 mb-6 leading-relaxed">
                 Dr. Russ Harris n'est pas qu'un thérapeute. C'est un pionnier, un innovateur qui a transformé la façon dont 90 000 professionnels de la santé pratiquent la psychothérapie.
@@ -156,17 +156,17 @@ export default function DemoHomePage() {
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                 Auteur du best-seller mondial "The Happiness Trap" (1 million d'exemplaires vendus, traduit en 30 langues), il a créé un protocole ACT pour l'Organisation Mondiale de la Santé, validé par la science.
               </p>
-              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-[#F97316]/30">
+              <div className="grid grid-cols-3 gap-8 pt-8 border-t border-[#FF8C42]/30">
                 <div>
-                  <div className="text-4xl font-black text-[#F97316] mb-2">90K+</div>
+                  <div className="text-4xl font-black text-[#FF8C42] mb-2">90K+</div>
                   <div className="text-sm text-gray-400 uppercase tracking-wider">Professionnels formés</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-black text-[#F97316] mb-2">1M+</div>
+                  <div className="text-4xl font-black text-[#FF8C42] mb-2">1M+</div>
                   <div className="text-sm text-gray-400 uppercase tracking-wider">Livres vendus</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-black text-[#F97316] mb-2">30</div>
+                  <div className="text-4xl font-black text-[#FF8C42] mb-2">30</div>
                   <div className="text-sm text-gray-400 uppercase tracking-wider">Langues</div>
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function DemoHomePage() {
           <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-center">
             PLUS QU'UNE THÉRAPIE,
             <br />
-            <span className="text-[#F97316]">UNE PHILOSOPHIE</span>
+            <span className="text-[#FF8C42]">UNE PHILOSOPHIE</span>
           </h2>
           <p className="text-xl text-gray-400 text-center mb-16 max-w-3xl mx-auto">
             La Thérapie d'Acceptation et d'Engagement (ACT) est une approche révolutionnaire qui aide vos clients à développer la flexibilité psychologique pour vivre une vie riche et pleine de sens.
@@ -192,9 +192,9 @@ export default function DemoHomePage() {
               { title: 'ÊTRE PRÉSENT', desc: 'Cultiver une attention flexible au moment présent avec ouverture et curiosité.' },
               { title: 'S\'ENGAGER', desc: 'Clarifier ses valeurs profondes et agir en accord avec elles, même face aux obstacles.' },
             ].map((pillar, index) => (
-              <div key={index} className="bg-[#111111] p-8 border border-gray-800 hover:border-[#F97316] rounded-3xl transition-all group">
-                <div className="text-6xl font-black text-[#F97316] mb-4">0{index + 1}</div>
-                <h3 className="text-2xl font-black mb-4 group-hover:text-[#F97316] transition-colors">{pillar.title}</h3>
+              <div key={index} className="bg-[#111111] p-8 border border-gray-800 hover:border-[#FF8C42] rounded-3xl transition-all group">
+                <div className="text-6xl font-black text-[#FF8C42] mb-4">0{index + 1}</div>
+                <h3 className="text-2xl font-black mb-4 group-hover:text-[#FF8C42] transition-colors">{pillar.title}</h3>
                 <p className="text-gray-400 leading-relaxed">{pillar.desc}</p>
               </div>
             ))}
@@ -203,8 +203,8 @@ export default function DemoHomePage() {
       </section>
 
       {/* Final CTA - Le Rappel */}
-      <section className="py-32 bg-gradient-to-b from-[#0A0A0A] via-[#F97316]/20 to-[#0A0A0A] relative">
-        <div className="absolute inset-0 bg-[#F97316]/10" />
+      <section className="py-32 bg-gradient-to-b from-[#0A0A0A] via-[#FF8C42]/20 to-[#0A0A0A] relative">
+        <div className="absolute inset-0 bg-[#FF8C42]/10" />
         <Container className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-6xl md:text-7xl font-black mb-8 tracking-tighter leading-none">
             PRÊT À TRANSFORMER
@@ -216,11 +216,27 @@ export default function DemoHomePage() {
           </p>
           <Button 
             size="lg" 
-            className="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold text-lg px-14 py-7 rounded-full transition-all hover:scale-105 shadow-lg shadow-[#F97316]/30"
+            className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-bold text-lg px-14 py-7 rounded-full transition-all hover:scale-105"
           >
             RÉSERVER MA PLACE
             <ArrowRight className="ml-2 w-6 h-6" />
           </Button>
+        </Container>
+      </section>
+
+      {/* Section Organisateur */}
+      <section className="py-16 bg-[#0A0A0A] border-t border-gray-800">
+        <Container className="max-w-4xl mx-auto text-center">
+          <p className="text-sm text-gray-400 mb-6 uppercase tracking-wider">Organisé par</p>
+          <div className="flex justify-center">
+            <Image
+              src="/images/ips-logo.png"
+              alt="Institut de psychologie contextuelle"
+              width={400}
+              height={100}
+              className="opacity-90 hover:opacity-100 transition-opacity"
+            />
+          </div>
         </Container>
       </section>
     </div>
