@@ -62,9 +62,9 @@ export default function DemoHomePage() {
               </Button>
             </div>
 
-            {/* Colonne droite - Photo ronde de Russ Harris */}
+            {/* Colonne droite - Photo rectangle verticale de Russ Harris */}
             <div className="flex items-center justify-center">
-              <div className="relative w-96 h-96 rounded-full overflow-hidden border-4 border-[#F97316] shadow-2xl shadow-[#F97316]/30">
+              <div className="relative w-80 h-[500px] rounded-3xl overflow-hidden border-4 border-[#F97316] shadow-2xl shadow-[#F97316]/30">
                 <Image
                   src="/images/russ/8obb1myXAohZ.jpg"
                   alt="Dr. Russ Harris"
