@@ -15,10 +15,9 @@ import { useTranslations } from 'next-intl';
 import DesktopNavigation from './DesktopNavigation';
 import MobileNavigation from './MobileNavigation';
 import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
-import { masterclassNavigationConfig, type NavigationItem } from '@/lib/navigation/config';
+import { masterclassNavigationConfig } from '@/lib/navigation/config';
 import { getFilteredNavigation } from '@/lib/navigation/config';
 import { useAuthStore } from '@/lib/store';
-import { masterclassAPI } from '@/lib/api/masterclass';
 
 interface MasterclassNavigationProps {
   variant?: 'default' | 'transparent' | 'solid';
@@ -32,7 +31,6 @@ export default function MasterclassNavigation({
   className,
 }: MasterclassNavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [navigationItemsWithBadges, setNavigationItemsWithBadges] = useState<NavigationItem[]>([]);
   const [isScrolled, setIsScrolled] = useState(false);
   const t = useTranslations();
   const { isAuthenticated, user } = useAuthStore();
@@ -54,51 +52,8 @@ export default function MasterclassNavigation({
     user?.is_admin || false
   );
 
-  // Calculate dynamic badges (e.g., number of cities with available events)
-  useEffect(() => {
-    const calculateDynamicBadges = async () => {
-      const itemsWithBadges = [...baseNavigationItems];
-      
-      // Find cities item and calculate badge
-      const citiesItemIndex = itemsWithBadges.findIndex(item => item.id === 'cities' && item.badge === 'dynamic');
-      if (citiesItemIndex !== -1) {
-        try {
-          const cities = await masterclassAPI.listCitiesWithEvents();
-          // Count cities that have at least one event with available places
-          const availableCitiesCount = cities.filter(city => 
-            city.events?.some(event => {
-              const available = (event.max_attendees || 0) - (event.current_attendees || 0);
-              return available > 0;
-            })
-          ).length;
-          
-          if (availableCitiesCount > 0) {
-            const citiesItem = itemsWithBadges[citiesItemIndex];
-            if (citiesItem) {
-              itemsWithBadges[citiesItemIndex] = {
-                ...citiesItem,
-                badge: availableCitiesCount,
-              };
-            }
-          }
-        } catch (error) {
-          // Silently fail - badge will not be shown
-          // Only log in development
-          if (process.env.NODE_ENV === 'development') {
-            console.error('Failed to fetch cities for badge:', error);
-          }
-        }
-      }
-      
-      setNavigationItemsWithBadges(itemsWithBadges);
-    };
-
-    calculateDynamicBadges();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated(), user?.is_admin]); // Only recalculate when auth status changes
-  
-  // Use items with badges if calculated, otherwise use base items
-  const navigationItems = navigationItemsWithBadges.length > 0 ? navigationItemsWithBadges : baseNavigationItems;
+  // No badges needed - simplified navigation
+  const navigationItems = baseNavigationItems;
 
   // Check if header should be transparent (e.g., on hero section)
   const shouldShowBackground = isScrolled || variant !== 'transparent';
@@ -115,25 +70,17 @@ export default function MasterclassNavigation({
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 lg:h-24">
-            {/* Logo - IPS Logo with text */}
-            <Link href="/" className="flex items-center gap-3 group relative">
-              <div className="relative w-12 h-12 lg:w-14 lg:h-14 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
-                <div className="absolute inset-0 bg-[#F58220]/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="flex items-center justify-between h-16">
+            {/* Logo - IPS Logo only (simplified) */}
+            <Link href="/" className="flex items-center group relative">
+              <div className="relative w-10 h-10 transition-transform duration-200 group-hover:scale-105">
                 <Image
                   src="/images/ips-logo.png"
                   alt="Institut de psychologie contextuelle"
                   fill
-                  className="object-contain relative z-10"
+                  className="object-contain"
                 />
               </div>
-              <span className={clsx(
-                'font-semibold text-base lg:text-lg hidden sm:block transition-all duration-300',
-                'text-white group-hover:text-[#F58220]',
-                shouldShowBackground ? 'opacity-100' : 'opacity-100'
-              )}>
-                Institut de psychologie contextuelle
-              </span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -145,15 +92,14 @@ export default function MasterclassNavigation({
                 <Link
                   href="/cities"
                   className={clsx(
-                    'relative inline-flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-full',
-                    'transition-all duration-300 transform hover:scale-105 active:scale-95',
-                    'text-white bg-[#F58220] border-2 border-[#F58220]',
-                    'hover:bg-[#C4681A] hover:border-[#C4681A] hover:shadow-lg hover:shadow-[#F58220]/30',
+                    'inline-flex items-center px-5 py-2 text-sm font-medium rounded-full',
+                    'transition-colors duration-200',
+                    'text-white bg-[#F58220]',
+                    'hover:bg-[#C4681A]',
                     'focus:outline-none focus:ring-2 focus:ring-[#F58220] focus:ring-offset-2 focus:ring-offset-[#1B3D4C]'
                   )}
                 >
-                  <span className="relative z-10">{t('navigation.bookNow')}</span>
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#F58220] to-[#C4681A] opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                  Réserver
                 </Link>
               )}
               <LanguageSwitcher />

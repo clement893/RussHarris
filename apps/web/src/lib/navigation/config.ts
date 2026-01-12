@@ -29,103 +29,33 @@ export interface NavigationItem {
 
 /**
  * Masterclass navigation configuration
+ * Simplified navigation - 4 main items, no sub-menus
  * This is the source of truth for all navigation items
  */
 export const masterclassNavigationConfig: NavigationItem[] = [
   {
-    id: 'home',
-    label: 'navigation.home',
-    href: '/',
-    icon: Home,
-  },
-  {
     id: 'program',
     label: 'navigation.program',
     href: '/masterclass',
-    icon: BookOpen,
-    children: [
-      {
-        id: 'program-overview',
-        label: 'navigation.program.overview',
-        href: '/masterclass',
-        anchor: '#overview',
-      },
-      {
-        id: 'program-day1',
-        label: 'navigation.program.day1',
-        href: '/masterclass',
-        anchor: '#day1',
-      },
-      {
-        id: 'program-day2',
-        label: 'navigation.program.day2',
-        href: '/masterclass',
-        anchor: '#day2',
-      },
-      {
-        id: 'program-objectives',
-        label: 'navigation.program.objectives',
-        href: '/masterclass',
-        anchor: '#objectives',
-      },
-    ],
-  },
-  {
-    id: 'about',
-    label: 'navigation.about',
-    href: '/about-russ',
-    icon: User,
-    children: [
-      {
-        id: 'about-bio',
-        label: 'navigation.about.bio',
-        href: '/about-russ',
-        anchor: '#bio',
-      },
-      {
-        id: 'about-expertise',
-        label: 'navigation.about.expertise',
-        href: '/about-russ',
-        anchor: '#expertise',
-      },
-      {
-        id: 'about-publications',
-        label: 'navigation.about.publications',
-        href: '/about-russ',
-        anchor: '#publications',
-      },
-    ],
+    // No icon, no children - simple direct link
   },
   {
     id: 'cities',
     label: 'navigation.cities',
     href: '/cities',
-    icon: MapPin,
-    badge: 'dynamic', // Will be calculated: number of cities with available events
+    // No icon, no badge - simple direct link
   },
   {
-    id: 'pricing',
-    label: 'navigation.pricing',
-    href: '/pricing',
-    icon: CreditCard,
-  },
-  {
-    id: 'testimonials',
-    label: 'navigation.testimonials',
-    href: '/testimonials',
-    icon: Star,
-  },
-  {
-    id: 'faq',
-    label: 'navigation.faq',
-    href: '/faq',
-    icon: HelpCircle,
+    id: 'about',
+    label: 'navigation.about',
+    href: '/about-russ',
+    // No icon, no children - simple direct link
   },
   {
     id: 'contact',
     label: 'navigation.contact',
     href: '/contact',
-    icon: Mail,
+    // No icon - simple direct link
   },
 ];
 

@@ -109,14 +109,15 @@ export default function MobileNavigation({
             </button>
           </div>
 
-          {/* Navigation items */}
-          <nav className="flex flex-col gap-2 flex-1 overflow-y-auto" aria-label="Menu mobile">
+          {/* Navigation items - Simplified: no sub-menus */}
+          <nav className="flex flex-col gap-1 flex-1 overflow-y-auto" aria-label="Menu mobile">
             {items.map((item, index) => (
               <div key={item.id} ref={index === 0 ? firstItemRef : undefined}>
                 <NavigationItem
                   item={item}
                   variant="mobile"
                   onNavigate={onClose}
+                  showChildren={false}
                 />
               </div>
             ))}
