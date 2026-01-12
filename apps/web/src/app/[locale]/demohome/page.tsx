@@ -201,7 +201,7 @@ export default function DemoHomePage() {
       </section>
 
       {/* Section L'homme derrière l'ACT */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-gray-50">
         <Container className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-5 gap-12 items-center">
             {/* Photo avec effet hexagonal */}
@@ -448,7 +448,7 @@ export default function DemoHomePage() {
       </section>
 
       {/* Section Témoignages */}
-      <section className="py-32 bg-gray-50">
+      <section className="py-32 bg-gray-100">
         <Container className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
@@ -528,7 +528,7 @@ export default function DemoHomePage() {
       </section>
 
       {/* Section Organisateur */}
-      <section className="py-16 bg-white border-t border-gray-200">
+      <section className="py-16 bg-gray-50 border-t border-gray-200">
         <Container className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center gap-6">
             <p className="text-sm text-gray-500 uppercase tracking-wider">Organisé par</p>
