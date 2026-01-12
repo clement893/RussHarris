@@ -175,11 +175,11 @@ export default function NavigationItem({
           }
         }}
         className={clsx(
-          'flex items-center justify-between px-4 py-3 text-lg font-normal transition-colors',
+          'flex items-center justify-between px-4 py-3 text-base font-medium transition-colors rounded-lg',
           'min-h-[44px]',
           isActive
-            ? 'font-bold bg-black text-white'
-            : 'text-black hover:bg-gray-100',
+            ? 'font-semibold bg-[#2B5F7A] text-white'
+            : 'text-white hover:bg-white/10 hover:text-[#F58220]',
         )}
         aria-current={isActive ? 'page' : undefined}
       >
@@ -188,14 +188,14 @@ export default function NavigationItem({
           <span>{t(item.label)}</span>
         </div>
         {item.badge && item.badge !== 'dynamic' && (
-          <span className="px-2 py-0.5 text-xs font-black bg-black text-white rounded-none">
+          <span className="px-2 py-0.5 text-xs font-semibold bg-[#F58220] text-white rounded-full">
             {item.badge}
           </span>
         )}
         {hasChildren && (
           <ChevronDown
             className={clsx(
-              'w-5 h-5 transition-transform duration-200',
+              'w-5 h-5 transition-transform duration-200 text-white',
               isSubMenuOpen && 'rotate-180'
             )}
             aria-hidden="true"
@@ -205,7 +205,7 @@ export default function NavigationItem({
 
       {/* Sub-menu (mobile) */}
       {hasChildren && showChildren && isSubMenuOpen && (
-        <div className="pl-8 bg-gray-50 border-l-2 border-black">
+        <div className="pl-8 bg-[#1B3D4C]/50 border-l-2 border-[#2B5F7A] mt-2">
           {item.children!.map((child) => (
             <NavigationItem
               key={child.id}

@@ -1,14 +1,15 @@
 /**
  * MobileNavigation Component
- * Mobile navigation menu with slide-in animation (Swiss Style)
+ * Mobile navigation menu with slide-in animation
+ * Design based on demohome with blue/orange colors
  */
 
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { Link } from '@/i18n/routing';
 import { masterclassNavigationConfig, type NavigationItem as NavigationItemType } from '@/lib/navigation/config';
 import NavigationItem from './NavigationItem';
-import CTAPrimary from './CTAPrimary';
 import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
 import { X } from 'lucide-react';
 import { clsx } from 'clsx';
@@ -74,59 +75,62 @@ export default function MobileNavigation({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+        className="fixed inset-0 bg-black/50 z-40 lg:hidden"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Menu panel - Swiss Style: flat, border only, no shadow */}
+      {/* Menu panel - Dark background with design system colors */}
       <div
         ref={menuRef}
         className={clsx(
-          'fixed top-0 right-0 h-full w-full max-w-sm bg-white z-50 lg:hidden',
-          'transform transition-transform duration-300 ease-out',
-          'border-l-2 border-black', // Swiss style: 2px border, no shadow
+          'fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-[#132C35] transform transition-transform duration-300 ease-in-out lg:hidden',
           isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
         role="dialog"
         aria-modal="true"
         aria-label={t('navigation.menu')}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-black">
-          <h2 className="text-xl font-bold text-black">{t('navigation.menu')}</h2>
-          <button
-            onClick={onClose}
-            className="p-2 text-black hover:bg-gray-100 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-            aria-label={t('navigation.close')}
-          >
-            <X className="w-6 h-6" aria-hidden="true" />
-          </button>
-        </div>
-
-        {/* Navigation items */}
-        <nav className="flex-1 overflow-y-auto py-4" aria-label="Menu mobile">
-          {items.map((item, index) => (
-            <div key={item.id} ref={index === 0 ? firstItemRef : undefined}>
-              <NavigationItem
-                item={item}
-                variant="mobile"
-                onNavigate={onClose}
-              />
-            </div>
-          ))}
-        </nav>
-
-        {/* Footer with CTA and Language Switcher */}
-        <div className="border-t border-black p-6 space-y-4">
-          {showCTA && (
-            <CTAPrimary
-              variant="mobile"
+        <div className="flex flex-col h-full p-6 pt-24">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8 pb-6 border-b border-[#2B5F7A]/50">
+            <h2 className="text-xl font-semibold text-white">{t('navigation.menu')}</h2>
+            <button
               onClick={onClose}
-            />
-          )}
-          <div className="flex items-center justify-center">
-            <LanguageSwitcher />
+              className="p-2 text-white hover:bg-white/10 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F58220] focus:ring-offset-2 focus:ring-offset-[#132C35]"
+              aria-label={t('navigation.close')}
+            >
+              <X className="w-6 h-6" aria-hidden="true" />
+            </button>
+          </div>
+
+          {/* Navigation items */}
+          <nav className="flex flex-col gap-2 flex-1 overflow-y-auto" aria-label="Menu mobile">
+            {items.map((item, index) => (
+              <div key={item.id} ref={index === 0 ? firstItemRef : undefined}>
+                <NavigationItem
+                  item={item}
+                  variant="mobile"
+                  onNavigate={onClose}
+                />
+              </div>
+            ))}
+          </nav>
+
+          {/* Footer with CTA and Language Switcher */}
+          <div className="border-t border-[#2B5F7A]/50 pt-6 space-y-4 mt-auto">
+            {showCTA && (
+              <Link
+                href="/cities"
+                onClick={onClose}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold text-white bg-[#F58220] rounded-full hover:bg-[#C4681A] transition-all duration-300 w-full"
+              >
+                {t('navigation.bookNow')}
+              </Link>
+            )}
+            <div className="flex items-center justify-center">
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
       </div>

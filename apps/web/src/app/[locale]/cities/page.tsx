@@ -1,16 +1,18 @@
 /**
  * Cities Page
  * List of all cities with available events
+ * Design aligned with home page
  */
 
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Container } from '@/components/ui';
-import SwissDivider from '@/components/masterclass/SwissDivider';
+import { Container, Button } from '@/components/ui';
+import { Link } from '@/i18n/routing';
 import CityCard from '@/components/masterclass/CityCard';
 import { masterclassAPI, type CityWithEvents } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
+import { ArrowRight } from 'lucide-react';
 
 export default function CitiesPage() {
   const [cities, setCities] = useState<CityWithEvents[]>([]);
@@ -32,30 +34,38 @@ export default function CitiesPage() {
     }
   };
 
-
   return (
-    <div className="min-h-screen bg-white">
-      <Container className="py-20 md:py-32">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-16">
-            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-black">
+    <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
+      {/* Hero Section */}
+      <section className="relative py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
+        <Container className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
               Villes & Dates
             </h1>
-            <SwissDivider />
-            <p className="text-xl text-gray-600 mt-6 max-w-3xl">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Choisissez la ville et la date qui vous conviennent pour participer à la masterclass ACT avec Russ Harris.
             </p>
           </div>
+        </Container>
+      </section>
 
-          {/* Cities Grid */}
+      {/* Cities Grid Section */}
+      <section className="py-32 bg-white">
+        <Container className="max-w-7xl mx-auto">
           {isLoading ? (
             <div className="text-center py-20">
-              <p className="text-gray-600">Chargement des villes...</p>
+              <p className="text-gray-600 text-lg">Chargement des villes...</p>
             </div>
           ) : cities.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-gray-600">Aucune ville disponible pour le moment.</p>
+              <p className="text-gray-600 text-lg">Aucune ville disponible pour le moment.</p>
+              <Link href="/contact">
+                <Button className="mt-6 bg-[#F58220] hover:bg-[#C4681A] text-white rounded-full">
+                  Nous contacter
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -64,8 +74,8 @@ export default function CitiesPage() {
               ))}
             </div>
           )}
-        </div>
-      </Container>
+        </Container>
+      </section>
     </div>
   );
 }
