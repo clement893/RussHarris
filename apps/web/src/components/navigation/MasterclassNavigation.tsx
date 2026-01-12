@@ -1,14 +1,15 @@
 /**
  * MasterclassNavigation Component
  * Main navigation component for the masterclass website
- * Combines desktop and mobile navigation with Swiss Style design
+ * Design based on DemoHeader with scroll behavior
  */
 
 'use client';
 
 import { useState, useEffect } from 'react';
 import { Link } from '@/i18n/routing';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 import { clsx } from 'clsx';
 import { useTranslations } from 'next-intl';
 import DesktopNavigation from './DesktopNavigation';
@@ -33,8 +34,19 @@ export default function MasterclassNavigation({
 }: MasterclassNavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [navigationItemsWithBadges, setNavigationItemsWithBadges] = useState<NavigationItem[]>([]);
+  const [isScrolled, setIsScrolled] = useState(false);
   const t = useTranslations();
   const { isAuthenticated, user } = useAuthStore();
+
+  // Handle scroll behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Get filtered navigation based on auth status
   const baseNavigationItems = getFilteredNavigation(
@@ -91,60 +103,84 @@ export default function MasterclassNavigation({
 
   // Check if header should be transparent (e.g., on hero section)
   const isTransparent = variant === 'transparent';
+  const shouldShowBackground = isScrolled || variant !== 'transparent';
 
   return (
-    <header
-      className={clsx(
-        'sticky top-0 z-50 w-full transition-all duration-200',
-        isTransparent
-          ? 'bg-transparent'
-          : 'bg-white/95 backdrop-blur-md border-b border-black',
-        className
-      )}
-    >
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo - Swiss Style: Inter Bold, no decoration */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-xl lg:text-2xl font-black text-black hover:opacity-90 transition-opacity"
-            aria-label={t('navigation.home')}
-          >
-            <span className="tracking-tight">Masterclass ACT</span>
-            <span className="text-gray-600 font-normal">Russ Harris</span>
-          </Link>
+    <>
+      <header
+        className={clsx(
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+          shouldShowBackground
+            ? 'bg-[#2B5F7A]/95 backdrop-blur-lg border-b border-[#2B5F7A]/50 shadow-lg'
+            : 'bg-transparent',
+          className
+        )}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo - IPS Logo with text */}
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative w-12 h-12 transition-transform duration-300 group-hover:scale-105">
+                <Image
+                  src="/images/ips-logo.png"
+                  alt="Institut de psychologie contextuelle"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <span className={clsx(
+                'font-semibold text-lg hidden sm:block transition-colors duration-300',
+                shouldShowBackground ? 'text-white' : 'text-white'
+              )}>
+                Institut de psychologie contextuelle
+              </span>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <DesktopNavigation items={navigationItems} />
+            {/* Desktop Navigation */}
+            <DesktopNavigation items={navigationItems} />
 
-          {/* Desktop Actions (CTA + Language) */}
-          <div className="hidden lg:flex items-center gap-4">
-            {showCTA && (
-              <CTAPrimary variant="desktop" />
-            )}
-            <LanguageSwitcher />
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center gap-2">
-            <LanguageSwitcher />
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={clsx(
-                'p-2 text-black hover:bg-gray-100 transition-colors rounded-lg',
-                'focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2',
-                'min-h-[44px] min-w-[44px] flex items-center justify-center'
+            {/* Desktop Actions (CTA + Language) */}
+            <div className="hidden lg:flex items-center gap-4">
+              {showCTA && (
+                <Link
+                  href="/cities"
+                  className={clsx(
+                    'inline-flex items-center gap-2 px-6 py-2.5 text-base font-semibold rounded-full transition-all duration-300',
+                    shouldShowBackground
+                      ? 'text-[#F58220] border-2 border-[#F58220] hover:bg-[#F58220] hover:text-white'
+                      : 'text-[#F58220] border-2 border-[#F58220] hover:bg-[#F58220] hover:text-white'
+                  )}
+                >
+                  {t('navigation.bookNow')}
+                </Link>
               )}
-              aria-label={mobileMenuOpen ? t('navigation.close') : t('navigation.menu')}
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              <Menu className="w-6 h-6" aria-hidden="true" />
-            </button>
+              <LanguageSwitcher />
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden flex items-center gap-2">
+              <LanguageSwitcher />
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={clsx(
+                  'p-2 transition-colors rounded-lg',
+                  shouldShowBackground
+                    ? 'text-white hover:bg-white/10'
+                    : 'text-white hover:bg-white/10',
+                  'focus:outline-none focus:ring-2 focus:ring-[#F58220] focus:ring-offset-2 focus:ring-offset-[#2B5F7A]',
+                  'min-h-[44px] min-w-[44px] flex items-center justify-center'
+                )}
+                aria-label={mobileMenuOpen ? t('navigation.close') : t('navigation.menu')}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-menu"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Mobile Navigation */}
       <MobileNavigation
@@ -153,6 +189,14 @@ export default function MasterclassNavigation({
         items={navigationItems}
         showCTA={showCTA}
       />
-    </header>
+
+      {/* Overlay for Mobile Menu */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+    </>
   );
 }

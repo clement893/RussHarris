@@ -85,11 +85,10 @@ export default function NavigationItem({
               }
             }}
             className={clsx(
-              'relative flex items-center gap-2 px-4 py-3 text-base font-normal transition-all duration-200',
-              'hover:font-bold',
+              'relative flex items-center gap-2 px-4 py-3 text-base font-medium transition-all duration-200',
               isActive
-                ? 'font-bold text-black'
-                : 'text-gray-700 hover:text-black',
+                ? 'font-semibold text-white'
+                : 'text-white hover:text-[#F58220]',
               hasChildren && 'cursor-pointer'
             )}
             aria-current={isActive ? 'page' : undefined}
@@ -113,10 +112,10 @@ export default function NavigationItem({
             )}
           </Link>
 
-          {/* Underline animation on hover (Swiss style) */}
+          {/* Underline animation on hover */}
           <span
             className={clsx(
-              'absolute bottom-0 left-0 h-0.5 bg-black transition-all duration-200',
+              'absolute bottom-0 left-0 h-0.5 bg-[#F58220] transition-all duration-200',
               isActive ? 'w-full' : 'w-0 group-hover:w-full'
             )}
           />
@@ -125,7 +124,7 @@ export default function NavigationItem({
         {/* Sub-menu dropdown (desktop) - Swiss Style: flat, no shadow, border only */}
         {hasChildren && showChildren && isSubMenuOpen && (
           <div 
-            className="absolute top-full left-0 mt-0 w-56 bg-white border-2 border-black z-50"
+            className="absolute top-full left-0 mt-2 w-56 bg-[#1B3D4C] border border-[#2B5F7A] rounded-lg shadow-xl z-50 backdrop-blur-md"
             onMouseLeave={() => setIsSubMenuOpen(false)}
           >
             <div className="py-1">
@@ -147,9 +146,9 @@ export default function NavigationItem({
                       if (onNavigate) onNavigate();
                     }}
                     className={clsx(
-                      'block px-4 py-2 text-sm font-normal transition-all duration-200',
-                      'hover:font-bold hover:bg-black hover:text-white',
-                      isChildActive && 'font-bold bg-gray-100'
+                      'block px-4 py-2 text-sm font-medium transition-all duration-200 rounded text-white',
+                      'hover:bg-[#2B5F7A] hover:text-[#F58220]',
+                      isChildActive && 'font-semibold bg-[#2B5F7A] text-[#F58220]'
                     )}
                   >
                     {t(child.label)}
