@@ -16,14 +16,12 @@ interface NavigationItemProps {
   item: NavigationItemType;
   variant?: 'desktop' | 'mobile';
   onNavigate?: () => void;
-  showChildren?: boolean;
 }
 
 export default function NavigationItem({
   item,
   variant = 'desktop',
   onNavigate,
-  showChildren = false,
 }: NavigationItemProps) {
   const t = useTranslations();
   const pathname = usePathname();

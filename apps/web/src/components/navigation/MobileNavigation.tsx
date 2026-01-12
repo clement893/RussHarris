@@ -117,7 +117,6 @@ export default function MobileNavigation({
                   item={item}
                   variant="mobile"
                   onNavigate={onClose}
-                  showChildren={false}
                 />
               </div>
             ))}
