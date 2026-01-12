@@ -12,7 +12,7 @@ export default function DemoHomePage() {
           <div className="absolute inset-0 bg-grid-gray-800/20 [mask-image:linear-gradient(to_bottom,white_20%,transparent_100%)]"></div>
           <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <Badge variant="outline" className="border-orange-500/50 text-orange-500">
+              <Badge className="border border-orange-500/50 text-orange-500 bg-transparent">
                 TOURNÉE CANADIENNE 2026
               </Badge>
               <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
