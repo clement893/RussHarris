@@ -6,52 +6,27 @@ import { ArrowRight, Calendar, MapPin, Users, Award, Globe } from 'lucide-react'
 
 export default function DemoHomePage() {
   return (
-    <div className="bg-[#0A0A0A] text-white">
+    <div className="bg-white text-black">
       {/* Hero Section - Enrichi avec plus de substance */}
-      <section className="relative min-h-screen flex items-center overflow-hidden py-20 bg-[#0A0A0A]">
+      <section className="relative min-h-screen flex items-center overflow-hidden py-20 bg-white">
         <Container className="relative z-10 max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             {/* Colonne gauche - Contenu principal */}
             <div>
-              <div className="inline-block border border-[#FF8C42] text-[#FF8C42] px-4 py-1 text-xs font-bold mb-6 tracking-widest rounded-full">
-                TOURNÉE CANADIENNE 2026
-              </div>
-              <h1 className="text-6xl md:text-8xl font-black mb-6 leading-none">
+              <h1 className="text-6xl md:text-8xl font-black mb-4 leading-none">
                 RUSS
                 <br />
                 HARRIS
               </h1>
+              <div className="inline-block border border-[#FF8C42] text-[#FF8C42] px-4 py-1 text-xs font-bold mb-6 tracking-widest rounded-full">
+                TOURNÉE CANADIENNE 2026
+              </div>
               <p className="text-2xl md:text-3xl font-semibold text-[#FF8C42] mb-8">
                 Formation intensive en ACT
               </p>
-              <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-xl">
+              <p className="text-xl text-gray-700 mb-10 leading-relaxed max-w-xl">
                 Deux jours pour maîtriser la Thérapie d'Acceptation et d'Engagement avec l'un des formateurs ACT les plus respectés au monde. Une opportunité unique de transformer votre pratique clinique.
               </p>
-              
-              {/* Stats rapides */}
-              <div className="grid grid-cols-3 gap-6 mb-10 pb-8 border-b border-gray-800">
-                <div>
-                  <div className="flex items-center gap-2 text-[#FF8C42] mb-1">
-                    <Users className="w-5 h-5" />
-                    <span className="text-2xl font-black">90K+</span>
-                  </div>
-                  <div className="text-sm text-gray-400">Professionnels formés</div>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 text-[#FF8C42] mb-1">
-                    <Award className="w-5 h-5" />
-                    <span className="text-2xl font-black">1M+</span>
-                  </div>
-                  <div className="text-sm text-gray-400">Livres vendus</div>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 text-[#FF8C42] mb-1">
-                    <Globe className="w-5 h-5" />
-                    <span className="text-2xl font-black">30</span>
-                  </div>
-                  <div className="text-sm text-gray-400">Langues</div>
-                </div>
-              </div>
 
               <Button 
                 size="lg" 
@@ -64,7 +39,7 @@ export default function DemoHomePage() {
 
             {/* Colonne droite - Photo rectangle verticale de Russ Harris */}
             <div className="flex items-center justify-center">
-              <div className="relative w-80 h-[500px] rounded-3xl overflow-hidden border-4 border-[#FF8C42]">
+              <div className="relative w-96 h-[600px] rounded-3xl overflow-hidden border-4 border-[#FF8C42]">
                 <Image
                   src="/images/russ/8obb1myXAohZ.jpg"
                   alt="Dr. Russ Harris"
