@@ -24,25 +24,25 @@ export interface NavigationItem {
 export const masterclassNavigationConfig: NavigationItem[] = [
   {
     id: 'program',
-    label: 'navigation.program',
+    label: 'Programme',
     href: '/masterclass',
     // No icon, no children - simple direct link
   },
   {
     id: 'cities',
-    label: 'navigation.cities',
+    label: 'Villes & Dates',
     href: '/cities',
     // No icon, no badge - simple direct link
   },
   {
     id: 'about',
-    label: 'navigation.about',
+    label: 'À propos',
     href: '/about-russ',
     // No icon, no children - simple direct link
   },
   {
     id: 'contact',
-    label: 'navigation.contact',
+    label: 'Contact',
     href: '/contact',
     // No icon - simple direct link
   },

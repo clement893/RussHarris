@@ -5,7 +5,6 @@
 
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
@@ -23,7 +22,6 @@ export default function NavigationItem({
   variant = 'desktop',
   onNavigate,
 }: NavigationItemProps) {
-  const t = useTranslations();
   const pathname = usePathname();
 
   const isActive = isActivePath(pathname, item);
@@ -56,7 +54,7 @@ export default function NavigationItem({
         aria-current={isActive ? 'page' : undefined}
       >
         <span className="relative">
-          {t(item.label)}
+          {item.label}
           {/* Simple underline on hover and active */}
           <span
             className={clsx(
@@ -84,7 +82,7 @@ export default function NavigationItem({
       )}
       aria-current={isActive ? 'page' : undefined}
     >
-      {t(item.label)}
+      {item.label}
     </Link>
   );
 }
