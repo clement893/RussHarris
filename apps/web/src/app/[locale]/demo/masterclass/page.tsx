@@ -1,5 +1,4 @@
 import DemoHeader from "@/components/layout/DemoHeader";
-import { Button } from "@/components/ui";
 import { CheckCircle, Video, FileText, Award } from "lucide-react";
 
 export default function DemoMasterclassPage() {
