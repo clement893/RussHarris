@@ -109,38 +109,38 @@ export default async function LocaleLayout({
                 --color-muted-foreground: #64748b;
                 --color-border: #e2e8f0;
                 --color-input: #ffffff;
-                --color-ring: #2563eb;
+                --color-ring: #2B5F7A;
                 
                 /* Default color palette - will be overridden by theme */
-                /* Primary shades - prevent flash on gradients */
-                --color-primary-50: #eff6ff;
-                --color-primary-100: #dbeafe;
-                --color-primary-200: #bfdbfe;
-                --color-primary-300: #93c5fd;
-                --color-primary-400: #60a5fa;
-                --color-primary-500: #2563eb;
-                --color-primary-600: #1d4ed8;
-                --color-primary-700: #1e40af;
-                --color-primary-800: #1e3a8a;
-                --color-primary-900: #1e3a8a;
-                --color-primary-950: #172554;
-                /* Secondary shades */
-                --color-secondary-50: #f5f3ff;
-                --color-secondary-100: #ede9fe;
-                --color-secondary-200: #ddd6fe;
-                --color-secondary-300: #c4b5fd;
-                --color-secondary-400: #a78bfa;
-                --color-secondary-500: #6366f1;
-                --color-secondary-600: #4f46e5;
-                --color-secondary-700: #4338ca;
-                --color-secondary-800: #3730a3;
-                --color-secondary-900: #312e81;
-                --color-secondary-950: #1e1b4b;
+                /* Primary shades (Bleu pétrole) - prevent flash on gradients */
+                --color-primary-50: #E8F1F5;
+                --color-primary-100: #C2DCE6;
+                --color-primary-200: #9BC7D7;
+                --color-primary-300: #74B2C8;
+                --color-primary-400: #4D9DB9;
+                --color-primary-500: #2B5F7A;
+                --color-primary-600: #234E63;
+                --color-primary-700: #1B3D4C;
+                --color-primary-800: #132C35;
+                --color-primary-900: #0B1B1E;
+                --color-primary-950: #0B1B1E;
+                /* Secondary shades (Orange) */
+                --color-secondary-50: #FFF4E6;
+                --color-secondary-100: #FFE0B3;
+                --color-secondary-200: #FFCC80;
+                --color-secondary-300: #FFB84D;
+                --color-secondary-400: #FFA41A;
+                --color-secondary-500: #F58220;
+                --color-secondary-600: #C4681A;
+                --color-secondary-700: #934E13;
+                --color-secondary-800: #62340D;
+                --color-secondary-900: #311A06;
+                --color-secondary-950: #311A06;
                 /* Other colors */
-                --color-danger-500: #dc2626;
-                --color-warning-500: #b45309;
-                --color-info-500: #0891b2;
-                --color-success-500: #047857;
+                --color-danger-500: #EF4444;
+                --color-warning-500: #F59E0B;
+                --color-info-500: #3B82F6;
+                --color-success-500: #10B981;
               }
               
               /* Dark mode defaults - applied when .dark class is present */

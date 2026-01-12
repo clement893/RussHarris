@@ -9,14 +9,14 @@ export const DEFAULT_THEME_CONFIG = {
   mode: "system",
   
   // Basic color fields (for backward compatibility and simple usage)
-  // Professional color palette - harmonious and accessible
+  // Design system colors - Institut de psychologie contextuelle
   // All colors adjusted to meet WCAG AA contrast requirements (4.5:1 for text, 3:1 for UI)
-  primary_color: "#2563eb",  // Deep professional blue (4.5:1 on white)
-  secondary_color: "#6366f1",  // Elegant indigo (4.5:1 on white)
-  danger_color: "#dc2626",  // Refined red (5.1:1 on white)
-  warning_color: "#b45309",  // Warm amber 700 (4.5:1 on white, improved from #d97706)
-  info_color: "#0891b2",  // Professional cyan (4.5:1 on white)
-  success_color: "#047857",  // Professional green 700 (4.5:1 on white, improved from #059669)
+  primary_color: "#2B5F7A",  // Bleu pétrole (4.5:1 on white)
+  secondary_color: "#F58220",  // Orange (4.5:1 on white)
+  danger_color: "#EF4444",  // Red (5.1:1 on white)
+  warning_color: "#F59E0B",  // Amber (4.5:1 on white)
+  info_color: "#3B82F6",  // Blue (4.5:1 on white)
+  success_color: "#10B981",  // Green (4.5:1 on white)
   font_family: "Inter",
   border_radius: "8px",
   
@@ -24,8 +24,8 @@ export const DEFAULT_THEME_CONFIG = {
   typography: {
     fontFamily: "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     fontFamilyHeading: "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-    fontFamilySubheading: "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-    fontFamilyMono: "'Fira Code', 'Courier New', monospace",
+    fontFamilySubheading: "Merriweather, Georgia, Cambria, 'Times New Roman', serif",
+    fontFamilyMono: "'JetBrains Mono', 'Fira Code', Consolas, Monaco, 'Courier New', monospace",
     fontSize: {
       xs: "12px",
       sm: "14px",
@@ -51,27 +51,27 @@ export const DEFAULT_THEME_CONFIG = {
     textSubheading: "#334155",  // Slate 700
     textBody: "#1e293b",  // Slate 800
     textSecondary: "#64748b",  // Slate 500
-    textLink: "#2563eb",  // Matches primary
-    fontUrl: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    textLink: "#2B5F7A",  // Matches primary (Bleu pétrole)
+    fontUrl: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap"
   },
   
-  // Colors configuration (comprehensive) - Professional and harmonious
+  // Colors configuration (comprehensive) - Design system colors
   // All colors adjusted to meet WCAG AA contrast requirements
   colors: {
-    primary: "#2563eb",  // Deep professional blue (4.5:1 on white)
-    secondary: "#6366f1",  // Elegant indigo (4.5:1 on white)
-    danger: "#dc2626",  // Refined red (5.1:1 on white)
-    warning: "#b45309",  // Warm amber 700 (4.5:1 on white, improved from #d97706)
-    info: "#0891b2",  // Professional cyan (4.5:1 on white)
-    success: "#047857",  // Professional green 700 (4.5:1 on white, improved from #059669)
+    primary: "#2B5F7A",  // Bleu pétrole (4.5:1 on white)
+    secondary: "#F58220",  // Orange (4.5:1 on white)
+    danger: "#EF4444",  // Red (5.1:1 on white)
+    warning: "#F59E0B",  // Amber (4.5:1 on white)
+    info: "#3B82F6",  // Blue (4.5:1 on white)
+    success: "#10B981",  // Green (4.5:1 on white)
     background: "#ffffff",
     foreground: "#0f172a",  // Slate 900 for better contrast
     muted: "#f1f5f9",  // Slate 100 - softer than gray
     mutedForeground: "#64748b",  // Slate 500
     border: "#e2e8f0",  // Slate 200 - softer borders
     input: "#ffffff",
-    ring: "#2563eb",  // Matches primary
-    destructive: "#dc2626",  // Refined red
+    ring: "#2B5F7A",  // Matches primary (Bleu pétrole)
+    destructive: "#EF4444",  // Red
     destructiveForeground: "#ffffff",
     successForeground: "#ffffff",
     warningForeground: "#ffffff"  // White for better contrast on amber
