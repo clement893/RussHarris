@@ -1,6 +1,5 @@
 import { DemoHeader } from "@/components/layout/DemoHeader";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge, Button } from "@/components/ui";
 import { ArrowRight, Award, Book, Globe, Users, Heart, Stethoscope, BrainCircuit, UserCheck } from "lucide-react";
 import Image from "next/image";
 
