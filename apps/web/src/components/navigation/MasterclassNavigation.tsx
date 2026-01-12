@@ -14,7 +14,6 @@ import { clsx } from 'clsx';
 import { useTranslations } from 'next-intl';
 import DesktopNavigation from './DesktopNavigation';
 import MobileNavigation from './MobileNavigation';
-import CTAPrimary from './CTAPrimary';
 import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
 import { masterclassNavigationConfig, type NavigationItem } from '@/lib/navigation/config';
 import { getFilteredNavigation } from '@/lib/navigation/config';
