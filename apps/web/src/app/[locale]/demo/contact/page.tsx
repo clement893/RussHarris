@@ -1,3 +1,5 @@
+'use client';
+
 import DemoHeader from "@/components/layout/DemoHeader";
 import { Button, Input, Textarea, Select } from "@/components/ui";
 import { MapPin, Mail, Phone, Clock } from "lucide-react";

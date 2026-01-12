@@ -1,3 +1,5 @@
+'use client';
+
 import DemoHeader from "@/components/layout/DemoHeader";
 import { Button } from "@/components/ui";
 import { ArrowRight, Book, Globe, Users } from "lucide-react";

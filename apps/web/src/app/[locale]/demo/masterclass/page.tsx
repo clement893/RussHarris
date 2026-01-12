@@ -1,3 +1,5 @@
+'use client';
+
 import DemoHeader from "@/components/layout/DemoHeader";
 import { CheckCircle, Video, FileText, Award } from "lucide-react";
 
