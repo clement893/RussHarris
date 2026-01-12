@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
-import { ArrowRight, Calendar, MapPin, Users, Award, Globe } from 'lucide-react';
+import { ArrowRight, Calendar, MapPin } from 'lucide-react';
 
 export default function DemoHomePage() {
   return (
