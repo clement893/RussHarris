@@ -20,7 +20,7 @@ export default function DesktopNavigation({
 
   return (
     <nav
-      className="hidden lg:flex items-center gap-8"
+      className="hidden lg:flex items-center gap-2"
       aria-label="Navigation principale desktop"
     >
       {items.map((item) => (

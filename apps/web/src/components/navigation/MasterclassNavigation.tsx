@@ -107,28 +107,30 @@ export default function MasterclassNavigation({
     <>
       <header
         className={clsx(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
           shouldShowBackground
-            ? 'bg-[#2B5F7A]/95 backdrop-blur-lg border-b border-[#2B5F7A]/50 shadow-lg'
+            ? 'bg-[#1B3D4C]/98 backdrop-blur-xl border-b border-[#2B5F7A]/60 shadow-2xl shadow-[#1B3D4C]/20'
             : 'bg-transparent',
           className
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-20 lg:h-24">
             {/* Logo - IPS Logo with text */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-12 h-12 transition-transform duration-300 group-hover:scale-105">
+            <Link href="/" className="flex items-center gap-3 group relative">
+              <div className="relative w-12 h-12 lg:w-14 lg:h-14 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                <div className="absolute inset-0 bg-[#F58220]/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <Image
                   src="/images/ips-logo.png"
                   alt="Institut de psychologie contextuelle"
                   fill
-                  className="object-contain"
+                  className="object-contain relative z-10"
                 />
               </div>
               <span className={clsx(
-                'font-semibold text-lg hidden sm:block transition-colors duration-300',
-                shouldShowBackground ? 'text-white' : 'text-white'
+                'font-semibold text-base lg:text-lg hidden sm:block transition-all duration-300',
+                'text-white group-hover:text-[#F58220]',
+                shouldShowBackground ? 'opacity-100' : 'opacity-100'
               )}>
                 Institut de psychologie contextuelle
               </span>
@@ -143,37 +145,46 @@ export default function MasterclassNavigation({
                 <Link
                   href="/cities"
                   className={clsx(
-                    'inline-flex items-center gap-2 px-6 py-2.5 text-base font-semibold rounded-full transition-all duration-300',
-                    shouldShowBackground
-                      ? 'text-[#F58220] border-2 border-[#F58220] hover:bg-[#F58220] hover:text-white'
-                      : 'text-[#F58220] border-2 border-[#F58220] hover:bg-[#F58220] hover:text-white'
+                    'relative inline-flex items-center gap-2 px-6 py-3 text-base font-semibold rounded-full',
+                    'transition-all duration-300 transform hover:scale-105 active:scale-95',
+                    'text-white bg-[#F58220] border-2 border-[#F58220]',
+                    'hover:bg-[#C4681A] hover:border-[#C4681A] hover:shadow-lg hover:shadow-[#F58220]/30',
+                    'focus:outline-none focus:ring-2 focus:ring-[#F58220] focus:ring-offset-2 focus:ring-offset-[#1B3D4C]'
                   )}
                 >
-                  {t('navigation.bookNow')}
+                  <span className="relative z-10">{t('navigation.bookNow')}</span>
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#F58220] to-[#C4681A] opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
               )}
               <LanguageSwitcher />
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="lg:hidden flex items-center gap-2">
+            <div className="lg:hidden flex items-center gap-3">
               <LanguageSwitcher />
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={clsx(
-                  'p-2 transition-colors rounded-lg',
-                  shouldShowBackground
-                    ? 'text-white hover:bg-white/10'
-                    : 'text-white hover:bg-white/10',
-                  'focus:outline-none focus:ring-2 focus:ring-[#F58220] focus:ring-offset-2 focus:ring-offset-[#2B5F7A]',
-                  'min-h-[44px] min-w-[44px] flex items-center justify-center'
+                  'relative p-3 transition-all duration-300 rounded-xl',
+                  'text-white hover:bg-white/10 active:bg-white/20',
+                  'focus:outline-none focus:ring-2 focus:ring-[#F58220] focus:ring-offset-2 focus:ring-offset-[#1B3D4C]',
+                  'min-h-[44px] min-w-[44px] flex items-center justify-center',
+                  'transform hover:scale-110 active:scale-95'
                 )}
                 aria-label={mobileMenuOpen ? t('navigation.close') : t('navigation.menu')}
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-menu"
               >
-                {mobileMenuOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
+                <div className={clsx(
+                  'absolute inset-0 rounded-xl bg-[#F58220]/20 opacity-0 transition-opacity duration-300',
+                  mobileMenuOpen && 'opacity-100'
+                )}></div>
+                {mobileMenuOpen ? (
+                  <X className="w-6 h-6 relative z-10 transform rotate-0 transition-transform duration-300" aria-hidden="true" />
+                ) : (
+                  <Menu className="w-6 h-6 relative z-10" aria-hidden="true" />
+                )}
               </button>
             </div>
           </div>

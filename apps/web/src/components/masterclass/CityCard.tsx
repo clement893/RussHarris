@@ -33,7 +33,7 @@ export default function CityCard({ city, className }: CityCardProps) {
   const isUrgent = availabilityPercentage < 20;
 
   const handleClick = () => {
-    router.push(`/cities/${city.name_en.toLowerCase().replace(/\s+/g, '-')}`);
+    router.push(`/cities/${city.id}`);
   };
 
   return (
@@ -101,9 +101,23 @@ export default function CityCard({ city, className }: CityCardProps) {
       )}
 
       {/* CTA */}
-      <div className="flex items-center justify-end gap-2 mt-4 pt-4 border-t border-gray-300 group-hover:border-white/30">
-        <span className="text-sm font-bold text-black group-hover:text-white">Voir les dates</span>
-        <ArrowRight className="w-4 h-4 text-black group-hover:text-white" aria-hidden="true" />
+      <div className="flex items-center justify-between gap-3 mt-4 pt-4 border-t border-gray-300 group-hover:border-white/30">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push(`/cities/${city.id}/inscription`);
+          }}
+          className="px-4 py-2 bg-[#F58220] text-white font-bold text-sm rounded-full hover:bg-[#C4681A] transition-all duration-300 transform hover:scale-105"
+        >
+          S'inscrire
+        </button>
+        <button
+          onClick={handleClick}
+          className="flex items-center gap-2 text-sm font-bold text-black group-hover:text-white"
+        >
+          <span>Voir les dates</span>
+          <ArrowRight className="w-4 h-4" aria-hidden="true" />
+        </button>
       </div>
     </SwissCard>
   );

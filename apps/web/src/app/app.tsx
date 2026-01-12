@@ -10,6 +10,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { reportWebVitals } from '@/lib/performance';
 import { logger } from '@/lib/logger';
 import { MasterclassNavigation } from '@/components/navigation';
+import MasterclassFooter from '@/components/layout/MasterclassFooter';
 
 function AppContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -137,7 +138,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // For public pages, show MasterclassNavigation
+  // For public pages, show MasterclassNavigation and Footer
   // Note: Background is handled by body tag in layout.tsx, so we don't override it here
   // This allows individual pages to set their own backgrounds (gradients, etc.)
   return (
@@ -146,6 +147,7 @@ function AppContent({ children }: { children: React.ReactNode }) {
       <main id="main-content" className="flex-1">
         {children}
       </main>
+      <MasterclassFooter />
     </div>
   );
 }

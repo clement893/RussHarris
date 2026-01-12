@@ -84,20 +84,25 @@ export default function MobileNavigation({
       <div
         ref={menuRef}
         className={clsx(
-          'fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-[#132C35] transform transition-transform duration-300 ease-in-out lg:hidden',
+          'fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-gradient-to-br from-[#132C35] via-[#1B3D4C] to-[#132C35] transform transition-transform duration-500 ease-out lg:hidden',
+          'backdrop-blur-xl border-l border-[#2B5F7A]/40 shadow-2xl shadow-[#1B3D4C]/50',
           isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
         role="dialog"
         aria-modal="true"
         aria-label={t('navigation.menu')}
       >
-        <div className="flex flex-col h-full p-6 pt-24">
+        {/* Decorative gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F58220]/5 via-transparent to-[#2B5F7A]/10 pointer-events-none"></div>
+        
+        <div className="relative flex flex-col h-full p-6 pt-24">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8 pb-6 border-b border-[#2B5F7A]/50">
-            <h2 className="text-xl font-semibold text-white">{t('navigation.menu')}</h2>
+          <div className="flex items-center justify-between mb-8 pb-6 border-b border-[#2B5F7A]/60 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#F58220]/5 to-transparent"></div>
+            <h2 className="relative z-10 text-xl font-bold text-white tracking-wide">{t('navigation.menu')}</h2>
             <button
               onClick={onClose}
-              className="p-2 text-white hover:bg-white/10 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F58220] focus:ring-offset-2 focus:ring-offset-[#132C35]"
+              className="relative z-10 p-2.5 text-white hover:bg-white/10 active:bg-white/20 transition-all duration-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F58220] focus:ring-offset-2 focus:ring-offset-[#132C35] transform hover:scale-110 active:scale-95"
               aria-label={t('navigation.close')}
             >
               <X className="w-6 h-6" aria-hidden="true" />
@@ -118,17 +123,19 @@ export default function MobileNavigation({
           </nav>
 
           {/* Footer with CTA and Language Switcher */}
-          <div className="border-t border-[#2B5F7A]/50 pt-6 space-y-4 mt-auto">
+          <div className="border-t border-[#2B5F7A]/60 pt-6 space-y-4 mt-auto relative">
+            <div className="absolute inset-x-0 top-0 bg-gradient-to-r from-transparent via-[#F58220]/5 to-transparent h-px"></div>
             {showCTA && (
               <Link
                 href="/cities"
                 onClick={onClose}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold text-white bg-[#F58220] rounded-full hover:bg-[#C4681A] transition-all duration-300 w-full"
+                className="relative inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-semibold text-white bg-gradient-to-r from-[#F58220] to-[#C4681A] rounded-full hover:from-[#C4681A] hover:to-[#934E13] transition-all duration-300 w-full transform hover:scale-105 active:scale-95 shadow-lg shadow-[#F58220]/30 hover:shadow-[#F58220]/50"
               >
-                {t('navigation.bookNow')}
+                <span className="relative z-10">{t('navigation.bookNow')}</span>
+                <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
               </Link>
             )}
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center pt-2">
               <LanguageSwitcher />
             </div>
           </div>

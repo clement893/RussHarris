@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
+import { Link } from '@/i18n/routing';
 import { ArrowRight, Calendar, MapPin, Circle, Hexagon } from 'lucide-react';
 
 export default function HomePage() {
@@ -115,9 +116,11 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-col items-end gap-4">
                   <span className="text-2xl font-bold text-[#FF8C42]">200 places</span>
-                  <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-6 py-2.5 text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20">
-                    Inscription Montréal
-                  </Button>
+                  <Link href="/cities">
+                    <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-6 py-2.5 text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105">
+                      Inscription Montréal
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -140,9 +143,11 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-col items-end gap-4">
                   <span className="text-2xl font-bold text-[#FF8C42]">200 places</span>
-                  <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-6 py-2.5 text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20">
-                    Inscription Calgary
-                  </Button>
+                  <Link href="/cities">
+                    <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-6 py-2.5 text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105">
+                      Inscription Calgary
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -165,9 +170,11 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-col items-end gap-4">
                   <span className="text-2xl font-bold text-[#FF8C42]">200 places</span>
-                  <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-6 py-2.5 text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20">
-                    Inscription Vancouver
-                  </Button>
+                  <Link href="/cities">
+                    <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-6 py-2.5 text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105">
+                      Inscription Vancouver
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -190,9 +197,11 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-col items-end gap-4">
                   <span className="text-2xl font-bold text-[#FF8C42]">200 places</span>
-                  <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-6 py-2.5 text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20">
-                    Inscription Toronto
-                  </Button>
+                  <Link href="/cities">
+                    <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-6 py-2.5 text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105">
+                      Inscription Toronto
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

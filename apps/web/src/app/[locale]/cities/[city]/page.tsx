@@ -72,13 +72,23 @@ export default function CityDetailPage() {
           <div className="mb-16">
             <button
               onClick={() => router.push('/cities')}
-              className="text-gray-600 hover:text-black mb-6 text-sm font-bold"
+              className="text-gray-600 hover:text-[#F58220] mb-6 text-sm font-bold transition-colors"
             >
               ← Retour aux villes
             </button>
-            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-black">
-              {city ? `${city.name_fr || city.name_en || city.name}, ${city.country}` : 'Chargement...'}
-            </h1>
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="swiss-display text-6xl md:text-8xl text-black">
+                {city ? `${city.name_fr || city.name_en || city.name}, ${city.country}` : 'Chargement...'}
+              </h1>
+              {city && cityEvents.length > 0 && (
+                <button
+                  onClick={() => router.push(`/cities/${cityId}/inscription`)}
+                  className="hidden md:flex items-center gap-2 px-6 py-3 bg-[#F58220] text-white font-bold hover:bg-[#C4681A] transition-all duration-300 rounded-full transform hover:scale-105"
+                >
+                  S'inscrire
+                </button>
+              )}
+            </div>
             <SwissDivider />
           </div>
 
@@ -162,16 +172,24 @@ export default function CityDetailPage() {
                               {event.event.description_fr || event.event.description_en}
                             </p>
                           )}
-                          <div className="mt-4 flex items-center justify-between">
+                          <div className="mt-4 flex items-center justify-between gap-4">
                             <span className="text-2xl font-black text-black">
                               {event.price || event.regular_price} {event.currency || 'EUR'}
                             </span>
-                            <button
-                              onClick={() => router.push(`/book?cityEventId=${event.id}`)}
-                              className="px-6 py-2 bg-black text-white font-bold hover:bg-gray-900 transition-colors"
-                            >
-                              Réserver
-                            </button>
+                            <div className="flex gap-3">
+                              <button
+                                onClick={() => router.push(`/cities/${cityId}/inscription`)}
+                                className="px-6 py-2.5 bg-[#F58220] text-white font-bold hover:bg-[#C4681A] transition-all duration-300 rounded-full transform hover:scale-105"
+                              >
+                                Inscription
+                              </button>
+                              <button
+                                onClick={() => router.push(`/book?cityEventId=${event.id}`)}
+                                className="px-6 py-2.5 bg-black text-white font-bold hover:bg-gray-900 transition-colors rounded-full"
+                              >
+                                Réserver
+                              </button>
+                            </div>
                           </div>
                         </div>
                       )}
