@@ -3,10 +3,12 @@
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { ArrowRight, Calendar, MapPin, Circle, Hexagon } from 'lucide-react';
+import DemoHeader from '@/components/layout/DemoHeader';
 
 export default function DemoHomePage() {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
+      <DemoHeader />
       {/* Hero Section - Avec gris anthracite élégant */}
       <section className="relative min-h-screen flex items-center overflow-hidden py-20 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
         {/* Grille hexagonale subtile en arrière-plan */}
@@ -260,7 +262,7 @@ export default function DemoHomePage() {
       </section>
 
       {/* Section Hexaflex - Design interactif et visuel */}
-      <section className="py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      <section id="act" className="py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
         {/* Grille hexagonale très subtile en arrière-plan */}
         <div className="absolute inset-0 opacity-[0.015]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
