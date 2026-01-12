@@ -2,14 +2,27 @@
 
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
-import { ArrowRight, Calendar, MapPin, Circle } from 'lucide-react';
+import { ArrowRight, Calendar, MapPin, Circle, Hexagon } from 'lucide-react';
 
 export default function DemoHomePage() {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
-      {/* Hero Section - Finesse et précision */}
+      {/* Hero Section - Finesse et précision avec grille hexagonale */}
       <section className="relative min-h-screen flex items-center overflow-hidden py-20 bg-gradient-to-br from-[#2C3E50] to-[#34495E]">
-        {/* Motif de vagues subtil en arrière-plan */}
+        {/* Grille hexagonale subtile en arrière-plan */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+            {/* Pattern hexagonal répété */}
+            <defs>
+              <pattern id="hexPattern" x="0" y="0" width="100" height="86.6" patternUnits="userSpaceOnUse">
+                <polygon points="50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25" fill="none" stroke="white" strokeWidth="1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#hexPattern)" />
+          </svg>
+        </div>
+
+        {/* Motif de vagues subtil */}
         <div className="absolute inset-0 opacity-5">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
             <path d="M0,400 Q300,300 600,400 T1200,400" stroke="white" strokeWidth="2" fill="none" />
@@ -52,16 +65,24 @@ export default function DemoHomePage() {
               </Button>
             </div>
 
-            {/* Colonne droite - Photo rectangle verticale de Russ Harris */}
+            {/* Colonne droite - Photo avec forme hexagonale subtile */}
             <div className="flex items-center justify-center">
-              <div className="relative w-96 h-[600px] rounded-3xl overflow-hidden border-4 border-[#FF8C42] ring-4 ring-white/10">
-                <Image
-                  src="/images/russ/8obb1myXAohZ.jpg"
-                  alt="Dr. Russ Harris"
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  className=""
-                />
+              <div className="relative">
+                {/* Hexagone décoratif en arrière-plan */}
+                <div className="absolute inset-0 -z-10 scale-110 opacity-20">
+                  <svg viewBox="0 0 100 100" className="w-full h-full">
+                    <polygon points="50,2 95,27 95,73 50,98 5,73 5,27" fill="none" stroke="#FF8C42" strokeWidth="0.5"/>
+                  </svg>
+                </div>
+                <div className="relative w-96 h-[600px] rounded-3xl overflow-hidden border-4 border-[#FF8C42] ring-4 ring-white/10">
+                  <Image
+                    src="/images/russ/8obb1myXAohZ.jpg"
+                    alt="Dr. Russ Harris"
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    className=""
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -180,20 +201,30 @@ export default function DemoHomePage() {
         </Container>
       </section>
 
-      {/* Section L'homme derrière l'ACT */}
+      {/* Section L'homme derrière l'ACT - Photo avec masque hexagonal */}
       <section className="py-32 bg-gray-50">
         <Container className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-5 gap-12 items-center">
-            {/* Photo */}
+            {/* Photo avec effet hexagonal */}
             <div className="md:col-span-2">
-              <div className="relative w-full aspect-[3/4] rounded-3xl overflow-hidden">
-                <Image
-                  src="/images/russ/8obb1myXAohZ.jpg"
-                  alt="Dr. Russ Harris"
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  className="grayscale-[30%] contrast-110"
-                />
+              <div className="relative">
+                {/* Hexagones décoratifs */}
+                <div className="absolute -top-8 -left-8 w-24 h-24 opacity-10">
+                  <Hexagon className="w-full h-full text-[#FF8C42]" />
+                </div>
+                <div className="absolute -bottom-8 -right-8 w-32 h-32 opacity-10">
+                  <Hexagon className="w-full h-full text-[#2C3E50]" />
+                </div>
+                
+                <div className="relative w-full aspect-[3/4] rounded-3xl overflow-hidden">
+                  <Image
+                    src="/images/russ/8obb1myXAohZ.jpg"
+                    alt="Dr. Russ Harris"
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    className="grayscale-[30%] contrast-110"
+                  />
+                </div>
               </div>
             </div>
 
@@ -203,7 +234,7 @@ export default function DemoHomePage() {
                 L'homme derrière <span className="text-[#FF8C42] italic">l'ACT</span>
               </h2>
               <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-                Dr. Russ Harris est médecin, psychothérapeute et l'un des formateurs ACT les plus respectés au monde. Auteur du best-seller international "The Happiness Trap", traduit en plus de 30 langues, il a formé plus de 90 000 professionnels de la santé à travers le monde.
+                Dr. Russ Harris est médecin, psychothérapeute et l'un des formateurs ACT les plus respectés au monde. Auteur du best-seller international "The Happiness Trap", traduit en plus de 30 langues, il a formé plus de 90 000 professionnels de la santé mentale à travers le monde.
               </p>
               <p className="text-xl text-gray-700 mb-8 leading-relaxed">
                 Son approche unique combine rigueur scientifique et accessibilité pratique, rendant les concepts complexes de l'ACT immédiatement applicables en contexte clinique.
@@ -229,9 +260,21 @@ export default function DemoHomePage() {
         </Container>
       </section>
 
-      {/* Section Hexaflex - Les 6 processus de l'ACT */}
-      <section className="py-32 bg-white">
-        <Container className="max-w-7xl mx-auto">
+      {/* Section Hexaflex - Design interactif et visuel */}
+      <section className="py-32 bg-white relative overflow-hidden">
+        {/* Grille hexagonale très subtile en arrière-plan */}
+        <div className="absolute inset-0 opacity-[0.02]">
+          <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="hexPatternSection" x="0" y="0" width="100" height="86.6" patternUnits="userSpaceOnUse">
+                <polygon points="50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25" fill="none" stroke="#2C3E50" strokeWidth="1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#hexPatternSection)" />
+          </svg>
+        </div>
+
+        <Container className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-bold text-[#2C3E50] mb-6">
               Le modèle Hexaflex
@@ -243,8 +286,12 @@ export default function DemoHomePage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Processus 1 */}
-            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
-              <div className="flex items-center gap-4 mb-4">
+            <div className="group bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform relative overflow-hidden">
+              {/* Hexagone décoratif au hover */}
+              <div className="absolute -top-10 -right-10 w-32 h-32 opacity-0 group-hover:opacity-10 transition-opacity">
+                <Hexagon className="w-full h-full text-[#FF8C42]" />
+              </div>
+              <div className="flex items-center gap-4 mb-4 relative z-10">
                 <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
                   <Circle className="w-6 h-6" />
                 </div>
@@ -257,8 +304,11 @@ export default function DemoHomePage() {
             </div>
 
             {/* Processus 2 */}
-            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
-              <div className="flex items-center gap-4 mb-4">
+            <div className="group bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform relative overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-32 h-32 opacity-0 group-hover:opacity-10 transition-opacity">
+                <Hexagon className="w-full h-full text-[#FF8C42]" />
+              </div>
+              <div className="flex items-center gap-4 mb-4 relative z-10">
                 <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
                   <Circle className="w-6 h-6" />
                 </div>
@@ -271,8 +321,11 @@ export default function DemoHomePage() {
             </div>
 
             {/* Processus 3 */}
-            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
-              <div className="flex items-center gap-4 mb-4">
+            <div className="group bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform relative overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-32 h-32 opacity-0 group-hover:opacity-10 transition-opacity">
+                <Hexagon className="w-full h-full text-[#FF8C42]" />
+              </div>
+              <div className="flex items-center gap-4 mb-4 relative z-10">
                 <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
                   <Circle className="w-6 h-6" />
                 </div>
@@ -285,8 +338,11 @@ export default function DemoHomePage() {
             </div>
 
             {/* Processus 4 */}
-            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
-              <div className="flex items-center gap-4 mb-4">
+            <div className="group bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform relative overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-32 h-32 opacity-0 group-hover:opacity-10 transition-opacity">
+                <Hexagon className="w-full h-full text-[#FF8C42]" />
+              </div>
+              <div className="flex items-center gap-4 mb-4 relative z-10">
                 <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
                   <Circle className="w-6 h-6" />
                 </div>
@@ -299,8 +355,11 @@ export default function DemoHomePage() {
             </div>
 
             {/* Processus 5 */}
-            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
-              <div className="flex items-center gap-4 mb-4">
+            <div className="group bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform relative overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-32 h-32 opacity-0 group-hover:opacity-10 transition-opacity">
+                <Hexagon className="w-full h-full text-[#FF8C42]" />
+              </div>
+              <div className="flex items-center gap-4 mb-4 relative z-10">
                 <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
                   <Circle className="w-6 h-6" />
                 </div>
@@ -313,8 +372,11 @@ export default function DemoHomePage() {
             </div>
 
             {/* Processus 6 */}
-            <div className="bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform">
-              <div className="flex items-center gap-4 mb-4">
+            <div className="group bg-gradient-to-br from-[#2C3E50] to-[#34495E] rounded-3xl p-8 text-white hover:scale-105 transition-transform relative overflow-hidden">
+              <div className="absolute -top-10 -right-10 w-32 h-32 opacity-0 group-hover:opacity-10 transition-opacity">
+                <Hexagon className="w-full h-full text-[#FF8C42]" />
+              </div>
+              <div className="flex items-center gap-4 mb-4 relative z-10">
                 <div className="w-12 h-12 rounded-full bg-[#FF8C42] flex items-center justify-center">
                   <Circle className="w-6 h-6" />
                 </div>
@@ -329,12 +391,12 @@ export default function DemoHomePage() {
         </Container>
       </section>
 
-      {/* Section Pour qui */}
+      {/* Section Pour qui - Avec icônes hexagonales */}
       <section className="py-32 bg-gray-50">
         <Container className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-bold text-[#2C3E50] mb-6">
-              Pour les professionnels de la santé
+              Pour les professionnels de la santé mentale
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Cette formation s'adresse aux thérapeutes, psychologues, médecins, conseillers et coachs qui souhaitent enrichir leur pratique avec l'ACT.
@@ -342,28 +404,41 @@ export default function DemoHomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors">
+            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors relative">
+              {/* Hexagone décoratif */}
+              <div className="absolute top-4 right-4 w-12 h-12 opacity-10">
+                <Hexagon className="w-full h-full text-[#FF8C42]" />
+              </div>
               <h3 className="text-2xl font-bold text-[#2C3E50] mb-3">Psychothérapeutes</h3>
               <p className="text-gray-600">
                 Intégrez l'ACT dans votre pratique pour aider vos clients à développer leur flexibilité psychologique.
               </p>
             </div>
 
-            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors">
+            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors relative">
+              <div className="absolute top-4 right-4 w-12 h-12 opacity-10">
+                <Hexagon className="w-full h-full text-[#FF8C42]" />
+              </div>
               <h3 className="text-2xl font-bold text-[#2C3E50] mb-3">Médecins</h3>
               <p className="text-gray-600">
                 Apprenez des outils pratiques pour accompagner vos patients face à la douleur chronique et aux maladies.
               </p>
             </div>
 
-            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors">
+            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors relative">
+              <div className="absolute top-4 right-4 w-12 h-12 opacity-10">
+                <Hexagon className="w-full h-full text-[#FF8C42]" />
+              </div>
               <h3 className="text-2xl font-bold text-[#2C3E50] mb-3">Conseillers</h3>
               <p className="text-gray-600">
                 Enrichissez votre boîte à outils avec des interventions basées sur les valeurs et l'action engagée.
               </p>
             </div>
 
-            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors">
+            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-[#FF8C42] transition-colors relative">
+              <div className="absolute top-4 right-4 w-12 h-12 opacity-10">
+                <Hexagon className="w-full h-full text-[#FF8C42]" />
+              </div>
               <h3 className="text-2xl font-bold text-[#2C3E50] mb-3">Coachs</h3>
               <p className="text-gray-600">
                 Aidez vos clients à surmonter les obstacles internes et à vivre en accord avec leurs valeurs profondes.
@@ -410,8 +485,20 @@ export default function DemoHomePage() {
         </Container>
       </section>
 
-      {/* CTA Final */}
+      {/* CTA Final - Avec grille hexagonale */}
       <section className="py-32 bg-gradient-to-br from-[#2C3E50] to-[#34495E] text-white relative overflow-hidden">
+        {/* Grille hexagonale */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="hexPatternCTA" x="0" y="0" width="100" height="86.6" patternUnits="userSpaceOnUse">
+                <polygon points="50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25" fill="none" stroke="white" strokeWidth="1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#hexPatternCTA)" />
+          </svg>
+        </div>
+
         {/* Motif de vagues subtil */}
         <div className="absolute inset-0 opacity-5">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
