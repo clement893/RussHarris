@@ -101,7 +101,6 @@ export default function MasterclassNavigation({
   const navigationItems = navigationItemsWithBadges.length > 0 ? navigationItemsWithBadges : baseNavigationItems;
 
   // Check if header should be transparent (e.g., on hero section)
-  const isTransparent = variant === 'transparent';
   const shouldShowBackground = isScrolled || variant !== 'transparent';
 
   return (
