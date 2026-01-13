@@ -20,7 +20,7 @@ import { useSuperAdmin } from '@/hooks/useSuperAdmin';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Sidebar from '@/components/ui/Sidebar';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
-import LanguageToggle from '@/components/i18n/LanguageToggle';
+import { LanguageToggle } from '@/components/i18n';
 import {
   LayoutDashboard,
   FolderKanban,
