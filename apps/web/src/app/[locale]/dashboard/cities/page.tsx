@@ -358,7 +358,7 @@ function CitiesManagementContent() {
 
 export default function CitiesManagementPage() {
   return (
-    <ProtectedRoute requireAdmin>
+    <ProtectedRoute>
       <CitiesManagementContent />
     </ProtectedRoute>
   );
