@@ -8,7 +8,7 @@
 
 import { useState } from 'react';
 import { Link } from '@/i18n/routing';
-import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowRight, Lock } from 'lucide-react';
 import { clsx } from 'clsx';
 import Image from 'next/image';
 
@@ -176,6 +176,14 @@ export default function MasterclassFooter() {
                 </Link>
                 <Link href="/terms" className="hover:text-[#F58220] transition-colors">
                   CGV
+                </Link>
+                <Link 
+                  href="/auth/login" 
+                  className="hover:text-[#F58220] transition-colors flex items-center gap-1.5 opacity-70 hover:opacity-100"
+                  title="Accès administrateur"
+                >
+                  <Lock className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Admin</span>
                 </Link>
               </div>
             </div>
