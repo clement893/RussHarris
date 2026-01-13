@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef, type ReactNode } from 'react';
-import { useRouter, usePathname } from '@/i18n/routing';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { checkMySuperAdminStatus } from '@/lib/api/admin';
@@ -119,7 +119,11 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
               user_is_admin: user.is_admin,
               status_response: status,
             });
-            router.replace('/dashboard?error=unauthorized_superadmin');
+            // Get current locale from pathname and preserve it
+            const localeMatch = pathname.match(/^\/(en|fr|ar|he)/);
+            const locale = localeMatch ? localeMatch[1] : 'en';
+            const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized_superadmin' : `/${locale}/dashboard?error=unauthorized_superadmin`;
+            router.replace(redirectPath);
             return;
           }
 
@@ -134,7 +138,11 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
           });
           if (!user?.is_admin) {
             logger.debug('User is not admin, redirecting', { pathname });
-            router.replace('/dashboard?error=unauthorized_superadmin');
+            // Get current locale from pathname and preserve it
+            const localeMatch = pathname.match(/^\/(en|fr|ar|he)/);
+            const locale = localeMatch ? localeMatch[1] : 'en';
+            const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized_superadmin' : `/${locale}/dashboard?error=unauthorized_superadmin`;
+            router.replace(redirectPath);
             return;
           }
           setIsSuperAdmin(true);
@@ -177,7 +185,11 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
             pathname,
             status_code: statusCode,
           });
-          router.replace('/dashboard?error=unauthorized_superadmin');
+          // Get current locale from pathname and preserve it
+          const localeMatch = pathname.match(/^\/(en|fr|ar|he)/);
+          const locale = localeMatch ? localeMatch[1] : 'en';
+          const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized_superadmin' : `/${locale}/dashboard?error=unauthorized_superadmin`;
+          router.replace(redirectPath);
           return;
         }
 
@@ -189,7 +201,11 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
           error_message: error.message,
         });
         if (!user?.is_admin) {
-          router.replace('/dashboard?error=unauthorized_superadmin');
+          // Get current locale from pathname and preserve it
+          const localeMatch = pathname.match(/^\/(en|fr|ar|he)/);
+          const locale = localeMatch ? localeMatch[1] : 'en';
+          const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized_superadmin' : `/${locale}/dashboard?error=unauthorized_superadmin`;
+          router.replace(redirectPath);
           return;
         }
         setIsSuperAdmin(true);

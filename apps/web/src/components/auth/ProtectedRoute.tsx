@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef, type ReactNode } from 'react';
-import { useRouter, usePathname } from '@/i18n/routing';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { checkMySuperAdminStatus } from '@/lib/api/admin';
@@ -298,9 +298,9 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
           checkingRef.current = false;
           setIsChecking(false);
           setIsAuthorized(false);
-          // Get current locale from pathname
-          const localeMatch = pathname.match(/^\/(en|fr)/);
-          const locale = localeMatch ? localeMatch[1] : 'fr';
+          // Get current locale from pathname and preserve it
+          const localeMatch = pathname.match(/^\/(en|fr|ar|he)/);
+          const locale = localeMatch ? localeMatch[1] : 'en';
           const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized' : `/${locale}/dashboard?error=unauthorized`;
           router.replace(redirectPath);
           return;
