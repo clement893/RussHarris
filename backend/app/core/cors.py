@@ -93,6 +93,7 @@ def setup_cors(app: FastAPI) -> None:
         "X-CSRF-Token",  # For CSRF protection
         "X-Bootstrap-Key",  # For bootstrap superadmin endpoint
         "Cache-Control",  # For cache control headers
+        "Pragma",  # For pragma headers (browser cache control)
     ]
     
     # Exposed headers - minimal set
