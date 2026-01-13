@@ -27,7 +27,12 @@ export default function NavigationItem({
   const t = useTranslations('navigation');
 
   const isActive = isActivePath(pathname, item);
-  const label = t(item.id as any) || item.label;
+  // Use the translation key from navigation namespace, fallback to item.label
+  // The item.id should match the translation key in navigation namespace
+  const translationKey = item.id as 'program' | 'cities' | 'about' | 'contact' | 'bookNow' | 'reserve';
+  const translated = t(translationKey);
+  // If translation returns a value that looks like a key path (contains dots), use fallback
+  const label = translated && !translated.includes('.') ? translated : item.label;
 
   const handleClick = () => {
     if (onNavigate) {
