@@ -16,6 +16,7 @@ import { useState, useMemo, memo, useCallback } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { useAuth } from '@/hooks/useAuth';
+import { useSuperAdmin } from '@/hooks/useSuperAdmin';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Sidebar from '@/components/ui/Sidebar';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
@@ -29,6 +30,7 @@ import {
   Building2,
   MessageSquare,
   GraduationCap,
+  MapPin,
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -38,7 +40,7 @@ interface DashboardLayoutProps {
 
 // Memoize sidebar items to prevent recreation on every render
 // This ensures the sidebar doesn't re-render unnecessarily during navigation
-const createSidebarItems = (isAdmin: boolean) => [
+const createSidebarItems = (isAdmin: boolean, isSuperAdmin: boolean) => [
   {
     label: 'Dashboard',
     href: '/dashboard',
@@ -85,6 +87,16 @@ const createSidebarItems = (isAdmin: boolean) => [
     href: '/dashboard/become-superadmin',
     icon: <Shield className="w-5 h-5" />,
   },
+  // Superadmin-only links
+  ...(isSuperAdmin
+    ? [
+        {
+          label: 'Villes',
+          href: '/dashboard/cities',
+          icon: <MapPin className="w-5 h-5" />,
+        },
+      ]
+    : []),
   // Admin links - only visible to admins and superadmins
   ...(isAdmin
     ? [
@@ -110,15 +122,16 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
   const router = useRouter();
   const { user } = useAuthStore();
   const { logout } = useAuth();
+  const { isSuperAdmin } = useSuperAdmin();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Check if user is admin or superadmin
   const isAdmin = user?.is_admin ?? false;
 
-  // Memoize sidebar items - only recreate if admin status changes
+  // Memoize sidebar items - only recreate if admin or superadmin status changes
   // This prevents the sidebar from re-rendering on every navigation
-  const sidebarItems = useMemo(() => createSidebarItems(isAdmin), [isAdmin]);
+  const sidebarItems = useMemo(() => createSidebarItems(isAdmin, isSuperAdmin), [isAdmin, isSuperAdmin]);
 
   // Memoize callbacks to prevent re-renders
   const handleToggleCollapse = useCallback(() => {
