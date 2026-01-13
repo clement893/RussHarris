@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
+import { useSuperAdmin } from '@/hooks/useSuperAdmin';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Sidebar from '@/components/ui/Sidebar';
 import Button from '@/components/ui/Button';
@@ -20,7 +21,8 @@ import {
   Menu,
   Shield,
   Home,
-  GraduationCap
+  GraduationCap,
+  MapPin
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -32,6 +34,7 @@ function DashboardLayoutContent({
   const pathname = usePathname();
   const router = useRouter();
   const { logout, user } = useAuthStore();
+  const { isSuperAdmin } = useSuperAdmin();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -59,6 +62,16 @@ function DashboardLayoutContent({
       href: '/dashboard/become-superadmin',
       icon: <Shield className="w-5 h-5" />,
     },
+    // Superadmin-only links
+    ...(isSuperAdmin
+      ? [
+          {
+            label: 'Villes',
+            href: '/dashboard/cities',
+            icon: <MapPin className="w-5 h-5" />,
+          },
+        ]
+      : []),
     // Admin links - only visible to admins and superadmins
     ...(isAdmin
       ? [
@@ -85,6 +98,7 @@ function DashboardLayoutContent({
             {pathname === '/dashboard' && 'Dashboard'}
             {pathname === '/dashboard/projects' && 'Projets'}
             {pathname === '/dashboard/become-superadmin' && 'Super Admin'}
+            {pathname === '/dashboard/cities' && 'Villes'}
           </h1>
           <div className="flex items-center gap-2">
             <Button
@@ -156,6 +170,7 @@ function DashboardLayoutContent({
                 {pathname === '/dashboard' && 'Dashboard'}
                 {pathname === '/dashboard/projects' && 'Projets'}
                 {pathname === '/dashboard/become-superadmin' && 'Super Admin'}
+                {pathname === '/dashboard/cities' && 'Villes'}
               </h1>
               <div className="flex items-center gap-3">
                 <Button
