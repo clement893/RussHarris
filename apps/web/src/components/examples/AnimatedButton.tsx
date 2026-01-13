@@ -58,7 +58,7 @@ export function AnimatedButton({
     <Button
       className={combineAnimations(
         animationClasses[animation],
-        className
+        className || ''
       )}
       {...props}
     >
