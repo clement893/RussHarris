@@ -28,6 +28,7 @@ import {
   Network,
   Building2,
   MessageSquare,
+  GraduationCap,
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -84,9 +85,14 @@ const createSidebarItems = (isAdmin: boolean) => [
     href: '/dashboard/become-superadmin',
     icon: <Shield className="w-5 h-5" />,
   },
-  // Admin link - only visible to admins and superadmins
+  // Admin links - only visible to admins and superadmins
   ...(isAdmin
     ? [
+        {
+          label: 'Masterclass',
+          href: '/admin/masterclass',
+          icon: <GraduationCap className="w-5 h-5" />,
+        },
         {
           label: 'Administration',
           href: '/admin',

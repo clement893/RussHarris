@@ -1,5 +1,5 @@
 import { ErrorBoundary } from '@/components/errors/ErrorBoundary';
-import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import AdminMasterclassContent from './AdminMasterclassContent';
 
 // Force dynamic rendering to avoid caching
@@ -8,10 +8,10 @@ export const dynamicParams = true;
 
 export default function AdminMasterclassPage() {
   return (
-    <ProtectedSuperAdminRoute>
+    <ProtectedRoute requireAdmin>
       <ErrorBoundary>
         <AdminMasterclassContent />
       </ErrorBoundary>
-    </ProtectedSuperAdminRoute>
+    </ProtectedRoute>
   );
 }

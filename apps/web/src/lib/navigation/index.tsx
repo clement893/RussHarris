@@ -23,7 +23,8 @@ import {
   Cog,
   Network,
   Building2,
-  MessageSquare
+  MessageSquare,
+  GraduationCap
 } from 'lucide-react';
 
 export interface NavigationItem {
@@ -163,6 +164,11 @@ export function getNavigationConfig(isAdmin: boolean): NavigationConfig {
       name: 'Admin',
       icon: <Shield className="w-5 h-5" />,
       items: [
+        {
+          name: 'Masterclass',
+          href: '/admin/masterclass',
+          icon: <GraduationCap className="w-5 h-5" />,
+        },
         {
           name: 'Logs',
           href: '/admin-logs/testing',
