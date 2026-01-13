@@ -224,7 +224,7 @@ export function getStaggerAnimation(index: number, baseDelay = 100): {
 /**
  * Scroll reveal utility - returns classes for scroll-triggered animations
  */
-export function getScrollRevealClasses(threshold = 0.1): {
+export function getScrollRevealClasses(_threshold = 0.1): {
   initial: string;
   revealed: string;
 } {
