@@ -29,6 +29,7 @@ export interface City {
   country: string;
   province?: string;
   timezone?: string;
+  image_url?: string;
 }
 
 export interface Venue {
