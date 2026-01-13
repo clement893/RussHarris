@@ -20,6 +20,7 @@ import { useSuperAdmin } from '@/hooks/useSuperAdmin';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Sidebar from '@/components/ui/Sidebar';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
+import LanguageToggle from '@/components/i18n/LanguageToggle';
 import {
   LayoutDashboard,
   FolderKanban,
@@ -87,19 +88,14 @@ const createSidebarItems = (isAdmin: boolean, isSuperAdmin: boolean) => [
     href: '/dashboard/become-superadmin',
     icon: <Shield className="w-5 h-5" />,
   },
-  // Superadmin-only links
-  ...(isSuperAdmin
+  // Admin links - only visible to admins and superadmins
+  ...(isAdmin
     ? [
         {
           label: 'Villes',
           href: '/dashboard/cities',
           icon: <MapPin className="w-5 h-5" />,
         },
-      ]
-    : []),
-  // Admin links - only visible to admins and superadmins
-  ...(isAdmin
-    ? [
         {
           label: 'Masterclass',
           href: '/admin/masterclass',
@@ -187,6 +183,7 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
           onClose={handleMobileMenuClose}
           onHomeClick={handleHomeClick}
           themeToggleComponent={<ThemeToggleWithIcon />}
+          languageToggleComponent={<LanguageToggle />}
           onLogoutClick={handleLogoutClick}
         />
       </aside>
@@ -205,6 +202,7 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
             showSearch={true}
             onHomeClick={handleDesktopHomeClick}
             themeToggleComponent={<ThemeToggleWithIcon />}
+            languageToggleComponent={<LanguageToggle />}
             onLogoutClick={handleDesktopLogoutClick}
           />
         </aside>
