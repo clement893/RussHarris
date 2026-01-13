@@ -149,7 +149,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
-                  <Link href="/cities" className="w-full md:w-auto">
+                  <Link href="/montreal" className="w-full md:w-auto">
                     <Button className={combineAnimations(
                       microInteractions.button.base,
                       microInteractions.button.hover,
@@ -186,7 +186,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
-                  <Link href="/cities" className="w-full md:w-auto">
+                  <Link href="/calgary" className="w-full md:w-auto">
                     <Button className={combineAnimations(
                       microInteractions.button.base,
                       microInteractions.button.hover,
@@ -223,7 +223,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
-                  <Link href="/cities" className="w-full md:w-auto">
+                  <Link href="/vancouver" className="w-full md:w-auto">
                     <Button className={combineAnimations(
                       microInteractions.button.base,
                       microInteractions.button.hover,
@@ -260,7 +260,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
-                  <Link href="/cities" className="w-full md:w-auto">
+                  <Link href="/toronto" className="w-full md:w-auto">
                     <Button className={combineAnimations(
                       microInteractions.button.base,
                       microInteractions.button.hover,
