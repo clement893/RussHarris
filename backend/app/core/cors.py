@@ -92,6 +92,7 @@ def setup_cors(app: FastAPI) -> None:
         "X-Timestamp",  # For request signing
         "X-CSRF-Token",  # For CSRF protection
         "X-Bootstrap-Key",  # For bootstrap superadmin endpoint
+        "Cache-Control",  # For cache control headers
     ]
     
     # Exposed headers - minimal set
