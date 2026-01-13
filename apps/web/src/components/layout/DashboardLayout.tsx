@@ -16,7 +16,6 @@ import { useState, useMemo, memo, useCallback } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { useAuth } from '@/hooks/useAuth';
-import { useSuperAdmin } from '@/hooks/useSuperAdmin';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Sidebar from '@/components/ui/Sidebar';
 import { ThemeToggleWithIcon } from '@/components/ui/ThemeToggle';
@@ -41,7 +40,7 @@ interface DashboardLayoutProps {
 
 // Memoize sidebar items to prevent recreation on every render
 // This ensures the sidebar doesn't re-render unnecessarily during navigation
-const createSidebarItems = (isAdmin: boolean, isSuperAdmin: boolean) => [
+const createSidebarItems = (isAdmin: boolean) => [
   {
     label: 'Dashboard',
     href: '/dashboard',
@@ -118,16 +117,15 @@ function DashboardLayoutContent({ children }: DashboardLayoutProps) {
   const router = useRouter();
   const { user } = useAuthStore();
   const { logout } = useAuth();
-  const { isSuperAdmin } = useSuperAdmin();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Check if user is admin or superadmin
   const isAdmin = user?.is_admin ?? false;
 
-  // Memoize sidebar items - only recreate if admin or superadmin status changes
+  // Memoize sidebar items - only recreate if admin status changes
   // This prevents the sidebar from re-rendering on every navigation
-  const sidebarItems = useMemo(() => createSidebarItems(isAdmin, isSuperAdmin), [isAdmin, isSuperAdmin]);
+  const sidebarItems = useMemo(() => createSidebarItems(isAdmin), [isAdmin]);
 
   // Memoize callbacks to prevent re-renders
   const handleToggleCollapse = useCallback(() => {
