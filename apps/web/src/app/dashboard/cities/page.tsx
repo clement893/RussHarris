@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import ProtectedSuperAdminRoute from '@/components/auth/ProtectedSuperAdminRoute';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { PageHeader, PageContainer } from '@/components/layout';
 import { getErrorMessage } from '@/lib/errors';
 import { Button, Card, Alert, Input, Loading, Modal, DataTable } from '@/components/ui';
@@ -358,8 +358,8 @@ function CitiesManagementContent() {
 
 export default function CitiesManagementPage() {
   return (
-    <ProtectedSuperAdminRoute>
+    <ProtectedRoute requireAdmin>
       <CitiesManagementContent />
-    </ProtectedSuperAdminRoute>
+    </ProtectedRoute>
   );
 }
