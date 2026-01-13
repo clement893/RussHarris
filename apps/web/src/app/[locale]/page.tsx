@@ -3,9 +3,11 @@
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 import { ArrowRight, Calendar, MapPin, Circle, Hexagon, Heart, Stethoscope, Users, Brain } from 'lucide-react';
 
 export default function HomePage() {
+  const t = useTranslations('home');
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
@@ -41,26 +43,26 @@ export default function HomePage() {
                 HARRIS
               </h1>
               <div className="inline-block border border-[#FF8C42]/40 text-[#FF8C42] px-4 py-1.5 text-xs font-medium mb-6 md:mb-8 tracking-widest rounded-full backdrop-blur-sm bg-white/5">
-                TOURNÉE CANADIENNE 2026
+                {t('tourBadge')}
               </div>
               <p className="text-2xl sm:text-3xl md:text-4xl font-light text-white mb-6 md:mb-8 leading-tight">
-                Maîtrisez la flexibilité psychologique avec l'ACT
+                {t('heroTitle')}
               </p>
               <p className="text-base sm:text-lg text-gray-300 mb-6 leading-relaxed max-w-xl mx-auto md:mx-0">
-                Deux jours intensifs pour découvrir la Thérapie d'Acceptation et d'Engagement avec l'un des formateurs les plus respectés au monde. Apprenez à intégrer la pleine conscience, les valeurs et l'action engagée dans votre pratique clinique.
+                {t('heroDescription')}
               </p>
               
               {/* Citation emblématique */}
               <div className="border-l-2 border-[#FF8C42]/60 pl-4 md:pl-6 mb-8 md:mb-10 italic text-gray-400 text-sm md:text-base">
-                "Embrace your demons and follow your heart"
-                <span className="block text-xs not-italic text-gray-500 mt-2">— Dr. Russ Harris</span>
+                "{t('quote')}"
+                <span className="block text-xs not-italic text-gray-500 mt-2">{t('quoteAuthor')}</span>
               </div>
 
               <Button 
                 size="lg" 
                 className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm px-6 md:px-8 py-3 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20 w-full sm:w-auto"
               >
-                Découvrir les dates
+                {t('discoverDates')}
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </div>
@@ -93,8 +95,8 @@ export default function HomePage() {
       <section className="py-16 md:py-32 bg-gradient-to-b from-[#0F172A] to-[#1E293B]">
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">La tournée canadienne</h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-400">4 villes • 800 places • Mai-Juin 2026</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">{t('tourTitle')}</h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-400">{t('tourSubtitle')}</p>
           </div>
 
           <div className="space-y-4 md:space-y-6">
@@ -115,10 +117,10 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
-                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 places</span>
+                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <Link href="/cities" className="w-full md:w-auto">
                     <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105 w-full md:w-auto">
-                      Inscription Montréal
+                      {t('registerMontreal')}
                     </Button>
                   </Link>
                 </div>
@@ -142,10 +144,10 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
-                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 places</span>
+                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <Link href="/cities" className="w-full md:w-auto">
                     <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105 w-full md:w-auto">
-                      Inscription Calgary
+                      {t('registerCalgary')}
                     </Button>
                   </Link>
                 </div>
@@ -169,10 +171,10 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
-                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 places</span>
+                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <Link href="/cities" className="w-full md:w-auto">
                     <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105 w-full md:w-auto">
-                      Inscription Vancouver
+                      {t('registerVancouver')}
                     </Button>
                   </Link>
                 </div>
@@ -196,10 +198,10 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
-                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 places</span>
+                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <Link href="/cities" className="w-full md:w-auto">
                     <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105 w-full md:w-auto">
-                      Inscription Toronto
+                      {t('registerToronto')}
                     </Button>
                   </Link>
                 </div>
@@ -239,28 +241,28 @@ export default function HomePage() {
             {/* Contenu */}
             <div className="md:col-span-3">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6">
-                L'homme derrière <span className="text-[#FF8C42] italic">l'ACT</span>
+                {t('aboutTitle')}
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 md:mb-8 leading-relaxed">
-                Dr. Russ Harris est médecin, psychothérapeute et l'un des formateurs ACT les plus respectés au monde. Auteur du best-seller international "The Happiness Trap", traduit en plus de 30 langues, il a formé plus de 90 000 professionnels de la santé mentale à travers le monde.
+                {t('aboutDescription1')}
               </p>
               <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 md:mb-8 leading-relaxed">
-                Son approche unique combine rigueur scientifique et accessibilité pratique, rendant les concepts complexes de l'ACT immédiatement applicables en contexte clinique.
+                {t('aboutDescription2')}
               </p>
               
               {/* Stats avec design épuré */}
               <div className="grid grid-cols-3 gap-4 md:gap-6 pt-6 md:pt-8 border-t border-[#FF8C42]/20">
                 <div>
                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#FF8C42] mb-1">90K+</div>
-                  <div className="text-xs sm:text-sm text-gray-600">Professionnels formés</div>
+                  <div className="text-xs sm:text-sm text-gray-600">{t('statsTrained')}</div>
                 </div>
                 <div>
                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#FF8C42] mb-1">1M+</div>
-                  <div className="text-xs sm:text-sm text-gray-600">Livres vendus</div>
+                  <div className="text-xs sm:text-sm text-gray-600">{t('statsBooks')}</div>
                 </div>
                 <div>
                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#FF8C42] mb-1">30</div>
-                  <div className="text-xs sm:text-sm text-gray-600">Langues</div>
+                  <div className="text-xs sm:text-sm text-gray-600">{t('statsLanguages')}</div>
                 </div>
               </div>
             </div>
@@ -285,10 +287,10 @@ export default function HomePage() {
         <Container className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6">
-              Le modèle Hexaflex
+              {t('hexaflexTitle')}
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-              L'ACT repose sur six processus fondamentaux qui cultivent la flexibilité psychologique, permettant de vivre une vie riche et pleine de sens malgré les difficultés inévitables.
+              {t('hexaflexDescription')}
             </p>
           </div>
 
@@ -305,9 +307,9 @@ export default function HomePage() {
                 </div>
                 <span className="text-xs font-medium text-[#FF8C42]">01</span>
               </div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">Moment présent</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">{t('process1Title')}</h3>
               <p className="text-gray-300 leading-relaxed text-xs md:text-sm">
-                Être pleinement conscient et connecté à l'ici et maintenant, plutôt que perdu dans les pensées du passé ou du futur.
+                {t('process1Description')}
               </p>
             </div>
 
@@ -322,9 +324,9 @@ export default function HomePage() {
                 </div>
                 <span className="text-xs font-medium text-[#FF8C42]">02</span>
               </div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">Acceptation</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">{t('process2Title')}</h3>
               <p className="text-gray-300 leading-relaxed text-xs md:text-sm">
-                Accueillir les pensées et émotions difficiles sans lutter contre elles, libérant ainsi de l'énergie pour l'action.
+                {t('process2Description')}
               </p>
             </div>
 
@@ -339,9 +341,9 @@ export default function HomePage() {
                 </div>
                 <span className="text-xs font-medium text-[#FF8C42]">03</span>
               </div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">Défusion cognitive</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">{t('process3Title')}</h3>
               <p className="text-gray-300 leading-relaxed text-xs md:text-sm">
-                Observer les pensées comme des événements mentaux plutôt que des vérités absolues, réduisant leur emprise.
+                {t('process3Description')}
               </p>
             </div>
 
@@ -356,9 +358,9 @@ export default function HomePage() {
                 </div>
                 <span className="text-xs font-medium text-[#FF8C42]">04</span>
               </div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">Soi comme contexte</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">{t('process4Title')}</h3>
               <p className="text-gray-300 leading-relaxed text-xs md:text-sm">
-                Développer une perspective transcendante, le "soi observateur" qui peut accueillir toutes les expériences.
+                {t('process4Description')}
               </p>
             </div>
 
@@ -373,9 +375,9 @@ export default function HomePage() {
                 </div>
                 <span className="text-xs font-medium text-[#FF8C42]">05</span>
               </div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">Valeurs</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">{t('process5Title')}</h3>
               <p className="text-gray-300 leading-relaxed text-xs md:text-sm">
-                Clarifier ce qui compte vraiment dans la vie et utiliser ces valeurs comme boussole pour guider l'action.
+                {t('process5Description')}
               </p>
             </div>
 
@@ -390,9 +392,9 @@ export default function HomePage() {
                 </div>
                 <span className="text-xs font-medium text-[#FF8C42]">06</span>
               </div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">Action engagée</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3">{t('process6Title')}</h3>
               <p className="text-gray-300 leading-relaxed text-xs md:text-sm">
-                Agir de manière cohérente avec ses valeurs, même en présence de pensées et d'émotions difficiles.
+                {t('process6Description')}
               </p>
             </div>
           </div>
@@ -416,10 +418,10 @@ export default function HomePage() {
         <Container className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6">
-              Pour les professionnels de la santé mentale
+              {t('professionalsTitle')}
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-              Cette formation s'adresse aux thérapeutes, psychologues, médecins, conseillers et coachs qui souhaitent enrichir leur pratique avec l'ACT.
+              {t('professionalsDescription')}
             </p>
           </div>
 
@@ -437,10 +439,10 @@ export default function HomePage() {
               </div>
               
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words hyphens-auto">
-                Psychothérapeutes
+                {t('professional1Title')}
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                Intégrez l'ACT dans votre pratique pour aider vos clients à développer leur flexibilité psychologique.
+                {t('professional1Description')}
               </p>
             </div>
 
@@ -455,10 +457,10 @@ export default function HomePage() {
               </div>
               
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words">
-                Médecins
+                {t('professional2Title')}
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                Apprenez des outils pratiques pour accompagner vos patients face à la douleur chronique et aux maladies.
+                {t('professional2Description')}
               </p>
             </div>
 
@@ -473,10 +475,10 @@ export default function HomePage() {
               </div>
               
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words">
-                Conseillers
+                {t('professional3Title')}
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                Enrichissez votre boîte à outils avec des interventions basées sur les valeurs et l'action engagée.
+                {t('professional3Description')}
               </p>
             </div>
 
@@ -491,10 +493,10 @@ export default function HomePage() {
               </div>
               
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words">
-                Coachs
+                {t('professional4Title')}
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                Aidez vos clients à surmonter les obstacles internes et à vivre en accord avec leurs valeurs profondes.
+                {t('professional4Description')}
               </p>
             </div>
           </div>
@@ -506,31 +508,31 @@ export default function HomePage() {
         <Container className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6">
-              Ce qu'en disent les experts
+              {t('testimonialsTitle')}
             </h2>
           </div>
 
           <div className="space-y-6 md:space-y-8">
             <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-10 border-l-2 border-[#FF8C42]">
               <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-4 md:mb-6 leading-relaxed italic">
-                "Russ Harris est un formateur exceptionnel qui rend l'ACT accessible et applicable. Ses ateliers transforment la pratique clinique."
+                "{t('testimonial1')}"
               </p>
               <div className="flex items-center gap-4">
                 <div>
-                  <div className="font-bold text-gray-900 text-sm md:text-base">Dr. Steven Hayes</div>
-                  <div className="text-xs md:text-sm text-gray-600">Co-fondateur de l'ACT</div>
+                  <div className="font-bold text-gray-900 text-sm md:text-base">{t('testimonial1Author')}</div>
+                  <div className="text-xs md:text-sm text-gray-600">{t('testimonial1Role')}</div>
                 </div>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-10 border-l-2 border-[#FF8C42]">
               <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-4 md:mb-6 leading-relaxed italic">
-                "La capacité de Russ à enseigner l'ACT avec clarté et compassion est remarquable. Une formation à ne pas manquer."
+                "{t('testimonial2')}"
               </p>
               <div className="flex items-center gap-4">
                 <div>
-                  <div className="font-bold text-gray-900 text-sm md:text-base">Dr. Kirk Strosahl</div>
-                  <div className="text-xs md:text-sm text-gray-600">Co-fondateur de l'ACT</div>
+                  <div className="font-bold text-gray-900 text-sm md:text-base">{t('testimonial2Author')}</div>
+                  <div className="text-xs md:text-sm text-gray-600">{t('testimonial2Role')}</div>
                 </div>
               </div>
             </div>
@@ -563,19 +565,19 @@ export default function HomePage() {
 
         <Container className="max-w-5xl mx-auto text-center relative z-10 px-4 sm:px-6">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8">
-            Prêt à transformer votre pratique ?
+            {t('ctaTitle')}
           </h2>
           <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-3 md:mb-4">
-            800 places disponibles au total
+            {t('ctaSubtitle')}
           </p>
           <p className="text-sm sm:text-base md:text-lg text-gray-400 mb-8 md:mb-12">
-            Les places sont limitées. Réservez dès maintenant pour garantir votre participation.
+            {t('ctaDescription')}
           </p>
           <Button 
             size="lg" 
             className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm md:text-base px-6 md:px-10 py-3 md:py-4 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20 w-full sm:w-auto"
           >
-            Réserver ma place
+            {t('ctaButton')}
             <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5" />
           </Button>
         </Container>
@@ -585,7 +587,7 @@ export default function HomePage() {
       <section className="py-12 md:py-16 bg-white border-t border-gray-200">
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col items-center gap-4 md:gap-6">
-            <p className="text-xs md:text-sm text-gray-500 uppercase tracking-wider">Organisé par</p>
+            <p className="text-xs md:text-sm text-gray-500 uppercase tracking-wider">{t('organizerLabel')}</p>
             <div className="relative w-full max-w-[300px] sm:max-w-[350px] md:max-w-[400px] h-[60px] sm:h-[80px] md:h-[100px] opacity-80 hover:opacity-100 transition-opacity">
               <Image
                 src="/images/ips-logo.png"
