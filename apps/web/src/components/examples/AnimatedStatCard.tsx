@@ -40,14 +40,16 @@ export function AnimatedStatCard({
   index = 0,
   trend,
 }: StatCardProps) {
-  const colorClass = colorClasses[color];
+  const colorClass = colorClasses[color] || colorClasses.primary;
+  const borderColor = colorClass.split(' ')[0] || 'border-l-primary-500';
+  const bgTextColors = colorClass.split(' ').slice(1).join(' ') || '';
 
   return (
     <Card
       className={combineAnimations(
         microInteractions.dashboard.statCard,
         'border-l-4',
-        colorClass.split(' ')[0] // border-l color
+        borderColor // border-l color
       )}
       {...getStaggerAnimation(index, 100)}
     >
@@ -71,7 +73,7 @@ export function AnimatedStatCard({
         </div>
         <div className={combineAnimations(
           'p-3 rounded-lg',
-          colorClass.split(' ').slice(1).join(' ') // bg and text colors
+          bgTextColors // bg and text colors
         )}>
           <Icon className={combineAnimations(
             'w-6 h-6',
