@@ -140,7 +140,7 @@ export const microInteractions = {
   
   // Page-specific interactions
   homepage: {
-    heroImage: 'animate-[fadeIn_1s_ease-out_0.3s_forwards] opacity-0',
+    heroImage: 'opacity-0 hero-image-animate',
     tourCard: 'group cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:-translate-y-2',
     tourCardImage: 'group-hover:scale-110 transition-transform duration-500',
     statNumber: 'inline-block transition-all duration-300 hover:scale-110',
