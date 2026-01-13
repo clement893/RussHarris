@@ -70,10 +70,10 @@ export default function MasterclassNavigation({
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             {/* Logo - IPS Logo only (simplified) */}
             <Link href="/" className="flex items-center group relative">
-              <div className="relative w-10 h-10 transition-transform duration-200 group-hover:scale-105">
+              <div className="relative w-16 h-16 transition-transform duration-200 group-hover:scale-105">
                 <Image
                   src="/images/ips-logo.png"
                   alt="Institut de psychologie contextuelle"
@@ -102,12 +102,16 @@ export default function MasterclassNavigation({
                   Réserver
                 </Link>
               )}
-              <LanguageSwitcher />
+              <div className="opacity-60 hover:opacity-100 transition-opacity">
+                <LanguageSwitcher />
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center gap-3">
-              <LanguageSwitcher />
+              <div className="opacity-60 hover:opacity-100 transition-opacity">
+                <LanguageSwitcher />
+              </div>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
