@@ -38,7 +38,7 @@ export default function LanguageToggle() {
   // Get the next locale to show what it will switch to
   const currentIndex = locales.indexOf(locale);
   const nextIndex = (currentIndex + 1) % locales.length;
-  const nextLocale = locales[nextIndex];
+  const nextLocale = locales[nextIndex] || locales[0]; // Fallback to first locale if undefined
 
   return (
     <button
