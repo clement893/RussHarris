@@ -64,7 +64,7 @@ export default function MasterclassNavigation({
         className={clsx(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
           shouldShowBackground
-            ? 'bg-[#1B3D4C]/98 backdrop-blur-xl border-b border-[#2B5F7A]/60 shadow-2xl shadow-[#1B3D4C]/20'
+            ? 'bg-[#1F2937]/98 backdrop-blur-xl border-b border-[#374151]/60 shadow-2xl shadow-[#1F2937]/20'
             : 'bg-transparent',
           className
         )}
@@ -94,9 +94,9 @@ export default function MasterclassNavigation({
                   className={clsx(
                     'inline-flex items-center px-5 py-2 text-sm font-medium rounded-full',
                     'transition-colors duration-200',
-                    'text-white bg-[#F58220]',
-                    'hover:bg-[#C4681A]',
-                    'focus:outline-none focus:ring-2 focus:ring-[#F58220] focus:ring-offset-2 focus:ring-offset-[#1B3D4C]'
+                    'text-white bg-[#FF8C42]',
+                    'hover:bg-[#FF7A29]',
+                    'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]'
                   )}
                 >
                   Réserver
@@ -114,7 +114,7 @@ export default function MasterclassNavigation({
                 className={clsx(
                   'relative p-3 transition-all duration-300 rounded-xl',
                   'text-white hover:bg-white/10 active:bg-white/20',
-                  'focus:outline-none focus:ring-2 focus:ring-[#F58220] focus:ring-offset-2 focus:ring-offset-[#1B3D4C]',
+                  'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]',
                   'min-h-[44px] min-w-[44px] flex items-center justify-center',
                   'transform hover:scale-110 active:scale-95'
                 )}
@@ -123,7 +123,7 @@ export default function MasterclassNavigation({
                 aria-controls="mobile-menu"
               >
                 <div className={clsx(
-                  'absolute inset-0 rounded-xl bg-[#F58220]/20 opacity-0 transition-opacity duration-300',
+                  'absolute inset-0 rounded-xl bg-[#FF8C42]/20 opacity-0 transition-opacity duration-300',
                   mobileMenuOpen && 'opacity-100'
                 )}></div>
                 {mobileMenuOpen ? (

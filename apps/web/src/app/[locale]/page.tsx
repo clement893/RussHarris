@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
-import { ArrowRight, Calendar, MapPin, Circle, Hexagon } from 'lucide-react';
+import { ArrowRight, Calendar, MapPin, Circle, Hexagon, Heart, Stethoscope, Users, Brain } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -399,9 +399,21 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Section Pour qui - Avec icônes hexagonales */}
-      <section className="py-32 bg-white">
-        <Container className="max-w-7xl mx-auto">
+      {/* Section Pour qui - Design amélioré avec cartes gradient */}
+      <section className="py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+        {/* Grille hexagonale subtile en arrière-plan */}
+        <div className="absolute inset-0 opacity-[0.015]">
+          <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="hexPatternProfessionals" x="0" y="0" width="100" height="86.6" patternUnits="userSpaceOnUse">
+                <polygon points="50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25" fill="none" stroke="#1F2937" strokeWidth="1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#hexPatternProfessionals)" />
+          </svg>
+        </div>
+
+        <Container className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               Pour les professionnels de la santé mentale
@@ -411,44 +423,77 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors relative">
-              {/* Hexagone décoratif */}
-              <div className="absolute top-4 right-4 w-12 h-12 opacity-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Psychothérapeutes */}
+            <div className="group relative bg-white rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#FF8C42]/10">
+              {/* Hexagone décoratif au hover */}
+              <div className="absolute -top-6 -right-6 w-20 h-20 opacity-0 group-hover:opacity-10 transition-opacity duration-300">
                 <Hexagon className="w-full h-full text-[#FF8C42]" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Psychothérapeutes</h3>
-              <p className="text-gray-600 text-sm">
+              
+              {/* Icône avec fond gradient */}
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FF8C42] to-[#FF7A29] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Heart className="w-8 h-8 text-white" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#FF8C42] transition-colors">
+                Psychothérapeutes
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
                 Intégrez l'ACT dans votre pratique pour aider vos clients à développer leur flexibilité psychologique.
               </p>
             </div>
 
-            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors relative">
-              <div className="absolute top-4 right-4 w-12 h-12 opacity-5">
+            {/* Médecins */}
+            <div className="group relative bg-white rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#FF8C42]/10">
+              <div className="absolute -top-6 -right-6 w-20 h-20 opacity-0 group-hover:opacity-10 transition-opacity duration-300">
                 <Hexagon className="w-full h-full text-[#FF8C42]" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Médecins</h3>
-              <p className="text-gray-600 text-sm">
+              
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FF8C42] to-[#FF7A29] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Stethoscope className="w-8 h-8 text-white" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#FF8C42] transition-colors">
+                Médecins
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
                 Apprenez des outils pratiques pour accompagner vos patients face à la douleur chronique et aux maladies.
               </p>
             </div>
 
-            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors relative">
-              <div className="absolute top-4 right-4 w-12 h-12 opacity-5">
+            {/* Conseillers */}
+            <div className="group relative bg-white rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#FF8C42]/10">
+              <div className="absolute -top-6 -right-6 w-20 h-20 opacity-0 group-hover:opacity-10 transition-opacity duration-300">
                 <Hexagon className="w-full h-full text-[#FF8C42]" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Conseillers</h3>
-              <p className="text-gray-600 text-sm">
+              
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FF8C42] to-[#FF7A29] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Brain className="w-8 h-8 text-white" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#FF8C42] transition-colors">
+                Conseillers
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
                 Enrichissez votre boîte à outils avec des interventions basées sur les valeurs et l'action engagée.
               </p>
             </div>
 
-            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors relative">
-              <div className="absolute top-4 right-4 w-12 h-12 opacity-5">
+            {/* Coachs */}
+            <div className="group relative bg-white rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#FF8C42]/10">
+              <div className="absolute -top-6 -right-6 w-20 h-20 opacity-0 group-hover:opacity-10 transition-opacity duration-300">
                 <Hexagon className="w-full h-full text-[#FF8C42]" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Coachs</h3>
-              <p className="text-gray-600 text-sm">
+              
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FF8C42] to-[#FF7A29] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Users className="w-8 h-8 text-white" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#FF8C42] transition-colors">
+                Coachs
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
                 Aidez vos clients à surmonter les obstacles internes et à vivre en accord avec leurs valeurs profondes.
               </p>
             </div>

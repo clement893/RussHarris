@@ -58,7 +58,7 @@ export default function NavigationItem({
           {/* Simple underline on hover and active */}
           <span
             className={clsx(
-              'absolute -bottom-1 left-0 right-0 h-0.5 bg-[#F58220] transition-all duration-200',
+              'absolute -bottom-1 left-0 right-0 h-0.5 bg-[#FF8C42] transition-all duration-200',
               isActive ? 'opacity-100' : 'opacity-0 hover:opacity-100',
               isActive && 'h-[2px]' // Thicker underline when active
             )}
@@ -77,7 +77,7 @@ export default function NavigationItem({
         'block px-4 py-3 text-base font-medium transition-colors duration-200',
         'min-h-[44px] flex items-center',
         isActive
-          ? 'text-white font-semibold border-l-4 border-[#F58220] bg-[#F58220]/10'
+          ? 'text-white font-semibold border-l-4 border-[#FF8C42] bg-[#FF8C42]/10'
           : 'text-white/90 hover:text-white hover:bg-white/5'
       )}
       aria-current={isActive ? 'page' : undefined}
