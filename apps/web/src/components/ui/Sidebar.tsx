@@ -38,6 +38,7 @@ interface SidebarProps {
   onLogoutClick?: () => void;
   onClose?: () => void; // For mobile menu close button
   isMobile?: boolean; // To hide text labels in mobile mode
+  languageToggleComponent?: ReactNode; // Language toggle component
 }
 
 export default function Sidebar({
@@ -54,6 +55,7 @@ export default function Sidebar({
   onLogoutClick,
   onClose,
   isMobile = false,
+  languageToggleComponent,
 }: SidebarProps) {
   const pathname = usePathname();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -251,8 +253,8 @@ export default function Sidebar({
         )}
       </nav>
 
-      {/* Footer: Collapse, Close button (mobile), Home, Theme Toggle, Logout (bottom) */}
-      {(onToggleCollapse || onClose || onHomeClick || themeToggleComponent || onLogoutClick) && (
+      {/* Footer: Collapse, Close button (mobile), Home, Theme Toggle, Language Toggle, Logout (bottom) */}
+      {(onToggleCollapse || onClose || onHomeClick || themeToggleComponent || languageToggleComponent || onLogoutClick) && (
         <div className="p-lg border-t border-border flex-shrink-0">
           <div
             className={clsx(
@@ -298,6 +300,11 @@ export default function Sidebar({
             {themeToggleComponent && (
               <div className="flex-shrink-0 flex items-center justify-center">
                 {themeToggleComponent}
+              </div>
+            )}
+            {languageToggleComponent && (
+              <div className="flex-shrink-0 flex items-center justify-center">
+                {languageToggleComponent}
               </div>
             )}
             {onLogoutClick && (
