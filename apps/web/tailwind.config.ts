@@ -335,10 +335,15 @@ const config: Config = {
       animation: {
         // Custom animations with theme-aware durations and easings
         'fade-in': `fadeIn var(--animation-duration-normal, 0.2s) var(--animation-easing-default, ease-in-out)`,
+        'fade-out': `fadeOut var(--animation-duration-normal, 0.2s) var(--animation-easing-default, ease-in-out)`,
         'slide-up': `slideUp var(--animation-duration-normal, 0.3s) var(--animation-easing-smooth, ease-out)`,
         'slide-down': `slideDown var(--animation-duration-normal, 0.3s) var(--animation-easing-smooth, ease-out)`,
         'scale-in': `scaleIn var(--animation-duration-fast, 0.2s) var(--animation-easing-smooth, ease-out)`,
         'fade-in-slide-up': `fadeInSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1)`,
+        'fade-in-up': `fadeInUp 0.6s ease-out forwards`,
+        'slide-in-right': `slideInRight 0.3s ease-out`,
+        'slide-out-right': `slideOutRight 0.3s ease-out`,
+        'shake': `shake 0.5s ease-in-out`,
         // Optimized blob animation - slower and smoother for better performance
         'blob': 'blob 20s ease-in-out infinite',
       },
@@ -368,6 +373,27 @@ const config: Config = {
           '25%': { transform: 'translate(20px, -50px) scale(1.1)' },
           '50%': { transform: 'translate(-20px, 20px) scale(0.9)' },
           '75%': { transform: 'translate(50px, 50px) scale(1.05)' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(100%)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        slideOutRight: {
+          '0%': { opacity: '1', transform: 'translateX(0)' },
+          '100%': { opacity: '0', transform: 'translateX(100%)' },
+        },
+        shake: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' },
+          '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' },
+        },
+        fadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
         },
       },
     },

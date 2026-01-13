@@ -5,6 +5,8 @@ import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { Calendar, MapPin, Circle, Hexagon, Heart, Stethoscope, Users, Brain } from 'lucide-react';
+import { microInteractions, animationVariants, combineAnimations } from '@/lib/animations/micro-interactions';
+import { ScrollReveal } from '@/components/examples/ScrollReveal';
 
 export default function HomePage() {
   const t = useTranslations('home');
@@ -37,30 +39,50 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
             {/* Colonne gauche - Contenu principal */}
             <div className="text-center md:text-left">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 leading-none text-white tracking-tight">
+              <h1 className={combineAnimations(
+                animationVariants.hero.title,
+                "text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 leading-none text-white tracking-tight"
+              )}>
                 RUSS
                 <br />
                 HARRIS
               </h1>
-              <div className="inline-block border border-[#FF8C42]/40 text-[#FF8C42] px-4 py-1.5 text-xs font-medium mb-6 md:mb-8 tracking-widest rounded-full backdrop-blur-sm bg-white/5">
+              <div className={combineAnimations(
+                animationVariants.hero.subtitle,
+                "inline-block border border-[#FF8C42]/40 text-[#FF8C42] px-4 py-1.5 text-xs font-medium mb-6 md:mb-8 tracking-widest rounded-full backdrop-blur-sm bg-white/5"
+              )}>
                 {t('tourBadge')}
               </div>
-              <p className="text-2xl sm:text-3xl md:text-4xl font-light text-white mb-6 md:mb-8 leading-tight">
+              <p className={combineAnimations(
+                animationVariants.hero.subtitle,
+                "text-2xl sm:text-3xl md:text-4xl font-light text-white mb-6 md:mb-8 leading-tight"
+              )}>
                 {t('heroTitle')}
               </p>
-              <p className="text-base sm:text-lg text-gray-300 mb-6 leading-relaxed max-w-xl mx-auto md:mx-0">
+              <p className={combineAnimations(
+                animationVariants.hero.cta,
+                "text-base sm:text-lg text-gray-300 mb-6 leading-relaxed max-w-xl mx-auto md:mx-0"
+              )}>
                 {t('heroDescription')}
               </p>
               
               {/* Citation emblématique */}
-              <div className="border-l-2 border-[#FF8C42]/60 pl-4 md:pl-6 mb-8 md:mb-10 italic text-gray-400 text-sm md:text-base">
+              <div className={combineAnimations(
+                animationVariants.hero.cta,
+                "border-l-2 border-[#FF8C42]/60 pl-4 md:pl-6 mb-8 md:mb-10 italic text-gray-400 text-sm md:text-base"
+              )}>
                 "{t('quote')}"
                 <span className="block text-xs not-italic text-gray-500 mt-2">{t('quoteAuthor')}</span>
               </div>
 
               <Button 
                 size="lg" 
-                className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm px-6 md:px-8 py-3 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20 w-full sm:w-auto"
+                className={combineAnimations(
+                  animationVariants.hero.cta,
+                  microInteractions.button.glow,
+                  microInteractions.button.hover,
+                  "bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm px-6 md:px-8 py-3 rounded-full border border-[#FF8C42]/20 w-full sm:w-auto"
+                )}
               >
                 {t('discoverDates')}
               </Button>
@@ -75,7 +97,10 @@ export default function HomePage() {
                     <polygon points="50,2 95,27 95,73 50,98 5,73 5,27" fill="none" stroke="#FF8C42" strokeWidth="0.3"/>
                   </svg>
                 </div>
-                <div className="relative w-full aspect-[3/4] max-h-[500px] md:max-h-[600px] rounded-2xl md:rounded-3xl overflow-hidden border-2 border-[#FF8C42]/30 ring-2 ring-white/5">
+                <div className={combineAnimations(
+                  microInteractions.homepage.heroImage,
+                  "relative w-full aspect-[3/4] max-h-[500px] md:max-h-[600px] rounded-2xl md:rounded-3xl overflow-hidden border-2 border-[#FF8C42]/30 ring-2 ring-white/5"
+                )}>
                   <Image
                     src="/images/russ/8obb1myXAohZ.jpg"
                     alt="Dr. Russ Harris"
@@ -93,14 +118,21 @@ export default function HomePage() {
       {/* Section Dates de Tournée - Fond foncé élégant */}
       <section className="py-16 md:py-32 bg-gradient-to-b from-[#0F172A] to-[#1E293B]">
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">{t('tourTitle')}</h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-400">{t('tourSubtitle')}</p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">{t('tourTitle')}</h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-400">{t('tourSubtitle')}</p>
+            </div>
+          </ScrollReveal>
 
           <div className="space-y-4 md:space-y-6">
             {/* Montréal */}
-            <div className="group border border-gray-700/50 bg-gradient-to-r from-gray-900/50 to-gray-800/30 rounded-2xl md:rounded-3xl p-6 md:p-8 hover:border-[#FF8C42]/50 transition-all duration-300 hover:scale-[1.01] backdrop-blur-sm">
+            <ScrollReveal delay={100}>
+              <div className={combineAnimations(
+                microInteractions.card.base,
+                microInteractions.homepage.tourCard,
+                "group border border-gray-700/50 bg-gradient-to-r from-gray-900/50 to-gray-800/30 rounded-2xl md:rounded-3xl p-6 md:p-8 backdrop-blur-sm"
+              )}>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-2 group-hover:text-[#FF8C42] transition-colors break-words">
@@ -118,16 +150,26 @@ export default function HomePage() {
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <Link href="/cities" className="w-full md:w-auto">
-                    <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105 w-full md:w-auto">
+                    <Button className={combineAnimations(
+                      microInteractions.button.base,
+                      microInteractions.button.hover,
+                      "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
+                    )}>
                       {t('registerMontreal')}
                     </Button>
                   </Link>
                 </div>
               </div>
             </div>
+            </ScrollReveal>
 
             {/* Calgary */}
-            <div className="group border border-gray-700/50 bg-gradient-to-r from-gray-900/50 to-gray-800/30 rounded-2xl md:rounded-3xl p-6 md:p-8 hover:border-[#FF8C42]/50 transition-all duration-300 hover:scale-[1.01] backdrop-blur-sm">
+            <ScrollReveal delay={200}>
+              <div className={combineAnimations(
+                microInteractions.card.base,
+                microInteractions.homepage.tourCard,
+                "group border border-gray-700/50 bg-gradient-to-r from-gray-900/50 to-gray-800/30 rounded-2xl md:rounded-3xl p-6 md:p-8 backdrop-blur-sm"
+              )}>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-2 group-hover:text-[#FF8C42] transition-colors break-words">
@@ -145,16 +187,26 @@ export default function HomePage() {
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <Link href="/cities" className="w-full md:w-auto">
-                    <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105 w-full md:w-auto">
+                    <Button className={combineAnimations(
+                      microInteractions.button.base,
+                      microInteractions.button.hover,
+                      "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
+                    )}>
                       {t('registerCalgary')}
                     </Button>
                   </Link>
                 </div>
               </div>
             </div>
+            </ScrollReveal>
 
             {/* Vancouver */}
-            <div className="group border border-gray-700/50 bg-gradient-to-r from-gray-900/50 to-gray-800/30 rounded-2xl md:rounded-3xl p-6 md:p-8 hover:border-[#FF8C42]/50 transition-all duration-300 hover:scale-[1.01] backdrop-blur-sm">
+            <ScrollReveal delay={300}>
+              <div className={combineAnimations(
+                microInteractions.card.base,
+                microInteractions.homepage.tourCard,
+                "group border border-gray-700/50 bg-gradient-to-r from-gray-900/50 to-gray-800/30 rounded-2xl md:rounded-3xl p-6 md:p-8 backdrop-blur-sm"
+              )}>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-2 group-hover:text-[#FF8C42] transition-colors break-words">
@@ -172,16 +224,26 @@ export default function HomePage() {
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <Link href="/cities" className="w-full md:w-auto">
-                    <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105 w-full md:w-auto">
+                    <Button className={combineAnimations(
+                      microInteractions.button.base,
+                      microInteractions.button.hover,
+                      "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
+                    )}>
                       {t('registerVancouver')}
                     </Button>
                   </Link>
                 </div>
               </div>
             </div>
+            </ScrollReveal>
 
             {/* Toronto */}
-            <div className="group border border-gray-700/50 bg-gradient-to-r from-gray-900/50 to-gray-800/30 rounded-2xl md:rounded-3xl p-6 md:p-8 hover:border-[#FF8C42]/50 transition-all duration-300 hover:scale-[1.01] backdrop-blur-sm">
+            <ScrollReveal delay={400}>
+              <div className={combineAnimations(
+                microInteractions.card.base,
+                microInteractions.homepage.tourCard,
+                "group border border-gray-700/50 bg-gradient-to-r from-gray-900/50 to-gray-800/30 rounded-2xl md:rounded-3xl p-6 md:p-8 backdrop-blur-sm"
+              )}>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-2 group-hover:text-[#FF8C42] transition-colors break-words">
@@ -199,13 +261,18 @@ export default function HomePage() {
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <Link href="/cities" className="w-full md:w-auto">
-                    <Button className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full transition-all border border-[#FF8C42]/20 transform hover:scale-105 w-full md:w-auto">
+                    <Button className={combineAnimations(
+                      microInteractions.button.base,
+                      microInteractions.button.hover,
+                      "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
+                    )}>
                       {t('registerToronto')}
                     </Button>
                   </Link>
                 </div>
               </div>
             </div>
+            </ScrollReveal>
           </div>
         </Container>
       </section>
@@ -251,18 +318,33 @@ export default function HomePage() {
               
               {/* Stats avec design épuré */}
               <div className="grid grid-cols-3 gap-4 md:gap-6 pt-6 md:pt-8 border-t border-[#FF8C42]/20">
-                <div>
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#FF8C42] mb-1">90K+</div>
-                  <div className="text-xs sm:text-sm text-gray-600">{t('statsTrained')}</div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#FF8C42] mb-1">1M+</div>
-                  <div className="text-xs sm:text-sm text-gray-600">{t('statsBooks')}</div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#FF8C42] mb-1">30</div>
-                  <div className="text-xs sm:text-sm text-gray-600">{t('statsLanguages')}</div>
-                </div>
+                <ScrollReveal delay={100}>
+                  <div>
+                    <div className={combineAnimations(
+                      microInteractions.homepage.statNumber,
+                      "text-2xl sm:text-3xl md:text-4xl font-bold text-[#FF8C42] mb-1"
+                    )}>90K+</div>
+                    <div className="text-xs sm:text-sm text-gray-600">{t('statsTrained')}</div>
+                  </div>
+                </ScrollReveal>
+                <ScrollReveal delay={200}>
+                  <div>
+                    <div className={combineAnimations(
+                      microInteractions.homepage.statNumber,
+                      "text-2xl sm:text-3xl md:text-4xl font-bold text-[#FF8C42] mb-1"
+                    )}>1M+</div>
+                    <div className="text-xs sm:text-sm text-gray-600">{t('statsBooks')}</div>
+                  </div>
+                </ScrollReveal>
+                <ScrollReveal delay={300}>
+                  <div>
+                    <div className={combineAnimations(
+                      microInteractions.homepage.statNumber,
+                      "text-2xl sm:text-3xl md:text-4xl font-bold text-[#FF8C42] mb-1"
+                    )}>30</div>
+                    <div className="text-xs sm:text-sm text-gray-600">{t('statsLanguages')}</div>
+                  </div>
+                </ScrollReveal>
               </div>
             </div>
           </div>
@@ -574,7 +656,12 @@ export default function HomePage() {
           </p>
           <Button 
             size="lg" 
-            className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm md:text-base px-6 md:px-10 py-3 md:py-4 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20 w-full sm:w-auto"
+            className={combineAnimations(
+              microInteractions.button.base,
+              microInteractions.button.glow,
+              microInteractions.button.hover,
+              "bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm md:text-base px-6 md:px-10 py-3 md:py-4 rounded-full border border-[#FF8C42]/20 w-full sm:w-auto"
+            )}
           >
             {t('ctaButton')}
           </Button>

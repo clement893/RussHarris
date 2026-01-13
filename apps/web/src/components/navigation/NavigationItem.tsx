@@ -16,12 +16,14 @@ interface NavigationItemProps {
   item: NavigationItemType;
   variant?: 'desktop' | 'mobile';
   onNavigate?: () => void;
+  isOnWhiteBackground?: boolean;
 }
 
 export default function NavigationItem({
   item,
   variant = 'desktop',
   onNavigate,
+  isOnWhiteBackground = false,
 }: NavigationItemProps) {
   const pathname = usePathname();
   const t = useTranslations('navigation');
@@ -56,8 +58,12 @@ export default function NavigationItem({
         onClick={handleClick}
         className={clsx(
           'relative text-sm font-medium transition-all duration-200',
-          'text-white/90 hover:text-white',
-          isActive && 'text-white font-semibold'
+          isOnWhiteBackground
+            ? isActive
+              ? 'text-gray-900 font-semibold'
+              : 'text-gray-700 hover:text-gray-900'
+            : 'text-white/90 hover:text-white',
+          isActive && !isOnWhiteBackground && 'text-white font-semibold'
         )}
         aria-current={isActive ? 'page' : undefined}
       >

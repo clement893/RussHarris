@@ -32,18 +32,95 @@ export default function MasterclassNavigation({
 }: MasterclassNavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isOnWhiteBackground, setIsOnWhiteBackground] = useState(false);
   const t = useTranslations();
   const { isAuthenticated, user } = useAuthStore();
 
-  // Handle scroll behavior
+  // Handle scroll behavior and detect background color
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    const detectBackgroundColor = (): boolean => {
+      if (!isScrolled) return false;
+      
+      const header = document.querySelector('header');
+      if (!header) return false;
+      
+      const headerRect = header.getBoundingClientRect();
+      const headerBottom = headerRect.bottom;
+      
+      // Check multiple points below header for better accuracy
+      const checkPoints = [
+        { x: window.innerWidth / 2, y: headerBottom + 5 }, // Center
+        { x: window.innerWidth / 4, y: headerBottom + 5 }, // Left
+        { x: (window.innerWidth * 3) / 4, y: headerBottom + 5 }, // Right
+      ];
+      
+      let whiteCount = 0;
+      
+      for (const point of checkPoints) {
+        const element = document.elementFromPoint(point.x, point.y);
+        if (!element) continue;
+        
+          // Walk up the DOM tree to find element with background color
+          let currentElement: Element | null = element;
+          let bgColor = '';
+          
+          while (currentElement && currentElement !== document.body) {
+            const computedStyle = window.getComputedStyle(currentElement);
+            bgColor = computedStyle.backgroundColor;
+            
+            // If background is not transparent, use it
+            if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+              break;
+            }
+            
+            currentElement = currentElement.parentElement;
+          }
+          
+          if (bgColor) {
+            // Parse RGB color
+            const rgbMatch = bgColor.match(/\d+/g);
+            if (rgbMatch && rgbMatch.length >= 3) {
+              const r = parseInt(rgbMatch[0] || '0');
+              const g = parseInt(rgbMatch[1] || '0');
+              const b = parseInt(rgbMatch[2] || '0');
+              
+              // Check if background is light (white or very light color)
+              // Threshold: r > 240, g > 240, b > 240 for light backgrounds
+              const isLight = r > 240 && g > 240 && b > 240;
+              if (isLight) whiteCount++;
+            } else {
+              // Check for common white color names/values
+              const bgColorLower = bgColor.toLowerCase();
+              const isWhite = bgColorLower.includes('white') || 
+                             bgColor.includes('#fff') || 
+                             bgColor.includes('#ffffff') ||
+                             bgColor.startsWith('rgb(255') ||
+                             bgColor.startsWith('rgb(254');
+              if (isWhite) whiteCount++;
+            }
+          }
+      }
+      
+      // If majority of check points are white, consider it white background
+      return whiteCount >= 2;
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+      setIsOnWhiteBackground(detectBackgroundColor());
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Check on mount
+    
+    // Also check on resize
+    window.addEventListener('resize', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [isScrolled]);
 
   // Get filtered navigation based on auth status
   const baseNavigationItems = getFilteredNavigation(
@@ -64,10 +141,13 @@ export default function MasterclassNavigation({
         className={clsx(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
           shouldShowBackground
-            ? 'bg-[#1F2937]/98 backdrop-blur-xl border-b border-[#374151]/60 shadow-2xl shadow-[#1F2937]/20'
+            ? isOnWhiteBackground
+              ? 'bg-white/98 backdrop-blur-xl border-b border-gray-200 shadow-lg'
+              : 'bg-[#1F2937]/98 backdrop-blur-xl border-b border-[#374151]/60 shadow-2xl shadow-[#1F2937]/20'
             : 'bg-transparent',
           className
         )}
+        data-on-white-background={isOnWhiteBackground}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
@@ -84,7 +164,7 @@ export default function MasterclassNavigation({
             </Link>
 
             {/* Desktop Navigation */}
-            <DesktopNavigation items={navigationItems} />
+            <DesktopNavigation items={navigationItems} isOnWhiteBackground={isOnWhiteBackground} />
 
             {/* Desktop Actions (CTA + Language) */}
             <div className="hidden lg:flex items-center gap-4">
@@ -96,13 +176,18 @@ export default function MasterclassNavigation({
                     'transition-colors duration-200',
                     'text-white bg-[#FF8C42]',
                     'hover:bg-[#FF7A29]',
-                    'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]'
+                    isOnWhiteBackground
+                      ? 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-white'
+                      : 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]'
                   )}
                 >
                   {t('navigation.reserve')}
                 </Link>
               )}
-              <div className="opacity-60 hover:opacity-100 transition-opacity">
+              <div className={clsx(
+                'transition-opacity',
+                isOnWhiteBackground ? 'opacity-80 hover:opacity-100' : 'opacity-60 hover:opacity-100'
+              )}>
                 <LanguageSwitcher />
               </div>
             </div>
@@ -117,8 +202,12 @@ export default function MasterclassNavigation({
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={clsx(
                   'relative p-3 transition-all duration-300 rounded-xl',
-                  'text-white hover:bg-white/10 active:bg-white/20',
-                  'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]',
+                  isOnWhiteBackground
+                    ? 'text-gray-900 hover:bg-gray-100 active:bg-gray-200'
+                    : 'text-white hover:bg-white/10 active:bg-white/20',
+                  isOnWhiteBackground
+                    ? 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-white'
+                    : 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]',
                   'min-h-[44px] min-w-[44px] flex items-center justify-center',
                   'transform hover:scale-110 active:scale-95'
                 )}

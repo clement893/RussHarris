@@ -11,11 +11,13 @@ import NavigationItem from './NavigationItem';
 interface DesktopNavigationProps {
   items?: NavigationItemType[];
   onNavigate?: () => void;
+  isOnWhiteBackground?: boolean;
 }
 
 export default function DesktopNavigation({
   items = masterclassNavigationConfig,
   onNavigate,
+  isOnWhiteBackground = false,
 }: DesktopNavigationProps) {
 
   return (
@@ -29,6 +31,7 @@ export default function DesktopNavigation({
           item={item}
           variant="desktop"
           onNavigate={onNavigate}
+          isOnWhiteBackground={isOnWhiteBackground}
         />
       ))}
     </nav>
