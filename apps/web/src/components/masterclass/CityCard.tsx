@@ -7,7 +7,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { MapPin, Calendar, Users, ArrowRight } from 'lucide-react';
+import { MapPin, Calendar, Users } from 'lucide-react';
 import { clsx } from 'clsx';
 import SwissCard from './SwissCard';
 import AvailabilityBar from './AvailabilityBar';
@@ -116,7 +116,6 @@ export default function CityCard({ city, className }: CityCardProps) {
           className="flex items-center gap-2 text-sm font-bold text-black group-hover:text-white"
         >
           <span>Voir les dates</span>
-          <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </button>
       </div>
     </SwissCard>

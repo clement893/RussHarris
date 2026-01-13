@@ -7,7 +7,7 @@
 
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
-import { ArrowRight, Target, BookOpen, CheckCircle, Hexagon } from 'lucide-react';
+import { Target, BookOpen, CheckCircle, Hexagon } from 'lucide-react';
 
 export default function MasterclassPage() {
   return (
@@ -52,7 +52,6 @@ export default function MasterclassPage() {
                 className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm px-8 py-3 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20"
               >
                 Réserver ma place
-                <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </Link>
           </div>
@@ -253,7 +252,6 @@ export default function MasterclassPage() {
               className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-base px-10 py-4 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20"
             >
               Réserver ma place
-              <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </Link>
         </Container>

@@ -12,7 +12,6 @@ import { Link } from '@/i18n/routing';
 import CityCard from '@/components/masterclass/CityCard';
 import { masterclassAPI, type CityWithEvents } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
-import { ArrowRight } from 'lucide-react';
 
 export default function CitiesPage() {
   const [cities, setCities] = useState<CityWithEvents[]>([]);
@@ -63,7 +62,6 @@ export default function CitiesPage() {
               <Link href="/contact">
                 <Button className="mt-6 bg-[#F58220] hover:bg-[#C4681A] text-white rounded-full">
                   Nous contacter
-                  <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>
             </div>

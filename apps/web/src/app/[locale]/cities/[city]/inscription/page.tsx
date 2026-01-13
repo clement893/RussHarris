@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import { Container, Button } from '@/components/ui';
-import { Calendar, MapPin, Clock, Users, Building, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, Clock, Users, Building, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { masterclassAPI, type CityEvent, type City } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
 import { clsx } from 'clsx';
@@ -298,7 +298,6 @@ export default function CityInscriptionPage() {
                           className="w-full bg-[#F58220] hover:bg-[#C4681A] text-white font-semibold py-3 text-lg rounded-full transition-all duration-300 transform hover:scale-105"
                         >
                           Continuer l'inscription
-                          <ArrowRight className="ml-2 w-5 h-5" />
                         </Button>
                       </>
                     ) : (

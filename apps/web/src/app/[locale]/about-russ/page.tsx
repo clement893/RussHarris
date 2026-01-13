@@ -8,7 +8,7 @@
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
-import { ArrowRight, Award, Book, Globe, Users, Hexagon } from 'lucide-react';
+import { Award, Book, Globe, Users, Hexagon } from 'lucide-react';
 
 export default function AboutRussPage() {
   return (
@@ -197,7 +197,6 @@ export default function AboutRussPage() {
               className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-base px-10 py-4 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20"
             >
               Réserver ma place
-              <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </Link>
         </Container>

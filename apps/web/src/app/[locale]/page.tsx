@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
-import { ArrowRight, Calendar, MapPin, Circle, Hexagon, Heart, Stethoscope, Users, Brain } from 'lucide-react';
+import { Calendar, MapPin, Circle, Hexagon, Heart, Stethoscope, Users, Brain } from 'lucide-react';
 
 export default function HomePage() {
   const t = useTranslations('home');
@@ -63,7 +63,6 @@ export default function HomePage() {
                 className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm px-6 md:px-8 py-3 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20 w-full sm:w-auto"
               >
                 {t('discoverDates')}
-                <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </div>
 
@@ -578,7 +577,6 @@ export default function HomePage() {
             className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm md:text-base px-6 md:px-10 py-3 md:py-4 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20 w-full sm:w-auto"
           >
             {t('ctaButton')}
-            <ArrowRight className="ml-2 w-4 h-4 md:w-5 md:h-5" />
           </Button>
         </Container>
       </section>
