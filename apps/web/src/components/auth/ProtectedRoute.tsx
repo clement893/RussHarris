@@ -298,7 +298,11 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
           checkingRef.current = false;
           setIsChecking(false);
           setIsAuthorized(false);
-          router.replace('/dashboard?error=unauthorized');
+          // Get current locale from pathname
+          const localeMatch = pathname.match(/^\/(en|fr)/);
+          const locale = localeMatch ? localeMatch[1] : 'fr';
+          const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized' : `/${locale}/dashboard?error=unauthorized`;
+          router.replace(redirectPath);
           return;
         }
       }
