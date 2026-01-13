@@ -5,7 +5,7 @@
 'use client';
 
 import { ReactNode, useState, useMemo } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
 import { ChevronRight, ChevronDown, Search, X, Home, LogOut } from 'lucide-react';
