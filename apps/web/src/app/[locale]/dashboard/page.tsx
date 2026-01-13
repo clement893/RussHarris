@@ -13,7 +13,7 @@ import dynamicImport from 'next/dynamic';
 import { ErrorBoundary } from '@/components/errors/ErrorBoundary';
 import MotionDiv from '@/components/motion/MotionDiv';
 import { AnimatedStatCard } from '@/components/examples/AnimatedStatCard';
-import { microInteractions, combineAnimations, getStaggerAnimation } from '@/lib/animations/micro-interactions';
+import { microInteractions, combineAnimations } from '@/lib/animations/micro-interactions';
 import { 
   User, 
   Mail, 
