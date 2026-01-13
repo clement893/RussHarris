@@ -6,7 +6,7 @@ import { getErrorMessage } from '@/lib/errors';
 import { Button, Card, Badge, Alert, Input, Loading, Modal, DataTable, Tabs, TabList, Tab, TabPanels, TabPanel } from '@/components/ui';
 import type { Column } from '@/components/ui/DataTable';
 import { Edit2, Trash2, Plus, Calendar, MapPin, Building } from 'lucide-react';
-import { masterclassAPI, type CityEvent, type City, type Venue } from '@/lib/api/masterclass';
+import { masterclassAPI, type CityEvent, type City } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
 
 export default function AdminMasterclassContent() {
