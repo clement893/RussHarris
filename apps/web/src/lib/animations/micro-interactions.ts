@@ -35,9 +35,9 @@ export const animationVariants = {
   
   // Page-specific animations
   hero: {
-    title: 'opacity-0 translate-y-8 animate-[fadeInUp_0.8s_ease-out_0.2s_forwards]',
-    subtitle: 'opacity-0 translate-y-6 animate-[fadeInUp_0.8s_ease-out_0.4s_forwards]',
-    cta: 'opacity-0 translate-y-4 animate-[fadeInUp_0.8s_ease-out_0.6s_forwards]',
+    title: 'opacity-0 translate-y-8 hero-title-animate',
+    subtitle: 'opacity-0 translate-y-6 hero-subtitle-animate',
+    cta: 'opacity-0 translate-y-4 hero-cta-animate',
   },
   
   // Card grid animations
