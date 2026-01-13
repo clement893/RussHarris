@@ -5,7 +5,6 @@
 
 'use client';
 
-import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
 import { ArrowRight, Target, BookOpen, CheckCircle, Hexagon } from 'lucide-react';
