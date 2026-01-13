@@ -28,7 +28,7 @@ import { ButtonVariant, Size } from './types';
 import { useComponentConfig } from '@/lib/theme/use-component-config';
 import { mergeVariantConfig, applyVariantConfigAsStyles } from '@/lib/theme/variant-helpers';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Button style variant */
   variant?: ButtonVariant;
   /** Button size */
