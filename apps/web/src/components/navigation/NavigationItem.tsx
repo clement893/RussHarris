@@ -7,6 +7,7 @@
 
 import { Link } from '@/i18n/routing';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { clsx } from 'clsx';
 import type { NavigationItem as NavigationItemType } from '@/lib/navigation/config';
 import { isActivePath } from '@/lib/navigation/config';
@@ -23,8 +24,10 @@ export default function NavigationItem({
   onNavigate,
 }: NavigationItemProps) {
   const pathname = usePathname();
+  const t = useTranslations('navigation');
 
   const isActive = isActivePath(pathname, item);
+  const label = t(item.id as any) || item.label;
 
   const handleClick = () => {
     if (onNavigate) {
@@ -54,7 +57,7 @@ export default function NavigationItem({
         aria-current={isActive ? 'page' : undefined}
       >
         <span className="relative">
-          {item.label}
+          {label}
           {/* Simple underline on hover and active */}
           <span
             className={clsx(
@@ -82,7 +85,7 @@ export default function NavigationItem({
       )}
       aria-current={isActive ? 'page' : undefined}
     >
-      {item.label}
+      {label}
     </Link>
   );
 }

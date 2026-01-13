@@ -99,7 +99,7 @@ export default function MasterclassNavigation({
                     'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]'
                   )}
                 >
-                  Réserver
+                  {t('navigation.reserve')}
                 </Link>
               )}
               <div className="opacity-60 hover:opacity-100 transition-opacity">
