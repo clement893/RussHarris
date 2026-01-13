@@ -6,7 +6,7 @@ import { PageHeader, PageContainer } from '@/components/layout';
 import { getErrorMessage } from '@/lib/errors';
 import { Button, Card, Alert, Input, Loading, Modal, DataTable } from '@/components/ui';
 import type { Column } from '@/components/ui/DataTable';
-import { Edit2, Trash2, Plus, MapPin } from 'lucide-react';
+import { Edit2, Trash2, Plus } from 'lucide-react';
 import { masterclassAPI, type City } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
 
