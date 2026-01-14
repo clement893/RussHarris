@@ -29,6 +29,7 @@ export default function BookPage() {
     preselectedEventId ? parseInt(preselectedEventId, 10) : null
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadCities();
@@ -37,10 +38,16 @@ export default function BookPage() {
   const loadCities = async () => {
     try {
       setIsLoading(true);
+      setError(null);
       const data = await masterclassAPI.listCitiesWithEvents();
+      logger.debug('Loaded cities', { count: data.length, cities: data });
       setCities(data);
+      if (data.length === 0) {
+        setError('Aucune ville disponible pour le moment. Veuillez réessayer plus tard.');
+      }
     } catch (error) {
       logger.error('Failed to load cities', error instanceof Error ? error : new Error(String(error)));
+      setError('Erreur lors du chargement des villes. Veuillez réessayer.');
     } finally {
       setIsLoading(false);
     }
@@ -95,9 +102,25 @@ export default function BookPage() {
                 <div className="text-center py-20">
                   <p className="text-gray-600">Chargement des villes...</p>
                 </div>
+              ) : error ? (
+                <div className="text-center py-20">
+                  <p className="text-red-600 mb-4">{error}</p>
+                  <button
+                    onClick={loadCities}
+                    className="px-6 py-2 bg-black text-white font-bold hover:bg-gray-900 transition-colors"
+                  >
+                    Réessayer
+                  </button>
+                </div>
               ) : cities.length === 0 ? (
                 <div className="text-center py-20">
-                  <p className="text-gray-600">Aucune ville disponible pour le moment.</p>
+                  <p className="text-gray-600 mb-4">Aucune ville disponible pour le moment.</p>
+                  <button
+                    onClick={loadCities}
+                    className="px-6 py-2 bg-black text-white font-bold hover:bg-gray-900 transition-colors"
+                  >
+                    Réessayer
+                  </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
