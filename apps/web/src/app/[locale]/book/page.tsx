@@ -5,7 +5,6 @@
 
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
@@ -69,7 +68,6 @@ const STATIC_CITIES: StaticCity[] = [
 
 export default function BookPage() {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
 
   const handleCitySelect = (city: StaticCity) => {
     // Pass static data via query params
@@ -96,13 +94,6 @@ export default function BookPage() {
               Sélectionnez la ville de votre choix pour participer à la masterclass ACT avec Russ Harris.
             </p>
           </div>
-
-          {/* Error Display */}
-          {error && (
-            <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
-              <p>{error}</p>
-            </div>
-          )}
 
           {/* Select City */}
           <div>
