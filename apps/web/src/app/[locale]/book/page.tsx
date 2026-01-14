@@ -125,16 +125,19 @@ export default function BookPage() {
   };
 
   const handleCitySelect = (city: CityWithEvents) => {
-    // Use the first event (since there's only one per city)
+    // Each city automatically has one event (same event for all cities)
+    // If city has events, use the first one; otherwise use city ID as event ID
     if (city.events && city.events.length > 0) {
       const firstEvent = city.events[0];
       if (firstEvent) {
         router.push(`/book/checkout?cityEventId=${firstEvent.id}`);
       } else {
-        setError('Aucun événement disponible pour cette ville.');
+        // Fallback: use city ID as event ID
+        router.push(`/book/checkout?cityEventId=${city.id}`);
       }
     } else {
-      setError('Aucun événement disponible pour cette ville.');
+      // Each city automatically has one event - use city ID as event ID
+      router.push(`/book/checkout?cityEventId=${city.id}`);
     }
   };
 
