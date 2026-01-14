@@ -124,20 +124,28 @@ export default function BookPage() {
     }
   };
 
-  const handleCitySelect = (city: CityWithEvents) => {
+  const handleCitySelect = async (city: CityWithEvents) => {
     // Each city automatically has one event (same event for all cities)
-    // If city has events, use the first one; otherwise use city ID as event ID
+    // If city has events, use the first one; otherwise try to load events from API
     if (city.events && city.events.length > 0) {
       const firstEvent = city.events[0];
       if (firstEvent) {
         router.push(`/book/checkout?cityEventId=${firstEvent.id}`);
-      } else {
-        // Fallback: use city ID as event ID
-        router.push(`/book/checkout?cityEventId=${city.id}`);
+        return;
       }
-    } else {
-      // Each city automatically has one event - use city ID as event ID
-      router.push(`/book/checkout?cityEventId=${city.id}`);
+    }
+    
+    // If city has no events, try to load them from API
+    try {
+      const events = await masterclassAPI.listCityEvents(city.id);
+      if (events && events.length > 0) {
+        router.push(`/book/checkout?cityEventId=${events[0].id}`);
+      } else {
+        setError(`Aucun événement disponible pour ${city.name}. Veuillez contacter le support.`);
+      }
+    } catch (err) {
+      logger.error('Failed to load city events', err instanceof Error ? err : new Error(String(err)));
+      setError(`Erreur lors du chargement de l'événement pour ${city.name}. Veuillez réessayer.`);
     }
   };
 
