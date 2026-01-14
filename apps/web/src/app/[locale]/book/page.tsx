@@ -5,153 +5,81 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
 import SwissCard from '@/components/masterclass/SwissCard';
 import { MapPin } from 'lucide-react';
-import { masterclassAPI, type CityWithEvents } from '@/lib/api/masterclass';
-import { logger } from '@/lib/logger';
+
+// Static city data with fixed date and price
+interface StaticCity {
+  id: number;
+  name: string;
+  name_en: string;
+  name_fr: string;
+  country: string;
+  date: string; // Format: "24-25 mai 2026"
+  price: number; // Price in CAD
+  currency: string;
+}
+
+const STATIC_CITIES: StaticCity[] = [
+  {
+    id: 1,
+    name: 'Montréal',
+    name_en: 'Montreal',
+    name_fr: 'Montréal',
+    country: 'Canada',
+    date: '24-25 mai 2026',
+    price: 550,
+    currency: 'CAD',
+  },
+  {
+    id: 2,
+    name: 'Calgary',
+    name_en: 'Calgary',
+    name_fr: 'Calgary',
+    country: 'Canada',
+    date: '31 mai - 1 juin 2026',
+    price: 550,
+    currency: 'CAD',
+  },
+  {
+    id: 3,
+    name: 'Vancouver',
+    name_en: 'Vancouver',
+    name_fr: 'Vancouver',
+    country: 'Canada',
+    date: '7-8 juin 2026',
+    price: 550,
+    currency: 'CAD',
+  },
+  {
+    id: 4,
+    name: 'Toronto',
+    name_en: 'Toronto',
+    name_fr: 'Toronto',
+    country: 'Canada',
+    date: '14-15 juin 2026',
+    price: 550,
+    currency: 'CAD',
+  },
+];
 
 export default function BookPage() {
   const router = useRouter();
-  const [cities, setCities] = useState<CityWithEvents[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadCities();
-  }, []);
-
-  const loadCities = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const data = await masterclassAPI.listCitiesWithEvents();
-      logger.debug('Loaded cities', { count: data.length, cities: data });
-      
-      // If API returns empty, use fallback static cities
-      if (data.length === 0) {
-        logger.warn('No cities from API, using fallback static cities');
-        const fallbackCities: CityWithEvents[] = [
-          {
-            id: 1,
-            name_en: 'Montreal',
-            name_fr: 'Montréal',
-            name: 'Montréal',
-            country: 'Canada',
-            province: 'Quebec',
-            events: [],
-          },
-          {
-            id: 2,
-            name_en: 'Calgary',
-            name_fr: 'Calgary',
-            name: 'Calgary',
-            country: 'Canada',
-            province: 'Alberta',
-            events: [],
-          },
-          {
-            id: 3,
-            name_en: 'Vancouver',
-            name_fr: 'Vancouver',
-            name: 'Vancouver',
-            country: 'Canada',
-            province: 'British Columbia',
-            events: [],
-          },
-          {
-            id: 4,
-            name_en: 'Toronto',
-            name_fr: 'Toronto',
-            name: 'Toronto',
-            country: 'Canada',
-            province: 'Ontario',
-            events: [],
-          },
-        ];
-        setCities(fallbackCities);
-      } else {
-        setCities(data);
-      }
-    } catch (error) {
-      logger.error('Failed to load cities', error instanceof Error ? error : new Error(String(error)));
-      // Use fallback cities on error
-      const fallbackCities: CityWithEvents[] = [
-        {
-          id: 1,
-          name_en: 'Montreal',
-          name_fr: 'Montréal',
-          name: 'Montréal',
-          country: 'Canada',
-          province: 'Quebec',
-          events: [],
-        },
-        {
-          id: 2,
-          name_en: 'Calgary',
-          name_fr: 'Calgary',
-          name: 'Calgary',
-          country: 'Canada',
-          province: 'Alberta',
-          events: [],
-        },
-        {
-          id: 3,
-          name_en: 'Vancouver',
-          name_fr: 'Vancouver',
-          name: 'Vancouver',
-          country: 'Canada',
-          province: 'British Columbia',
-          events: [],
-        },
-        {
-          id: 4,
-          name_en: 'Toronto',
-          name_fr: 'Toronto',
-          name: 'Toronto',
-          country: 'Canada',
-          province: 'Ontario',
-          events: [],
-        },
-      ];
-      setCities(fallbackCities);
-      setError('Les données sont chargées depuis le cache. Certaines informations peuvent être limitées.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleCitySelect = async (city: CityWithEvents) => {
-    // Each city automatically has one event (same event for all cities)
-    // If city has events, use the first one; otherwise try to load events from API
-    if (city.events && city.events.length > 0) {
-      const firstEvent = city.events[0];
-      if (firstEvent) {
-        router.push(`/book/checkout?cityEventId=${firstEvent.id}`);
-        return;
-      }
-    }
-    
-    // If city has no events, try to load them from API
-    try {
-      const events = await masterclassAPI.listCityEvents(city.id);
-      if (events && events.length > 0) {
-        const firstEvent = events[0];
-        if (firstEvent) {
-          router.push(`/book/checkout?cityEventId=${firstEvent.id}`);
-        } else {
-          setError(`Aucun événement disponible pour ${city.name}. Veuillez contacter le support.`);
-        }
-      } else {
-        setError(`Aucun événement disponible pour ${city.name}. Veuillez contacter le support.`);
-      }
-    } catch (err) {
-      logger.error('Failed to load city events', err instanceof Error ? err : new Error(String(err)));
-      setError(`Erreur lors du chargement de l'événement pour ${city.name}. Veuillez réessayer.`);
-    }
+  const handleCitySelect = (city: StaticCity) => {
+    // Pass static data via query params
+    const params = new URLSearchParams({
+      city: city.name,
+      date: city.date,
+      price: city.price.toString(),
+      currency: city.currency,
+    });
+    router.push(`/book/checkout?${params.toString()}`);
   };
 
   return (
@@ -165,64 +93,39 @@ export default function BookPage() {
             </h1>
             <SwissDivider />
             <p className="text-xl text-gray-600 mt-6 max-w-3xl">
-              Sélectionnez la ville et la date de votre choix pour participer à la masterclass ACT avec Russ Harris.
+              Sélectionnez la ville de votre choix pour participer à la masterclass ACT avec Russ Harris.
             </p>
           </div>
 
-          {/* Select City - Direct to Checkout */}
+          {/* Error Display */}
+          {error && (
+            <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+              <p>{error}</p>
+            </div>
+          )}
+
+          {/* Select City */}
           <div>
             <h2 className="text-3xl font-black text-black mb-8">Choisir une ville</h2>
-            {isLoading ? (
-              <div className="text-center py-20">
-                <p className="text-gray-600">Chargement des villes...</p>
-              </div>
-            ) : error ? (
-              <div className="text-center py-20">
-                <p className="text-red-600 mb-4">{error}</p>
-                <button
-                  onClick={loadCities}
-                  className="px-6 py-2 bg-black text-white font-bold hover:bg-gray-900 transition-colors"
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {STATIC_CITIES.map((city) => (
+                <SwissCard
+                  key={city.id}
+                  className="p-6 cursor-pointer hover:border-black transition-colors"
+                  onClick={() => handleCitySelect(city)}
                 >
-                  Réessayer
-                </button>
-              </div>
-            ) : cities.length === 0 ? (
-              <div className="text-center py-20">
-                <p className="text-gray-600 mb-4">Aucune ville disponible pour le moment.</p>
-                <button
-                  onClick={loadCities}
-                  className="px-6 py-2 bg-black text-white font-bold hover:bg-gray-900 transition-colors"
-                >
-                  Réessayer
-                </button>
-              </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {cities.map((city) => (
-                    <SwissCard
-                      key={city.id}
-                      className="p-6 cursor-pointer hover:border-black transition-colors"
-                      onClick={() => handleCitySelect(city)}
-                    >
-                      <div className="flex items-center gap-3 mb-4">
-                        <MapPin className="w-5 h-5 text-black" aria-hidden="true" />
-                        <h3 className="text-2xl font-black text-black">{city.name}</h3>
-                      </div>
-                      <p className="text-gray-600 mb-4">{city.country}</p>
-                      {city.events && city.events.length > 0 && (
-                        <p className="text-sm text-gray-600 mb-2">
-                          {city.events.length} date{city.events.length > 1 ? 's' : ''} disponible{city.events.length > 1 ? 's' : ''}
-                        </p>
-                      )}
-                      <p className="text-sm text-[#FF8C42] font-bold mt-4">
-                        Cliquez pour réserver →
-                      </p>
-                    </SwissCard>
-                  ))}
-                </div>
-              </>
-            )}
+                  <div className="flex items-center gap-3 mb-4">
+                    <MapPin className="w-5 h-5 text-black" aria-hidden="true" />
+                    <h3 className="text-2xl font-black text-black">{city.name}</h3>
+                  </div>
+                  <p className="text-gray-600 mb-2">{city.country}</p>
+                  <p className="text-sm text-gray-600 mb-4">{city.date}</p>
+                  <p className="text-sm text-[#FF8C42] font-bold mt-4">
+                    Cliquez pour réserver →
+                  </p>
+                </SwissCard>
+              ))}
+            </div>
           </div>
         </div>
       </Container>
