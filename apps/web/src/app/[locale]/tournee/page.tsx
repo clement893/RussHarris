@@ -12,41 +12,6 @@ import { microInteractions, animationVariants, combineAnimations } from '@/lib/a
 import { ScrollReveal } from '@/components/examples/ScrollReveal';
 
 export default function TourneePage() {
-  const cities = [
-    {
-      name: 'MONTRÉAL',
-      nameKey: 'registerMontreal',
-      date: '24-25 mai 2026',
-      venue: 'Palais des Congrès',
-      places: 200,
-      href: '/montreal',
-    },
-    {
-      name: 'CALGARY',
-      nameKey: 'registerCalgary',
-      date: '31 mai - 1 juin 2026',
-      venue: 'Calgary Convention Centre',
-      places: 200,
-      href: '/calgary',
-    },
-    {
-      name: 'VANCOUVER',
-      nameKey: 'registerVancouver',
-      date: '7-8 juin 2026',
-      venue: 'Vancouver Convention Centre',
-      places: 200,
-      href: '/vancouver',
-    },
-    {
-      name: 'TORONTO',
-      nameKey: 'registerToronto',
-      date: '14-15 juin 2026',
-      venue: 'Metro Toronto Convention Centre',
-      places: 200,
-      href: '/toronto',
-    },
-  ];
-
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900 min-h-screen">
       {/* Hero Section */}
