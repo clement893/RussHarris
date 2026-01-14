@@ -11,7 +11,7 @@ import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
 import BookingForm from '@/components/masterclass/BookingForm';
 import BookingSummary, { type BookingSummaryData } from '@/components/masterclass/BookingSummary';
-import { bookingsAPI, type BookingCreate } from '@/lib/api/bookings';
+import { bookingsAPI } from '@/lib/api/bookings';
 import { logger } from '@/lib/logger';
 
 export default function CheckoutPage() {
