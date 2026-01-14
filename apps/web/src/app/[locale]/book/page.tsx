@@ -139,7 +139,12 @@ export default function BookPage() {
     try {
       const events = await masterclassAPI.listCityEvents(city.id);
       if (events && events.length > 0) {
-        router.push(`/book/checkout?cityEventId=${events[0].id}`);
+        const firstEvent = events[0];
+        if (firstEvent) {
+          router.push(`/book/checkout?cityEventId=${firstEvent.id}`);
+        } else {
+          setError(`Aucun événement disponible pour ${city.name}. Veuillez contacter le support.`);
+        }
       } else {
         setError(`Aucun événement disponible pour ${city.name}. Veuillez contacter le support.`);
       }
