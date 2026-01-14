@@ -10,6 +10,7 @@ import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
 import SwissCard from '@/components/masterclass/SwissCard';
 import { MapPin } from 'lucide-react';
+import { microInteractions, animationVariants, combineAnimations } from '@/lib/animations/micro-interactions';
 
 // Static city data with fixed date and price
 interface StaticCity {
@@ -81,28 +82,41 @@ export default function BookPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <Container className="py-20 md:py-32">
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
+    <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900 min-h-screen">
+      {/* Hero Section */}
+      <section className="relative py-20 md:py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
+        <Container className="max-w-6xl mx-auto px-4">
           <div className="mb-16">
-            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-black">
+            <h1 className={combineAnimations(
+              animationVariants.hero.title,
+              "swiss-display text-6xl md:text-8xl mb-6 text-white"
+            )}>
               Réserver ma place
             </h1>
-            <SwissDivider />
-            <p className="text-xl text-gray-600 mt-6 max-w-3xl">
+            <SwissDivider className="mb-8" />
+            <p className={combineAnimations(
+              animationVariants.hero.subtitle,
+              "text-xl text-gray-300 mt-6 max-w-3xl"
+            )}>
               Sélectionnez la ville de votre choix pour participer à la masterclass ACT avec Russ Harris.
             </p>
           </div>
+        </Container>
+      </section>
 
-          {/* Select City */}
+      {/* Cities Selection Section */}
+      <section className="py-20 md:py-32 bg-white">
+        <Container className="max-w-6xl mx-auto px-4">
           <div>
             <h2 className="text-3xl font-black text-black mb-8">Choisir une ville</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {STATIC_CITIES.map((city) => (
                 <SwissCard
                   key={city.id}
-                  className="p-6 cursor-pointer hover:border-black transition-colors"
+                  className={combineAnimations(
+                    microInteractions.card.hover,
+                    "p-6 cursor-pointer hover:border-black transition-colors"
+                  )}
                   onClick={() => handleCitySelect(city)}
                 >
                   <div className="flex items-center gap-3 mb-4">
@@ -118,8 +132,8 @@ export default function BookPage() {
               ))}
             </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </section>
     </div>
   );
 }
