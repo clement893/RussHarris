@@ -14,7 +14,7 @@ import BookingForm from '@/components/masterclass/BookingForm';
 import BookingSummary, { type BookingSummaryData } from '@/components/masterclass/BookingSummary';
 import { bookingsAPI } from '@/lib/api/bookings';
 import { logger } from '@/lib/logger';
-import { microInteractions, animationVariants, combineAnimations } from '@/lib/animations/micro-interactions';
+import { animationVariants, combineAnimations } from '@/lib/animations/micro-interactions';
 import { Hexagon } from 'lucide-react';
 
 export default function CheckoutPage() {
