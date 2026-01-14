@@ -10,9 +10,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
 import SwissCard from '@/components/masterclass/SwissCard';
-import AvailabilityBar from '@/components/masterclass/AvailabilityBar';
-import { Calendar, MapPin, Users, Clock } from 'lucide-react';
-import { masterclassAPI, type CityWithEvents, type CityEvent } from '@/lib/api/masterclass';
+import { MapPin } from 'lucide-react';
+import { masterclassAPI, type CityWithEvents } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
 
 export default function BookPage() {
@@ -22,14 +21,9 @@ export default function BookPage() {
   const preselectedEventId = searchParams.get('cityEventId');
 
   const [cities, setCities] = useState<CityWithEvents[]>([]);
-  const [selectedCityId, setSelectedCityId] = useState<number | null>(
-    preselectedCityId ? parseInt(preselectedCityId, 10) : null
-  );
-  const [selectedEventId, setSelectedEventId] = useState<number | null>(
-    preselectedEventId ? parseInt(preselectedEventId, 10) : null
-  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLoadingEvent, setIsLoadingEvent] = useState(false);
 
   useEffect(() => {
     loadCities();
@@ -135,31 +129,34 @@ export default function BookPage() {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-  };
-
-  const getEventDate = (event: CityEvent) => {
-    return event.event_date || event.start_date;
-  };
-
-  const formatTime = (timeString: string) => {
-    return timeString.substring(0, 5);
-  };
-
-  const handleContinue = () => {
-    if (selectedEventId) {
-      router.push(`/book/checkout?cityEventId=${selectedEventId}`);
+  const handleCitySelect = async (cityId: number) => {
+    try {
+      setIsLoadingEvent(true);
+      setError(null);
+      
+      // Try to get events for this city
+      const events = await masterclassAPI.listCityEvents(cityId);
+      
+      if (events.length > 0) {
+        // Use the first event (since there's only one per city)
+        const firstEvent = events[0];
+        router.push(`/book/checkout?cityEventId=${firstEvent.id}`);
+      } else {
+        // If no events found, check if city has events in the loaded data
+        const city = cities.find((c) => c.id === cityId);
+        if (city?.events && city.events.length > 0) {
+          router.push(`/book/checkout?cityEventId=${city.events[0].id}`);
+        } else {
+          setError('Aucun événement disponible pour cette ville.');
+        }
+      }
+    } catch (err) {
+      logger.error('Failed to load city events', err instanceof Error ? err : new Error(String(err)));
+      setError('Erreur lors du chargement de l\'événement. Veuillez réessayer.');
+    } finally {
+      setIsLoadingEvent(false);
     }
   };
-
-  const selectedCity = cities.find((c) => c.id === selectedCityId);
 
   return (
     <div className="min-h-screen bg-white">
@@ -176,41 +173,47 @@ export default function BookPage() {
             </p>
           </div>
 
-          {/* Step 1: Select City */}
-          {!selectedCityId ? (
-            <div>
-              <h2 className="text-3xl font-black text-black mb-8">Étape 1 : Choisir une ville</h2>
-              {isLoading ? (
-                <div className="text-center py-20">
-                  <p className="text-gray-600">Chargement des villes...</p>
-                </div>
-              ) : error ? (
-                <div className="text-center py-20">
-                  <p className="text-red-600 mb-4">{error}</p>
-                  <button
-                    onClick={loadCities}
-                    className="px-6 py-2 bg-black text-white font-bold hover:bg-gray-900 transition-colors"
-                  >
-                    Réessayer
-                  </button>
-                </div>
-              ) : cities.length === 0 ? (
-                <div className="text-center py-20">
-                  <p className="text-gray-600 mb-4">Aucune ville disponible pour le moment.</p>
-                  <button
-                    onClick={loadCities}
-                    className="px-6 py-2 bg-black text-white font-bold hover:bg-gray-900 transition-colors"
-                  >
-                    Réessayer
-                  </button>
-                </div>
-              ) : (
+          {/* Select City - Direct to Checkout */}
+          <div>
+            <h2 className="text-3xl font-black text-black mb-8">Choisir une ville</h2>
+            {isLoading ? (
+              <div className="text-center py-20">
+                <p className="text-gray-600">Chargement des villes...</p>
+              </div>
+            ) : error && !isLoadingEvent ? (
+              <div className="text-center py-20">
+                <p className="text-red-600 mb-4">{error}</p>
+                <button
+                  onClick={loadCities}
+                  className="px-6 py-2 bg-black text-white font-bold hover:bg-gray-900 transition-colors"
+                >
+                  Réessayer
+                </button>
+              </div>
+            ) : cities.length === 0 ? (
+              <div className="text-center py-20">
+                <p className="text-gray-600 mb-4">Aucune ville disponible pour le moment.</p>
+                <button
+                  onClick={loadCities}
+                  className="px-6 py-2 bg-black text-white font-bold hover:bg-gray-900 transition-colors"
+                >
+                  Réessayer
+                </button>
+              </div>
+            ) : (
+              <>
+                {isLoadingEvent && (
+                  <div className="text-center py-4 mb-6">
+                    <p className="text-gray-600">Chargement de l'événement...</p>
+                  </div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {cities.map((city) => (
                     <SwissCard
                       key={city.id}
-                      className="p-6 cursor-pointer hover:border-black transition-colors"
-                      onClick={() => setSelectedCityId(city.id)}
+                      className="p-6 cursor-pointer hover:border-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={() => !isLoadingEvent && handleCitySelect(city.id)}
+                      style={{ pointerEvents: isLoadingEvent ? 'none' : 'auto' }}
                     >
                       <div className="flex items-center gap-3 mb-4">
                         <MapPin className="w-5 h-5 text-black" aria-hidden="true" />
@@ -218,128 +221,19 @@ export default function BookPage() {
                       </div>
                       <p className="text-gray-600 mb-4">{city.country}</p>
                       {city.events && city.events.length > 0 && (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 mb-2">
                           {city.events.length} date{city.events.length > 1 ? 's' : ''} disponible{city.events.length > 1 ? 's' : ''}
                         </p>
                       )}
+                      <p className="text-sm text-[#FF8C42] font-bold mt-4">
+                        Cliquez pour réserver →
+                      </p>
                     </SwissCard>
                   ))}
                 </div>
-              )}
-            </div>
-          ) : (
-            <>
-              {/* Step 2: Select Date */}
-              <div className="mb-12">
-                <button
-                  onClick={() => {
-                    setSelectedCityId(null);
-                    setSelectedEventId(null);
-                  }}
-                  className="text-gray-600 hover:text-black mb-6 text-sm font-bold flex items-center gap-2"
-                >
-                  ← Changer de ville
-                </button>
-                <h2 className="text-3xl font-black text-black mb-8">
-                  Étape 2 : Choisir une date
-                </h2>
-
-                {selectedCity?.events && selectedCity.events.length > 0 ? (
-                  <div className="space-y-6">
-                    {selectedCity.events.map((event) => {
-                      const maxAttendees = event.max_attendees || event.total_capacity || 0;
-                      const currentAttendees = event.current_attendees || 0;
-                      const available = maxAttendees - currentAttendees;
-                      const percentage = maxAttendees > 0
-                        ? ((available / maxAttendees) * 100)
-                        : 0;
-                      const isSelected = selectedEventId === event.id;
-                      const isLowAvailability = percentage < 20;
-
-                      return (
-                        <SwissCard
-                          key={event.id}
-                          className={`p-6 cursor-pointer transition-colors ${
-                            isSelected ? 'border-2 border-black' : 'hover:border-black'
-                          }`}
-                          onClick={() => setSelectedEventId(event.id)}
-                        >
-                          <div className="flex items-start justify-between mb-4">
-                            <div>
-                              <div className="flex items-center gap-3 mb-2">
-                                <Calendar className="w-5 h-5 text-black" aria-hidden="true" />
-                                <h3 className="text-2xl font-black text-black">
-                                  {formatDate(getEventDate(event))}
-                                </h3>
-                              </div>
-                              <div className="flex items-center gap-4 text-gray-600 mb-4">
-                                <div className="flex items-center gap-2">
-                                  <Clock className="w-4 h-4" aria-hidden="true" />
-                                  <span className="text-sm">
-                                    {formatTime(event.start_time)} - {formatTime(event.end_time)}
-                                  </span>
-                                </div>
-                                {event.venue && (
-                                  <div className="flex items-center gap-2">
-                                    <MapPin className="w-4 h-4" aria-hidden="true" />
-                                    <span className="text-sm">{event.venue.name}</span>
-                                  </div>
-                                )}
-                              </div>
-                              {event.venue?.address && (
-                                <p className="text-sm text-gray-600 mb-4">{event.venue.address}</p>
-                              )}
-                            </div>
-                            {isLowAvailability && (
-                              <span className="px-3 py-1 bg-red-600 text-white text-xs font-bold">
-                                Places limitées
-                              </span>
-                            )}
-                          </div>
-
-                          <div className="mb-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="flex items-center gap-2">
-                                <Users className="w-4 h-4 text-gray-600" aria-hidden="true" />
-                                <span className="text-sm font-bold text-black">
-                                  {available} places disponibles sur {maxAttendees}
-                                </span>
-                              </div>
-                            </div>
-                            <AvailabilityBar available={available} total={maxAttendees} />
-                          </div>
-
-                          {event.event && (
-                            <div className="mt-4 pt-4 border-t border-gray-200">
-                              <p className="text-sm text-gray-600 mb-2">{event.event.title_fr || event.event.title_en}</p>
-                              <p className="text-2xl font-black text-black">
-                                {event.price || event.regular_price} {event.currency || 'EUR'}
-                              </p>
-                            </div>
-                          )}
-                        </SwissCard>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="text-center py-20">
-                    <p className="text-gray-600">Aucun événement disponible pour cette ville.</p>
-                  </div>
-                )}
-
-                {selectedEventId && (
-                  <div className="mt-8 text-center">
-                    <button
-                      onClick={handleContinue}
-                      className="px-12 py-4 bg-black text-white font-bold text-lg hover:bg-gray-900 transition-colors"
-                    >
-                      Continuer vers le formulaire
-                    </button>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
       </Container>
     </div>
