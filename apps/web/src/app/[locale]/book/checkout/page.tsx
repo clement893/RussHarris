@@ -9,10 +9,13 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
+import SwissCard from '@/components/masterclass/SwissCard';
 import BookingForm from '@/components/masterclass/BookingForm';
 import BookingSummary, { type BookingSummaryData } from '@/components/masterclass/BookingSummary';
 import { bookingsAPI } from '@/lib/api/bookings';
 import { logger } from '@/lib/logger';
+import { microInteractions, animationVariants, combineAnimations } from '@/lib/animations/micro-interactions';
+import { Hexagon } from 'lucide-react';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -129,50 +132,100 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <Container className="py-12 md:py-16">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
+    <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900 min-h-screen">
+      {/* Hero Section */}
+      <section className="relative py-20 md:py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
+        {/* Grille hexagonale subtile en arrière-plan */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="hexPatternCheckout" x="0" y="0" width="100" height="86.6" patternUnits="userSpaceOnUse">
+                <polygon points="50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25" fill="none" stroke="white" strokeWidth="1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#hexPatternCheckout)" />
+          </svg>
+        </div>
+
+        {/* Motif de vagues subtil */}
+        <div className="absolute inset-0 opacity-5">
+          <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,400 Q300,300 600,400 T1200,400" stroke="white" strokeWidth="2" fill="none" />
+            <path d="M0,450 Q300,350 600,450 T1200,450" stroke="white" strokeWidth="2" fill="none" />
+            <path d="M0,500 Q300,400 600,500 T1200,500" stroke="white" strokeWidth="2" fill="none" />
+          </svg>
+        </div>
+
+        <Container className="relative z-10 max-w-7xl mx-auto px-4">
+          <div className="mb-16">
             <button
               onClick={() => router.push('/book')}
-              className="text-gray-600 hover:text-black mb-6 text-sm font-medium"
+              className={combineAnimations(
+                animationVariants.hero.cta,
+                "text-gray-400 hover:text-white mb-8 text-sm font-medium transition-colors"
+              )}
             >
               ← Retour à la sélection
             </button>
-            <h1 className="text-4xl md:text-5xl font-bold text-black mb-6">
+            <h1 className={combineAnimations(
+              animationVariants.hero.title,
+              "swiss-display text-6xl md:text-8xl mb-6 text-white"
+            )}>
               Finaliser la réservation
             </h1>
-            <SwissDivider />
+            <SwissDivider className="mb-8" />
+            <p className={combineAnimations(
+              animationVariants.hero.subtitle,
+              "text-xl text-gray-300 max-w-3xl"
+            )}>
+              Complétez vos informations pour réserver votre place à la masterclass ACT avec Russ Harris.
+            </p>
           </div>
+        </Container>
+      </section>
 
+      {/* Form Section */}
+      <section className="py-20 md:py-32 bg-white">
+        <Container className="max-w-7xl mx-auto px-4">
           {/* Error Display */}
           {error && (
-            <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded">
-              <p className="text-sm text-red-600">{error}</p>
+            <div className="mb-8 p-4 bg-red-50 border-2 border-red-300 rounded-lg">
+              <p className="text-sm text-red-600 font-medium">{error}</p>
             </div>
           )}
 
           {/* Form and Summary Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
             {/* Booking Form */}
             <div className="lg:col-span-2">
-              <BookingForm
-                cityEventId={1} // Default event ID for static bookings
-                onSubmit={handleSubmit}
-                isLoading={isSubmitting}
-              />
+              <SwissCard className="p-8 md:p-10">
+                {/* Hexagone décoratif */}
+                <div className="absolute -top-10 -right-10 w-32 h-32 opacity-5 hidden md:block">
+                  <Hexagon className="w-full h-full text-[#FF8C42]" />
+                </div>
+                <BookingForm
+                  cityEventId={1} // Default event ID for static bookings
+                  onSubmit={handleSubmit}
+                  isLoading={isSubmitting}
+                />
+              </SwissCard>
             </div>
 
             {/* Booking Summary */}
             <div className="lg:col-span-1">
               <div className="sticky top-8">
-                <BookingSummary data={summaryData} />
+                <SwissCard className="p-8 border-2 border-black">
+                  {/* Hexagone décoratif */}
+                  <div className="absolute -bottom-10 -left-10 w-24 h-24 opacity-5 hidden md:block">
+                    <Hexagon className="w-full h-full text-gray-900" />
+                  </div>
+                  <BookingSummary data={summaryData} />
+                </SwissCard>
               </div>
             </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </section>
     </div>
   );
 }
