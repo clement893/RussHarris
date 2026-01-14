@@ -12,7 +12,6 @@ import SwissDivider from '@/components/masterclass/SwissDivider';
 import BookingForm from '@/components/masterclass/BookingForm';
 import BookingSummary, { type BookingSummaryData } from '@/components/masterclass/BookingSummary';
 import { bookingsAPI } from '@/lib/api/bookings';
-import { masterclassAPI } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
 
 export default function CheckoutPage() {
@@ -52,19 +51,10 @@ export default function CheckoutPage() {
         return 'regular';
       };
 
-      // Get first available published city event from backend
-      // Since we use static data on frontend, we need a valid city_event_id from backend
-      const cities = await masterclassAPI.listCitiesWithEvents();
-      const allEvents = cities.flatMap(city => city.events || city.city_events || []);
-      const publishedEvent = allEvents.find(event => event.status === 'published');
-      
-      if (!publishedEvent) {
-        throw new Error('Aucun événement disponible dans le backend. Veuillez créer des événements dans le backend.');
-      }
-
       // Prepare booking data
+      // Note: Using hardcoded city_event_id = 1 (must exist in backend)
       const bookingData: any = {
-        city_event_id: publishedEvent.id,
+        city_event_id: 1,
         attendee_name: formData.attendee_name,
         attendee_email: formData.attendee_email,
         attendee_phone: formData.attendee_phone || undefined,
@@ -164,7 +154,7 @@ export default function CheckoutPage() {
           )}
 
           {/* Form and Summary Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 mt-8">
             {/* Booking Form */}
             <div className="lg:col-span-2">
               <BookingForm
