@@ -16,10 +16,6 @@ import { logger } from '@/lib/logger';
 
 export default function BookPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const preselectedCityId = searchParams.get('cityId');
-  const preselectedEventId = searchParams.get('cityEventId');
-
   const [cities, setCities] = useState<CityWithEvents[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
