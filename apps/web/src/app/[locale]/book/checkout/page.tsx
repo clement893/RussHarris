@@ -57,7 +57,6 @@ export default function CheckoutPage() {
       }
 
       const subtotal = ticketPrice * formData.quantity;
-      const total = subtotal;
 
       // Prepare booking data
       // Note: Using city_event_id = 1 as default (backend requires it)
