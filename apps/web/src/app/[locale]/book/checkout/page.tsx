@@ -44,20 +44,6 @@ export default function CheckoutPage() {
       setIsSubmitting(true);
       setError(null);
 
-      // Calculate pricing based on ticket type
-      const basePrice = Number(priceParam);
-      let ticketPrice = basePrice;
-      
-      if (formData.ticket_type === 'EARLY_BIRD') {
-        // Early bird: 450 CAD (18% discount)
-        ticketPrice = 450;
-      } else if (formData.ticket_type === 'GROUP' && formData.quantity >= 3) {
-        // Group: 400 CAD (27% discount)
-        ticketPrice = 400;
-      }
-
-      const subtotal = ticketPrice * formData.quantity;
-
       // Prepare booking data
       // Note: Using city_event_id = 1 as default (backend requires it)
       // The backend should have a generic event with id = 1
