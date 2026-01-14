@@ -7,14 +7,11 @@
 
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
 import { Calendar, MapPin } from 'lucide-react';
 import { microInteractions, animationVariants, combineAnimations } from '@/lib/animations/micro-interactions';
 import { ScrollReveal } from '@/components/examples/ScrollReveal';
 
 export default function TourneePage() {
-  const t = useTranslations('home');
-
   const cities = [
     {
       name: 'MONTRÉAL',
