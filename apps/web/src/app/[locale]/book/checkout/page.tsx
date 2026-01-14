@@ -12,6 +12,7 @@ import SwissDivider from '@/components/masterclass/SwissDivider';
 import BookingForm from '@/components/masterclass/BookingForm';
 import BookingSummary, { type BookingSummaryData } from '@/components/masterclass/BookingSummary';
 import { bookingsAPI } from '@/lib/api/bookings';
+import { masterclassAPI } from '@/lib/api/masterclass';
 import { logger } from '@/lib/logger';
 
 export default function CheckoutPage() {
@@ -51,11 +52,19 @@ export default function CheckoutPage() {
         return 'regular';
       };
 
+      // Get first available published city event from backend
+      // Since we use static data on frontend, we need a valid city_event_id from backend
+      const cities = await masterclassAPI.listCitiesWithEvents();
+      const allEvents = cities.flatMap(city => city.events || city.city_events || []);
+      const publishedEvent = allEvents.find(event => event.status === 'published');
+      
+      if (!publishedEvent) {
+        throw new Error('Aucun événement disponible dans le backend. Veuillez créer des événements dans le backend.');
+      }
+
       // Prepare booking data
-      // Note: Using city_event_id = 1 as default (backend requires it)
-      // The backend should have a generic event with id = 1
       const bookingData: any = {
-        city_event_id: 1, // Default event ID for static bookings
+        city_event_id: publishedEvent.id,
         attendee_name: formData.attendee_name,
         attendee_email: formData.attendee_email,
         attendee_phone: formData.attendee_phone || undefined,
@@ -131,17 +140,17 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Container className="py-20 md:py-32">
+      <Container className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-12">
+          <div className="mb-8">
             <button
               onClick={() => router.push('/book')}
-              className="text-gray-600 hover:text-black mb-6 text-sm font-bold"
+              className="text-gray-600 hover:text-black mb-6 text-sm font-medium"
             >
               ← Retour à la sélection
             </button>
-            <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-black">
+            <h1 className="text-4xl md:text-5xl font-bold text-black mb-6">
               Finaliser la réservation
             </h1>
             <SwissDivider />
@@ -149,13 +158,13 @@ export default function CheckoutPage() {
 
           {/* Error Display */}
           {error && (
-            <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded">
               <p className="text-sm text-red-600">{error}</p>
             </div>
           )}
 
           {/* Form and Summary Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-8">
             {/* Booking Form */}
             <div className="lg:col-span-2">
               <BookingForm
