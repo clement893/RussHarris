@@ -19,7 +19,6 @@ export default function BookPage() {
   const [cities, setCities] = useState<CityWithEvents[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isLoadingEvent, setIsLoadingEvent] = useState(false);
 
   useEffect(() => {
     loadCities();
@@ -125,32 +124,17 @@ export default function BookPage() {
     }
   };
 
-  const handleCitySelect = async (cityId: number) => {
-    try {
-      setIsLoadingEvent(true);
-      setError(null);
-      
-      // Try to get events for this city
-      const events = await masterclassAPI.listCityEvents(cityId);
-      
-      if (events.length > 0) {
-        // Use the first event (since there's only one per city)
-        const firstEvent = events[0];
+  const handleCitySelect = (city: CityWithEvents) => {
+    // Use the first event (since there's only one per city)
+    if (city.events && city.events.length > 0) {
+      const firstEvent = city.events[0];
+      if (firstEvent) {
         router.push(`/book/checkout?cityEventId=${firstEvent.id}`);
       } else {
-        // If no events found, check if city has events in the loaded data
-        const city = cities.find((c) => c.id === cityId);
-        if (city?.events && city.events.length > 0) {
-          router.push(`/book/checkout?cityEventId=${city.events[0].id}`);
-        } else {
-          setError('Aucun événement disponible pour cette ville.');
-        }
+        setError('Aucun événement disponible pour cette ville.');
       }
-    } catch (err) {
-      logger.error('Failed to load city events', err instanceof Error ? err : new Error(String(err)));
-      setError('Erreur lors du chargement de l\'événement. Veuillez réessayer.');
-    } finally {
-      setIsLoadingEvent(false);
+    } else {
+      setError('Aucun événement disponible pour cette ville.');
     }
   };
 
@@ -176,7 +160,7 @@ export default function BookPage() {
               <div className="text-center py-20">
                 <p className="text-gray-600">Chargement des villes...</p>
               </div>
-            ) : error && !isLoadingEvent ? (
+            ) : error ? (
               <div className="text-center py-20">
                 <p className="text-red-600 mb-4">{error}</p>
                 <button
@@ -198,18 +182,12 @@ export default function BookPage() {
               </div>
             ) : (
               <>
-                {isLoadingEvent && (
-                  <div className="text-center py-4 mb-6">
-                    <p className="text-gray-600">Chargement de l'événement...</p>
-                  </div>
-                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {cities.map((city) => (
                     <SwissCard
                       key={city.id}
-                      className="p-6 cursor-pointer hover:border-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      onClick={() => !isLoadingEvent && handleCitySelect(city.id)}
-                      style={{ pointerEvents: isLoadingEvent ? 'none' : 'auto' }}
+                      className="p-6 cursor-pointer hover:border-black transition-colors"
+                      onClick={() => handleCitySelect(city)}
                     >
                       <div className="flex items-center gap-3 mb-4">
                         <MapPin className="w-5 h-5 text-black" aria-hidden="true" />
