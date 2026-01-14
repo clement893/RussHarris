@@ -44,15 +44,22 @@ export default function CheckoutPage() {
       setIsSubmitting(true);
       setError(null);
 
+      // Convert ticket_type from 'REGULAR'/'EARLY_BIRD'/'GROUP' to 'regular'/'early_bird'/'group' for backend
+      const convertTicketType = (type: string): 'regular' | 'early_bird' | 'group' => {
+        if (type === 'EARLY_BIRD') return 'early_bird';
+        if (type === 'GROUP') return 'group';
+        return 'regular';
+      };
+
       // Prepare booking data
       // Note: Using city_event_id = 1 as default (backend requires it)
       // The backend should have a generic event with id = 1
-      const bookingData: BookingCreate = {
+      const bookingData: any = {
         city_event_id: 1, // Default event ID for static bookings
         attendee_name: formData.attendee_name,
         attendee_email: formData.attendee_email,
         attendee_phone: formData.attendee_phone || undefined,
-        ticket_type: formData.ticket_type,
+        ticket_type: convertTicketType(formData.ticket_type),
         quantity: formData.quantity,
         // Additional attendees for group bookings
         attendees: formData.additional_attendees || undefined,

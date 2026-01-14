@@ -30,7 +30,13 @@ interface BookingSummaryProps {
 
 export default function BookingSummary({ data, className }: BookingSummaryProps) {
   const formatDate = (dateString: string) => {
+    // If the date is already formatted (e.g., "31 mai - 1 juin 2026"), return it as is
+    // Otherwise, try to parse and format it
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      // If date is invalid, return the original string (already formatted)
+      return dateString;
+    }
     return date.toLocaleDateString('fr-FR', {
       weekday: 'long',
       day: 'numeric',
