@@ -12,6 +12,7 @@ import { ScrollReveal } from '@/components/examples/ScrollReveal';
 export default function HomePage() {
   const t = useTranslations('home');
   const [montrealEmail, setMontrealEmail] = useState('');
+  const [calgaryEmail, setCalgaryEmail] = useState('');
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
@@ -195,24 +196,38 @@ export default function HomePage() {
                   </h3>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400 mb-2">
                     <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg">15 et 16 juin 2026</span>
+                    <span className="text-sm sm:text-base md:text-lg">Date et lieu à venir</span>
                   </div>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400">
-                    <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg break-words">Résidence et centre de conférences – Centre-ville de Toronto</span>
+                    <Mail className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
+                    <span className="text-sm sm:text-base md:text-lg break-words">Entrez votre adresse courriel pour ne rien manquer.</span>
                   </div>
                 </div>
-                <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
+                <div className="flex flex-col items-stretch md:items-end gap-3 w-full md:min-w-[280px] md:max-w-sm">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
-                  <Link href="/calgary" className="w-full md:w-auto">
-                    <Button className={combineAnimations(
-                      microInteractions.button.base,
-                      microInteractions.button.hover,
-                      "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
-                    )}>
-                      {t('registerCta')}
+                  <form
+                    onSubmit={(e) => e.preventDefault()}
+                    className="flex flex-col sm:flex-row gap-2 w-full"
+                  >
+                    <input
+                      type="email"
+                      value={calgaryEmail}
+                      onChange={(e) => setCalgaryEmail(e.target.value)}
+                      placeholder={t('montrealEmailPlaceholder')}
+                      className="flex-1 min-w-0 px-4 py-2.5 text-sm md:text-base rounded-full border border-gray-600 bg-gray-800/80 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:border-transparent"
+                      aria-label={t('montrealEmailPlaceholder')}
+                    />
+                    <Button
+                      type="submit"
+                      className={combineAnimations(
+                        microInteractions.button.base,
+                        microInteractions.button.hover,
+                        "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 shrink-0"
+                      )}
+                    >
+                      {t('notifySendCta')}
                     </Button>
-                  </Link>
+                  </form>
                 </div>
               </div>
             </div>
@@ -269,11 +284,11 @@ export default function HomePage() {
                   </h3>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400 mb-2">
                     <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg">14-15 juin 2026</span>
+                    <span className="text-sm sm:text-base md:text-lg">15 et 16 juin 2026</span>
                   </div>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400">
                     <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg break-words">Metro Toronto Convention Centre</span>
+                    <span className="text-sm sm:text-base md:text-lg break-words">Résidence et centre de conférences – Centre-ville de Toronto</span>
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
