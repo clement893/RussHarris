@@ -21,10 +21,10 @@ export default function CitiesPage() {
 
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
-      {/* Hero Section */}
-      <section className="relative py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
+      {/* Hero Section - espacement réduit pour rapprocher des blocs */}
+      <section className="relative py-12 md:py-20 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
         <Container className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-0">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
               Villes & Dates
             </h1>
@@ -35,16 +35,9 @@ export default function CitiesPage() {
         </Container>
       </section>
 
-      {/* Section 4 blocs villes - même contenu qu'accueil */}
-      <section className="py-16 md:py-32 bg-gradient-to-b from-[#0F172A] to-[#1E293B]">
+      {/* Section 4 blocs villes */}
+      <section className="pt-6 pb-16 md:pt-8 md:pb-24 bg-gradient-to-b from-[#0F172A] to-[#1E293B]">
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
-          <ScrollReveal>
-            <div className="text-center mb-12 md:mb-16">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">{t('tourTitle')}</h2>
-              <p className="text-base sm:text-lg md:text-xl text-gray-400">{t('tourSubtitle')}</p>
-            </div>
-          </ScrollReveal>
-
           <div className="space-y-4 md:space-y-6">
             {/* Toronto */}
             <ScrollReveal delay={100}>
@@ -225,10 +218,10 @@ export default function CitiesPage() {
         </Container>
       </section>
 
-      {/* Section Vous avez des questions ? */}
-      <section className="py-32 bg-white">
+      {/* Section Vous avez des questions ? - hauteur réduite de moitié */}
+      <section className="py-16 bg-white">
         <Container className="max-w-7xl mx-auto">
-          <div className="text-center py-12">
+          <div className="text-center py-6">
             <p className="text-gray-600 text-lg mb-6">Vous avez des questions?</p>
             <Link href="/contact">
               <Button className="bg-[#F58220] hover:bg-[#C4681A] text-white rounded-full">
