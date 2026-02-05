@@ -37,10 +37,10 @@ export default function DemoHeader() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-24 min-h-[6rem]">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-12 h-12 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative w-24 h-24 transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/images/ips-logo.png"
                   alt="Institut de psychologie contextuelle"
