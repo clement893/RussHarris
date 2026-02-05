@@ -99,10 +99,10 @@ export default function ContactPage() {
                         <div>
                           <p className="text-sm font-bold text-gray-900 mb-1">Email</p>
                           <a 
-                            href="mailto:contact@contextpsy.fr" 
+                            href="mailto:admin@contextpsy.com" 
                             className="text-gray-600 hover:text-[#FF8C42] transition-colors"
                           >
-                            contact@contextpsy.fr
+                            admin@contextpsy.com
                           </a>
                         </div>
                       </div>
@@ -112,10 +112,10 @@ export default function ContactPage() {
                         <div>
                           <p className="text-sm font-bold text-gray-900 mb-1">Téléphone</p>
                           <a 
-                            href="tel:+33XXXXXXXXX" 
+                            href="tel:+14383754869" 
                             className="text-gray-600 hover:text-[#FF8C42] transition-colors"
                           >
-                            +33 (0)X XX XX XX XX
+                            (438) 375-4869
                           </a>
                         </div>
                       </div>
@@ -125,7 +125,7 @@ export default function ContactPage() {
                         <div>
                           <p className="text-sm font-bold text-gray-900 mb-1">Adresse</p>
                           <p className="text-gray-600">
-                            France
+                            422, rue saint François Xavier, Montreal (QC) H2Y 2S9
                           </p>
                         </div>
                       </div>
