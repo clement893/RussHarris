@@ -191,7 +191,7 @@ export default function AboutRussPage() {
             Rejoignez la Masterclass
           </h2>
           <p className="text-xl text-gray-300 mb-12">
-            Découvrez l'ACT avec Russ Harris et transformez votre pratique professionnelle.
+            Découvrez l'ACT appliquée à la neurodivergence avec Russ Harris et transformez votre pratique professionnelle.
           </p>
           <Link href="/cities">
             <Button 
