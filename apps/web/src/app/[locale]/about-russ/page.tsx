@@ -80,7 +80,7 @@ export default function AboutRussPage() {
               <p className="text-xl text-gray-700 leading-relaxed">
                 Russ Harris est un médecin, psychothérapeute et formateur internationalement reconnu 
                 dans le domaine de la Thérapie d'Acceptation et d'Engagement (ACT). 
-                Il est l'auteur de plusieurs best-sellers, dont "Le piège du bonheur" 
+                Il est l'auteur de plusieurs best-sellers, dont &quot;Le piège du bonheur&quot; 
                 (The Happiness Trap), traduit en plus de 30 langues.
               </p>
               
@@ -92,9 +92,11 @@ export default function AboutRussPage() {
               </p>
 
               <p className="text-xl text-gray-700 leading-relaxed">
-                Dans cette masterclass exclusive, Russ partagera ses connaissances approfondies, 
-                ses techniques éprouvées et ses insights uniques pour vous aider à maîtriser 
-                l'ACT et à transformer votre pratique professionnelle.
+                Dans cette masterclass exclusive, il proposera une application spécialisée de l'ACT auprès des personnes neurodivergentes (notamment TDAH, autisme et autres profils neurodéveloppementaux), dans une approche neuroaffirmative, respectueuse des différences et orientée vers des outils pratiques immédiatement transférables en clinique.
+              </p>
+
+              <p className="text-xl text-gray-700 leading-relaxed">
+                Russ partagera ses connaissances approfondies, ses techniques éprouvées et ses stratégies concrètes afin de vous aider à adapter l'ACT avec sensibilité et efficacité, et à enrichir durablement votre pratique professionnelle.
               </p>
             </div>
           </div>
