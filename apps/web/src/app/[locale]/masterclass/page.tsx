@@ -7,7 +7,7 @@
 
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
-import { Target, BookOpen, CheckCircle, Hexagon } from 'lucide-react';
+import { Target, BookOpen, CheckCircle } from 'lucide-react';
 
 export default function MasterclassPage() {
   return (
@@ -54,67 +54,6 @@ export default function MasterclassPage() {
                 Réserver ma place
               </Button>
             </Link>
-          </div>
-        </Container>
-      </section>
-
-      {/* Section Programme détaillé */}
-      <section className="py-32 bg-white">
-        <Container className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
-            {/* Jour 1 */}
-            <div className="group border border-gray-200 bg-gradient-to-br from-white to-gray-50 rounded-3xl p-8 hover:border-[#FF8C42]/50 transition-all duration-300 hover:scale-[1.02] relative overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-32 h-32 opacity-0 group-hover:opacity-5 transition-opacity">
-                <Hexagon className="w-full h-full text-[#FF8C42]" />
-              </div>
-              <div className="flex items-center gap-4 mb-6 relative z-10">
-                <div className="w-12 h-12 bg-[#FF8C42] text-white flex items-center justify-center font-bold text-xl flex-shrink-0 rounded-full">
-                  1
-                </div>
-                <h3 className="text-3xl font-bold text-gray-900">Fondements de l'ACT</h3>
-              </div>
-              <div className="space-y-6 relative z-10">
-                <div>
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Matin</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    Introduction à l'ACT : historique et philosophie • Le modèle hexaflex : les 6 processus fondamentaux • Démonstrations pratiques et exercices
-                  </p>
-                </div>
-                <div>
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Après-midi</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    L'acceptation psychologique et la défusion cognitive • Le contact avec le moment présent • Exercices pratiques et études de cas
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Jour 2 */}
-            <div className="group border border-gray-200 bg-gradient-to-br from-white to-gray-50 rounded-3xl p-8 hover:border-[#FF8C42]/50 transition-all duration-300 hover:scale-[1.02] relative overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-32 h-32 opacity-0 group-hover:opacity-5 transition-opacity">
-                <Hexagon className="w-full h-full text-[#FF8C42]" />
-              </div>
-              <div className="flex items-center gap-4 mb-6 relative z-10">
-                <div className="w-12 h-12 bg-[#FF8C42] text-white flex items-center justify-center font-bold text-xl flex-shrink-0 rounded-full">
-                  2
-                </div>
-                <h3 className="text-3xl font-bold text-gray-900">Applications Avancées</h3>
-              </div>
-              <div className="space-y-6 relative z-10">
-                <div>
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Matin</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    Le soi comme contexte et les valeurs • L'engagement dans l'action • Intégration des processus ACT dans la pratique
-                  </p>
-                </div>
-                <div>
-                  <h4 className="text-lg font-bold text-gray-900 mb-2">Après-midi</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    Applications spécifiques : anxiété, dépression, douleur chronique • Défis courants et pièges à éviter • Questions-réponses et cas cliniques
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </Container>
       </section>
