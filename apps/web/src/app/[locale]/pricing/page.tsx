@@ -66,7 +66,7 @@ export default function PricingPage() {
         { text: 'Réduction de groupe appliquée' },
       ],
       ctaText: 'Contacter pour groupe',
-      onCtaClick: () => window.location.href = 'mailto:contact@contextpsy.fr',
+      onCtaClick: () => window.location.href = 'mailto:admin@contextpsy.com',
     },
   ];
 
@@ -142,7 +142,7 @@ export default function PricingPage() {
               Des questions ? Contactez-nous pour plus d'informations.
             </p>
             <a
-              href="mailto:contact@contextpsy.fr"
+              href="mailto:admin@contextpsy.com"
               className="inline-block px-12 py-4 bg-black text-white font-bold text-lg hover:bg-gray-900 transition-colors"
             >
               Nous contacter

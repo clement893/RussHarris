@@ -83,7 +83,7 @@ export default function CookiesPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">5. Contact</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Pour toute question relative aux cookies, vous pouvez nous contacter à : contact@contextpsy.fr
+                  Pour toute question relative aux cookies, vous pouvez nous contacter à : admin@contextpsy.com
                 </p>
               </section>
             </div>

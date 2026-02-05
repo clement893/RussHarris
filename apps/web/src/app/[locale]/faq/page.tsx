@@ -46,7 +46,7 @@ const faqItems: FAQItem[] = [
     id: 5,
     category: 'Réservation',
     question: 'Y a-t-il un tarif réduit pour les groupes ?',
-    answer: 'Oui, nous offrons un tarif groupe pour les réservations de 3 personnes ou plus. Contactez-nous à contact@contextpsy.fr pour obtenir un devis personnalisé et organiser votre réservation de groupe.',
+    answer: 'Oui, nous offrons un tarif groupe pour les réservations de 3 personnes ou plus. Contactez-nous à admin@contextpsy.com pour obtenir un devis personnalisé et organiser votre réservation de groupe.',
   },
   {
     id: 6,
@@ -220,7 +220,7 @@ export default function FAQPage() {
               Vous avez d'autres questions ? N'hésitez pas à nous contacter.
             </p>
             <a
-              href="mailto:contact@contextpsy.fr"
+              href="mailto:admin@contextpsy.com"
               className="inline-block px-12 py-4 bg-black text-white font-bold text-lg hover:bg-gray-900 transition-colors"
             >
               Nous contacter

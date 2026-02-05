@@ -63,7 +63,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">5. Annulation et remboursement</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Les participants peuvent annuler leur réservation jusqu'à 14 jours avant l'événement pour un remboursement complet. Les annulations après cette date peuvent être soumises à des frais d'annulation. Pour toute demande d'annulation, contactez-nous à contact@contextpsy.fr.
+                  Les participants peuvent annuler leur réservation jusqu'à 14 jours avant l'événement pour un remboursement complet. Les annulations après cette date peuvent être soumises à des frais d'annulation. Pour toute demande d'annulation, contactez-nous à admin@contextpsy.com.
                 </p>
               </section>
 

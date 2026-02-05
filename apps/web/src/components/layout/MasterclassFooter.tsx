@@ -71,17 +71,17 @@ export default function MasterclassFooter() {
               <div className="space-y-3 text-sm text-white/80">
                 <div className="flex items-start gap-3">
                   <Mail className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#F58220]" aria-hidden="true" />
-                  <a href="mailto:contact@contextpsy.fr" className="hover:text-[#F58220] transition-colors">
-                    contact@contextpsy.fr
+                  <a href="mailto:admin@contextpsy.com" className="hover:text-[#F58220] transition-colors">
+                    admin@contextpsy.com
                   </a>
                 </div>
                 <div className="flex items-start gap-3">
                   <Phone className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#F58220]" aria-hidden="true" />
-                  <span>+33 (0)X XX XX XX XX</span>
+                  <span>(438) 375-4869</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#F58220]" aria-hidden="true" />
-                  <span>Canada</span>
+                  <span>422, rue saint François Xavier, Montreal (QC) H2Y 2S9</span>
                 </div>
               </div>
             </div>

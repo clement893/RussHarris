@@ -30,9 +30,9 @@ export default function LegalPage() {
                   Le présent site est édité par ContextPsy, société spécialisée dans l'organisation de formations professionnelles en psychothérapie.
                 </p>
                 <p className="text-gray-700 leading-relaxed mt-4">
-                  <strong>Adresse :</strong> France<br />
-                  <strong>Email :</strong> contact@contextpsy.fr<br />
-                  <strong>Téléphone :</strong> +33 (0)X XX XX XX XX
+                  <strong>Adresse :</strong> 422, rue saint François Xavier, Montreal (QC) H2Y 2S9<br />
+                  <strong>Email :</strong> admin@contextpsy.com<br />
+                  <strong>Téléphone :</strong> (438) 375-4869
                 </p>
               </section>
 

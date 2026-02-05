@@ -63,7 +63,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">5. Vos droits</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Conformément au RGPD, vous disposez des droits suivants : droit d'accès, droit de rectification, droit à l'effacement, droit à la portabilité, droit d'opposition. Pour exercer ces droits, contactez-nous à contact@contextpsy.fr.
+                  Conformément au RGPD, vous disposez des droits suivants : droit d'accès, droit de rectification, droit à l'effacement, droit à la portabilité, droit d'opposition. Pour exercer ces droits, contactez-nous à admin@contextpsy.com.
                 </p>
               </section>
 
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">7. Contact</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Pour toute question relative à la protection de vos données personnelles, vous pouvez nous contacter à : contact@contextpsy.fr
+                  Pour toute question relative à la protection de vos données personnelles, vous pouvez nous contacter à : admin@contextpsy.com
                 </p>
               </section>
             </div>

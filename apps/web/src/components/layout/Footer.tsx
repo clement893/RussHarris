@@ -32,8 +32,8 @@ export default function Footer() {
               Masterclass ACT avec Russ Harris. Formation professionnelle en Thérapie d'Acceptation et d'Engagement.
             </p>
             <div className="text-sm text-muted-foreground mb-4">
-              <p>Email: contact@contextpsy.fr</p>
-              <p>Téléphone: +33 (0)X XX XX XX XX</p>
+              <p>Email: admin@contextpsy.com</p>
+              <p>Téléphone: (438) 375-4869</p>
             </div>
             
             {/* Social Media Links */}
@@ -146,11 +146,11 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4 text-base">Contact</h4>
             <ul className="space-y-3 text-sm" role="list">
               <li className="text-muted-foreground">
-                <a href="mailto:contact@contextpsy.fr" className="hover:text-primary-400 transition-colors">
-                  contact@contextpsy.fr
+                <a href="mailto:admin@contextpsy.com" className="hover:text-primary-400 transition-colors">
+                  admin@contextpsy.com
                 </a>
               </li>
-              <li className="text-muted-foreground">+33 (0)X XX XX XX XX</li>
+              <li className="text-muted-foreground">(438) 375-4869</li>
               <li className="text-muted-foreground">France</li>
             </ul>
           </div>
