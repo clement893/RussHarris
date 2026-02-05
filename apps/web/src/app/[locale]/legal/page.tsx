@@ -27,7 +27,7 @@ export default function LegalPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">1. Éditeur du site</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Le présent site est édité par ContextPsy, société spécialisée dans l'organisation de formations professionnelles en psychothérapie.
+                  Le présent site est édité par l'Institut de Psychologie Contextuelle, société spécialisée dans l'organisation de formations professionnelles en psychothérapie.
                 </p>
                 <p className="text-gray-700 leading-relaxed mt-4">
                   <strong>Adresse :</strong> 422, rue saint François Xavier, Montreal (QC) H2Y 2S9<br />
@@ -41,7 +41,7 @@ export default function LegalPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">2. Directeur de la publication</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Le directeur de la publication est le représentant légal de ContextPsy.
+                  Le directeur de la publication est le représentant légal de l'Institut de Psychologie Contextuelle.
                 </p>
               </section>
 
@@ -60,7 +60,7 @@ export default function LegalPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">4. Propriété intellectuelle</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  L'ensemble du contenu du présent site (textes, images, logos, icônes, etc.) est la propriété exclusive de ContextPsy, sauf mention contraire. Toute reproduction, représentation, modification, publication ou adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans autorisation écrite préalable de ContextPsy.
+                  L'ensemble du contenu du présent site (textes, images, logos, icônes, etc.) est la propriété exclusive de l'Institut de Psychologie Contextuelle, sauf mention contraire. Toute reproduction, représentation, modification, publication ou adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans autorisation écrite préalable de l'Institut de Psychologie Contextuelle.
                 </p>
               </section>
 
@@ -87,7 +87,7 @@ export default function LegalPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">7. Liens externes</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Le site peut contenir des liens vers d'autres sites. ContextPsy n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu.
+                  Le site peut contenir des liens vers d'autres sites. L'Institut de Psychologie Contextuelle n'exerce aucun contrôle sur ces sites et décline toute responsabilité quant à leur contenu.
                 </p>
               </section>
 

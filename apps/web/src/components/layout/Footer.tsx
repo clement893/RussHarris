@@ -26,7 +26,7 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <h3 className="text-white font-bold text-xl mb-4">
-              ContextPsy
+              L'Institut de Psychologie Contextuelle
             </h3>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-md">
               Masterclass ACT avec Russ Harris. Formation professionnelle en Thérapie d'Acceptation et d'Engagement.

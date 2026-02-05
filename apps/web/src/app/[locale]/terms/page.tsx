@@ -27,7 +27,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">1. Objet</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Les présentes Conditions Générales de Vente (CGV) régissent les relations entre ContextPsy et les participants à la masterclass ACT avec Russ Harris.
+                  Les présentes Conditions Générales de Vente (CGV) régissent les relations entre l'Institut de Psychologie Contextuelle et les participants à la masterclass ACT avec Russ Harris.
                 </p>
               </section>
 

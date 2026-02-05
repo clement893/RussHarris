@@ -27,7 +27,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">1. Collecte des données</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  ContextPsy collecte les données personnelles suivantes lors de la réservation : nom, prénom, email, téléphone, adresse. Ces données sont nécessaires pour la gestion de votre réservation et la communication relative à la masterclass.
+                  L'Institut de Psychologie Contextuelle collecte les données personnelles suivantes lors de la réservation : nom, prénom, email, téléphone, adresse. Ces données sont nécessaires pour la gestion de votre réservation et la communication relative à la masterclass.
                 </p>
               </section>
 
@@ -54,7 +54,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">4. Partage des données</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  ContextPsy ne partage pas vos données personnelles avec des tiers, sauf si cela est nécessaire pour l'exécution de la prestation (hébergeur, prestataire de paiement) ou si la loi l'exige.
+                  L'Institut de Psychologie Contextuelle ne partage pas vos données personnelles avec des tiers, sauf si cela est nécessaire pour l'exécution de la prestation (hébergeur, prestataire de paiement) ou si la loi l'exige.
                 </p>
               </section>
 
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">6. Sécurité</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  ContextPsy met en œuvre toutes les mesures techniques et organisationnelles nécessaires pour protéger vos données personnelles contre tout accès non autorisé, perte ou destruction.
+                  L'Institut de Psychologie Contextuelle met en œuvre toutes les mesures techniques et organisationnelles nécessaires pour protéger vos données personnelles contre tout accès non autorisé, perte ou destruction.
                 </p>
               </section>
 
