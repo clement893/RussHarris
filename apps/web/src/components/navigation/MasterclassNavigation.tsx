@@ -150,7 +150,7 @@ export default function MasterclassNavigation({
         data-on-white-background={isOnWhiteBackground}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-32 min-h-[8rem]">
+          <div className="flex items-center justify-between h-20">
             {/* Logo - IPS Logo only (simplified) */}
             <Link href="/" className="flex items-center group relative">
               <div className="relative w-32 h-32 transition-transform duration-200 group-hover:scale-105">
