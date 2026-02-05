@@ -75,17 +75,19 @@ export default function HomePage() {
                 <span className="block text-xs not-italic text-gray-500 mt-2">{t('quoteAuthor')}</span>
               </div>
 
-              <Button 
-                size="lg" 
-                className={combineAnimations(
-                  animationVariants.hero.cta,
-                  microInteractions.button.glow,
-                  microInteractions.button.hover,
-                  "bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm px-6 md:px-8 py-3 rounded-full border border-[#FF8C42]/20 w-full sm:w-auto"
-                )}
-              >
-                {t('discoverDates')}
-              </Button>
+              <Link href="/cities">
+                <Button 
+                  size="lg" 
+                  className={combineAnimations(
+                    animationVariants.hero.cta,
+                    microInteractions.button.glow,
+                    microInteractions.button.hover,
+                    "bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm px-6 md:px-8 py-3 rounded-full border border-[#FF8C42]/20 w-full sm:w-auto"
+                  )}
+                >
+                  {t('discoverDates')}
+                </Button>
+              </Link>
             </div>
 
             {/* Colonne droite - Photo avec forme hexagonale subtile */}
