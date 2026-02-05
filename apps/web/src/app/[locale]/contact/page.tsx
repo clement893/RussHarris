@@ -243,10 +243,10 @@ export default function ContactPage() {
                             Envoi en cours...
                           </>
                         ) : (
-                          <>
-                            <Send className="w-5 h-5 mr-2" aria-hidden="true" />
-                            Envoyer le message
-                          </>
+                          <span className="inline-flex items-center justify-center gap-2">
+                            <Send className="w-5 h-5 shrink-0" aria-hidden="true" />
+                            <span className="leading-none">Envoyer le message</span>
+                          </span>
                         )}
                       </Button>
                     </form>
