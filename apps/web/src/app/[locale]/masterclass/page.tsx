@@ -49,7 +49,7 @@ export default function MasterclassPage() {
             <Link href="/cities">
               <Button 
                 size="lg" 
-                className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm px-8 py-3 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20"
+                className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-base px-10 py-4 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20"
               >
                 Réserver ma place
               </Button>
