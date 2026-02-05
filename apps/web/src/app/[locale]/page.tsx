@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
@@ -10,6 +11,7 @@ import { ScrollReveal } from '@/components/examples/ScrollReveal';
 
 export default function HomePage() {
   const t = useTranslations('home');
+  const [montrealEmail, setMontrealEmail] = useState('');
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
@@ -149,17 +151,31 @@ export default function HomePage() {
                     <span className="text-sm sm:text-base md:text-lg break-words">Entrez votre adresse courriel pour ne rien manquer.</span>
                   </div>
                 </div>
-                <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
+                <div className="flex flex-col items-stretch md:items-end gap-3 w-full md:min-w-[280px] md:max-w-sm">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
-                  <Link href="/montreal" className="w-full md:w-auto">
-                    <Button className={combineAnimations(
-                      microInteractions.button.base,
-                      microInteractions.button.hover,
-                      "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
-                    )}>
-                      {t('registerMontreal')}
+                  <form
+                    onSubmit={(e) => e.preventDefault()}
+                    className="flex flex-col sm:flex-row gap-2 w-full"
+                  >
+                    <input
+                      type="email"
+                      value={montrealEmail}
+                      onChange={(e) => setMontrealEmail(e.target.value)}
+                      placeholder={t('montrealEmailPlaceholder')}
+                      className="flex-1 min-w-0 px-4 py-2.5 text-sm md:text-base rounded-full border border-gray-600 bg-gray-800/80 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:border-transparent"
+                      aria-label={t('montrealEmailPlaceholder')}
+                    />
+                    <Button
+                      type="submit"
+                      className={combineAnimations(
+                        microInteractions.button.base,
+                        microInteractions.button.hover,
+                        "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 shrink-0"
+                      )}
+                    >
+                      {t('montrealNotifyCta')}
                     </Button>
-                  </Link>
+                  </form>
                 </div>
               </div>
             </div>

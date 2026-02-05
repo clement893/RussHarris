@@ -51,6 +51,8 @@
     "tourSubtitle": "4 cities • 800 places • May-June 2026",
     "places": "places",
     "registerMontreal": "Register Montreal",
+    "montrealEmailPlaceholder": "Your email address",
+    "montrealNotifyCta": "Subscribe",
     "registerCalgary": "Register Calgary",
     "registerVancouver": "Register Vancouver",
     "registerToronto": "Register Toronto",
