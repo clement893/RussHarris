@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
-import { Calendar, MapPin, Circle, Hexagon, Heart, Stethoscope, Users, Brain } from 'lucide-react';
+import { Calendar, MapPin, Mail, Circle, Hexagon, Heart, Stethoscope, Users, Brain } from 'lucide-react';
 import { microInteractions, animationVariants, combineAnimations } from '@/lib/animations/micro-interactions';
 import { ScrollReveal } from '@/components/examples/ScrollReveal';
 
@@ -142,11 +142,11 @@ export default function HomePage() {
                   </h3>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400 mb-2">
                     <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg">24-25 mai 2026</span>
+                    <span className="text-sm sm:text-base md:text-lg">Date et lieu à venir</span>
                   </div>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400">
-                    <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg break-words">Palais des Congrès</span>
+                    <Mail className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
+                    <span className="text-sm sm:text-base md:text-lg break-words">Entrez votre adresse courriel pour ne rien manquer.</span>
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
