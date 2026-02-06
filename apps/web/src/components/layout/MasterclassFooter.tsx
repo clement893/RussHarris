@@ -90,7 +90,7 @@ export default function MasterclassFooter() {
             {/* Masterclass Links */}
             <div>
               <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wider border-b border-[#F58220]/30 pb-2">
-                Classe de maître
+                {t('masterclassSectionTitle')}
               </h4>
               <ul className="space-y-3" role="list">
                 {footerLinks.masterclass.map((link) => (
@@ -166,7 +166,7 @@ export default function MasterclassFooter() {
           <div className="border-t border-[#2B5F7A]/40 pt-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <p className="text-sm text-white/70">
-                © {currentYear} Institut de Psychologie Contextuelle - Classe de maître ACT avec Dr. Russ Harris. Tous droits réservés.
+                {t('copyright', { year: currentYear })}
               </p>
               <div className="flex items-center gap-6 text-sm text-white/70">
                 <Link href="/legal" className="hover:text-[#F58220] transition-colors">

@@ -34,7 +34,7 @@
   },
   "navigation": {
     "program": "Programme",
-    "cities": "Villes & Dates",
+    "cities": "Villes & dates",
     "about": "À propos",
     "contact": "Contact",
     "bookNow": "Réserver ma place",
@@ -63,7 +63,7 @@
     "vancouverDate": "29 et 30 juin 2026",
     "dateComingSoon": "Date et lieu à venir",
     "emailNotifyText": "Entrez votre adresse courriel pour ne rien manquer.",
-    "citiesPageTitle": "Villes & Dates",
+    "citiesPageTitle": "Villes & dates",
     "citiesPageSubtitle": "Choisissez la ville et la date qui vous conviennent pour participer à la classe de maître ACT avec Russ Harris.",
     "aboutTitle": "L'homme derrière l'ACT",
     "aboutDescription1": "Dr. Russ Harris est médecin, psychothérapeute et l'un des formateurs ACT les plus respectés au monde. Auteur du best-seller international \"The Happiness Trap\", traduit en plus de 30 langues, il a formé plus de 90 000 professionnels de la santé mentale à travers le monde.",
@@ -183,12 +183,14 @@
   "footer": {
     "program": "Le Programme",
     "aboutRuss": "À propos de Russ Harris",
-    "cities": "Villes & Dates",
+    "cities": "Villes & dates",
     "pricing": "Tarifs",
     "testimonials": "Témoignages",
     "faq": "FAQ",
     "contact": "Contact",
-    "legal": "Mentions légales"
+    "legal": "Mentions légales",
+    "masterclassSectionTitle": "Classe de maître",
+    "copyright": "© {year} Institut de Psychologie Contextuelle - Classe de maître ACT avec Dr. Russ Harris. Tous droits réservés."
   },
   "subscriptions": {
     "title": "Mes Abonnements",

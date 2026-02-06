@@ -188,7 +188,9 @@
     "testimonials": "Testimonials",
     "faq": "FAQ",
     "contact": "Contact",
-    "legal": "Legal notice"
+    "legal": "Legal notice",
+    "masterclassSectionTitle": "MASTERCLASS",
+    "copyright": "© {year} Institut de Psychologie Contextuelle - MASTERCLASS ACT with Dr. Russ Harris. All rights reserved."
   },
   "faq": {
     "title": "Frequently Asked Questions",
