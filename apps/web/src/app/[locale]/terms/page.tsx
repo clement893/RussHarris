@@ -108,7 +108,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">10. Droit applicable</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Les présentes CGV sont régies par le droit français. Tout litige sera soumis aux tribunaux compétents.
+                  Les présentes CGV sont régies par le droit québécois. Tout litige sera soumis aux tribunaux compétents.
                 </p>
               </section>
             </div>
