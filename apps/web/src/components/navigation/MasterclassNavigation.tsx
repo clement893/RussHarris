@@ -151,12 +151,19 @@ export default function MasterclassNavigation({
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* Logo - IPS Logo only (simplified) */}
+            {/* Logo - white on blue/dark header, original colors on white header */}
             <Link href="/" className="flex items-center group relative">
-              <div className="relative w-32 h-32 transition-transform duration-200 group-hover:scale-105">
+              <div
+                className={clsx(
+                  'relative w-32 h-32 transition-all duration-300 group-hover:scale-105',
+                  isOnWhiteBackground && shouldShowBackground
+                    ? '' // original colors on white header
+                    : 'brightness-0 invert' // white logo on transparent or dark header
+                )}
+              >
                 <Image
                   src="/images/ips-logo.png"
-                  alt="Institut de psychologie contextuelle"
+                  alt="Institut de Psychologie Contextuelle"
                   fill
                   className="object-contain"
                 />
