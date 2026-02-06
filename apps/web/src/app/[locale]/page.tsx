@@ -693,17 +693,19 @@ export default function HomePage() {
           <p className="text-sm sm:text-base md:text-lg text-gray-400 mb-8 md:mb-12">
             {t('ctaDescription')}
           </p>
-          <Button 
-            size="lg" 
-            className={combineAnimations(
-              microInteractions.button.base,
-              microInteractions.button.glow,
-              microInteractions.button.hover,
-              "bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm md:text-base px-6 md:px-10 py-3 md:py-4 rounded-full border border-[#FF8C42]/20 w-full sm:w-auto"
-            )}
-          >
-            {t('ctaButton')}
-          </Button>
+          <Link href="/cities">
+            <Button 
+              size="lg" 
+              className={combineAnimations(
+                microInteractions.button.base,
+                microInteractions.button.glow,
+                microInteractions.button.hover,
+                "bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-sm md:text-base px-6 md:px-10 py-3 md:py-4 rounded-full border border-[#FF8C42]/20 w-full sm:w-auto"
+              )}
+            >
+              {t('ctaButton')}
+            </Button>
+          </Link>
         </Container>
       </section>
 
