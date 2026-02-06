@@ -153,7 +153,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
-                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
+                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">220 {t('places')}</span>
                   <Link href="/toronto" className="w-full md:w-auto">
                     <Button className={combineAnimations(
                       microInteractions.button.base,
@@ -227,7 +227,6 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex flex-col items-stretch md:items-end gap-3 w-full md:min-w-[280px] md:max-w-sm">
-                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <form
                     onSubmit={(e) => e.preventDefault()}
                     className="flex flex-col sm:flex-row gap-2 w-full"
@@ -278,7 +277,6 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex flex-col items-stretch md:items-end gap-3 w-full md:min-w-[280px] md:max-w-sm">
-                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <form
                     onSubmit={(e) => e.preventDefault()}
                     className="flex flex-col sm:flex-row gap-2 w-full"
