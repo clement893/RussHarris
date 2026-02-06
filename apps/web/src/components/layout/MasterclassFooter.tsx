@@ -8,11 +8,13 @@
 
 import { useState } from 'react';
 import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 import { Mail, Phone, MapPin, ArrowRight, Lock } from 'lucide-react';
 import { clsx } from 'clsx';
 import Image from 'next/image';
 
 export default function MasterclassFooter() {
+  const t = useTranslations('footer');
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -29,15 +31,15 @@ export default function MasterclassFooter() {
 
   const footerLinks = {
     masterclass: [
-      { href: '/masterclass', label: 'Le Programme' },
-      { href: '/about-russ', label: 'À propos de Russ' },
-      { href: '/cities', label: 'Villes & Dates' },
+      { href: '/masterclass', labelKey: 'program' },
+      { href: '/about-russ', labelKey: 'aboutRuss' },
+      { href: '/cities', labelKey: 'cities' },
     ],
     resources: [
-      { href: '/testimonials', label: 'Témoignages' },
-      { href: '/faq', label: 'FAQ' },
-      { href: '/contact', label: 'Contact' },
-      { href: '/legal', label: 'Mentions légales' },
+      { href: '/testimonials', labelKey: 'testimonials' },
+      { href: '/faq', labelKey: 'faq' },
+      { href: '/contact', labelKey: 'contact' },
+      { href: '/legal', labelKey: 'legal' },
     ],
   };
 
@@ -97,7 +99,7 @@ export default function MasterclassFooter() {
                       href={link.href}
                       className="text-sm text-white/80 hover:text-[#F58220] transition-colors flex items-center gap-2 group"
                     >
-                      <span>{link.label}</span>
+                      <span>{t(link.labelKey)}</span>
                       <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:text-[#F58220] transition-all" aria-hidden="true" />
                     </Link>
                   </li>
@@ -117,7 +119,7 @@ export default function MasterclassFooter() {
                       href={link.href}
                       className="text-sm text-white/80 hover:text-[#F58220] transition-colors flex items-center gap-2 group"
                     >
-                      <span>{link.label}</span>
+                      <span>{t(link.labelKey)}</span>
                       <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:text-[#F58220] transition-all" aria-hidden="true" />
                     </Link>
                   </li>

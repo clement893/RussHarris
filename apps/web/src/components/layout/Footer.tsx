@@ -120,7 +120,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/about-russ" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  À propos de Russ
+                  À propos de Russ Harris
                 </Link>
               </li>
               <li>
