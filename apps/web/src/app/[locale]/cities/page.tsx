@@ -228,10 +228,10 @@ export default function CitiesPage() {
       <section className="py-16 bg-white" data-header-contrast="light">
         <Container className="max-w-7xl mx-auto">
           <div className="text-center py-6">
-            <p className="text-gray-600 text-lg mb-6">Vous avez des questions?</p>
+            <p className="text-gray-600 text-lg mb-6">{t('questionsCta')}</p>
             <Link href="/contact">
               <Button className="bg-[#F58220] hover:bg-[#C4681A] text-white rounded-full">
-                Nous contacter
+                {t('contactUs')}
               </Button>
             </Link>
           </div>
