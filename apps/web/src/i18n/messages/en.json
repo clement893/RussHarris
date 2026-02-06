@@ -467,18 +467,19 @@
     "masterclassNavLabel": "Masterclass",
     "masterclassTitle": "Masterclass",
     "program": "Program",
-    "citiesDates": "Cities & Dates",
+    "citiesDates": "Cities & dates",
     "aboutRuss": "About Russ Harris",
     "pricing": "Pricing",
     "testimonials": "Testimonials",
     "faq": "FAQ",
-    "contactTitle": "Contact",
+    "contactTitle": "Contact Us",
     "country": "Canada",
     "reportBug": "Report a bug",
     "dashboard": "Dashboard",
     "copyright": "© {year} The Institute of Contextual Psychology. All rights reserved.",
     "sitemap": "Sitemap",
     "privacy": "Privacy",
-    "terms": "Terms"
+    "terms": "Terms",
+    "legal": "Legal mentions"
   }
 }

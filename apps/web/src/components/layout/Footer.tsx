@@ -193,6 +193,9 @@ export default function Footer() {
               <Link href="/privacy" className="hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded">
                 {t('privacy')}
               </Link>
+              <Link href="/legal" className="hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded">
+                {t('legal')}
+              </Link>
               <Link href="/terms" className="hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded">
                 {t('terms')}
               </Link>
