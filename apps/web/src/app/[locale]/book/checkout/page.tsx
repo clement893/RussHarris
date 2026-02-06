@@ -134,7 +134,7 @@ export default function CheckoutPage() {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900 min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
+      <section className="relative pt-24 pb-20 md:py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
         {/* Grille hexagonale subtile en arrière-plan */}
         <div className="absolute inset-0 opacity-[0.03]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">

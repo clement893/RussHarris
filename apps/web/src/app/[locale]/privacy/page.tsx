@@ -11,7 +11,7 @@ import SwissCard from '@/components/masterclass/SwissCard';
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" data-header-contrast="light">
       <Container className="py-20 md:py-32">
         <div className="max-w-4xl mx-auto">
           {/* Header */}

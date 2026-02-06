@@ -53,7 +53,7 @@ export default function MontrealPage() {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900 min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
+      <section className="relative pt-24 pb-32 md:py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
         <Container className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">

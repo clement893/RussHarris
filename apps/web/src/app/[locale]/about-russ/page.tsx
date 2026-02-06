@@ -16,7 +16,7 @@ export default function AboutRussPage() {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
-      <section className="relative min-h-[80vh] flex items-center overflow-hidden pt-20 pb-14 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]" data-header-contrast="dark">
+      <section className="relative min-h-[80vh] flex items-center overflow-hidden pt-24 pb-14 md:pt-20 md:pb-14 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]" data-header-contrast="dark">
         {/* Grille hexagonale subtile en arrière-plan */}
         <div className="absolute inset-0 opacity-[0.03]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
