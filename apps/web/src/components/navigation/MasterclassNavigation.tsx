@@ -101,7 +101,7 @@ export default function MasterclassNavigation({
         className={clsx(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
           isMobile
-            ? 'bg-[#1F2937]/98 backdrop-blur-xl border-b border-[#374151]/60 shadow-2xl shadow-[#1F2937]/20'
+            ? 'bg-[#1F2937] border-b border-[#374151]/60 shadow-lg'
             : shouldShowBackground
               ? headerReadableOnLight
                 ? 'bg-white/98 backdrop-blur-xl border-b border-gray-200 shadow-lg'
