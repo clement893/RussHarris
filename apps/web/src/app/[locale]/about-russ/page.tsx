@@ -188,7 +188,7 @@ export default function AboutRussPage() {
 
         <Container className="max-w-5xl mx-auto text-center relative z-10">
           <h2 className="text-5xl md:text-7xl font-bold mb-8">
-            Rejoignez la Classe de maître
+            Rejoignez la classe de maître
           </h2>
           <p className="text-xl text-gray-300 mb-12">
             Découvrez l'ACT appliquée à la neurodivergence avec Russ Harris et transformez votre pratique professionnelle.
