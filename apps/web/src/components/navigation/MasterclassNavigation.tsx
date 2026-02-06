@@ -149,19 +149,12 @@ export default function MasterclassNavigation({
                   {t('navigation.reserve')}
                 </Link>
               )}
-              <div className={clsx(
-                'transition-opacity',
-                headerReadableOnLight ? 'opacity-80 hover:opacity-100' : 'opacity-60 hover:opacity-100'
-              )}>
-                <LanguageSwitcher isOnWhiteBackground={headerReadableOnLight} />
-              </div>
+              <LanguageSwitcher isOnWhiteBackground={headerReadableOnLight} />
             </div>
 
             {/* Mobile Menu Button */}
               <div className="lg:hidden flex items-center gap-3">
-              <div className="opacity-60 hover:opacity-100 transition-opacity">
-                <LanguageSwitcher isOnWhiteBackground={effectiveReadableOnLight} />
-              </div>
+              <LanguageSwitcher isOnWhiteBackground={effectiveReadableOnLight} />
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

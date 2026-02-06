@@ -17,13 +17,27 @@ import { useLocale, useTranslations } from 'next-intl';
 import { locales, localeNames, localeNativeNames, isRTL, type Locale } from '@/i18n/routing';
 import { useState } from 'react';
 import { Globe, Check } from '@/lib/icons';
-import Button from '@/components/ui/Button';
 import { clsx } from 'clsx';
 
 interface LanguageSwitcherProps {
   /** When true, focus ring offset for light background (optional, for a11y) */
   isOnWhiteBackground?: boolean;
 }
+
+/** Same visual style as the header CTA "Je m'inscris" for consistency */
+const ctaButtonClasses = (
+  isOnWhiteBackground: boolean,
+  extra?: string
+) =>
+  clsx(
+    'inline-flex items-center gap-2 px-5 py-2 text-sm font-medium rounded-full',
+    'transition-colors duration-200',
+    'text-white bg-[#FF8C42] hover:bg-[#FF7A29]',
+    isOnWhiteBackground
+      ? 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-white'
+      : 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]',
+    extra
+  );
 
 export default function LanguageSwitcher({ isOnWhiteBackground = false }: LanguageSwitcherProps) {
   const locale = useLocale() as Locale;
@@ -46,20 +60,16 @@ export default function LanguageSwitcher({ isOnWhiteBackground = false }: Langua
 
   return (
     <div className="relative">
-      <Button
-        variant="secondary"
+      <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={clsx(
-          'flex items-center gap-2 text-white bg-[#FF8C42] hover:bg-[#FF7A29] border border-[#FF8C42]/20',
-          'focus:outline-none focus:ring-2 focus:ring-[#FF8C42]',
-          isOnWhiteBackground ? 'focus:ring-offset-2 focus:ring-offset-white' : 'focus:ring-offset-2 focus:ring-offset-[#1F2937]'
-        )}
+        className={ctaButtonClasses(isOnWhiteBackground)}
         aria-label={t('switchLanguage')}
       >
         <Globe className="w-4 h-4" />
         <span className="hidden sm:inline">{localeNames[locale]}</span>
         <span className="sm:hidden">{locale.toUpperCase()}</span>
-      </Button>
+      </button>
 
       {isOpen && (
         <>
