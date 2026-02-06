@@ -180,7 +180,7 @@ export default function MasterclassFooter() {
                 </Link>
                 <Link 
                   href="/auth/login" 
-                  className="hover:text-[#F58220] transition-colors flex items-center gap-1.5 opacity-70 hover:opacity-100"
+                  className="hidden hover:text-[#F58220] transition-colors flex items-center gap-1.5 opacity-70 hover:opacity-100"
                   title="Accès administrateur"
                 >
                   <Lock className="w-3.5 h-3.5" aria-hidden="true" />
