@@ -28,14 +28,14 @@ export default function LanguageSwitcher() {
   const handleLocaleChange = (newLocale: Locale) => {
     setIsOpen(false);
 
-    // Use next-intl's navigation helper
+    // App uses [locale] segment: URLs are always /en/... or /fr/...
     const { pathname: currentPath } = window.location;
     const pathWithoutLocale = currentPath.replace(/^\/(en|fr)/, '') || '/';
+    const segment = pathWithoutLocale === '/' ? '' : pathWithoutLocale;
 
-    // Build new path with locale
-    const newPath = newLocale === 'en' ? pathWithoutLocale : `/${newLocale}${pathWithoutLocale}`;
+    // Always use locale prefix so navigation goes to /en/... or /fr/...
+    const newPath = `/${newLocale}${segment}`;
 
-    // Navigate to new locale
     window.location.href = newPath;
   };
 
