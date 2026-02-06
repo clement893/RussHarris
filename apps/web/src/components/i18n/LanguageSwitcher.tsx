@@ -21,7 +21,7 @@ import Button from '@/components/ui/Button';
 import { clsx } from 'clsx';
 
 interface LanguageSwitcherProps {
-  /** When true, use dark text/icon for readability on light header background */
+  /** When true, focus ring offset for light background (optional, for a11y) */
   isOnWhiteBackground?: boolean;
 }
 
@@ -50,14 +50,13 @@ export default function LanguageSwitcher({ isOnWhiteBackground = false }: Langua
         variant="secondary"
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
-          'flex items-center gap-2',
-          isOnWhiteBackground
-            ? 'bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-200'
-            : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
+          'flex items-center gap-2 text-white bg-[#FF8C42] hover:bg-[#FF7A29] border border-[#FF8C42]/20',
+          'focus:outline-none focus:ring-2 focus:ring-[#FF8C42]',
+          isOnWhiteBackground ? 'focus:ring-offset-2 focus:ring-offset-white' : 'focus:ring-offset-2 focus:ring-offset-[#1F2937]'
         )}
         aria-label={t('switchLanguage')}
       >
-        <Globe className={clsx('w-4 h-4', isOnWhiteBackground ? 'text-gray-900' : '')} />
+        <Globe className="w-4 h-4" />
         <span className="hidden sm:inline">{localeNames[locale]}</span>
         <span className="sm:hidden">{locale.toUpperCase()}</span>
       </Button>

@@ -33,8 +33,17 @@ export default function MasterclassNavigation({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOnWhiteBackground, setIsOnWhiteBackground] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const t = useTranslations();
   const { isAuthenticated, user } = useAuthStore();
+
+  // Mobile viewport (Tailwind lg = 1024px)
+  useEffect(() => {
+    const check = () => setIsMobile(typeof window !== 'undefined' && window.innerWidth < 1024);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   // Règle au scroll : bloc clair → logo en couleurs, bloc coloré → logo blanc
   useEffect(() => {
@@ -83,24 +92,28 @@ export default function MasterclassNavigation({
 
   // Une seule règle pour tout le header (logo + textes) : bloc clair → éléments lisibles sur fond clair, bloc coloré → éléments clairs
   const headerReadableOnLight = isOnWhiteBackground;
+  // Sur mobile : header toujours bleu opaque → logo et icônes en style "fond sombre"
+  const effectiveReadableOnLight = !isMobile && headerReadableOnLight;
 
   return (
     <>
       <header
         className={clsx(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
-          shouldShowBackground
-            ? headerReadableOnLight
-              ? 'bg-white/98 backdrop-blur-xl border-b border-gray-200 shadow-lg'
-              : 'bg-[#1F2937]/98 backdrop-blur-xl border-b border-[#374151]/60 shadow-2xl shadow-[#1F2937]/20'
-            : 'bg-transparent',
+          isMobile
+            ? 'bg-[#1F2937]/98 backdrop-blur-xl border-b border-[#374151]/60 shadow-2xl shadow-[#1F2937]/20'
+            : shouldShowBackground
+              ? headerReadableOnLight
+                ? 'bg-white/98 backdrop-blur-xl border-b border-gray-200 shadow-lg'
+                : 'bg-[#1F2937]/98 backdrop-blur-xl border-b border-[#374151]/60 shadow-2xl shadow-[#1F2937]/20'
+              : 'bg-transparent',
           className
         )}
-        data-on-white-background={headerReadableOnLight}
+        data-on-white-background={effectiveReadableOnLight}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* Logo : même règle que les textes (headerReadableOnLight) — filtre sur l'image elle-même */}
+            {/* Logo : sur mobile header toujours bleu → logo blanc ; sur desktop même règle que les textes */}
             <Link href="/" className="flex items-center group relative">
               <div className="relative w-32 h-32 transition-all duration-300 group-hover:scale-105">
                 <Image
@@ -109,7 +122,7 @@ export default function MasterclassNavigation({
                   fill
                   className={clsx(
                     'object-contain transition-all duration-300',
-                    headerReadableOnLight ? '' : 'brightness-0 invert'
+                    effectiveReadableOnLight ? '' : 'brightness-0 invert'
                   )}
                 />
               </div>
@@ -147,17 +160,17 @@ export default function MasterclassNavigation({
             {/* Mobile Menu Button */}
               <div className="lg:hidden flex items-center gap-3">
               <div className="opacity-60 hover:opacity-100 transition-opacity">
-                <LanguageSwitcher isOnWhiteBackground={headerReadableOnLight} />
+                <LanguageSwitcher isOnWhiteBackground={effectiveReadableOnLight} />
               </div>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={clsx(
                   'relative p-3 transition-all duration-300 rounded-xl',
-                  headerReadableOnLight
+                  effectiveReadableOnLight
                     ? 'text-gray-900 hover:bg-gray-100 active:bg-gray-200'
                     : 'text-white hover:bg-white/10 active:bg-white/20',
-                  headerReadableOnLight
+                  effectiveReadableOnLight
                     ? 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-white'
                     : 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]',
                   'min-h-[44px] min-w-[44px] flex items-center justify-center',
