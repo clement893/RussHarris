@@ -7,9 +7,11 @@
 
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 import { Target, BookOpen, CheckCircle } from 'lucide-react';
 
 export default function MasterclassPage() {
+  const t = useTranslations('masterclass');
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
@@ -38,20 +40,20 @@ export default function MasterclassPage() {
         <Container className="relative z-10 max-w-7xl mx-auto">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-none text-white tracking-tight">
-              Le Programme
+              {t('title')}
             </h1>
             <p className="text-xl md:text-2xl font-light text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Cette classe de maître intensive de 2 jours vous plongera au cœur de la Thérapie d'Acceptation et d'Engagement (ACT). Vous découvrirez les fondements théoriques, les techniques pratiques et les applications cliniques de cette approche thérapeutique révolutionnaire.
+              {t('description1')}
             </p>
             <p className="text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
-              À travers des démonstrations en direct, des exercices pratiques et des études de cas, Russ Harris vous guidera dans l'apprentissage de l'ACT pour transformer votre pratique professionnelle.
+              {t('description2')}
             </p>
             <Link href="/cities">
               <Button 
                 size="lg" 
                 className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-base px-10 py-4 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20"
               >
-                Réserver ma place
+                {t('bookPlace')}
               </Button>
             </Link>
           </div>
@@ -76,7 +78,7 @@ export default function MasterclassPage() {
             <div className="flex items-center justify-center gap-4 mb-6">
               <Target className="w-10 h-10 text-[#FF8C42]" aria-hidden="true" />
               <h2 className="text-5xl md:text-6xl font-bold text-gray-900">
-                Objectifs Pédagogiques
+                {t('objectivesTitle')}
               </h2>
             </div>
           </div>
@@ -85,31 +87,31 @@ export default function MasterclassPage() {
               <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">Comprendre les fondements théoriques et philosophiques de l'ACT</span>
+                  <span className="text-gray-700">{t('objective1')}</span>
                 </div>
               </div>
               <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">Maîtriser les 6 processus fondamentaux du modèle hexaflex</span>
+                  <span className="text-gray-700">{t('objective2')}</span>
                 </div>
               </div>
               <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">Apprendre des techniques pratiques applicables immédiatement</span>
+                  <span className="text-gray-700">{t('objective3')}</span>
                 </div>
               </div>
               <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">Développer des compétences pour intégrer l'ACT dans votre pratique</span>
+                  <span className="text-gray-700">{t('objective4')}</span>
                 </div>
               </div>
               <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors md:col-span-2">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">Gérer les défis courants et éviter les pièges thérapeutiques</span>
+                  <span className="text-gray-700">{t('objective5')}</span>
                 </div>
               </div>
             </div>
@@ -124,7 +126,7 @@ export default function MasterclassPage() {
             <div className="flex items-center justify-center gap-4 mb-6">
               <BookOpen className="w-10 h-10 text-[#FF8C42]" aria-hidden="true" />
               <h2 className="text-5xl md:text-6xl font-bold text-gray-900">
-                Ressources Incluses
+                {t('resourcesTitle')}
               </h2>
             </div>
           </div>
@@ -133,31 +135,31 @@ export default function MasterclassPage() {
               <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">Manuel de formation complet (format PDF)</span>
+                  <span className="text-gray-700">{t('resource1')}</span>
                 </div>
               </div>
               <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">Accès aux enregistrements vidéo de la formation (3 mois)</span>
+                  <span className="text-gray-700">{t('resource2')}</span>
                 </div>
               </div>
               <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">Fiches pratiques et outils thérapeutiques</span>
+                  <span className="text-gray-700">{t('resource3')}</span>
                 </div>
               </div>
               <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">Certificat de participation</span>
+                  <span className="text-gray-700">{t('resource4')}</span>
                 </div>
               </div>
               <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors md:col-span-2">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">Support et ressources complémentaires en ligne</span>
+                  <span className="text-gray-700">{t('resource5')}</span>
                 </div>
               </div>
             </div>
@@ -180,17 +182,17 @@ export default function MasterclassPage() {
 
         <Container className="max-w-5xl mx-auto text-center relative z-10">
           <h2 className="text-5xl md:text-7xl font-bold mb-8">
-            Prêt à transformer votre pratique ?
+            {t('ctaTitle')}
           </h2>
           <p className="text-xl text-gray-300 mb-12">
-            Réservez votre place dès maintenant pour cette classe de maître exceptionnelle.
+            {t('ctaDescription')}
           </p>
           <Link href="/cities">
             <Button 
               size="lg" 
               className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-base px-10 py-4 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20"
             >
-              Réserver ma place
+              {t('ctaButton')}
             </Button>
           </Link>
         </Container>
