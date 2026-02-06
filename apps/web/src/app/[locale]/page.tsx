@@ -145,24 +145,28 @@ export default function HomePage() {
                   </h3>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400 mb-2">
                     <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg">15 et 16 juin 2026</span>
+                    <span className="text-sm sm:text-base md:text-lg">{t('torontoDate')}</span>
                   </div>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400">
                     <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg break-words">Résidence et centre de conférences – Centre-ville de Toronto</span>
+                    <span className="text-sm sm:text-base md:text-lg break-words">{t('torontoVenue')}</span>
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">220 {t('places')}</span>
-                  <Link href="/toronto" className="w-full md:w-auto">
-                    <Button className={combineAnimations(
-                      microInteractions.button.base,
-                      microInteractions.button.hover,
-                      "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
-                    )}>
+                  <span className="w-full md:w-auto inline-block">
+                    <Button
+                      type="button"
+                      className={combineAnimations(
+                        microInteractions.button.base,
+                        microInteractions.button.hover,
+                        "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
+                      )}
+                      aria-disabled="true"
+                    >
                       {t('registerCta')}
                     </Button>
-                  </Link>
+                  </span>
                 </div>
               </div>
             </div>
@@ -182,24 +186,28 @@ export default function HomePage() {
                   </h3>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400 mb-2">
                     <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg">29 et 30 juin 2026</span>
+                    <span className="text-sm sm:text-base md:text-lg">{t('vancouverDate')}</span>
                   </div>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400">
                     <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg break-words">Hôtel Sandman Signature Vancouver Centre-Ville</span>
+                    <span className="text-sm sm:text-base md:text-lg break-words">{t('vancouverVenue')}</span>
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
-                  <Link href="/vancouver" className="w-full md:w-auto">
-                    <Button className={combineAnimations(
-                      microInteractions.button.base,
-                      microInteractions.button.hover,
-                      "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
-                    )}>
+                  <span className="w-full md:w-auto inline-block">
+                    <Button
+                      type="button"
+                      className={combineAnimations(
+                        microInteractions.button.base,
+                        microInteractions.button.hover,
+                        "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
+                      )}
+                      aria-disabled="true"
+                    >
                       {t('registerCta')}
                     </Button>
-                  </Link>
+                  </span>
                 </div>
               </div>
             </div>
@@ -219,11 +227,11 @@ export default function HomePage() {
                   </h3>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400 mb-2">
                     <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg">Date et lieu à venir</span>
+                    <span className="text-sm sm:text-base md:text-lg">{t('dateComingSoon')}</span>
                   </div>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400">
                     <Mail className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg break-words">Entrez votre adresse courriel pour ne rien manquer.</span>
+                    <span className="text-sm sm:text-base md:text-lg break-words">{t('emailNotifyText')}</span>
                   </div>
                 </div>
                 <div className="flex flex-col items-stretch md:items-end gap-3 w-full md:min-w-[280px] md:max-w-sm">
@@ -269,11 +277,11 @@ export default function HomePage() {
                   </h3>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400 mb-2">
                     <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg">Date et lieu à venir</span>
+                    <span className="text-sm sm:text-base md:text-lg">{t('dateComingSoon')}</span>
                   </div>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400">
                     <Mail className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
-                    <span className="text-sm sm:text-base md:text-lg break-words">Entrez votre adresse courriel pour ne rien manquer.</span>
+                    <span className="text-sm sm:text-base md:text-lg break-words">{t('emailNotifyText')}</span>
                   </div>
                 </div>
                 <div className="flex flex-col items-stretch md:items-end gap-3 w-full md:min-w-[280px] md:max-w-sm">
