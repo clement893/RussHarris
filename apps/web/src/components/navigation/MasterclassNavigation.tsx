@@ -81,28 +81,31 @@ export default function MasterclassNavigation({
   // Check if header should be transparent (e.g., on hero section)
   const shouldShowBackground = isScrolled || variant !== 'transparent';
 
+  // Une seule règle pour tout le header (logo + textes) : bloc clair → éléments lisibles sur fond clair, bloc coloré → éléments clairs
+  const headerReadableOnLight = isOnWhiteBackground;
+
   return (
     <>
       <header
         className={clsx(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out',
           shouldShowBackground
-            ? isOnWhiteBackground
+            ? headerReadableOnLight
               ? 'bg-white/98 backdrop-blur-xl border-b border-gray-200 shadow-lg'
               : 'bg-[#1F2937]/98 backdrop-blur-xl border-b border-[#374151]/60 shadow-2xl shadow-[#1F2937]/20'
             : 'bg-transparent',
           className
         )}
-        data-on-white-background={isOnWhiteBackground}
+        data-on-white-background={headerReadableOnLight}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* Logo - même règle que les textes : bloc clair → couleurs, bloc coloré → blanc */}
+            {/* Logo : même règle que les textes (headerReadableOnLight) */}
             <Link href="/" className="flex items-center group relative">
               <div
                 className={clsx(
                   'relative w-32 h-32 transition-all duration-300 group-hover:scale-105',
-                  isOnWhiteBackground ? '' : 'brightness-0 invert'
+                  headerReadableOnLight ? '' : 'brightness-0 invert'
                 )}
               >
                 <Image
@@ -115,7 +118,7 @@ export default function MasterclassNavigation({
             </Link>
 
             {/* Desktop Navigation */}
-            <DesktopNavigation items={navigationItems} isOnWhiteBackground={isOnWhiteBackground} />
+            <DesktopNavigation items={navigationItems} isOnWhiteBackground={headerReadableOnLight} />
 
             {/* Desktop Actions (CTA + Language) */}
             <div className="hidden lg:flex items-center gap-4">
@@ -127,7 +130,7 @@ export default function MasterclassNavigation({
                     'transition-colors duration-200',
                     'text-white bg-[#FF8C42]',
                     'hover:bg-[#FF7A29]',
-                    isOnWhiteBackground
+                    headerReadableOnLight
                       ? 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-white'
                       : 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]'
                   )}
@@ -137,26 +140,26 @@ export default function MasterclassNavigation({
               )}
               <div className={clsx(
                 'transition-opacity',
-                isOnWhiteBackground ? 'opacity-80 hover:opacity-100' : 'opacity-60 hover:opacity-100'
+                headerReadableOnLight ? 'opacity-80 hover:opacity-100' : 'opacity-60 hover:opacity-100'
               )}>
-                <LanguageSwitcher isOnWhiteBackground={isOnWhiteBackground} />
+                <LanguageSwitcher isOnWhiteBackground={headerReadableOnLight} />
               </div>
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="lg:hidden flex items-center gap-3">
+              <div className="lg:hidden flex items-center gap-3">
               <div className="opacity-60 hover:opacity-100 transition-opacity">
-                <LanguageSwitcher isOnWhiteBackground={isOnWhiteBackground} />
+                <LanguageSwitcher isOnWhiteBackground={headerReadableOnLight} />
               </div>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className={clsx(
                   'relative p-3 transition-all duration-300 rounded-xl',
-                  isOnWhiteBackground
+                  headerReadableOnLight
                     ? 'text-gray-900 hover:bg-gray-100 active:bg-gray-200'
                     : 'text-white hover:bg-white/10 active:bg-white/20',
-                  isOnWhiteBackground
+                  headerReadableOnLight
                     ? 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-white'
                     : 'focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:ring-offset-2 focus:ring-offset-[#1F2937]',
                   'min-h-[44px] min-w-[44px] flex items-center justify-center',
