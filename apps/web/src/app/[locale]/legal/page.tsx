@@ -17,7 +17,7 @@ export default function LegalPage() {
 
   if (locale === 'en') {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white" data-header-contrast="light">
         <Container className="py-20 md:py-32">
           <div className="max-w-4xl mx-auto">
             <div className="mb-16">
@@ -90,7 +90,7 @@ export default function LegalPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" data-header-contrast="light">
       <Container className="py-20 md:py-32">
         <div className="max-w-4xl mx-auto">
           <div className="mb-16">
