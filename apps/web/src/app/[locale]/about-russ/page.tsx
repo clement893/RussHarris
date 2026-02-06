@@ -8,9 +8,11 @@
 import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 import { Award, Book, Globe, Users, Hexagon } from 'lucide-react';
 
 export default function AboutRussPage() {
+  const t = useTranslations('aboutRuss');
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
@@ -39,10 +41,10 @@ export default function AboutRussPage() {
         <Container className="relative z-10 max-w-7xl mx-auto">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-none text-white tracking-tight">
-              À propos de Russ Harris
+              {t('title')}
             </h1>
             <p className="text-xl md:text-2xl font-light text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Médecin, psychothérapeute et formateur internationalement reconnu dans le domaine de la Thérapie d'Acceptation et d'Engagement (ACT).
+              {t('subtitle')}
             </p>
           </div>
         </Container>
@@ -77,27 +79,10 @@ export default function AboutRussPage() {
 
             {/* Contenu */}
             <div className="md:col-span-3 space-y-6">
-              <p className="text-xl text-gray-700 leading-relaxed">
-                Russ Harris est un médecin, psychothérapeute et formateur internationalement reconnu 
-                dans le domaine de la Thérapie d'Acceptation et d'Engagement (ACT). 
-                Il est l'auteur de plusieurs best-sellers, dont &quot;Le piège du bonheur&quot; 
-                (The Happiness Trap), traduit en plus de 30 langues.
-              </p>
-              
-              <p className="text-xl text-gray-700 leading-relaxed">
-                Avec plus de 20 ans d'expérience, Russ a formé des milliers de professionnels 
-                de la santé mentale à travers le monde. Sa capacité à rendre l'ACT accessible 
-                et applicable dans la pratique clinique quotidienne en fait l'un des formateurs 
-                les plus recherchés au monde.
-              </p>
-
-              <p className="text-xl text-gray-700 leading-relaxed">
-                Dans cette classe de maître exclusive, il proposera une application spécialisée de l'ACT auprès des personnes neurodivergentes (notamment TDAH, autisme et autres profils neurodéveloppementaux), dans une approche neuroaffirmative, respectueuse des différences et orientée vers des outils pratiques immédiatement transférables en clinique.
-              </p>
-
-              <p className="text-xl text-gray-700 leading-relaxed">
-                Russ partagera ses connaissances approfondies, ses techniques éprouvées et ses stratégies concrètes afin de vous aider à adapter l'ACT avec sensibilité et efficacité, et à enrichir durablement votre pratique professionnelle.
-              </p>
+              <p className="text-xl text-gray-700 leading-relaxed">{t('bio1')}</p>
+              <p className="text-xl text-gray-700 leading-relaxed">{t('bio2')}</p>
+              <p className="text-xl text-gray-700 leading-relaxed">{t('bio3')}</p>
+              <p className="text-xl text-gray-700 leading-relaxed">{t('bio4')}</p>
             </div>
           </div>
         </Container>
@@ -125,10 +110,8 @@ export default function AboutRussPage() {
               <div className="mb-6 text-[#FF8C42]">
                 <Book className="w-12 h-12" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Auteur Best-Seller</h3>
-              <p className="text-gray-600 text-sm">
-                Auteur de "Le piège du bonheur" et de nombreux autres ouvrages sur l'ACT, traduits dans plus de 30 langues.
-              </p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('keyPoint1Title')}</h3>
+              <p className="text-gray-600 text-sm">{t('keyPoint1Description')}</p>
             </div>
 
             <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors relative">
@@ -138,10 +121,8 @@ export default function AboutRussPage() {
               <div className="mb-6 text-[#FF8C42]">
                 <Globe className="w-12 h-12" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Formateur International</h3>
-              <p className="text-gray-600 text-sm">
-                Formé des milliers de professionnels dans plus de 30 pays à travers le monde.
-              </p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('keyPoint2Title')}</h3>
+              <p className="text-gray-600 text-sm">{t('keyPoint2Description')}</p>
             </div>
 
             <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors relative">
@@ -151,10 +132,8 @@ export default function AboutRussPage() {
               <div className="mb-6 text-[#FF8C42]">
                 <Award className="w-12 h-12" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Expert Reconnu</h3>
-              <p className="text-gray-600 text-sm">
-                Reconnu comme l'un des principaux experts mondiaux en ACT avec plus de 20 ans d'expérience clinique.
-              </p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('keyPoint3Title')}</h3>
+              <p className="text-gray-600 text-sm">{t('keyPoint3Description')}</p>
             </div>
 
             <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors relative">
@@ -164,10 +143,8 @@ export default function AboutRussPage() {
               <div className="mb-6 text-[#FF8C42]">
                 <Users className="w-12 h-12" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">Pratique Clinique</h3>
-              <p className="text-gray-600 text-sm">
-                Pratique clinique active avec une approche pragmatique et centrée sur l'efficacité thérapeutique.
-              </p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('keyPoint4Title')}</h3>
+              <p className="text-gray-600 text-sm">{t('keyPoint4Description')}</p>
             </div>
           </div>
         </Container>
@@ -188,17 +165,17 @@ export default function AboutRussPage() {
 
         <Container className="max-w-5xl mx-auto text-center relative z-10">
           <h2 className="text-5xl md:text-7xl font-bold mb-8">
-            Rejoignez la classe de maître
+            {t('ctaTitle')}
           </h2>
           <p className="text-xl text-gray-300 mb-12">
-            Découvrez l'ACT appliquée à la neurodivergence avec Russ Harris et transformez votre pratique professionnelle.
+            {t('ctaDescription')}
           </p>
           <Link href="/cities">
             <Button 
               size="lg" 
               className="bg-[#FF8C42] hover:bg-[#FF7A29] text-white font-medium text-base px-10 py-4 rounded-full transition-all hover:scale-105 border border-[#FF8C42]/20"
             >
-              Réserver ma place
+              {t('ctaButton')}
             </Button>
           </Link>
         </Container>
