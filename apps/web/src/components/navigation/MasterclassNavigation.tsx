@@ -36,86 +36,32 @@ export default function MasterclassNavigation({
   const t = useTranslations();
   const { isAuthenticated, user } = useAuthStore();
 
-  // Handle scroll behavior and detect background color
+  // Règle au scroll : bloc clair → logo en couleurs, bloc coloré → logo blanc
   useEffect(() => {
-    const detectBackgroundColor = (): boolean => {
-      if (!isScrolled) return false;
-      
+    const isBlockLight = (): boolean => {
       const header = document.querySelector('header');
       if (!header) return false;
-      
       const headerRect = header.getBoundingClientRect();
-      const headerBottom = headerRect.bottom;
-      
-      // Check multiple points below header for better accuracy
-      const checkPoints = [
-        { x: window.innerWidth / 2, y: headerBottom + 5 }, // Center
-        { x: window.innerWidth / 4, y: headerBottom + 5 }, // Left
-        { x: (window.innerWidth * 3) / 4, y: headerBottom + 5 }, // Right
-      ];
-      
-      let whiteCount = 0;
-      
-      for (const point of checkPoints) {
-        const element = document.elementFromPoint(point.x, point.y);
-        if (!element) continue;
-        
-          // Walk up the DOM tree to find element with background color
-          let currentElement: Element | null = element;
-          let bgColor = '';
-          
-          while (currentElement && currentElement !== document.body) {
-            const computedStyle = window.getComputedStyle(currentElement);
-            bgColor = computedStyle.backgroundColor;
-            
-            // If background is not transparent, use it
-            if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
-              break;
-            }
-            
-            currentElement = currentElement.parentElement;
-          }
-          
-          if (bgColor) {
-            // Parse RGB color
-            const rgbMatch = bgColor.match(/\d+/g);
-            if (rgbMatch && rgbMatch.length >= 3) {
-              const r = parseInt(rgbMatch[0] || '0');
-              const g = parseInt(rgbMatch[1] || '0');
-              const b = parseInt(rgbMatch[2] || '0');
-              
-              // Check if background is light (white or very light color)
-              // Threshold: r > 240, g > 240, b > 240 for light backgrounds
-              const isLight = r > 240 && g > 240 && b > 240;
-              if (isLight) whiteCount++;
-            } else {
-              // Check for common white color names/values
-              const bgColorLower = bgColor.toLowerCase();
-              const isWhite = bgColorLower.includes('white') || 
-                             bgColor.includes('#fff') || 
-                             bgColor.includes('#ffffff') ||
-                             bgColor.startsWith('rgb(255') ||
-                             bgColor.startsWith('rgb(254');
-              if (isWhite) whiteCount++;
-            }
-          }
+      const y = headerRect.bottom + 5;
+      const x = window.innerWidth / 2;
+      const sections = document.querySelectorAll<HTMLElement>('[data-header-contrast]');
+      for (const section of sections) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= y && rect.bottom >= y && rect.left <= x && rect.right >= x) {
+          return section.getAttribute('data-header-contrast') === 'light';
+        }
       }
-      
-      // If majority of check points are white, consider it white background
-      return whiteCount >= 2;
+      return false; // défaut : bloc coloré → logo blanc
     };
 
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-      setIsOnWhiteBackground(detectBackgroundColor());
+      setIsOnWhiteBackground(isBlockLight());
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Check on mount
-    
-    // Also check on resize
+    handleScroll();
     window.addEventListener('resize', handleScroll, { passive: true });
-    
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);

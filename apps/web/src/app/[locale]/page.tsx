@@ -16,7 +16,7 @@ export default function HomePage() {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
-      <section className="relative min-h-screen flex items-center overflow-hidden py-[3.9rem] md:py-[6.5rem] bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
+      <section className="relative min-h-screen flex items-center overflow-hidden py-[3.9rem] md:py-[6.5rem] bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]" data-header-contrast="dark">
         {/* Grille hexagonale subtile en arrière-plan */}
         <div className="absolute inset-0 opacity-[0.03]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -121,7 +121,7 @@ export default function HomePage() {
       </section>
 
       {/* Section Dates de Tournée - Fond foncé élégant */}
-      <section className="py-16 md:py-32 bg-gradient-to-b from-[#0F172A] to-[#1E293B]">
+      <section className="py-16 md:py-32 bg-gradient-to-b from-[#0F172A] to-[#1E293B]" data-header-contrast="dark">
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
           <ScrollReveal>
             <div className="text-center mb-12 md:mb-16">
@@ -317,7 +317,7 @@ export default function HomePage() {
       </section>
 
       {/* Section L'homme derrière l'ACT */}
-      <section className="py-16 md:py-32 bg-white">
+      <section className="py-16 md:py-32 bg-white" data-header-contrast="light">
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid md:grid-cols-5 gap-8 md:gap-12 items-center">
             {/* Photo avec effet hexagonal */}
@@ -391,7 +391,7 @@ export default function HomePage() {
       </section>
 
       {/* Section Hexaflex - Design interactif et visuel */}
-      <section className="py-16 md:py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      <section className="py-16 md:py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden" data-header-contrast="light">
         {/* Grille hexagonale très subtile en arrière-plan */}
         <div className="absolute inset-0 opacity-[0.015]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -522,7 +522,7 @@ export default function HomePage() {
       </section>
 
       {/* Section Pour qui - Design amélioré avec cartes gradient */}
-      <section className="py-16 md:py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      <section className="py-16 md:py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden" data-header-contrast="light">
         {/* Grille hexagonale subtile en arrière-plan */}
         <div className="absolute inset-0 opacity-[0.015]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -624,7 +624,7 @@ export default function HomePage() {
       </section>
 
       {/* Section Témoignages */}
-      <section className="py-16 md:py-32 bg-gray-50">
+      <section className="py-16 md:py-32 bg-gray-50" data-header-contrast="light">
         <Container className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6">
@@ -661,7 +661,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Final - Avec grille hexagonale */}
-      <section className="py-16 md:py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A] text-white relative overflow-hidden">
+      <section className="py-16 md:py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A] text-white relative overflow-hidden" data-header-contrast="dark">
         {/* Grille hexagonale */}
         <div className="absolute inset-0 opacity-[0.03]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -710,7 +710,7 @@ export default function HomePage() {
       </section>
 
       {/* Section Organisateur */}
-      <section className="py-12 md:py-16 bg-white border-t border-gray-200">
+      <section className="py-12 md:py-16 bg-white border-t border-gray-200" data-header-contrast="light">
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col items-center gap-4 md:gap-6">
             <p className="text-xs md:text-sm text-gray-500 uppercase tracking-wider">{t('organizerLabel')}</p>

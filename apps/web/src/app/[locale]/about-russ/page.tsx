@@ -14,7 +14,7 @@ export default function AboutRussPage() {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
-      <section className="relative min-h-[80vh] flex items-center overflow-hidden pt-20 pb-14 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
+      <section className="relative min-h-[80vh] flex items-center overflow-hidden pt-20 pb-14 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]" data-header-contrast="dark">
         {/* Grille hexagonale subtile en arrière-plan */}
         <div className="absolute inset-0 opacity-[0.03]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -49,7 +49,7 @@ export default function AboutRussPage() {
       </section>
 
       {/* Section Biographie */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-white" data-header-contrast="light">
         <Container className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-5 gap-12 items-center">
             {/* Photo avec effet hexagonal */}
@@ -104,7 +104,7 @@ export default function AboutRussPage() {
       </section>
 
       {/* Section Points Clés */}
-      <section className="py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      <section className="py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden" data-header-contrast="light">
         <div className="absolute inset-0 opacity-[0.015]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -174,7 +174,7 @@ export default function AboutRussPage() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A] text-white relative overflow-hidden">
+      <section className="py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A] text-white relative overflow-hidden" data-header-contrast="dark">
         <div className="absolute inset-0 opacity-[0.03]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
             <defs>

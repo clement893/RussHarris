@@ -22,7 +22,7 @@ export default function CitiesPage() {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - plus d'espace sous le header, moins entre hero et blocs */}
-      <section className="relative pt-24 pb-6 md:pt-32 md:pb-10 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]">
+      <section className="relative pt-24 pb-6 md:pt-32 md:pb-10 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]" data-header-contrast="dark">
         <Container className="max-w-7xl mx-auto">
           <div className="text-center mb-0">
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
@@ -36,7 +36,7 @@ export default function CitiesPage() {
       </section>
 
       {/* Section 4 blocs villes - espacement réduit de moitié avec le hero */}
-      <section className="pt-3 pb-16 md:pt-4 md:pb-24 bg-gradient-to-b from-[#0F172A] to-[#1E293B]">
+      <section className="pt-3 pb-16 md:pt-4 md:pb-24 bg-gradient-to-b from-[#0F172A] to-[#1E293B]" data-header-contrast="dark">
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="space-y-4 md:space-y-6">
             {/* Toronto */}
@@ -225,7 +225,7 @@ export default function CitiesPage() {
       </section>
 
       {/* Section Vous avez des questions ? - hauteur réduite de moitié */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white" data-header-contrast="light">
         <Container className="max-w-7xl mx-auto">
           <div className="text-center py-6">
             <p className="text-gray-600 text-lg mb-6">Vous avez des questions?</p>
