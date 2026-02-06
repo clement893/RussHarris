@@ -36,7 +36,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">2. Réservation</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  La réservation s'effectue en ligne via le site web. Une confirmation de réservation sera envoyée par email après validation du paiement.
+                  La réservation s'effectue en ligne via la plateforme LearnWorlds. Une confirmation de réservation sera envoyée par email après validation du paiement.
                 </p>
               </section>
 
