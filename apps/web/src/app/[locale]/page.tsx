@@ -16,7 +16,7 @@ export default function HomePage() {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
-      <section className="relative min-h-screen flex items-center overflow-hidden py-[3.9rem] md:py-[6.5rem] bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]" data-header-contrast="dark">
+      <section className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-[3.9rem] md:py-[6.5rem] bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]" data-header-contrast="dark">
         {/* Grille hexagonale subtile en arrière-plan */}
         <div className="absolute inset-0 opacity-[0.03]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
