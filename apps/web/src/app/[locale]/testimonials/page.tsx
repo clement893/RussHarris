@@ -11,6 +11,7 @@ import SwissDivider from '@/components/masterclass/SwissDivider';
 import TestimonialCard from '@/components/masterclass/TestimonialCard';
 import type { Testimonial } from '@/components/masterclass/TestimonialPreview';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
 
 const testimonials: Testimonial[] = [
   {
@@ -56,6 +57,8 @@ const testimonials: Testimonial[] = [
 ];
 
 export default function TestimonialsPage() {
+  const locale = useLocale();
+  const t = useTranslations('testimonials');
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextTestimonial = () => {
@@ -91,11 +94,11 @@ export default function TestimonialsPage() {
           {/* Header */}
           <div className="mb-16 text-center">
             <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-black">
-              Témoignages
+              {locale === 'en' ? t('title') : 'Témoignages'}
             </h1>
             <SwissDivider className="mx-auto max-w-md" />
             <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
-              Découvrez ce que disent les participants de la classe de maître ACT avec Russ Harris.
+              {locale === 'en' ? t('subtitle') : 'Découvrez ce que disent les participants de la classe de maître ACT avec Russ Harris.'}
             </p>
           </div>
 
@@ -184,16 +187,16 @@ export default function TestimonialsPage() {
           {/* CTA Section */}
           <div className="text-center mt-16">
             <h2 className="text-4xl md:text-5xl font-black text-black mb-6">
-              Rejoignez-les
+              {locale === 'en' ? t('ctaTitle') : 'Rejoignez-les'}
             </h2>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Découvrez pourquoi tant de professionnels recommandent cette classe de maître.
+              {locale === 'en' ? t('ctaDescription') : 'Découvrez pourquoi tant de professionnels recommandent cette classe de maître.'}
             </p>
             <a
               href="/cities"
               className="inline-block px-12 py-4 bg-black text-white font-bold text-lg hover:bg-gray-900 transition-colors"
             >
-              Réserver ma place
+              {locale === 'en' ? t('ctaButton') : 'Réserver ma place'}
             </a>
           </div>
         </div>

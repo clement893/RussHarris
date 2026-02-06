@@ -9,8 +9,10 @@ import { useState, FormEvent } from 'react';
 import { Container, Button } from '@/components/ui';
 import { Mail, Phone, MapPin, Send, Hexagon } from 'lucide-react';
 import { clsx } from 'clsx';
+import { useTranslations } from 'next-intl';
 
 export default function ContactPage() {
+  const t = useTranslations('contact');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -69,10 +71,10 @@ export default function ContactPage() {
         <Container className="relative z-10 max-w-7xl mx-auto">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-none text-white tracking-tight">
-              Contactez-nous
+              {t('title')}
             </h1>
             <p className="text-xl md:text-2xl font-light text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Une question ? N'hésitez pas à nous contacter. Nous vous répondrons dans les plus brefs délais.
+              {t('subtitle')}
             </p>
           </div>
         </Container>
@@ -91,13 +93,13 @@ export default function ContactPage() {
                     <Hexagon className="w-full h-full text-[#FF8C42]" />
                   </div>
                   <div className="relative z-10">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-8">Informations de contact</h2>
+                    <h2 className="text-3xl font-bold text-gray-900 mb-8">{t('contactInfoTitle')}</h2>
                     
                     <div className="space-y-6">
                       <div className="flex items-start gap-4">
                         <Mail className="w-5 h-5 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
                         <div>
-                          <p className="text-sm font-bold text-gray-900 mb-1">Email</p>
+                          <p className="text-sm font-bold text-gray-900 mb-1">{t('emailLabel')}</p>
                           <a 
                             href="mailto:admin@contextpsy.com" 
                             className="text-gray-600 hover:text-[#FF8C42] transition-colors"
@@ -110,7 +112,7 @@ export default function ContactPage() {
                       <div className="flex items-start gap-4">
                         <Phone className="w-5 h-5 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
                         <div>
-                          <p className="text-sm font-bold text-gray-900 mb-1">Téléphone</p>
+                          <p className="text-sm font-bold text-gray-900 mb-1">{t('phoneLabel')}</p>
                           <a 
                             href="tel:+14383754869" 
                             className="text-gray-600 hover:text-[#FF8C42] transition-colors"
@@ -123,9 +125,10 @@ export default function ContactPage() {
                       <div className="flex items-start gap-4">
                         <MapPin className="w-5 h-5 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
                         <div>
-                          <p className="text-sm font-bold text-gray-900 mb-1">Adresse</p>
+                          <p className="text-sm font-bold text-gray-900 mb-1">{t('addressLabel')}</p>
                           <p className="text-gray-600">
-                            422, rue saint François Xavier, Montreal (QC) H2Y 2S9
+                            {t('addressStreet')}
+                            {t('address') ? <><br />{t('address')}</> : null}
                           </p>
                         </div>
                       </div>
@@ -133,12 +136,9 @@ export default function ContactPage() {
 
                     <div className="mt-8 pt-8 border-t border-gray-200">
                       <p className="text-sm font-bold text-gray-900 mb-2">
-                        Horaires d'ouverture :
+                        {t('hoursTitle')}
                       </p>
-                      <p className="text-sm text-gray-600">
-                        Lundi - Vendredi<br />
-                        9h00 - 18h00
-                      </p>
+                      <p className="text-sm text-gray-600" dangerouslySetInnerHTML={{ __html: t('hours').replace(/\n/g, '<br />') }} />
                     </div>
                   </div>
                 </div>
@@ -151,12 +151,12 @@ export default function ContactPage() {
                     <Hexagon className="w-full h-full text-[#FF8C42]" />
                   </div>
                   <div className="relative z-10">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-6">Envoyez-nous un message</h2>
+                    <h2 className="text-3xl font-bold text-gray-900 mb-6">{t('formTitle')}</h2>
                     
                     {submitted && (
                       <div className="mb-6 p-4 bg-[#FF8C42] text-white rounded-xl">
-                        <p className="font-bold">Message envoyé avec succès !</p>
-                        <p className="text-sm mt-1">Nous vous répondrons dans les plus brefs délais.</p>
+                        <p className="font-bold">{t('formSuccessTitle')}</p>
+                        <p className="text-sm mt-1">{t('formSuccessDescription')}</p>
                       </div>
                     )}
 
@@ -164,7 +164,7 @@ export default function ContactPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label htmlFor="name" className="block text-sm font-bold text-gray-900 mb-2">
-                            Nom complet *
+                            {t('fullNameLabel')}
                           </label>
                           <input
                             type="text"
@@ -179,7 +179,7 @@ export default function ContactPage() {
 
                         <div>
                           <label htmlFor="email" className="block text-sm font-bold text-gray-900 mb-2">
-                            Email *
+                            {t('formEmailLabel')}
                           </label>
                           <input
                             type="email"
@@ -195,7 +195,7 @@ export default function ContactPage() {
 
                       <div>
                         <label htmlFor="subject" className="block text-sm font-bold text-gray-900 mb-2">
-                          Sujet *
+                          {t('subjectLabel')}
                         </label>
                         <select
                           id="subject"
@@ -205,18 +205,18 @@ export default function ContactPage() {
                           onChange={handleChange}
                           className="w-full px-4 py-3 border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:border-[#FF8C42] text-gray-900 bg-white rounded-lg transition-colors"
                         >
-                          <option value="">Sélectionnez un sujet</option>
-                          <option value="reservation">Réservation</option>
-                          <option value="pricing">Tarifs</option>
-                          <option value="program">Programme</option>
-                          <option value="group">Réservation de groupe</option>
-                          <option value="other">Autre</option>
+                          <option value="">{t('subjectPlaceholder')}</option>
+                          <option value="reservation">{t('subjectReservation')}</option>
+                          <option value="pricing">{t('subjectPricing')}</option>
+                          <option value="program">{t('subjectProgram')}</option>
+                          <option value="group">{t('subjectGroup')}</option>
+                          <option value="other">{t('subjectOther')}</option>
                         </select>
                       </div>
 
                       <div>
                         <label htmlFor="message" className="block text-sm font-bold text-gray-900 mb-2">
-                          Message *
+                          {t('messageLabel')}
                         </label>
                         <textarea
                           id="message"
@@ -240,12 +240,12 @@ export default function ContactPage() {
                         {isSubmitting ? (
                           <>
                             <span className="animate-spin">⏳</span>
-                            Envoi en cours...
+                            {t('sending')}
                           </>
                         ) : (
                           <span className="inline-flex items-center justify-center gap-2">
                             <Send className="w-5 h-5 shrink-0" aria-hidden="true" />
-                            <span className="leading-none">Envoyer le message</span>
+                            <span className="leading-none">{t('sendButton')}</span>
                           </span>
                         )}
                       </Button>

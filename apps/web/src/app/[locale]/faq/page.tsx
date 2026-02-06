@@ -5,10 +5,11 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
 import { ChevronDown, Search } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
 
 interface FAQItem {
   id: number;
@@ -17,92 +18,49 @@ interface FAQItem {
   category: string;
 }
 
-const faqItems: FAQItem[] = [
-  {
-    id: 1,
-    category: 'Général',
-    question: 'Qu\'est-ce que l\'ACT (Thérapie d\'Acceptation et d\'Engagement) ?',
-    answer: 'L\'ACT est une approche thérapeutique basée sur la pleine conscience qui aide les personnes à accepter leurs pensées et émotions difficiles tout en s\'engageant dans des actions alignées avec leurs valeurs. Elle combine des techniques de pleine conscience, d\'acceptation et de changement comportemental.',
-  },
-  {
-    id: 2,
-    category: 'Général',
-    question: 'Qui est Russ Harris ?',
-    answer: 'Russ Harris est un médecin, psychothérapeute et formateur internationalement reconnu dans le domaine de l\'ACT. Il est l\'auteur de plusieurs best-sellers, dont "Le piège du bonheur", traduit en plus de 30 langues. Il a formé des milliers de professionnels à travers le monde.',
-  },
-  {
-    id: 3,
-    category: 'Réservation',
-    question: 'Comment puis-je réserver ma place ?',
-    answer: 'Vous pouvez réserver votre place directement en ligne en sélectionnant une ville et une date sur la page "Villes & Dates". Le processus de réservation est simple et sécurisé. Vous recevrez une confirmation par email.',
-  },
-  {
-    id: 4,
-    category: 'Réservation',
-    question: 'Puis-je annuler ma réservation ?',
-    answer: 'Oui, vous pouvez annuler votre réservation jusqu\'à 14 jours avant l\'événement pour un remboursement complet. Les annulations après cette date peuvent être soumises à des frais d\'annulation. Contactez-nous pour plus d\'informations.',
-  },
-  {
-    id: 5,
-    category: 'Réservation',
-    question: 'Y a-t-il un tarif réduit pour les groupes ?',
-    answer: 'Oui, nous offrons un tarif groupe pour les réservations de 3 personnes ou plus. Contactez-nous à admin@contextpsy.com pour obtenir un devis personnalisé et organiser votre réservation de groupe.',
-  },
-  {
-    id: 6,
-    category: 'Programme',
-    question: 'Quel est le format de la classe de maître ?',
-    answer: 'La classe de maître se déroule sur 2 jours intensifs, de 9h à 17h30 avec une pause déjeuner. Elle combine des présentations théoriques, des démonstrations pratiques, des exercices en groupe et des études de cas.',
-  },
-  {
-    id: 7,
-    category: 'Programme',
-    question: 'Quels sont les prérequis pour participer ?',
-    answer: 'La classe de maître est ouverte à tous les professionnels de la santé mentale (psychologues, psychothérapeutes, médecins, etc.). Aucun prérequis spécifique n\'est nécessaire, bien qu\'une connaissance de base en psychothérapie soit recommandée.',
-  },
-  {
-    id: 8,
-    category: 'Programme',
-    question: 'Recevrai-je un certificat de participation ?',
-    answer: 'Oui, tous les participants recevront un certificat de participation à la fin de la classe de maître. Ce certificat atteste de votre participation à la formation avec Russ Harris.',
-  },
-  {
-    id: 9,
-    category: 'Ressources',
-    question: 'Quelles ressources sont incluses dans le prix ?',
-    answer: 'Le prix comprend l\'accès complet à la classe de maître de 2 jours, le manuel de formation en PDF, l\'accès aux enregistrements vidéo pendant 3 mois, toutes les fiches pratiques et outils, le certificat de participation et le support en ligne.',
-  },
-  {
-    id: 10,
-    category: 'Ressources',
-    question: 'Puis-je accéder aux enregistrements après l\'événement ?',
-    answer: 'Oui, vous aurez accès aux enregistrements vidéo de la formation pendant 3 mois après l\'événement. Cela vous permet de réviser les concepts et techniques à votre rythme.',
-  },
-  {
-    id: 11,
-    category: 'Pratique',
-    question: 'Où se déroulent les événements ?',
-    answer: 'Les événements se déroulent dans différentes villes. Consultez la page "Villes & Dates" pour voir toutes les villes disponibles et leurs lieux spécifiques. Les adresses complètes sont indiquées pour chaque événement.',
-  },
-  {
-    id: 12,
-    category: 'Pratique',
-    question: 'Les repas sont-ils inclus ?',
-    answer: 'Non, les repas ne sont pas inclus dans le prix. Nous vous fournirons une liste de restaurants à proximité du lieu de l\'événement. Des pauses café sont prévues pendant la journée.',
-  },
-  {
-    id: 13,
-    category: 'Pratique',
-    question: 'Y a-t-il un parking disponible ?',
-    answer: 'La disponibilité du parking varie selon les lieux. Les informations détaillées sur le parking et les transports en commun sont fournies dans la confirmation de réservation et sur la page de chaque événement.',
-  },
+const faqItemsFr: FAQItem[] = [
+  { id: 1, category: 'Général', question: 'Qu\'est-ce que l\'ACT (Thérapie d\'Acceptation et d\'Engagement) ?', answer: 'L\'ACT est une approche thérapeutique basée sur la pleine conscience qui aide les personnes à accepter leurs pensées et émotions difficiles tout en s\'engageant dans des actions alignées avec leurs valeurs. Elle combine des techniques de pleine conscience, d\'acceptation et de changement comportemental.' },
+  { id: 2, category: 'Général', question: 'Qui est Russ Harris ?', answer: 'Russ Harris est un médecin, psychothérapeute et formateur internationalement reconnu dans le domaine de l\'ACT. Il est l\'auteur de plusieurs best-sellers, dont "Le piège du bonheur", traduit en plus de 30 langues. Il a formé des milliers de professionnels à travers le monde.' },
+  { id: 3, category: 'Réservation', question: 'Comment puis-je réserver ma place ?', answer: 'Vous pouvez réserver votre place directement en ligne en sélectionnant une ville et une date sur la page "Villes & Dates". Le processus de réservation est simple et sécurisé. Vous recevrez une confirmation par email.' },
+  { id: 4, category: 'Réservation', question: 'Puis-je annuler ma réservation ?', answer: 'Oui, vous pouvez annuler votre réservation jusqu\'à 14 jours avant l\'événement pour un remboursement complet. Les annulations après cette date peuvent être soumises à des frais d\'annulation. Contactez-nous pour plus d\'informations.' },
+  { id: 5, category: 'Réservation', question: 'Y a-t-il un tarif réduit pour les groupes ?', answer: 'Oui, nous offrons un tarif groupe pour les réservations de 3 personnes ou plus. Contactez-nous à admin@contextpsy.com pour obtenir un devis personnalisé et organiser votre réservation de groupe.' },
+  { id: 6, category: 'Programme', question: 'Quel est le format de la classe de maître ?', answer: 'La classe de maître se déroule sur 2 jours intensifs, de 9h à 17h30 avec une pause déjeuner. Elle combine des présentations théoriques, des démonstrations pratiques, des exercices en groupe et des études de cas.' },
+  { id: 7, category: 'Programme', question: 'Quels sont les prérequis pour participer ?', answer: 'La classe de maître est ouverte à tous les professionnels de la santé mentale (psychologues, psychothérapeutes, médecins, etc.). Aucun prérequis spécifique n\'est nécessaire, bien qu\'une connaissance de base en psychothérapie soit recommandée.' },
+  { id: 8, category: 'Programme', question: 'Recevrai-je un certificat de participation ?', answer: 'Oui, tous les participants recevront un certificat de participation à la fin de la classe de maître. Ce certificat atteste de votre participation à la formation avec Russ Harris.' },
+  { id: 9, category: 'Ressources', question: 'Quelles ressources sont incluses dans le prix ?', answer: 'Le prix comprend l\'accès complet à la classe de maître de 2 jours, le manuel de formation en PDF, l\'accès aux enregistrements vidéo pendant 3 mois, toutes les fiches pratiques et outils, le certificat de participation et le support en ligne.' },
+  { id: 10, category: 'Ressources', question: 'Puis-je accéder aux enregistrements après l\'événement ?', answer: 'Oui, vous aurez accès aux enregistrements vidéo de la formation pendant 3 mois après l\'événement. Cela vous permet de réviser les concepts et techniques à votre rythme.' },
+  { id: 11, category: 'Pratique', question: 'Où se déroulent les événements ?', answer: 'Les événements se déroulent dans différentes villes. Consultez la page "Villes & Dates" pour voir toutes les villes disponibles et leurs lieux spécifiques. Les adresses complètes sont indiquées pour chaque événement.' },
+  { id: 12, category: 'Pratique', question: 'Les repas sont-ils inclus ?', answer: 'Non, les repas ne sont pas inclus dans le prix. Nous vous fournirons une liste de restaurants à proximité du lieu de l\'événement. Des pauses café sont prévues pendant la journée.' },
+  { id: 13, category: 'Pratique', question: 'Y a-t-il un parking disponible ?', answer: 'La disponibilité du parking varie selon les lieux. Les informations détaillées sur le parking et les transports en commun sont fournies dans la confirmation de réservation et sur la page de chaque événement.' },
 ];
 
-const categories = ['Tous', ...Array.from(new Set(faqItems.map(item => item.category)))];
+function buildFaqItemsEn(t: (key: string) => string): FAQItem[] {
+  const cat = (k: string) => t(k);
+  return [
+    { id: 1, category: cat('general'), question: t('q1'), answer: t('a1') },
+    { id: 2, category: cat('general'), question: t('q2'), answer: t('a2') },
+    { id: 3, category: cat('registration'), question: t('q3'), answer: t('a3') },
+    { id: 4, category: cat('registration'), question: t('q4'), answer: t('a4') },
+    { id: 5, category: cat('registration'), question: t('q5'), answer: t('a5') },
+    { id: 6, category: cat('program'), question: t('q6'), answer: t('a6') },
+    { id: 7, category: cat('program'), question: t('q7'), answer: t('a7') },
+    { id: 8, category: cat('program'), question: t('q8'), answer: t('a8') },
+    { id: 9, category: cat('resources'), question: t('q9'), answer: t('a9') },
+    { id: 10, category: cat('resources'), question: t('q10'), answer: t('a10') },
+    { id: 11, category: cat('practice'), question: t('q11'), answer: t('a11') },
+    { id: 12, category: cat('practice'), question: t('q12'), answer: t('a12') },
+    { id: 13, category: cat('practice'), question: t('q13'), answer: t('a13') },
+  ];
+}
 
 export default function FAQPage() {
+  const locale = useLocale();
+  const t = useTranslations('faq');
+  const faqItems = useMemo(() => (locale === 'en' ? buildFaqItemsEn((k) => t(k)) : faqItemsFr), [locale, t]);
+  const categories = useMemo(() => (locale === 'en' ? [t('all'), t('general'), t('registration'), t('program'), t('resources'), t('practice')] : ['Tous', ...Array.from(new Set(faqItemsFr.map((item) => item.category)))]), [locale, t]);
+
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
-  const [selectedCategory, setSelectedCategory] = useState<string>('Tous');
+  const [selectedCategory, setSelectedCategory] = useState<string>(locale === 'en' ? t('all') : 'Tous');
   const [searchQuery, setSearchQuery] = useState('');
 
   const toggleItem = (id: number) => {
@@ -115,9 +73,10 @@ export default function FAQPage() {
     setOpenItems(newOpenItems);
   };
 
+  const allLabel = locale === 'en' ? t('all') : 'Tous';
   const filteredItems = faqItems.filter((item) => {
-    const matchesCategory = selectedCategory === 'Tous' || item.category === selectedCategory;
-    const matchesSearch = searchQuery === '' || 
+    const matchesCategory = selectedCategory === allLabel || item.category === selectedCategory;
+    const matchesSearch = searchQuery === '' ||
       item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.answer.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -130,11 +89,11 @@ export default function FAQPage() {
           {/* Header */}
           <div className="mb-16 text-center">
             <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-black">
-              Questions Fréquentes
+              {locale === 'en' ? t('title') : 'Questions Fréquentes'}
             </h1>
             <SwissDivider className="mx-auto max-w-md" />
             <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
-              Trouvez les réponses aux questions les plus courantes sur la classe de maître ACT avec Russ Harris.
+              {locale === 'en' ? t('subtitle') : 'Trouvez les réponses aux questions les plus courantes sur la classe de maître ACT avec Russ Harris.'}
             </p>
           </div>
 
@@ -144,7 +103,7 @@ export default function FAQPage() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
               <input
                 type="text"
-                placeholder="Rechercher une question..."
+                placeholder={locale === 'en' ? t('searchPlaceholder') : 'Rechercher une question...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 border border-gray-300 focus:border-black focus:outline-none"
@@ -172,7 +131,7 @@ export default function FAQPage() {
           <div className="space-y-4">
             {filteredItems.length === 0 ? (
               <div className="text-center py-12">
-                <p className="text-gray-600">Aucune question trouvée pour cette recherche.</p>
+                <p className="text-gray-600">{locale === 'en' ? 'No questions found for this search.' : 'Aucune question trouvée pour cette recherche.'}</p>
               </div>
             ) : (
               filteredItems.map((item) => (
@@ -217,13 +176,13 @@ export default function FAQPage() {
           {/* CTA Section */}
           <div className="text-center mt-16">
             <p className="text-lg text-gray-600 mb-6">
-              Vous avez d'autres questions ? N'hésitez pas à nous contacter.
+              {locale === 'en' ? t('otherQuestions') : 'Vous avez d\'autres questions ? N\'hésitez pas à nous contacter.'}
             </p>
             <a
               href="mailto:admin@contextpsy.com"
               className="inline-block px-12 py-4 bg-black text-white font-bold text-lg hover:bg-gray-900 transition-colors"
             >
-              Nous contacter
+              {locale === 'en' ? t('contactUs') : 'Nous contacter'}
             </a>
           </div>
         </div>

@@ -10,8 +10,11 @@ import { Link } from '@/i18n/routing';
 import { Calendar, MapPin } from 'lucide-react';
 import { microInteractions, animationVariants, combineAnimations } from '@/lib/animations/micro-interactions';
 import { ScrollReveal } from '@/components/examples/ScrollReveal';
+import { useLocale, useTranslations } from 'next-intl';
 
 export default function TourneePage() {
+  const locale = useLocale();
+  const t = useTranslations('tournee');
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900 min-h-screen">
       {/* Hero Section */}
@@ -43,13 +46,13 @@ export default function TourneePage() {
               animationVariants.hero.title,
               "text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 leading-none text-white tracking-tight"
             )}>
-              LA TOURNÉE
+              {locale === 'en' ? t('title').toUpperCase() : 'LA TOURNÉE'}
             </h1>
             <p className={combineAnimations(
               animationVariants.hero.subtitle,
               "text-xl md:text-2xl font-light text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
             )}>
-              Découvrez toutes les dates et lieux de la classe de maître ACT avec Dr. Russ Harris
+              {locale === 'en' ? t('subtitle') : 'Découvrez toutes les dates et lieux de la classe de maître ACT avec Dr. Russ Harris'}
             </p>
           </div>
         </Container>

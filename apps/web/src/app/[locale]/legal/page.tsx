@@ -8,13 +8,91 @@
 import { Container } from '@/components/ui';
 import SwissDivider from '@/components/masterclass/SwissDivider';
 import SwissCard from '@/components/masterclass/SwissCard';
+import { useLocale, useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 
 export default function LegalPage() {
+  const locale = useLocale();
+  const t = useTranslations('legal');
+
+  if (locale === 'en') {
+    return (
+      <div className="min-h-screen bg-white">
+        <Container className="py-20 md:py-32">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-16">
+              <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-black">
+                {t('title')}
+              </h1>
+              <SwissDivider />
+            </div>
+
+            <SwissCard className="p-8 md:p-12 border-2 border-black">
+              <div className="prose prose-lg max-w-none space-y-8">
+                <section>
+                  <h2 className="text-2xl font-black text-black mb-4">{t('section1Title')}</h2>
+                  <p className="text-gray-700 leading-relaxed">{t('section1Intro')}</p>
+                  <p className="text-gray-700 leading-relaxed mt-4">
+                    <strong>{t('section1Address')}</strong><br />
+                    <strong>{t('section1Email')}</strong><br />
+                    <strong>{t('section1Phone')}</strong>
+                  </p>
+                </section>
+                <SwissDivider className="my-8" />
+                <section>
+                  <h2 className="text-2xl font-black text-black mb-4">{t('section2Title')}</h2>
+                  <p className="text-gray-700 leading-relaxed">{t('section2Content')}</p>
+                </section>
+                <SwissDivider className="my-8" />
+                <section>
+                  <h2 className="text-2xl font-black text-black mb-4">{t('section3Title')}</h2>
+                  <p className="text-gray-700 leading-relaxed">{t('section3Content')}<br />{t('section3Address')}</p>
+                </section>
+                <SwissDivider className="my-8" />
+                <section>
+                  <h2 className="text-2xl font-black text-black mb-4">{t('section4Title')}</h2>
+                  <p className="text-gray-700 leading-relaxed">{t('section4Content')}</p>
+                </section>
+                <SwissDivider className="my-8" />
+                <section>
+                  <h2 className="text-2xl font-black text-black mb-4">{t('section5Title')}</h2>
+                  <p className="text-gray-700 leading-relaxed">
+                    {t('section5Content')}
+                    <Link href="/privacy" className="text-black underline font-bold">Privacy Policy</Link>
+                    {t('section5ContentEnd')}
+                  </p>
+                </section>
+                <SwissDivider className="my-8" />
+                <section>
+                  <h2 className="text-2xl font-black text-black mb-4">{t('section6Title')}</h2>
+                  <p className="text-gray-700 leading-relaxed">
+                    {t('section6Content')}
+                    <Link href="/cookies" className="text-black underline font-bold">Cookies Policy</Link>
+                    {t('section6ContentEnd')}
+                  </p>
+                </section>
+                <SwissDivider className="my-8" />
+                <section>
+                  <h2 className="text-2xl font-black text-black mb-4">{t('section7Title')}</h2>
+                  <p className="text-gray-700 leading-relaxed">{t('section7Content')}</p>
+                </section>
+                <SwissDivider className="my-8" />
+                <section>
+                  <h2 className="text-2xl font-black text-black mb-4">{t('section8Title')}</h2>
+                  <p className="text-gray-700 leading-relaxed">{t('section8Content')}</p>
+                </section>
+              </div>
+            </SwissCard>
+          </div>
+        </Container>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <Container className="py-20 md:py-32">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
           <div className="mb-16">
             <h1 className="swiss-display text-6xl md:text-8xl mb-6 text-black">
               Mentions Légales
