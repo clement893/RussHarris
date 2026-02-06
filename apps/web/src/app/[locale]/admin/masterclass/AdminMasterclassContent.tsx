@@ -376,12 +376,12 @@ export default function AdminMasterclassContent() {
     return (
       <PageContainer>
         <PageHeader 
-          title="Gestion Masterclass" 
-          description="Gérer les événements masterclass, villes et lieux"
+          title="Gestion Classe de maître" 
+          description="Gérer les événements classe de maître, villes et lieux"
           breadcrumbs={[
             { label: 'Accueil', href: '/' },
             { label: 'Administration', href: '/admin' },
-            { label: 'Masterclass' }
+            { label: 'Classe de maître' }
           ]} 
         />
         <Loading />
@@ -393,12 +393,12 @@ export default function AdminMasterclassContent() {
     return (
       <PageContainer>
         <PageHeader 
-          title="Gestion Masterclass" 
-          description="Gérer les événements masterclass, villes et lieux"
+          title="Gestion Classe de maître" 
+          description="Gérer les événements classe de maître, villes et lieux"
           breadcrumbs={[
             { label: 'Accueil', href: '/' },
             { label: 'Administration', href: '/admin' },
-            { label: 'Masterclass' }
+            { label: 'Classe de maître' }
           ]} 
         />
         <Loading />
@@ -409,12 +409,12 @@ export default function AdminMasterclassContent() {
   return (
     <PageContainer>
       <PageHeader 
-        title="Gestion Masterclass" 
-        description="Gérer les événements masterclass, villes et lieux"
+        title="Gestion Classe de maître" 
+        description="Gérer les événements classe de maître, villes et lieux"
         breadcrumbs={[
           { label: 'Accueil', href: '/' },
           { label: 'Administration', href: '/admin' },
-          { label: 'Masterclass' }
+          { label: 'Classe de maître' }
         ]} 
       />
 

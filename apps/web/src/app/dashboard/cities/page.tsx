@@ -181,7 +181,7 @@ function CitiesManagementContent() {
       <PageContainer>
         <PageHeader
           title="Gestion des Villes"
-          description="Gérer les villes disponibles pour les événements masterclass"
+          description="Gérer les villes disponibles pour les événements classe de maître"
           breadcrumbs={[
             { label: 'Accueil', href: '/' },
             { label: 'Dashboard', href: '/dashboard' },
@@ -197,7 +197,7 @@ function CitiesManagementContent() {
     <PageContainer>
       <PageHeader
         title="Gestion des Villes"
-        description="Gérer les villes disponibles pour les événements masterclass"
+        description="Gérer les villes disponibles pour les événements classe de maître"
         breadcrumbs={[
           { label: 'Accueil', href: '/' },
           { label: 'Dashboard', href: '/dashboard' },

@@ -103,7 +103,7 @@ export default function CityInscriptionPage() {
                 Inscription {city ? city.name_fr || city.name_en : ''}
               </h1>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Réservez votre place pour la masterclass ACT avec Dr. Russ Harris
+                Réservez votre place pour la classe de maître ACT avec Dr. Russ Harris
               </p>
             </div>
           </div>

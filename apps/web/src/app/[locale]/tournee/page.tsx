@@ -49,7 +49,7 @@ export default function TourneePage() {
               animationVariants.hero.subtitle,
               "text-xl md:text-2xl font-light text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
             )}>
-              Découvrez toutes les dates et lieux de la masterclass ACT avec Dr. Russ Harris
+              Découvrez toutes les dates et lieux de la classe de maître ACT avec Dr. Russ Harris
             </p>
           </div>
         </Container>

@@ -35,7 +35,7 @@ const testimonials: Testimonial[] = [
     role: 'Psychothérapeute',
     location: 'Marseille, France',
     rating: 5,
-    text: 'Cette masterclass a transformé ma pratique professionnelle. Les outils et techniques partagés sont directement applicables. L\'accès aux enregistrements vidéo est un vrai plus pour réviser les concepts clés.',
+    text: 'Cette classe de maître a transformé ma pratique professionnelle. Les outils et techniques partagés sont directement applicables. L\'accès aux enregistrements vidéo est un vrai plus pour réviser les concepts clés.',
   },
   {
     id: 4,
@@ -95,7 +95,7 @@ export default function TestimonialsPage() {
             </h1>
             <SwissDivider className="mx-auto max-w-md" />
             <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
-              Découvrez ce que disent les participants de la masterclass ACT avec Russ Harris.
+              Découvrez ce que disent les participants de la classe de maître ACT avec Russ Harris.
             </p>
           </div>
 
@@ -187,7 +187,7 @@ export default function TestimonialsPage() {
               Rejoignez-les
             </h2>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Découvrez pourquoi tant de professionnels recommandent cette masterclass.
+              Découvrez pourquoi tant de professionnels recommandent cette classe de maître.
             </p>
             <a
               href="/cities"

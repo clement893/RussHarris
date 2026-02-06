@@ -92,13 +92,13 @@ export default function AdminContent() {
           </Link>
         </Card>
 
-        <Card title="Masterclass" className="flex flex-col">
+        <Card title="Classe de maître" className="flex flex-col">
           <p className="text-muted-foreground mb-4">
-            Gérer les événements masterclass, villes, lieux et réservations.
+            Gérer les événements classe de maître, villes, lieux et réservations.
           </p>
           <Link href="/admin/masterclass">
             <Button variant="primary" className="w-full">
-              Gérer les masterclass
+              Gérer les classes de maître
             </Button>
           </Link>
         </Card>

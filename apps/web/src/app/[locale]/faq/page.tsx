@@ -51,26 +51,26 @@ const faqItems: FAQItem[] = [
   {
     id: 6,
     category: 'Programme',
-    question: 'Quel est le format de la masterclass ?',
-    answer: 'La masterclass se déroule sur 2 jours intensifs, de 9h à 17h30 avec une pause déjeuner. Elle combine des présentations théoriques, des démonstrations pratiques, des exercices en groupe et des études de cas.',
+    question: 'Quel est le format de la classe de maître ?',
+    answer: 'La classe de maître se déroule sur 2 jours intensifs, de 9h à 17h30 avec une pause déjeuner. Elle combine des présentations théoriques, des démonstrations pratiques, des exercices en groupe et des études de cas.',
   },
   {
     id: 7,
     category: 'Programme',
     question: 'Quels sont les prérequis pour participer ?',
-    answer: 'La masterclass est ouverte à tous les professionnels de la santé mentale (psychologues, psychothérapeutes, médecins, etc.). Aucun prérequis spécifique n\'est nécessaire, bien qu\'une connaissance de base en psychothérapie soit recommandée.',
+    answer: 'La classe de maître est ouverte à tous les professionnels de la santé mentale (psychologues, psychothérapeutes, médecins, etc.). Aucun prérequis spécifique n\'est nécessaire, bien qu\'une connaissance de base en psychothérapie soit recommandée.',
   },
   {
     id: 8,
     category: 'Programme',
     question: 'Recevrai-je un certificat de participation ?',
-    answer: 'Oui, tous les participants recevront un certificat de participation à la fin de la masterclass. Ce certificat atteste de votre participation à la formation avec Russ Harris.',
+    answer: 'Oui, tous les participants recevront un certificat de participation à la fin de la classe de maître. Ce certificat atteste de votre participation à la formation avec Russ Harris.',
   },
   {
     id: 9,
     category: 'Ressources',
     question: 'Quelles ressources sont incluses dans le prix ?',
-    answer: 'Le prix comprend l\'accès complet à la masterclass de 2 jours, le manuel de formation en PDF, l\'accès aux enregistrements vidéo pendant 3 mois, toutes les fiches pratiques et outils, le certificat de participation et le support en ligne.',
+    answer: 'Le prix comprend l\'accès complet à la classe de maître de 2 jours, le manuel de formation en PDF, l\'accès aux enregistrements vidéo pendant 3 mois, toutes les fiches pratiques et outils, le certificat de participation et le support en ligne.',
   },
   {
     id: 10,
@@ -134,7 +134,7 @@ export default function FAQPage() {
             </h1>
             <SwissDivider className="mx-auto max-w-md" />
             <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
-              Trouvez les réponses aux questions les plus courantes sur la masterclass ACT avec Russ Harris.
+              Trouvez les réponses aux questions les plus courantes sur la classe de maître ACT avec Russ Harris.
             </p>
           </div>
 

@@ -178,7 +178,7 @@ export default function CheckoutPage() {
               animationVariants.hero.subtitle,
               "text-xl text-gray-300 max-w-3xl"
             )}>
-              Complétez vos informations pour réserver votre place à la masterclass ACT avec Russ Harris.
+              Complétez vos informations pour réserver votre place à la classe de maître ACT avec Russ Harris.
             </p>
           </div>
         </Container>

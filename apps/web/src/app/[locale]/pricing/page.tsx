@@ -21,7 +21,7 @@ export default function PricingPage() {
       popular: true,
       badge: 'Tarif réduit',
       features: [
-        { text: 'Accès complet à la masterclass (2 jours)' },
+        { text: 'Accès complet à la classe de maître (2 jours)' },
         { text: 'Manuel de formation (PDF)' },
         { text: 'Accès aux enregistrements vidéo (3 mois)' },
         { text: 'Fiches pratiques et outils' },
@@ -39,7 +39,7 @@ export default function PricingPage() {
       description: 'Tarif standard pour réservations',
       popular: false,
       features: [
-        { text: 'Accès complet à la masterclass (2 jours)' },
+        { text: 'Accès complet à la classe de maître (2 jours)' },
         { text: 'Manuel de formation (PDF)' },
         { text: 'Accès aux enregistrements vidéo (3 mois)' },
         { text: 'Fiches pratiques et outils' },
@@ -57,7 +57,7 @@ export default function PricingPage() {
       description: 'Tarif réduit pour groupes de 3 personnes ou plus',
       popular: false,
       features: [
-        { text: 'Accès complet à la masterclass (2 jours)' },
+        { text: 'Accès complet à la classe de maître (2 jours)' },
         { text: 'Manuel de formation (PDF)' },
         { text: 'Accès aux enregistrements vidéo (3 mois)' },
         { text: 'Fiches pratiques et outils' },
@@ -85,7 +85,7 @@ export default function PricingPage() {
     },
     {
       question: 'Que comprend le prix ?',
-      answer: 'Le prix comprend l\'accès complet à la masterclass de 2 jours, le manuel de formation, l\'accès aux enregistrements vidéo pendant 3 mois, toutes les ressources pratiques, le certificat de participation et le support en ligne.',
+      answer: 'Le prix comprend l\'accès complet à la classe de maître de 2 jours, le manuel de formation, l\'accès aux enregistrements vidéo pendant 3 mois, toutes les ressources pratiques, le certificat de participation et le support en ligne.',
     },
     {
       question: 'Y a-t-il des frais supplémentaires ?',
@@ -104,7 +104,7 @@ export default function PricingPage() {
             </h1>
             <SwissDivider className="mx-auto max-w-md" />
             <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
-              Choisissez l'option qui vous convient pour participer à la masterclass ACT avec Russ Harris.
+              Choisissez l'option qui vous convient pour participer à la classe de maître ACT avec Russ Harris.
             </p>
           </div>
 

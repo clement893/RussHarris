@@ -29,7 +29,7 @@ export default function CitiesPage() {
               Villes & Dates
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Choisissez la ville et la date qui vous conviennent pour participer à la masterclass ACT avec Russ Harris.
+              Choisissez la ville et la date qui vous conviennent pour participer à la classe de maître ACT avec Russ Harris.
             </p>
           </div>
         </Container>

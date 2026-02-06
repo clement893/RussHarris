@@ -27,7 +27,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">1. Objet</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Les présentes Conditions Générales de Vente (CGV) régissent les relations entre l'Institut de Psychologie Contextuelle et les participants à la masterclass ACT avec Russ Harris.
+                  Les présentes Conditions Générales de Vente (CGV) régissent les relations entre l'Institut de Psychologie Contextuelle et les participants à la classe de maître ACT avec Russ Harris.
                 </p>
               </section>
 
@@ -72,7 +72,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">6. Modification ou annulation par l'organisateur</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  En cas d'annulation de la masterclass par l'organisateur, les participants seront intégralement remboursés dans les 30 jours.
+                  En cas d'annulation de la classe de maître par l'organisateur, les participants seront intégralement remboursés dans les 30 jours.
                 </p>
               </section>
 
@@ -90,7 +90,7 @@ export default function TermsPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">8. Responsabilité</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  L'organisateur décline toute responsabilité en cas de dommages directs ou indirects résultant de la participation à la masterclass. Les participants sont responsables de leur propre assurance.
+                  L'organisateur décline toute responsabilité en cas de dommages directs ou indirects résultant de la participation à la classe de maître. Les participants sont responsables de leur propre assurance.
                 </p>
               </section>
 

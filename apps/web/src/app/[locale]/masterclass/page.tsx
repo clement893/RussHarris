@@ -41,7 +41,7 @@ export default function MasterclassPage() {
               Le Programme
             </h1>
             <p className="text-xl md:text-2xl font-light text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Cette masterclass intensive de 2 jours vous plongera au cœur de la Thérapie d'Acceptation et d'Engagement (ACT). Vous découvrirez les fondements théoriques, les techniques pratiques et les applications cliniques de cette approche thérapeutique révolutionnaire.
+              Cette classe de maître intensive de 2 jours vous plongera au cœur de la Thérapie d'Acceptation et d'Engagement (ACT). Vous découvrirez les fondements théoriques, les techniques pratiques et les applications cliniques de cette approche thérapeutique révolutionnaire.
             </p>
             <p className="text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
               À travers des démonstrations en direct, des exercices pratiques et des études de cas, Russ Harris vous guidera dans l'apprentissage de l'ACT pour transformer votre pratique professionnelle.
@@ -183,7 +183,7 @@ export default function MasterclassPage() {
             Prêt à transformer votre pratique ?
           </h2>
           <p className="text-xl text-gray-300 mb-12">
-            Réservez votre place dès maintenant pour cette masterclass exceptionnelle.
+            Réservez votre place dès maintenant pour cette classe de maître exceptionnelle.
           </p>
           <Link href="/cities">
             <Button 

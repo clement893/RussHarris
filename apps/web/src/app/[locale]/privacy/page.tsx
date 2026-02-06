@@ -27,7 +27,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">1. Collecte des données</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  L'Institut de Psychologie Contextuelle collecte les données personnelles suivantes lors de la réservation : nom, prénom, email, téléphone, adresse. Ces données sont nécessaires pour la gestion de votre réservation et la communication relative à la masterclass.
+                  L'Institut de Psychologie Contextuelle collecte les données personnelles suivantes lors de la réservation : nom, prénom, email, téléphone, adresse. Ces données sont nécessaires pour la gestion de votre réservation et la communication relative à la classe de maître.
                 </p>
               </section>
 
@@ -36,7 +36,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">2. Utilisation des données</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Les données collectées sont utilisées pour : la gestion de votre réservation, l'envoi de confirmations et informations relatives à la masterclass, la gestion des paiements, l'amélioration de nos services.
+                  Les données collectées sont utilisées pour : la gestion de votre réservation, l'envoi de confirmations et informations relatives à la classe de maître, la gestion des paiements, l'amélioration de nos services.
                 </p>
               </section>
 

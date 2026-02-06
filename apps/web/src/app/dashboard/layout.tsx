@@ -69,7 +69,7 @@ function DashboardLayoutContent({
             icon: <MapPin className="w-5 h-5" />,
           },
           {
-            label: 'Masterclass',
+            label: 'Classe de maître',
             href: '/admin/masterclass',
             icon: <GraduationCap className="w-5 h-5" />,
           },

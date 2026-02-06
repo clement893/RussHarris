@@ -29,7 +29,7 @@ export default function Footer() {
               L'Institut de Psychologie Contextuelle
             </h3>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-md">
-              Masterclass ACT avec Russ Harris. Formation professionnelle en Thérapie d'Acceptation et d'Engagement.
+              Classe de maître ACT avec Russ Harris. Formation professionnelle en Thérapie d'Acceptation et d'Engagement.
             </p>
             <div className="text-sm text-muted-foreground mb-4">
               <p>Email: admin@contextpsy.com</p>
@@ -105,8 +105,8 @@ export default function Footer() {
           </div>
 
           {/* Masterclass Navigation */}
-          <nav aria-label="Masterclass">
-            <h4 className="text-white font-semibold mb-4 text-base">Masterclass</h4>
+          <nav aria-label="Classe de maître">
+            <h4 className="text-white font-semibold mb-4 text-base">Classe de maître</h4>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link href="/masterclass" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">

@@ -165,7 +165,7 @@ export function getNavigationConfig(isAdmin: boolean): NavigationConfig {
       icon: <Shield className="w-5 h-5" />,
       items: [
         {
-          name: 'Masterclass',
+          name: 'Classe de maître',
           href: '/admin/masterclass',
           icon: <GraduationCap className="w-5 h-5" />,
         },

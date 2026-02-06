@@ -15,7 +15,7 @@ export default function VancouverPage() {
       badge: 'Meilleur prix',
       deadline: 'Jusqu\'au 15 avril 2026',
       features: [
-        'Accès complet à la masterclass (2 jours)',
+        'Accès complet à la classe de maître (2 jours)',
         'Manuel de formation (PDF)',
         'Certificat de participation',
       ],
@@ -28,7 +28,7 @@ export default function VancouverPage() {
       description: 'Tarif standard',
       badge: null,
       features: [
-        'Accès complet à la masterclass (2 jours)',
+        'Accès complet à la classe de maître (2 jours)',
         'Manuel de formation (PDF)',
         'Certificat de participation',
       ],
@@ -42,7 +42,7 @@ export default function VancouverPage() {
       badge: 'Réduction 10%',
       minQuantity: 3,
       features: [
-        'Accès complet à la masterclass (2 jours)',
+        'Accès complet à la classe de maître (2 jours)',
         'Manuel de formation (PDF)',
         'Certificat de participation',
         'Réduction de groupe appliquée',
@@ -60,7 +60,7 @@ export default function VancouverPage() {
               VANCOUVER
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-4">
-              Masterclass ACT avec Dr. Russ Harris
+              Classe de maître ACT avec Dr. Russ Harris
             </p>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
               Deux jours intensifs pour découvrir la Thérapie d'Acceptation et d'Engagement avec l'un des formateurs les plus respectés au monde.
@@ -270,7 +270,7 @@ export default function VancouverPage() {
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Qui peut participer ?</h3>
                 <p className="text-gray-600 mb-3">
-                  Cette masterclass s'adresse aux professionnels de la santé mentale :
+                  Cette classe de maître s'adresse aux professionnels de la santé mentale :
                 </p>
                 <ul className="space-y-2 text-gray-600">
                   <li className="flex items-start gap-2">
