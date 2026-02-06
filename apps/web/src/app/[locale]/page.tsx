@@ -706,7 +706,7 @@ export default function HomePage() {
             <p className="text-xs md:text-sm text-gray-500 uppercase tracking-wider">{t('organizerLabel')}</p>
             <div className="relative w-full max-w-[300px] sm:max-w-[350px] md:max-w-[400px] h-[60px] sm:h-[80px] md:h-[100px] opacity-80 hover:opacity-100 transition-opacity">
               <Image
-                src="/images/ips-logo.png"
+                src="/images/ipc-logo.png"
                 alt="Institut de psychologie contextuelle"
                 fill
                 style={{ objectFit: 'contain' }}
