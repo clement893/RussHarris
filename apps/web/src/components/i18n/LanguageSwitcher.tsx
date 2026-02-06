@@ -20,7 +20,12 @@ import { Globe, Check } from '@/lib/icons';
 import Button from '@/components/ui/Button';
 import { clsx } from 'clsx';
 
-export default function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+  /** When true, use dark text/icon for readability on light header background */
+  isOnWhiteBackground?: boolean;
+}
+
+export default function LanguageSwitcher({ isOnWhiteBackground = false }: LanguageSwitcherProps) {
   const locale = useLocale() as Locale;
   const t = useTranslations('language');
   const [isOpen, setIsOpen] = useState(false);
@@ -44,10 +49,15 @@ export default function LanguageSwitcher() {
       <Button
         variant="secondary"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2"
+        className={clsx(
+          'flex items-center gap-2',
+          isOnWhiteBackground
+            ? 'bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-200'
+            : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
+        )}
         aria-label={t('switchLanguage')}
       >
-        <Globe className="w-4 h-4" />
+        <Globe className={clsx('w-4 h-4', isOnWhiteBackground ? 'text-gray-900' : '')} />
         <span className="hidden sm:inline">{localeNames[locale]}</span>
         <span className="sm:hidden">{locale.toUpperCase()}</span>
       </Button>

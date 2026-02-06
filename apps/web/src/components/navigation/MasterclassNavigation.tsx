@@ -141,14 +141,14 @@ export default function MasterclassNavigation({
                 'transition-opacity',
                 isOnWhiteBackground ? 'opacity-80 hover:opacity-100' : 'opacity-60 hover:opacity-100'
               )}>
-                <LanguageSwitcher />
+                <LanguageSwitcher isOnWhiteBackground={isOnWhiteBackground} />
               </div>
             </div>
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center gap-3">
               <div className="opacity-60 hover:opacity-100 transition-opacity">
-                <LanguageSwitcher />
+                <LanguageSwitcher isOnWhiteBackground={isOnWhiteBackground} />
               </div>
               <button
                 type="button"
