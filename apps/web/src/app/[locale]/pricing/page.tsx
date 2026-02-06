@@ -104,7 +104,7 @@ export default function PricingPage() {
             </h1>
             <SwissDivider className="mx-auto max-w-md" />
             <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
-              Choisissez l'option qui vous convient pour participer à la classe de maître ACT avec Russ Harris.
+              Choisissez l'option qui vous convient pour participer à la classe de maître ACT avec le Dr. Russ Harris.
             </p>
           </div>
 

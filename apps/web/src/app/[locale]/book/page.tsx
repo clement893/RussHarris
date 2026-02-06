@@ -98,7 +98,7 @@ export default function BookPage() {
               animationVariants.hero.subtitle,
               "text-xl text-gray-300 mt-6 max-w-3xl"
             )}>
-              Sélectionnez la ville de votre choix pour participer à la classe de maître ACT avec Russ Harris.
+              Sélectionnez la ville de votre choix pour participer à la classe de maître ACT avec le Dr. Russ Harris.
             </p>
           </div>
         </Container>

@@ -26,7 +26,7 @@ const faqItemsFr: FAQItem[] = [
   { id: 5, category: 'Réservation', question: 'Y a-t-il un tarif réduit pour les groupes ?', answer: 'Oui, nous offrons un tarif groupe pour les réservations de 3 personnes ou plus. Contactez-nous à admin@contextpsy.com pour obtenir un devis personnalisé et organiser votre réservation de groupe.' },
   { id: 6, category: 'Programme', question: 'Quel est le format de la classe de maître ?', answer: 'La classe de maître se déroule sur 2 jours intensifs, de 9h à 17h30 avec une pause déjeuner. Elle combine des présentations théoriques, des démonstrations pratiques, des exercices en groupe et des études de cas.' },
   { id: 7, category: 'Programme', question: 'Quels sont les prérequis pour participer ?', answer: 'La classe de maître est ouverte à tous les professionnels de la santé mentale (psychologues, psychothérapeutes, médecins, etc.). Aucun prérequis spécifique n\'est nécessaire, bien qu\'une connaissance de base en psychothérapie soit recommandée.' },
-  { id: 8, category: 'Programme', question: 'Recevrai-je un certificat de participation ?', answer: 'Oui, tous les participants recevront un certificat de participation à la fin de la classe de maître. Ce certificat atteste de votre participation à la formation avec Russ Harris.' },
+  { id: 8, category: 'Programme', question: 'Recevrai-je un certificat de participation ?', answer: 'Oui, tous les participants recevront un certificat de participation à la fin de la classe de maître. Ce certificat atteste de votre participation à la formation avec le Dr. Russ Harris.' },
   { id: 9, category: 'Ressources', question: 'Quelles ressources sont incluses dans le prix ?', answer: 'Le prix comprend l\'accès complet à la classe de maître de 2 jours, le manuel de formation en PDF, l\'accès aux enregistrements vidéo pendant 3 mois, toutes les fiches pratiques et outils, le certificat de participation et le support en ligne.' },
   { id: 10, category: 'Ressources', question: 'Puis-je accéder aux enregistrements après l\'événement ?', answer: 'Oui, vous aurez accès aux enregistrements vidéo de la formation pendant 3 mois après l\'événement. Cela vous permet de réviser les concepts et techniques à votre rythme.' },
   { id: 11, category: 'Pratique', question: 'Où se déroulent les événements ?', answer: 'Les événements se déroulent dans différentes villes. Consultez la page "Villes & Dates" pour voir toutes les villes disponibles et leurs lieux spécifiques. Les adresses complètes sont indiquées pour chaque événement.' },
@@ -93,7 +93,7 @@ export default function FAQPage() {
             </h1>
             <SwissDivider className="mx-auto max-w-md" />
             <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
-              {locale === 'en' ? t('subtitle') : 'Trouvez les réponses aux questions les plus courantes sur la classe de maître ACT avec Russ Harris.'}
+              {locale === 'en' ? t('subtitle') : 'Trouvez les réponses aux questions les plus courantes sur la classe de maître ACT avec le Dr. Russ Harris.'}
             </p>
           </div>
 

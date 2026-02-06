@@ -98,7 +98,7 @@ export default function TestimonialsPage() {
             </h1>
             <SwissDivider className="mx-auto max-w-md" />
             <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
-              {locale === 'en' ? t('subtitle') : 'Découvrez ce que disent les participants de la classe de maître ACT avec Russ Harris.'}
+              {locale === 'en' ? t('subtitle') : 'Découvrez ce que disent les participants de la classe de maître ACT avec le Dr. Russ Harris.'}
             </p>
           </div>
 

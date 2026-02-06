@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import Button from '@/components/ui/Button';
 
 export default function Footer() {
+  const t = useTranslations('footer');
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -26,19 +28,19 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <h3 className="text-white font-bold text-xl mb-4">
-              L'Institut de Psychologie Contextuelle
+              {t('brandName')}
             </h3>
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-md">
-              Classe de maître ACT avec Russ Harris. Formation professionnelle en Thérapie d'Acceptation et d'Engagement.
+              {t('brandDescription')}
             </p>
             <div className="text-sm text-muted-foreground mb-4">
-              <p>Email: admin@contextpsy.com</p>
-              <p>Téléphone: (438) 375-4869</p>
+              <p>{t('emailLabel')} admin@contextpsy.com</p>
+              <p>{t('phoneLabel')} (438) 375-4869</p>
             </div>
             
             {/* Social Media Links */}
             <div className="flex items-center gap-4 mb-6">
-              <span className="text-sm text-muted-foreground">Suivez-nous:</span>
+              <span className="text-sm text-muted-foreground">{t('followUs')}</span>
               <div className="flex items-center gap-3" role="list" aria-label="Réseaux sociaux">
                 {/* Placeholder social links - can be replaced with actual links */}
                 <a
@@ -76,15 +78,15 @@ export default function Footer() {
 
             {/* Newsletter Signup */}
             <div>
-              <h4 className="text-white font-semibold mb-3 text-sm">Newsletter</h4>
+              <h4 className="text-white font-semibold mb-3 text-sm">{t('newsletter')}</h4>
               <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Votre email"
+                  placeholder={t('emailPlaceholder')}
                   className="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent text-sm"
-                  aria-label="Adresse email pour la newsletter"
+                  aria-label={t('emailAriaLabel')}
                 />
                 <Button
                   type="submit"
@@ -93,49 +95,49 @@ export default function Footer() {
                   className="whitespace-nowrap"
                   disabled={!email || subscribed}
                 >
-                  {subscribed ? 'Inscrit!' : 'S\'abonner'}
+                  {subscribed ? t('subscribed') : t('subscribe')}
                 </Button>
               </form>
               {subscribed && (
                 <p className="mt-2 text-xs text-primary-400" role="status" aria-live="polite">
-                  Merci pour votre inscription!
+                  {t('thankYou')}
                 </p>
               )}
             </div>
           </div>
 
           {/* Masterclass Navigation */}
-          <nav aria-label="Classe de maître">
-            <h4 className="text-white font-semibold mb-4 text-base">Classe de maître</h4>
+          <nav aria-label={t('masterclassNavLabel')}>
+            <h4 className="text-white font-semibold mb-4 text-base">{t('masterclassTitle')}</h4>
             <ul className="space-y-3 text-sm">
               <li>
                 <Link href="/masterclass" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  Programme
+                  {t('program')}
                 </Link>
               </li>
               <li>
                 <Link href="/cities" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  Villes & Dates
+                  {t('citiesDates')}
                 </Link>
               </li>
               <li>
                 <Link href="/about-russ" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  À propos de Russ Harris
+                  {t('aboutRuss')}
                 </Link>
               </li>
               <li>
                 <Link href="/pricing" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  Tarifs
+                  {t('pricing')}
                 </Link>
               </li>
               <li>
                 <Link href="/testimonials" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  Témoignages
+                  {t('testimonials')}
                 </Link>
               </li>
               <li>
                 <Link href="/faq" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  FAQ
+                  {t('faq')}
                 </Link>
               </li>
             </ul>
@@ -143,7 +145,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-white font-semibold mb-4 text-base">Contact</h4>
+            <h4 className="text-white font-semibold mb-4 text-base">{t('contactTitle')}</h4>
             <ul className="space-y-3 text-sm" role="list">
               <li className="text-muted-foreground">
                 <a href="mailto:admin@contextpsy.com" className="hover:text-primary-400 transition-colors">
@@ -151,27 +153,27 @@ export default function Footer() {
                 </a>
               </li>
               <li className="text-muted-foreground">(438) 375-4869</li>
-              <li className="text-muted-foreground">France</li>
+              <li className="text-muted-foreground">{t('country')}</li>
             </ul>
           </div>
 
           {/* Contact Navigation */}
-          <nav aria-label="Contact">
-            <h4 className="text-white font-semibold mb-4 text-base">Contact</h4>
+          <nav aria-label={t('contactTitle')}>
+            <h4 className="text-white font-semibold mb-4 text-base">{t('contactTitle')}</h4>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="https://github.com/clement893" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="GitHub du développeur (ouvre dans un nouvel onglet)">
+                <a href="https://github.com/clement893" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="GitHub (opens in new tab)">
                   GitHub
                 </a>
               </li>
               <li>
-                <a href="https://github.com/clement893/MODELE-NEXTJS-FULLSTACK/issues" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="Signaler un bug sur GitHub (ouvre dans un nouvel onglet)">
-                  Signaler un bug
+                <a href="https://github.com/clement893/MODELE-NEXTJS-FULLSTACK/issues" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block" aria-label="Report a bug on GitHub (opens in new tab)">
+                  {t('reportBug')}
                 </a>
               </li>
               <li>
                 <Link href="/dashboard" className="text-muted-foreground hover:text-primary-400 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded inline-block">
-                  Dashboard
+                  {t('dashboard')}
                 </Link>
               </li>
             </ul>
@@ -182,17 +184,17 @@ export default function Footer() {
         <div className="border-t border-gray-800 dark:border-gray-700 mt-10 pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
             <p>
-              © {currentYear} Nukleo. Tous droits réservés.
+              {t('copyright', { year: currentYear })}
             </p>
             <div className="flex items-center gap-6">
               <Link href="/sitemap" className="hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded">
-                Plan du site
+                {t('sitemap')}
               </Link>
               <Link href="/privacy" className="hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded">
-                Confidentialité
+                {t('privacy')}
               </Link>
               <Link href="/terms" className="hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded">
-                Conditions
+                {t('terms')}
               </Link>
             </div>
           </div>

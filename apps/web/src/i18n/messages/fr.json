@@ -64,7 +64,7 @@
     "dateComingSoon": "Date et lieu à venir",
     "emailNotifyText": "Entrez votre adresse courriel pour ne rien manquer.",
     "citiesPageTitle": "Villes & dates",
-    "citiesPageSubtitle": "Choisissez la ville et la date qui vous conviennent pour participer à la classe de maître ACT avec Russ Harris.",
+    "citiesPageSubtitle": "Choisissez la ville et la date qui vous conviennent pour participer à la classe de maître ACT avec le Dr. Russ Harris.",
     "questionsCta": "Do you have any questions?",
     "contactUs": "Contact us",
     "aboutTitle": "L'homme derrière l'ACT",
@@ -153,7 +153,7 @@
     "keyPoint4Title": "Pratique Clinique",
     "keyPoint4Description": "Pratique clinique active avec une approche pragmatique et centrée sur l'efficacité thérapeutique.",
     "ctaTitle": "Rejoignez la classe de maître",
-    "ctaDescription": "Découvrez l'ACT appliquée à la neurodivergence avec Russ Harris et transformez votre pratique professionnelle.",
+    "ctaDescription": "Découvrez l'ACT appliquée à la neurodivergence avec le Dr. Russ Harris et transformez votre pratique professionnelle.",
     "ctaButton": "Réserver ma place"
   },
   "contact": {
@@ -360,7 +360,34 @@
         "apiKeys": "Clés API"
       }
     }
+  },
+  "footer": {
+    "brandName": "L'Institut de Psychologie Contextuelle",
+    "brandDescription": "Classe de maître ACT avec le Dr. Russ Harris. Formation professionnelle en Thérapie d'Acceptation et d'Engagement.",
+    "emailLabel": "Email:",
+    "phoneLabel": "Téléphone:",
+    "followUs": "Suivez-nous:",
+    "newsletter": "Newsletter",
+    "emailPlaceholder": "Votre email",
+    "emailAriaLabel": "Adresse email pour la newsletter",
+    "subscribed": "Inscrit!",
+    "subscribe": "S'abonner",
+    "thankYou": "Merci pour votre inscription!",
+    "masterclassNavLabel": "Classe de maître",
+    "masterclassTitle": "Classe de maître",
+    "program": "Programme",
+    "citiesDates": "Villes & Dates",
+    "aboutRuss": "À propos de Russ Harris",
+    "pricing": "Tarifs",
+    "testimonials": "Témoignages",
+    "faq": "FAQ",
+    "contactTitle": "Contact",
+    "country": "France",
+    "reportBug": "Signaler un bug",
+    "dashboard": "Dashboard",
+    "copyright": "© {year} L'Institut de Psychologie Contextuelle. Tous droits réservés.",
+    "sitemap": "Plan du site",
+    "privacy": "Confidentialité",
+    "terms": "Conditions"
   }
 }
-
-

@@ -28,7 +28,7 @@ export default function ProgramPreview({ className }: ProgramPreviewProps) {
             </h2>
             <SwissDivider className="mx-auto max-w-md" />
             <p className="text-xl text-gray-600 mt-6 max-w-3xl mx-auto">
-              Une formation intensive de 2 jours pour maîtriser l'ACT avec Russ Harris
+              Une formation intensive de 2 jours pour maîtriser l'ACT avec le Dr. Russ Harris
             </p>
           </div>
 

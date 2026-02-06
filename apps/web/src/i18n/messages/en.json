@@ -64,7 +64,7 @@
     "dateComingSoon": "Date and location coming soon",
     "emailNotifyText": "Enter your email address to not miss out.",
     "citiesPageTitle": "Cities & Dates",
-    "citiesPageSubtitle": "Choose the city and date that work for you to take part in the ACT masterclass with Russ Harris.",
+    "citiesPageSubtitle": "Choose the city and date that work for you to take part in the ACT masterclass with Dr. Russ Harris.",
     "questionsCta": "Do you have any questions?",
     "contactUs": "Contact us",
     "aboutTitle": "The man behind ACT",
@@ -153,7 +153,7 @@
     "keyPoint4Title": "Clinical practice",
     "keyPoint4Description": "Active clinical practice with a pragmatic, effectiveness-focused approach.",
     "ctaTitle": "Join The Masterclass",
-    "ctaDescription": "Discover ACT applied to neurodiversity with Russ Harris and transform your professional practice.",
+    "ctaDescription": "Discover ACT applied to neurodiversity with Dr. Russ Harris and transform your professional practice.",
     "ctaButton": "Reserve my seat"
   },
   "contact": {
@@ -197,7 +197,7 @@
   },
   "faq": {
     "title": "Frequently Asked Questions",
-    "subtitle": "Find answers to the most common questions about the ACT masterclass with Russ Harris.",
+    "subtitle": "Find answers to the most common questions about the ACT masterclass with Dr. Russ Harris.",
     "searchPlaceholder": "Search for a question",
     "all": "All",
     "general": "General",
@@ -222,7 +222,7 @@
     "q7": "What are the prerequisites for participating?",
     "a7": "The masterclass is open to all mental health professionals (psychologists, psychotherapists, physicians, etc.). No specific prerequisites are required, although a basic background in psychotherapy is recommended.",
     "q8": "Will I receive a certificate of participation?",
-    "a8": "Yes, all participants will receive a certificate of participation at the end of the masterclass. This certificate confirms your attendance at the training with Russ Harris.",
+    "a8": "Yes, all participants will receive a certificate of participation at the end of the masterclass. This certificate confirms your attendance at the training with Dr. Russ Harris.",
     "q9": "What resources are included in the price?",
     "a9": "The price includes full access to the two-day masterclass, the training manual in PDF format, access to video recordings for three months, all worksheets and tools, the certificate of participation, and online support.",
     "q10": "Can I access the recordings after the event?",
@@ -281,7 +281,7 @@
   },
   "testimonials": {
     "title": "Testimonials",
-    "subtitle": "Discover what participants are saying about the ACT masterclass with Russ Harris.",
+    "subtitle": "Discover what participants are saying about the ACT masterclass with Dr. Russ Harris.",
     "ctaTitle": "Join them",
     "ctaDescription": "Discover why so many professionals recommend this masterclass.",
     "ctaButton": "Reserve my seat"
@@ -451,5 +451,34 @@
         "apiKeys": "API Keys"
       }
     }
+  },
+  "footer": {
+    "brandName": "The Institute of Contextual Psychology",
+    "brandDescription": "ACT masterclass with Dr. Russ Harris. Professional training in Acceptance and Commitment Therapy.",
+    "emailLabel": "Email:",
+    "phoneLabel": "Phone:",
+    "followUs": "Follow us:",
+    "newsletter": "Newsletter",
+    "emailPlaceholder": "Your email",
+    "emailAriaLabel": "Email address for newsletter",
+    "subscribed": "Subscribed!",
+    "subscribe": "Subscribe",
+    "thankYou": "Thank you for subscribing!",
+    "masterclassNavLabel": "Masterclass",
+    "masterclassTitle": "Masterclass",
+    "program": "Program",
+    "citiesDates": "Cities & Dates",
+    "aboutRuss": "About Russ Harris",
+    "pricing": "Pricing",
+    "testimonials": "Testimonials",
+    "faq": "FAQ",
+    "contactTitle": "Contact",
+    "country": "Canada",
+    "reportBug": "Report a bug",
+    "dashboard": "Dashboard",
+    "copyright": "© {year} The Institute of Contextual Psychology. All rights reserved.",
+    "sitemap": "Sitemap",
+    "privacy": "Privacy",
+    "terms": "Terms"
   }
 }
