@@ -55,13 +55,13 @@ export default function MasterclassFooter() {
                 <div className="relative w-12 h-12 transition-transform duration-300 group-hover:scale-110">
                   <Image
                     src="/images/ips-logo.png"
-                    alt="Institut de psychologie contextuelle"
+                    alt="Institut de Psychologie Contextuelle"
                     fill
                     className="object-contain"
                   />
                 </div>
                 <h3 className="text-xl font-bold text-white group-hover:text-[#F58220] transition-colors">
-                  Institut de psychologie contextuelle
+                  Institut de Psychologie Contextuelle
                 </h3>
               </Link>
               <p className="text-sm text-white/80 mb-6 leading-relaxed">
@@ -166,7 +166,7 @@ export default function MasterclassFooter() {
           <div className="border-t border-[#2B5F7A]/40 pt-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <p className="text-sm text-white/70">
-                © {currentYear} Institut de psychologie contextuelle - Classe de maître ACT avec Dr. Russ Harris. Tous droits réservés.
+                © {currentYear} Institut de Psychologie Contextuelle - Classe de maître ACT avec Dr. Russ Harris. Tous droits réservés.
               </p>
               <div className="flex items-center gap-6 text-sm text-white/70">
                 <Link href="/legal" className="hover:text-[#F58220] transition-colors">
