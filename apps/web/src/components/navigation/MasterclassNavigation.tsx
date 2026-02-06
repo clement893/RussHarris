@@ -100,19 +100,17 @@ export default function MasterclassNavigation({
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* Logo : même règle que les textes (headerReadableOnLight) */}
+            {/* Logo : même règle que les textes (headerReadableOnLight) — filtre sur l'image elle-même */}
             <Link href="/" className="flex items-center group relative">
-              <div
-                className={clsx(
-                  'relative w-32 h-32 transition-all duration-300 group-hover:scale-105',
-                  headerReadableOnLight ? '' : 'brightness-0 invert'
-                )}
-              >
+              <div className="relative w-32 h-32 transition-all duration-300 group-hover:scale-105">
                 <Image
                   src="/images/ips-logo.png"
                   alt="Institut de Psychologie Contextuelle"
                   fill
-                  className="object-contain"
+                  className={clsx(
+                    'object-contain transition-all duration-300',
+                    headerReadableOnLight ? '' : 'brightness-0 invert'
+                  )}
                 />
               </div>
             </Link>
