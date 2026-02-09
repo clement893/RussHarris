@@ -42,11 +42,19 @@ export default function MasterclassPage() {
             <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-none text-white tracking-tight">
               {t('title')}
             </h1>
+            {t('programSubtitle') ? (
+              <p className="text-xl md:text-2xl font-medium text-[#FF8C42] mb-6 leading-relaxed max-w-3xl mx-auto">
+                {t('programSubtitle')}
+              </p>
+            ) : null}
             <p className="text-xl md:text-2xl font-light text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
               {t('description1')}
             </p>
-            <p className="text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-lg text-gray-400 mb-4 leading-relaxed max-w-2xl mx-auto">
               {t('description2')}
+            </p>
+            <p className="text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+              {t('description3')}
             </p>
             <Link href="/cities">
               <Button 

@@ -112,8 +112,10 @@
   },
   "masterclass": {
     "title": "Le Programme",
+    "programSubtitle": "",
     "description1": "Cette classe de maître intensive de 2 jours vous plongera au cœur de la Thérapie d'Acceptation et d'Engagement (ACT). Vous découvrirez les fondements théoriques, les techniques pratiques et les applications cliniques de cette approche thérapeutique révolutionnaire.",
     "description2": "À travers des démonstrations en direct, des exercices pratiques et des études de cas, Russ Harris vous guidera dans l'apprentissage de l'ACT pour transformer votre pratique professionnelle.",
+    "description3": "À travers des démonstrations en direct, des exercices pratiques et des études de cas, Russ Harris vous guidera dans l'apprentissage de l'ACT pour transformer votre pratique professionnelle.",
     "bookPlace": "Réserver ma place",
     "day1Title": "Fondements de l'ACT",
     "day1Morning": "Introduction à l'ACT : historique et philosophie • Le modèle hexaflex : les 6 processus fondamentaux • Démonstrations pratiques et exercices",
