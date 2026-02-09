@@ -263,7 +263,8 @@ export default function HomePage() {
             </div>
             </ScrollReveal>
 
-            {/* Calgary */}
+            {/* Calgary (caché) */}
+            <div className="hidden">
             <ScrollReveal delay={400}>
               <div className={combineAnimations(
                 microInteractions.card.base,
@@ -312,6 +313,7 @@ export default function HomePage() {
               </div>
             </div>
             </ScrollReveal>
+            </div>
           </div>
         </Container>
       </section>
