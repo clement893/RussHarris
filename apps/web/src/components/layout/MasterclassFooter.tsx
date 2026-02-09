@@ -65,7 +65,7 @@ export default function MasterclassFooter() {
                 </h3>
               </Link>
               <p className="text-sm text-white/80 mb-6 leading-relaxed">
-                Formation professionnelle en Thérapie d'Acceptation et d'Engagement avec Dr. Russ Harris.
+                Formation professionnelle en Thérapie d'Acceptation et d'Engagement avec le Dr. Russ Harris.
               </p>
               
               {/* Contact Info */}
