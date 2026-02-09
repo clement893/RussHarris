@@ -65,9 +65,8 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Providing all messages to the client
-  // side is the easiest way to get started
-  const messages = await getMessages();
+  // Providing all messages to the client (locale explicite pour éviter le cache FR)
+  const messages = await getMessages({ locale });
 
   // Get API URL for resource hints
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_DEFAULT_API_URL || 'http://localhost:8000';

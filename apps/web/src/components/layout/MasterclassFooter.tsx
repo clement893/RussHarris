@@ -55,17 +55,17 @@ export default function MasterclassFooter() {
                 <div className="relative w-12 h-12 transition-transform duration-300 group-hover:scale-110">
                   <Image
                     src="/images/ips-logo.png"
-                    alt="Institut de Psychologie Contextuelle"
+                    alt={t('brandName')}
                     fill
                     className="object-contain"
                   />
                 </div>
                 <h3 className="text-xl font-bold text-white group-hover:text-[#F58220] transition-colors">
-                  Institut de Psychologie Contextuelle
+                  {t('brandName')}
                 </h3>
               </Link>
               <p className="text-sm text-white/80 mb-6 leading-relaxed">
-                Formation professionnelle en Thérapie d'Acceptation et d'Engagement avec le Dr. Russ Harris.
+                {t('brandDescription')}
               </p>
               
               {/* Contact Info */}
