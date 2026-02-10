@@ -125,11 +125,8 @@ export default function HomePage() {
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
           <ScrollReveal>
             <div className="text-center mb-12 md:mb-16">
-              <div className="flex flex-wrap items-baseline justify-center gap-2 md:gap-3 mb-4">
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white">{t('tourTitle')}</h2>
-                <span className="text-base sm:text-lg md:text-xl text-gray-400 font-medium">· {t('limitedPlaces')}</span>
-              </div>
-              <p className="text-base sm:text-lg md:text-xl text-gray-400">{t('tourSubtitle')}</p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">{t('tourTitle')}</h2>
+              <p className="text-base sm:text-lg md:text-xl text-gray-400">{t('limitedPlaces')}</p>
             </div>
           </ScrollReveal>
 

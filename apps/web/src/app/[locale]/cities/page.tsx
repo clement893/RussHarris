@@ -25,12 +25,9 @@ export default function CitiesPage() {
       <section className="relative pt-24 pb-6 md:pt-32 md:pb-10 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]" data-header-contrast="dark">
         <Container className="max-w-7xl mx-auto">
           <div className="text-center mb-0">
-            <div className="flex flex-wrap items-baseline justify-center gap-2 md:gap-3 mb-6">
-              <h1 className="text-5xl md:text-7xl font-bold text-white">
-                {t('citiesPageTitle')}
-              </h1>
-              <span className="text-lg md:text-xl text-gray-400 font-medium">· {t('limitedPlaces')}</span>
-            </div>
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+              {t('citiesPageTitle')}
+            </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               {t('citiesPageSubtitle')}
             </p>
