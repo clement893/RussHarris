@@ -118,12 +118,6 @@ export default function MasterclassPage() {
 
             <p className="text-lg mt-10">{t('programClosing')}</p>
 
-            <div className="flex justify-center my-12">
-              <span className="inline-flex items-center px-6 py-3 rounded-full bg-[#FF8C42]/10 text-[#FF8C42] font-semibold text-lg border border-[#FF8C42]/30">
-                {t('cpdHours')}
-              </span>
-            </div>
-
             <h3 className="text-2xl font-bold text-gray-900 mt-12 mb-3">{t('whoAttendTitle')}</h3>
             <p className="text-lg">{t('whoAttendText')}</p>
 
