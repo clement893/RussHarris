@@ -48,12 +48,9 @@ export default function MasterclassPage() {
               </p>
             ) : null}
             <p className="text-xl md:text-2xl font-light text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-              {t('description1')}
-            </p>
-            <p className="text-lg text-gray-400 mb-4 leading-relaxed max-w-2xl mx-auto">
               {t('description2')}
             </p>
-            <p className="text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-lg text-white mb-10 leading-relaxed max-w-2xl mx-auto">
               {t('description3')}
             </p>
             <Link href="/cities">
