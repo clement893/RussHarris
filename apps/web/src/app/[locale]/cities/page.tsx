@@ -31,6 +31,9 @@ export default function CitiesPage() {
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               {t('citiesPageSubtitle')}
             </p>
+            <p className="text-xl text-gray-400 mt-6 max-w-3xl mx-auto">
+              {t('limitedPlaces')}
+            </p>
           </div>
         </Container>
       </section>

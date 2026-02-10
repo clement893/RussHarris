@@ -8,7 +8,7 @@
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
-import { Target, BookOpen, CheckCircle } from 'lucide-react';
+import { Target, BookOpen, CheckCircle, Info, ThumbsUp, ThumbsDown } from 'lucide-react';
 
 export default function MasterclassPage() {
   const t = useTranslations('masterclass');
@@ -64,6 +64,93 @@ export default function MasterclassPage() {
                 {t('bookPlace')}
               </Button>
             </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* Program content - right after hero */}
+      <section className="py-16 md:py-24 bg-white" data-header-contrast="light">
+        <Container className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="prose prose-lg max-w-none text-gray-700 space-y-8">
+            <p className="text-lg leading-relaxed">{t('programIntro1')}</p>
+
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+              <ThumbsUp className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" aria-hidden />
+              <p className="text-gray-800 m-0">{t('programGoodNews1')}</p>
+            </div>
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200">
+              <ThumbsDown className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" aria-hidden />
+              <p className="text-gray-800 m-0">{t('programBadNews')}</p>
+            </div>
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+              <ThumbsUp className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" aria-hidden />
+              <p className="text-gray-800 m-0">{t('programGoodNews2')}</p>
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-16 mb-4">{t('whatsInvolvedTitle')}</h2>
+            <p className="text-lg">{t('whatsInvolvedIntro')}</p>
+            <ul className="grid sm:grid-cols-2 gap-3 list-none pl-0 mt-6">
+              {([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const).map((i) => (
+                <li key={i} className="flex items-start gap-2 p-3 rounded-lg bg-gray-50 border border-gray-100">
+                  <CheckCircle className="w-5 h-5 text-[#FF8C42] flex-shrink-0 mt-0.5" aria-hidden />
+                  <span>{t(`whatsInvolved${i}`)}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-lg font-medium text-gray-800 mt-4">{t('whatsInvolvedImportant')}</p>
+
+            <div className="rounded-2xl border-2 border-[#FF8C42]/40 bg-[#FF8C42]/5 p-6 md:p-8 mt-10">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">{t('oneSizeTitle')}</h3>
+              <p className="text-lg mb-4">{t('oneSize1')}</p>
+              <p className="text-lg m-0">{t('oneSize2')}</p>
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-16 mb-4">{t('youWillLearnTitle')}</h2>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] as const).map((i) => (
+                <div key={i} className="flex items-start gap-2 p-3 rounded-lg bg-gray-50 border border-gray-100">
+                  <CheckCircle className="w-5 h-5 text-[#FF8C42] flex-shrink-0 mt-0.5" aria-hidden />
+                  <span>{t(`youWillLearn${i}`)}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-lg font-medium text-[#FF8C42] mt-2">{t('youWillLearnMore')}</p>
+
+            <p className="text-lg mt-10">{t('programClosing')}</p>
+
+            <div className="flex justify-center my-12">
+              <span className="inline-flex items-center px-6 py-3 rounded-full bg-[#FF8C42]/10 text-[#FF8C42] font-semibold text-lg border border-[#FF8C42]/30">
+                {t('cpdHours')}
+              </span>
+            </div>
+
+            <h3 className="text-2xl font-bold text-gray-900 mt-12 mb-3">{t('whoAttendTitle')}</h3>
+            <p className="text-lg">{t('whoAttendText')}</p>
+
+            <h3 className="text-2xl font-bold text-gray-900 mt-12 mb-3">{t('prereqTitle')}</h3>
+            <p className="text-lg mb-4">{t('prereqIntro')}</p>
+            <ul className="space-y-2 list-none pl-0">
+              <li className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-[#FF8C42] flex-shrink-0 mt-0.5" aria-hidden />
+                <span>{t('prereq1')}</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-[#FF8C42] flex-shrink-0 mt-0.5" aria-hidden />
+                <span>{t('prereq2')}</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="w-5 h-5 text-[#FF8C42] flex-shrink-0 mt-0.5" aria-hidden />
+                <span>{t('prereq3')}</span>
+              </li>
+            </ul>
+
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200 mt-8">
+              <Info className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" aria-hidden />
+              <div>
+                <p className="font-semibold text-gray-900 m-0 mb-1">{t('prereqNote')}</p>
+                <p className="text-gray-800 m-0">{t('diagnosisNote')}</p>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
