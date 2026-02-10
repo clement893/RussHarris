@@ -125,7 +125,10 @@ export default function HomePage() {
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
           <ScrollReveal>
             <div className="text-center mb-12 md:mb-16">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">{t('tourTitle')}</h2>
+              <div className="flex flex-wrap items-baseline justify-center gap-2 md:gap-3 mb-4">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white">{t('tourTitle')}</h2>
+                <span className="text-base sm:text-lg md:text-xl text-gray-400 font-medium">· {t('limitedPlaces')}</span>
+              </div>
               <p className="text-base sm:text-lg md:text-xl text-gray-400">{t('tourSubtitle')}</p>
             </div>
           </ScrollReveal>
@@ -153,7 +156,6 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
-                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">220 {t('places')}</span>
                   <span className="w-full md:w-auto inline-block">
                     <Button
                       type="button"
@@ -194,7 +196,6 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
-                  <span className="text-xl md:text-2xl font-bold text-[#FF8C42]">200 {t('places')}</span>
                   <span className="w-full md:w-auto inline-block">
                     <Button
                       type="button"
