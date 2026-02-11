@@ -1,4 +1,4 @@
-﻿"""
+"""
 Centralized Error Handler
 Handles all exceptions and returns standardized error responses
 """
@@ -49,7 +49,7 @@ def _add_cors_headers(response: JSONResponse, request: Request) -> JSONResponse:
             response.headers["Access-Control-Allow-Origin"] = allowed_origin
             response.headers["Access-Control-Allow-Credentials"] = "true"
             response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With, Accept, Origin, X-API-Key, X-Signature, X-Timestamp, X-CSRF-Token, X-Bootstrap-Key, Cache-Control, Pragma"
+            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With, Accept, Origin, X-API-Key, X-Signature, X-Timestamp, X-CSRF-Token, X-Bootstrap-Key, Cache-Control, Pragma, Expires"
     except Exception as e:
         # If CORS header addition fails, log but don't break the error response
         logger.warning(f"Failed to add CORS headers to error response: {e}")

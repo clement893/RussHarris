@@ -80,7 +80,7 @@ def setup_cors(app: FastAPI) -> None:
         os.getenv("RAILWAY_ENVIRONMENT") is not None
     )
     
-    # Allowed headers - minimal set for security
+    # Allowed headers - minimal set for security (include Expires for API client cache headers)
     allowed_headers = [
         "Content-Type",
         "Authorization",
@@ -94,6 +94,7 @@ def setup_cors(app: FastAPI) -> None:
         "X-Bootstrap-Key",  # For bootstrap superadmin endpoint
         "Cache-Control",  # For cache control headers
         "Pragma",  # For pragma headers (browser cache control)
+        "Expires",  # Sent by frontend API client
     ]
     
     # Exposed headers - minimal set
