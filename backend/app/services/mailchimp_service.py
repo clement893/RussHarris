@@ -99,12 +99,12 @@ class MailchimpService:
                 try:
                     put_resp = await client.put(put_url, json=put_body, auth=auth)
                 except (httpx.ConnectError, httpx.TimeoutException, httpx.HTTPError, Exception) as e:
-                    logger.exception("Mailchimp PUT member failed: %s", e)
+                    logger.exception("Mailchimp PUT member failed: %s" % (e,))
                     return {"success": False, "error": "Service temporarily unavailable."}
 
                 if put_resp.status_code not in (200, 201):
                     detail = _parse_mailchimp_error(put_resp)
-                    logger.warning("Mailchimp PUT member %s: %s", put_resp.status_code, detail)
+                    logger.warning("Mailchimp PUT member %s: %s" % (put_resp.status_code, detail))
                     return {"success": False, "error": detail or "Failed to add contact."}
 
                 # 2) Add tag
@@ -115,20 +115,20 @@ class MailchimpService:
                 try:
                     tag_resp = await client.post(tags_url, json=tags_body, auth=auth)
                 except (httpx.ConnectError, httpx.TimeoutException, httpx.HTTPError, Exception) as e:
-                    logger.exception("Mailchimp add tag failed: %s", e)
+                    logger.exception("Mailchimp add tag failed: %s" % (e,))
                     return {
                         "success": True,
                         "message": "Subscribed; tag could not be applied.",
                     }
 
                 if tag_resp.status_code >= 400:
-                    logger.warning("Mailchimp add tag %s: %s", tag_resp.status_code, tag_resp.text)
+                    logger.warning("Mailchimp add tag %s: %s" % (tag_resp.status_code, tag_resp.text))
                     return {"success": True, "message": "Subscribed."}
 
-                logger.info("Mailchimp Montreal interest: %s", email)
+                logger.info("Mailchimp Montreal interest: %s" % (email,))
                 return {"success": True, "message": "Successfully subscribed."}
         except Exception as e:
-            logger.exception("Mailchimp Montreal interest unexpected error: %s", e)
+            logger.exception("Mailchimp Montreal interest unexpected error: %s" % (e,))
             return {"success": False, "error": "Service temporarily unavailable."}
 
     async def add_footer_newsletter(self, email: str) -> dict[str, Any]:
@@ -162,12 +162,12 @@ class MailchimpService:
                 try:
                     put_resp = await client.put(put_url, json=put_body, auth=auth)
                 except (httpx.ConnectError, httpx.TimeoutException, httpx.HTTPError, Exception) as e:
-                    logger.exception("Mailchimp PUT member failed: %s", e)
+                    logger.exception("Mailchimp PUT member failed: %s" % (e,))
                     return {"success": False, "error": "Service temporarily unavailable."}
 
                 if put_resp.status_code not in (200, 201):
                     detail = _parse_mailchimp_error(put_resp)
-                    logger.warning("Mailchimp PUT member %s: %s", put_resp.status_code, detail)
+                    logger.warning("Mailchimp PUT member %s: %s" % (put_resp.status_code, detail))
                     return {"success": False, "error": detail or "Failed to add contact."}
 
                 tags_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}/tags"
@@ -177,18 +177,18 @@ class MailchimpService:
                 try:
                     tag_resp = await client.post(tags_url, json=tags_body, auth=auth)
                 except (httpx.ConnectError, httpx.TimeoutException, httpx.HTTPError, Exception) as e:
-                    logger.exception("Mailchimp add tag failed: %s", e)
+                    logger.exception("Mailchimp add tag failed: %s" % (e,))
                     return {
                         "success": True,
                         "message": "Subscribed; tag could not be applied.",
                     }
 
                 if tag_resp.status_code >= 400:
-                    logger.warning("Mailchimp add tag %s: %s", tag_resp.status_code, tag_resp.text)
+                    logger.warning("Mailchimp add tag %s: %s" % (tag_resp.status_code, tag_resp.text))
                     return {"success": True, "message": "Subscribed."}
 
-                logger.info("Mailchimp footer newsletter: %s", email)
+                logger.info("Mailchimp footer newsletter: %s" % (email,))
                 return {"success": True, "message": "Successfully subscribed."}
         except Exception as e:
-            logger.exception("Mailchimp footer newsletter unexpected error: %s", e)
+            logger.exception("Mailchimp footer newsletter unexpected error: %s" % (e,))
             return {"success": False, "error": "Service temporarily unavailable."}

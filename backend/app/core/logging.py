@@ -35,8 +35,8 @@ class StructuredLogger:
         context: Optional[Dict[str, Any]] = None,
         exc_info: Optional[Exception] = None,
     ) -> None:
-        """Internal logging method"""
-        extra = context or {}
+        """Internal logging method. context must be a dict or None."""
+        extra = context if isinstance(context, dict) else {}
         if exc_info:
             extra["exception"] = {
                 "type": type(exc_info).__name__,
@@ -78,6 +78,15 @@ class StructuredLogger:
     ) -> None:
         """Log critical message"""
         self._log(logging.CRITICAL, message, context, exc_info)
+
+    def exception(
+        self,
+        message: str,
+        context: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """Log error with current exception info (use inside except block)."""
+        exc_info = sys.exc_info()[1] if sys.exc_info()[0] else None
+        self._log(logging.ERROR, message, context, exc_info)
 
 
 # Create default logger instance

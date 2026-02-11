@@ -191,7 +191,7 @@ async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
             content={"detail": err},
         )
     except Exception as e:
-        logger.exception("Mailchimp Montreal signup error (full traceback above): %s", e, exc_info=True)
+        logger.exception("Mailchimp Montreal signup error (full traceback above): %s" % (e,))
         r = JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
@@ -238,7 +238,7 @@ async def mailchimp_footer_newsletter(request: MailchimpFooterRequest):
             content={"detail": err},
         )
     except Exception as e:
-        logger.exception("Mailchimp footer newsletter signup error: %s", e, exc_info=True)
+        logger.exception("Mailchimp footer newsletter signup error: %s" % (e,))
         return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
