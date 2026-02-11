@@ -139,6 +139,16 @@ async def unsubscribe_from_newsletter(
         )
 
 
+@router.get("/mailchimp/check", tags=["newsletter"])
+async def mailchimp_check():
+    """
+    Check if Mailchimp is configured (API key and audience ID set).
+    Public endpoint - no authentication required. Use for debugging.
+    """
+    service = MailchimpService()
+    return {"configured": service.is_configured()}
+
+
 @router.post("/mailchimp/montreal", status_code=status.HTTP_200_OK, tags=["newsletter"])
 async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
     """
@@ -153,6 +163,12 @@ async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
                 detail="Mailchimp is not configured. Set MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID.",
             )
         result = await service.add_montreal_interest(email=request.email)
+        if not isinstance(result, dict):
+            logger.error("Mailchimp Montreal: service returned non-dict %s", type(result))
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Subscription is temporarily unavailable. Please try again later.",
+            )
         if result.get("success"):
             return {
                 "success": True,
@@ -172,7 +188,7 @@ async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
     except HTTPException:
         raise
     except Exception as e:
-        logger.exception("Mailchimp Montreal signup error: %s", e)
+        logger.exception("Mailchimp Montreal signup error (full traceback above): %s", e, exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Subscription is temporarily unavailable. Please try again later.",

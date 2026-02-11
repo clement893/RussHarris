@@ -29,6 +29,29 @@ def _subscriber_hash(email: str) -> str:
     return hashlib.md5(email.lower().encode("utf-8")).hexdigest()
 
 
+def _parse_mailchimp_error(response: httpx.Response) -> str:
+    """Extract user-friendly error from Mailchimp API response (type, title, detail)."""
+    try:
+        data = response.json()
+        if isinstance(data, dict):
+            detail = data.get("detail")
+            title = data.get("title")
+            if isinstance(detail, str) and detail:
+                return detail
+            if isinstance(title, str) and title:
+                return title
+            errors = data.get("errors")
+            if isinstance(errors, list) and errors:
+                first = errors[0]
+                if isinstance(first, dict) and first.get("message"):
+                    return str(first["message"])
+                if isinstance(first, dict) and first.get("field"):
+                    return f"{first.get('field', '')}: {first.get('message', response.text)}".strip(": ")
+    except Exception:
+        pass
+    return response.text or f"HTTP {response.status_code}"
+
+
 class MailchimpService:
     """Service for adding contacts to Mailchimp with tags."""
 
@@ -80,11 +103,7 @@ class MailchimpService:
                     return {"success": False, "error": "Service temporarily unavailable."}
 
                 if put_resp.status_code not in (200, 201):
-                    try:
-                        err_data = put_resp.json()
-                        detail = err_data.get("detail", put_resp.text)
-                    except Exception:
-                        detail = put_resp.text
+                    detail = _parse_mailchimp_error(put_resp)
                     logger.warning("Mailchimp PUT member %s: %s", put_resp.status_code, detail)
                     return {"success": False, "error": detail or "Failed to add contact."}
 
@@ -147,11 +166,7 @@ class MailchimpService:
                     return {"success": False, "error": "Service temporarily unavailable."}
 
                 if put_resp.status_code not in (200, 201):
-                    try:
-                        err_data = put_resp.json()
-                        detail = err_data.get("detail", put_resp.text)
-                    except Exception:
-                        detail = put_resp.text
+                    detail = _parse_mailchimp_error(put_resp)
                     logger.warning("Mailchimp PUT member %s: %s", put_resp.status_code, detail)
                     return {"success": False, "error": detail or "Failed to add contact."}
 
