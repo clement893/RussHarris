@@ -159,9 +159,15 @@ async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
                 "message": result.get("message", "Successfully subscribed."),
                 "email": request.email,
             }
+        err = result.get("error", "Failed to subscribe.")
+        if err == "Service temporarily unavailable.":
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Subscription is temporarily unavailable. Please try again later.",
+            )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=result.get("error", "Failed to subscribe."),
+            detail=err,
         )
     except HTTPException:
         raise
@@ -193,9 +199,15 @@ async def mailchimp_footer_newsletter(request: MailchimpFooterRequest):
                 "message": result.get("message", "Successfully subscribed."),
                 "email": request.email,
             }
+        err = result.get("error", "Failed to subscribe.")
+        if err == "Service temporarily unavailable.":
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Subscription is temporarily unavailable. Please try again later.",
+            )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=result.get("error", "Failed to subscribe."),
+            detail=err,
         )
     except HTTPException:
         raise

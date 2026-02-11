@@ -48,124 +48,132 @@ class MailchimpService:
         """
         Add or update a contact in the first audience with tag "Microsite - Intérêt Montréal".
         Uses PUT to add/update member, then POST to add the tag.
+        Never raises: returns {"success": False, "error": "..."} on any failure.
         """
-        if not self.is_configured():
-            return {
-                "success": False,
-                "error": "Mailchimp is not configured (MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID).",
-            }
-        email = email.strip().lower()
-        if not email:
-            return {"success": False, "error": "Email is required."}
-        auth = ("apikey", self.api_key)
-        list_id = self.audience_id
-        subscriber_hash = _subscriber_hash(email)
-        assert self._base_url is not None
-        timeout = httpx.Timeout(15.0, connect=5.0)
-
-        async with httpx.AsyncClient(timeout=timeout) as client:
-            # 1) Add or update member (PUT is idempotent)
-            put_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}"
-            put_body = {
-                "email_address": email,
-                "status": "subscribed",
-                "status_if_new": "subscribed",
-            }
-            try:
-                put_resp = await client.put(put_url, json=put_body, auth=auth)
-            except (httpx.ConnectError, httpx.TimeoutException) as e:
-                logger.exception("Mailchimp PUT member failed: %s", e)
-                return {"success": False, "error": "Service temporarily unavailable."}
-
-            if put_resp.status_code not in (200, 201):
-                try:
-                    err_data = put_resp.json()
-                    detail = err_data.get("detail", put_resp.text)
-                except Exception:
-                    detail = put_resp.text
-                logger.warning("Mailchimp PUT member %s: %s", put_resp.status_code, detail)
-                return {"success": False, "error": detail or "Failed to add contact."}
-
-            # 2) Add tag
-            tags_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}/tags"
-            tags_body = {
-                "tags": [{"name": MONTREAL_INTEREST_TAG, "status": "active"}],
-            }
-            try:
-                tag_resp = await client.post(tags_url, json=tags_body, auth=auth)
-            except (httpx.ConnectError, httpx.TimeoutException) as e:
-                logger.exception("Mailchimp add tag failed: %s", e)
-                # Member was added; tag failed - still consider partial success
+        try:
+            if not self.is_configured():
                 return {
-                    "success": True,
-                    "message": "Subscribed; tag could not be applied.",
+                    "success": False,
+                    "error": "Mailchimp is not configured (MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID).",
                 }
+            email = email.strip().lower()
+            if not email:
+                return {"success": False, "error": "Email is required."}
+            auth = ("apikey", self.api_key)
+            list_id = self.audience_id
+            subscriber_hash = _subscriber_hash(email)
+            assert self._base_url is not None
+            timeout = httpx.Timeout(15.0, connect=5.0)
 
-            if tag_resp.status_code >= 400:
-                logger.warning("Mailchimp add tag %s: %s", tag_resp.status_code, tag_resp.text)
-                # Member was added
-                return {"success": True, "message": "Subscribed."}
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                # 1) Add or update member (PUT is idempotent)
+                put_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}"
+                put_body = {
+                    "email_address": email,
+                    "status": "subscribed",
+                    "status_if_new": "subscribed",
+                }
+                try:
+                    put_resp = await client.put(put_url, json=put_body, auth=auth)
+                except (httpx.ConnectError, httpx.TimeoutException, httpx.HTTPError, Exception) as e:
+                    logger.exception("Mailchimp PUT member failed: %s", e)
+                    return {"success": False, "error": "Service temporarily unavailable."}
 
-            logger.info("Mailchimp Montreal interest: %s", email)
-            return {"success": True, "message": "Successfully subscribed."}
+                if put_resp.status_code not in (200, 201):
+                    try:
+                        err_data = put_resp.json()
+                        detail = err_data.get("detail", put_resp.text)
+                    except Exception:
+                        detail = put_resp.text
+                    logger.warning("Mailchimp PUT member %s: %s", put_resp.status_code, detail)
+                    return {"success": False, "error": detail or "Failed to add contact."}
+
+                # 2) Add tag
+                tags_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}/tags"
+                tags_body = {
+                    "tags": [{"name": MONTREAL_INTEREST_TAG, "status": "active"}],
+                }
+                try:
+                    tag_resp = await client.post(tags_url, json=tags_body, auth=auth)
+                except (httpx.ConnectError, httpx.TimeoutException, httpx.HTTPError, Exception) as e:
+                    logger.exception("Mailchimp add tag failed: %s", e)
+                    return {
+                        "success": True,
+                        "message": "Subscribed; tag could not be applied.",
+                    }
+
+                if tag_resp.status_code >= 400:
+                    logger.warning("Mailchimp add tag %s: %s", tag_resp.status_code, tag_resp.text)
+                    return {"success": True, "message": "Subscribed."}
+
+                logger.info("Mailchimp Montreal interest: %s", email)
+                return {"success": True, "message": "Successfully subscribed."}
+        except Exception as e:
+            logger.exception("Mailchimp Montreal interest unexpected error: %s", e)
+            return {"success": False, "error": "Service temporarily unavailable."}
 
     async def add_footer_newsletter(self, email: str) -> dict[str, Any]:
         """
         Add or update a contact in the first audience with tag "Champ Newsletter Microsite Russ Harris".
         Used only for the footer newsletter on the homepage.
+        Never raises: returns {"success": False, "error": "..."} on any failure.
         """
-        if not self.is_configured():
-            return {
-                "success": False,
-                "error": "Mailchimp is not configured (MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID).",
-            }
-        email = email.strip().lower()
-        if not email:
-            return {"success": False, "error": "Email is required."}
-        auth = ("apikey", self.api_key)
-        list_id = self.audience_id
-        subscriber_hash = _subscriber_hash(email)
-        assert self._base_url is not None
-        timeout = httpx.Timeout(15.0, connect=5.0)
-
-        async with httpx.AsyncClient(timeout=timeout) as client:
-            put_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}"
-            put_body = {
-                "email_address": email,
-                "status": "subscribed",
-                "status_if_new": "subscribed",
-            }
-            try:
-                put_resp = await client.put(put_url, json=put_body, auth=auth)
-            except (httpx.ConnectError, httpx.TimeoutException) as e:
-                logger.exception("Mailchimp PUT member failed: %s", e)
-                return {"success": False, "error": "Service temporarily unavailable."}
-
-            if put_resp.status_code not in (200, 201):
-                try:
-                    err_data = put_resp.json()
-                    detail = err_data.get("detail", put_resp.text)
-                except Exception:
-                    detail = put_resp.text
-                logger.warning("Mailchimp PUT member %s: %s", put_resp.status_code, detail)
-                return {"success": False, "error": detail or "Failed to add contact."}
-
-            tags_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}/tags"
-            tags_body = {
-                "tags": [{"name": FOOTER_NEWSLETTER_TAG, "status": "active"}],
-            }
-            try:
-                tag_resp = await client.post(tags_url, json=tags_body, auth=auth)
-            except (httpx.ConnectError, httpx.TimeoutException) as e:
-                logger.exception("Mailchimp add tag failed: %s", e)
+        try:
+            if not self.is_configured():
                 return {
-                    "success": True,
-                    "message": "Subscribed; tag could not be applied.",
+                    "success": False,
+                    "error": "Mailchimp is not configured (MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID).",
                 }
+            email = email.strip().lower()
+            if not email:
+                return {"success": False, "error": "Email is required."}
+            auth = ("apikey", self.api_key)
+            list_id = self.audience_id
+            subscriber_hash = _subscriber_hash(email)
+            assert self._base_url is not None
+            timeout = httpx.Timeout(15.0, connect=5.0)
 
-            if tag_resp.status_code >= 400:
-                logger.warning("Mailchimp add tag %s: %s", tag_resp.status_code, tag_resp.text)
-                return {"success": True, "message": "Subscribed."}
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                put_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}"
+                put_body = {
+                    "email_address": email,
+                    "status": "subscribed",
+                    "status_if_new": "subscribed",
+                }
+                try:
+                    put_resp = await client.put(put_url, json=put_body, auth=auth)
+                except (httpx.ConnectError, httpx.TimeoutException, httpx.HTTPError, Exception) as e:
+                    logger.exception("Mailchimp PUT member failed: %s", e)
+                    return {"success": False, "error": "Service temporarily unavailable."}
 
-            logger.info("Mailchimp footer newsletter: %s", email)
-            return {"success": True, "message": "Successfully subscribed."}
+                if put_resp.status_code not in (200, 201):
+                    try:
+                        err_data = put_resp.json()
+                        detail = err_data.get("detail", put_resp.text)
+                    except Exception:
+                        detail = put_resp.text
+                    logger.warning("Mailchimp PUT member %s: %s", put_resp.status_code, detail)
+                    return {"success": False, "error": detail or "Failed to add contact."}
+
+                tags_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}/tags"
+                tags_body = {
+                    "tags": [{"name": FOOTER_NEWSLETTER_TAG, "status": "active"}],
+                }
+                try:
+                    tag_resp = await client.post(tags_url, json=tags_body, auth=auth)
+                except (httpx.ConnectError, httpx.TimeoutException, httpx.HTTPError, Exception) as e:
+                    logger.exception("Mailchimp add tag failed: %s", e)
+                    return {
+                        "success": True,
+                        "message": "Subscribed; tag could not be applied.",
+                    }
+
+                if tag_resp.status_code >= 400:
+                    logger.warning("Mailchimp add tag %s: %s", tag_resp.status_code, tag_resp.text)
+                    return {"success": True, "message": "Subscribed."}
+
+                logger.info("Mailchimp footer newsletter: %s", email)
+                return {"success": True, "message": "Successfully subscribed."}
+        except Exception as e:
+            logger.exception("Mailchimp footer newsletter unexpected error: %s", e)
+            return {"success": False, "error": "Service temporarily unavailable."}
