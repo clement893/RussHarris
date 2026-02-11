@@ -442,7 +442,8 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Section Hexaflex - Design interactif et visuel */}
+      {/* Section Hexaflex - Design interactif et visuel (cachée) */}
+      <div className="hidden">
       <section className="py-16 md:py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden" data-header-contrast="light">
         {/* Grille hexagonale très subtile en arrière-plan */}
         <div className="absolute inset-0 opacity-[0.015]">
@@ -572,6 +573,7 @@ export default function HomePage() {
           </div>
         </Container>
       </section>
+      </div>
 
       {/* Section Pour qui - Design amélioré avec cartes gradient */}
       <section className="py-16 md:py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden" data-header-contrast="light">
