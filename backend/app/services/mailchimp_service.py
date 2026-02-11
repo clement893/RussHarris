@@ -95,6 +95,7 @@ class MailchimpService:
                     "email_address": email,
                     "status": "subscribed",
                     "status_if_new": "subscribed",
+                    "merge_fields": {"FNAME": "", "LNAME": ""},
                 }
                 try:
                     put_resp = await client.put(put_url, json=put_body, auth=auth)
@@ -158,6 +159,7 @@ class MailchimpService:
                     "email_address": email,
                     "status": "subscribed",
                     "status_if_new": "subscribed",
+                    "merge_fields": {"FNAME": "", "LNAME": ""},
                 }
                 try:
                     put_resp = await client.put(put_url, json=put_body, auth=auth)
