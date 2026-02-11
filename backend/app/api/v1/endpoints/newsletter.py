@@ -169,7 +169,7 @@ async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
         logger.exception("Mailchimp Montreal signup error: %s", e)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to subscribe.",
+            detail="Subscription is temporarily unavailable. Please try again later.",
         )
 
 
@@ -203,7 +203,7 @@ async def mailchimp_footer_newsletter(request: MailchimpFooterRequest):
         logger.exception("Mailchimp footer newsletter signup error: %s", e)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to subscribe.",
+            detail="Subscription is temporarily unavailable. Please try again later.",
         )
 
 

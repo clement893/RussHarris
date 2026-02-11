@@ -150,11 +150,16 @@ export function handleApiError(error: unknown): AppError {
       }
     }
 
-    // Generate contextual error message based on status code
-    let message = (responseData && typeof responseData === 'object' && 'error' in responseData && typeof responseData.error === 'object' && responseData.error && 'message' in responseData.error)
-      ? String(responseData.error.message)
-      : error.message;
-    
+    // Generate contextual error message: prefer FastAPI detail, then our error.message, then axios message
+    let message: string | undefined;
+    if (responseData && typeof responseData === 'object' && 'detail' in responseData && typeof responseData.detail === 'string' && responseData.detail) {
+      message = responseData.detail;
+    } else if (responseData && typeof responseData === 'object' && 'error' in responseData && typeof responseData.error === 'object' && responseData.error && 'message' in responseData.error) {
+      message = String(responseData.error.message);
+    } else {
+      message = error.message;
+    }
+
     if (!message || message === 'Request failed with status code') {
       // Generate user-friendly messages for common status codes
       switch (statusCode) {

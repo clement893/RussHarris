@@ -15,7 +15,8 @@ Comprehensive troubleshooting guide for common issues and their solutions.
 7. [Performance Issues](#performance-issues)
 8. [Environment Variable Issues](#environment-variable-issues)
 9. [Sentry & Monitoring Issues](#sentry--monitoring-issues)
-10. [Common Error Messages](#common-error-messages)
+10. [Production Console Errors](#production-console-errors)
+11. [Common Error Messages](#common-error-messages)
 
 ---
 
@@ -571,6 +572,55 @@ echo $NEXT_PUBLIC_SENTRY_DSN
 2. Adjust sampling rates
 3. Filter out known non-critical errors
 4. Set up error grouping rules
+
+---
+
+## 🌐 Production Console Errors
+
+### Refused to execute script – MIME type 'text/css'
+
+**Error**: `Refused to execute script from '.../_next/static/css/....css' because its MIME type ('text/css') is not executable`
+
+**Cause**: The browser is being asked to run a CSS file as JavaScript (e.g. a `<script src="...css">` or a wrong chunk reference). This can be caused by a bad build, a CDN/proxy serving the wrong asset, or a Next.js chunk reference bug.
+
+**Solutions**:
+1. Ensure the frontend is built and deployed from a clean build: `rm -rf .next && pnpm build`.
+2. On Railway or similar, confirm the deployment serves `/_next/static/*` correctly and that no rewrite rules map CSS URLs to script requests.
+3. If using a CDN, check that it does not alter or mis-route `_next/static` assets.
+4. `next.config.js` already sets `Content-Type: text/css` for `/_next/static/css/*`; keep that so CSS is never interpreted as script.
+
+### Newsletter / Mailchimp 500 or "An internal error occurred"
+
+**Error**: `POST .../api/v1/newsletter/mailchimp/montreal 500` or user sees "An internal error occurred. Please contact support."
+
+**Cause**: Backend Mailchimp call failed (e.g. missing `MAILCHIMP_API_KEY` / `MAILCHIMP_AUDIENCE_ID`, Mailchimp API error, or network timeout).
+
+**Solutions**:
+1. **Backend env**: Set `MAILCHIMP_API_KEY` and `MAILCHIMP_AUDIENCE_ID` on the backend (Railway → backend service → Variables). If not set, the API returns 503 with a clear message.
+2. **User message**: The app now shows the server `detail` for 5xx when available (e.g. "Subscription is temporarily unavailable. Please try again later."). Check backend logs for the real exception.
+3. **Mailchimp**: In Mailchimp, confirm the audience ID and API key; check Audience → Settings and API keys. Ensure the key has permission to add/update members and tags.
+
+### Theme timeout / Failed to fetch global theme
+
+**Error**: `timeout of 5000ms exceeded` for `GET /v1/themes/active` or "Failed to fetch global theme from backend"
+
+**Cause**: Backend took longer than the request timeout (e.g. cold start on Railway).
+
+**Solutions**:
+1. The theme client timeout has been increased to 15s; redeploy the frontend so this is in effect.
+2. The app falls back to a cached theme when the request fails; users still get a theme after the first load.
+3. Reduce backend cold starts: use a paid Railway plan with always-on, or a health-check / cron that hits the backend periodically.
+
+### Sentry 429 (Too Many Requests)
+
+**Error**: `POST .../ingest.us.sentry.io/... 429 (Too Many Requests)`
+
+**Cause**: Sentry rate limit exceeded (too many events from the app).
+
+**Solutions**:
+1. Lower the sample rate in Sentry config (e.g. in `instrumentation-client.ts` or `sentry.server.config.ts`): set `tracesSampleRate` and `replaysSessionSampleRate` to `0.01` or `0.05` in production.
+2. In Sentry project settings, increase the quota or adjust rate limits if available.
+3. Use `beforeSend` to drop noisy or non-critical errors so fewer events are sent.
 
 ---
 

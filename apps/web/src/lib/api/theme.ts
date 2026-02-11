@@ -76,7 +76,7 @@ function extractFastApiData<T>(response: unknown): T {
  */
 export async function getActiveTheme(): Promise<ThemeConfigResponse> {
   const response = await apiClient.get<ThemeConfigResponse>('/v1/themes/active', {
-    timeout: 5000, // 5 second timeout
+    timeout: 15000, // 15s for cold starts (e.g. Railway)
   });
   
   // FastAPI returns data directly
