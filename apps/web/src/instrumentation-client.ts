@@ -23,12 +23,12 @@ if (SENTRY_DSN) {
     // Enable debug mode in development to see what's happening
     debug: SENTRY_ENVIRONMENT === 'development' && process.env.NEXT_PUBLIC_SENTRY_DEBUG === 'true',
     
-    // Performance Monitoring
-    tracesSampleRate: SENTRY_ENVIRONMENT === 'production' ? 0.1 : 1.0, // 10% in prod, 100% in dev
+    // Performance Monitoring (low rate in prod to avoid Sentry 429)
+    tracesSampleRate: SENTRY_ENVIRONMENT === 'production' ? 0.01 : 1.0,
     
-    // Session Replay (optional - can be expensive)
-    replaysSessionSampleRate: SENTRY_ENVIRONMENT === 'production' ? 0.1 : 1.0,
-    replaysOnErrorSampleRate: 1.0, // Always record sessions with errors
+    // Session Replay (low rate in prod to avoid Sentry 429)
+    replaysSessionSampleRate: SENTRY_ENVIRONMENT === 'production' ? 0.01 : 1.0,
+    replaysOnErrorSampleRate: SENTRY_ENVIRONMENT === 'production' ? 0.1 : 1.0,
     
     // Integrations
     integrations: [
@@ -46,7 +46,7 @@ if (SENTRY_DSN) {
         return null;
       }
       
-      // Filter out known non-critical errors
+      // Filter out known non-critical errors (reduces Sentry 429 and noise)
       const error = hint.originalException;
       if (error instanceof Error) {
         // Ignore network errors that are likely user-related (offline, etc.)
@@ -57,7 +57,18 @@ if (SENTRY_DSN) {
         ) {
           return null;
         }
-        
+        // Ignore theme/API timeouts (backend cold start - not actionable)
+        if (error.message.includes('timeout') && error.message.includes('exceeded')) {
+          return null;
+        }
+        // Ignore generic backend 500 message (avoids Sentry 429 from newsletter errors)
+        if (error.message.includes('An internal error occurred. Please contact support.')) {
+          return null;
+        }
+        // Ignore newsletter subscription errors (we show a friendly message in UI; reduces Sentry 429)
+        if (error.message.includes('Subscription is temporarily unavailable')) {
+          return null;
+        }
         // Ignore ResizeObserver errors (common browser quirk)
         if (error.message.includes('ResizeObserver loop')) {
           return null;
@@ -67,8 +78,11 @@ if (SENTRY_DSN) {
       return event;
     },
     
-    // Ignore specific URLs
+    // Ignore specific URLs and messages
     ignoreErrors: [
+    // Theme/API timeouts
+    'timeout of',
+    'exceeded',
     // Browser extensions
     'top.GLOBALS',
     'originalCreateNotification',

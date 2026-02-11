@@ -160,7 +160,11 @@ export function handleApiError(error: unknown): AppError {
       message = error.message;
     }
 
-    if (!message || message === 'Request failed with status code') {
+    // Always show a friendly message for newsletter 500 (even if backend returns generic "contact support")
+    if (statusCode === 500 && requestUrl && requestUrl.includes('newsletter')) {
+      message = 'Subscription is temporarily unavailable. Please try again later.';
+    }
+    if (!message || message === 'Request failed with status code' || message === 'An internal error occurred. Please contact support.') {
       // Generate user-friendly messages for common status codes
       switch (statusCode) {
         case 400:
@@ -201,7 +205,9 @@ export function handleApiError(error: unknown): AppError {
           }
           break;
         case 500:
-          message = 'Server error occurred. Our team has been notified. Please try again later.';
+          message = requestUrl && requestUrl.includes('newsletter')
+            ? 'Subscription is temporarily unavailable. Please try again later.'
+            : 'Server error occurred. Our team has been notified. Please try again later.';
           break;
         case 503:
           message = 'Service temporarily unavailable. Please try again in a few moments.';

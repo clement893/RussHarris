@@ -62,8 +62,8 @@ const nextConfig = {
       'next-intl',
       'recharts', // Optimize chart library imports
     ],
-    // Enable faster refresh for better dev experience
-    optimizeCss: true,
+    // Disabled: optimizeCss can cause "Refused to execute script from ... .css" MIME errors in some deploys
+    optimizeCss: false,
     // Note: buildTraces is not a valid experimental option in Next.js 16+
     // Build traces are automatically managed by Next.js
     // Enable partial prerendering for better performance

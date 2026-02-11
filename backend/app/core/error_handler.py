@@ -243,12 +243,17 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
         os.getenv("ENVIRONMENT", "").lower() == "production" or
         os.getenv("RAILWAY_ENVIRONMENT") is not None
     )
+    # Friendly message for newsletter endpoints so users never see generic "contact support"
+    if "/newsletter/" in request.url.path:
+        friendly_message = "Subscription is temporarily unavailable. Please try again later."
+    else:
+        friendly_message = "An internal error occurred. Please contact support."
     if is_production:
         error_response = {
             "success": False,
             "error": {
                 "code": "INTERNAL_SERVER_ERROR",
-                "message": "An internal error occurred. Please contact support.",
+                "message": friendly_message,
             },
             "timestamp": None,
         }
