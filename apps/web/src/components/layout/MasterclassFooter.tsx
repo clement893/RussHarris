@@ -9,23 +9,41 @@
 import { useState } from 'react';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
-import { Mail, Phone, MapPin, ArrowRight, Lock } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowRight, Lock, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { clsx } from 'clsx';
 import Image from 'next/image';
+import { apiClient } from '@/lib/api/client';
+import { getErrorMessage } from '@/lib/errors';
 
 export default function MasterclassFooter() {
   const t = useTranslations('footer');
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder - to be implemented
-    if (email) {
-      setSubscribed(true);
-      setEmail('');
-      setTimeout(() => setSubscribed(false), 3000);
+    const value = email.trim();
+    if (!value) return;
+    setStatus('loading');
+    setMessage('');
+    try {
+      const res = await apiClient.post<{ success: boolean; message?: string }>(
+        '/v1/newsletter/mailchimp/footer',
+        { email: value }
+      );
+      if (res.data?.success) {
+        setStatus('success');
+        setMessage(t('thankYou'));
+        setEmail('');
+      } else {
+        setStatus('error');
+        setMessage(res.data?.message || t('newsletterError') || 'Une erreur est survenue.');
+      }
+    } catch (err) {
+      setStatus('error');
+      setMessage(getErrorMessage(err) || t('newsletterError') || 'Une erreur est survenue.');
     }
   };
 
@@ -144,20 +162,39 @@ export default function MasterclassFooter() {
                   className="w-full px-4 py-3 bg-white/5 border-2 border-[#2B5F7A]/60 text-white placeholder-white/50 focus:outline-none focus:border-[#F58220] transition-colors text-sm rounded-lg"
                   aria-label="Adresse email pour la newsletter"
                   required
+                  disabled={status === 'loading'}
                 />
                 <button
                   type="submit"
-                  disabled={!email || subscribed}
+                  disabled={!email.trim() || status === 'loading'}
                   className={clsx(
-                    'w-full px-6 py-3 text-sm font-bold border-2 transition-all duration-300 rounded-lg',
+                    'w-full px-6 py-3 text-sm font-bold border-2 transition-all duration-300 rounded-lg flex items-center justify-center gap-2',
                     'disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105',
-                    subscribed 
-                      ? 'bg-[#F58220] border-[#F58220] text-white' 
+                    status === 'success'
+                      ? 'bg-[#F58220] border-[#F58220] text-white'
                       : 'bg-transparent border-[#F58220] text-[#F58220] hover:bg-[#F58220] hover:text-white'
                   )}
                 >
-                  {subscribed ? 'Inscrit!' : "S'abonner"}
+                  {status === 'loading' ? (
+                    <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
+                  ) : status === 'success' ? (
+                    t('subscribed')
+                  ) : (
+                    t('send')
+                  )}
                 </button>
+                {status === 'success' && message && (
+                  <p className="flex items-center gap-2 text-sm text-emerald-400" role="status" aria-live="polite">
+                    <CheckCircle className="w-4 h-4 flex-shrink-0" />
+                    <span>{message}</span>
+                  </p>
+                )}
+                {status === 'error' && message && (
+                  <p className="flex items-center gap-2 text-sm text-red-400" role="alert">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    <span>{message}</span>
+                  </p>
+                )}
               </form>
             </div>
           </div>

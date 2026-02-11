@@ -5,14 +5,47 @@ import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
-import { Calendar, MapPin, Mail, Circle, Hexagon, Heart, Stethoscope, Users, Brain } from 'lucide-react';
+import { Calendar, MapPin, Mail, Circle, Hexagon, Heart, Stethoscope, Users, Brain, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { microInteractions, animationVariants, combineAnimations } from '@/lib/animations/micro-interactions';
 import { ScrollReveal } from '@/components/examples/ScrollReveal';
+import { apiClient } from '@/lib/api/client';
+import { getErrorMessage } from '@/lib/errors';
 
 export default function HomePage() {
   const t = useTranslations('home');
   const [montrealEmail, setMontrealEmail] = useState('');
   const [calgaryEmail, setCalgaryEmail] = useState('');
+  const [montrealStatus, setMontrealStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [montrealMessage, setMontrealMessage] = useState('');
+
+  const handleMontrealSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const email = montrealEmail.trim();
+    if (!email) {
+      setMontrealStatus('error');
+      setMontrealMessage(t('montrealEmailRequired') || 'Veuillez entrer votre adresse courriel.');
+      return;
+    }
+    setMontrealStatus('loading');
+    setMontrealMessage('');
+    try {
+      const res = await apiClient.post<{ success: boolean; message?: string }>(
+        '/v1/newsletter/mailchimp/montreal',
+        { email }
+      );
+      if (res.data?.success) {
+        setMontrealStatus('success');
+        setMontrealMessage(t('montrealSuccess') || 'Merci ! Vous serez informé des détails pour Montréal.');
+        setMontrealEmail('');
+      } else {
+        setMontrealStatus('error');
+        setMontrealMessage(res.data?.message || t('montrealError') || 'Une erreur est survenue.');
+      }
+    } catch (err) {
+      setMontrealStatus('error');
+      setMontrealMessage(getErrorMessage(err) || t('montrealError') || 'Une erreur est survenue.');
+    }
+  };
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
@@ -234,7 +267,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-col items-stretch md:items-end gap-3 w-full md:min-w-[280px] md:max-w-sm">
                   <form
-                    onSubmit={(e) => e.preventDefault()}
+                    onSubmit={handleMontrealSubmit}
                     className="flex flex-col sm:flex-row gap-2 w-full"
                   >
                     <input
@@ -244,18 +277,37 @@ export default function HomePage() {
                       placeholder={t('montrealEmailPlaceholder')}
                       className="flex-1 min-w-0 px-4 py-2.5 text-sm md:text-base rounded-full border border-gray-600 bg-gray-800/80 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FF8C42] focus:border-transparent"
                       aria-label={t('montrealEmailPlaceholder')}
+                      disabled={montrealStatus === 'loading'}
                     />
                     <Button
                       type="submit"
+                      disabled={montrealStatus === 'loading'}
+                      aria-busy={montrealStatus === 'loading'}
                       className={combineAnimations(
                         microInteractions.button.base,
                         microInteractions.button.hover,
                         "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 shrink-0"
                       )}
                     >
-                      {t('notifySendCta')}
+                      {montrealStatus === 'loading' ? (
+                        <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
+                      ) : (
+                        t('notifySendCta')
+                      )}
                     </Button>
                   </form>
+                  {montrealStatus === 'success' && (
+                    <p className="flex items-center gap-2 text-sm text-emerald-400">
+                      <CheckCircle className="w-4 h-4 flex-shrink-0" />
+                      <span>{montrealMessage}</span>
+                    </p>
+                  )}
+                  {montrealStatus === 'error' && (
+                    <p className="flex items-center gap-2 text-sm text-red-400">
+                      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                      <span>{montrealMessage}</span>
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

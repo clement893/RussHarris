@@ -8,9 +8,20 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
 
 from app.services.newsletter_service import NewsletterService
+from app.services.mailchimp_service import MailchimpService
 from app.core.logging import logger
 
 router = APIRouter()
+
+
+class MailchimpMontrealRequest(BaseModel):
+    """Request body for Montreal interest signup (Mailchimp)."""
+    email: EmailStr
+
+
+class MailchimpFooterRequest(BaseModel):
+    """Request body for footer newsletter signup (Mailchimp) - homepage only."""
+    email: EmailStr
 
 
 class NewsletterSubscribeRequest(BaseModel):
@@ -125,6 +136,74 @@ async def unsubscribe_from_newsletter(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to unsubscribe from newsletter: {str(e)}",
+        )
+
+
+@router.post("/mailchimp/montreal", status_code=status.HTTP_200_OK, tags=["newsletter"])
+async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
+    """
+    Subscribe an email to the first Mailchimp audience with tag "Microsite - Intérêt Montréal".
+    Public endpoint - no authentication required.
+    """
+    try:
+        service = MailchimpService()
+        if not service.is_configured():
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Mailchimp is not configured. Set MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID.",
+            )
+        result = await service.add_montreal_interest(email=request.email)
+        if result.get("success"):
+            return {
+                "success": True,
+                "message": result.get("message", "Successfully subscribed."),
+                "email": request.email,
+            }
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=result.get("error", "Failed to subscribe."),
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("Mailchimp Montreal signup error: %s", e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to subscribe.",
+        )
+
+
+@router.post("/mailchimp/footer", status_code=status.HTTP_200_OK, tags=["newsletter"])
+async def mailchimp_footer_newsletter(request: MailchimpFooterRequest):
+    """
+    Subscribe an email to the first Mailchimp audience with tag "Champ Newsletter Microsite Russ Harris".
+    For the footer newsletter on the homepage only. Public endpoint.
+    """
+    try:
+        service = MailchimpService()
+        if not service.is_configured():
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Mailchimp is not configured. Set MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID.",
+            )
+        result = await service.add_footer_newsletter(email=request.email)
+        if result.get("success"):
+            return {
+                "success": True,
+                "message": result.get("message", "Successfully subscribed."),
+                "email": request.email,
+            }
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=result.get("error", "Failed to subscribe."),
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("Mailchimp footer newsletter signup error: %s", e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to subscribe.",
         )
 
 
