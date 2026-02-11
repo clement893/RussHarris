@@ -159,6 +159,7 @@ async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
     Public endpoint - no authentication required.
     Never raises: returns 503 JSON on any unexpected error so the generic handler is never hit.
     """
+    logger.info("Mailchimp Montreal endpoint called (email=%s)", getattr(request, "email", "?"))
     try:
         service = MailchimpService()
         if not service.is_configured():
@@ -189,14 +190,14 @@ async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
             status_code=status.HTTP_400_BAD_REQUEST,
             content={"detail": err},
         )
-    except HTTPException:
-        raise
     except Exception as e:
         logger.exception("Mailchimp Montreal signup error (full traceback above): %s", e, exc_info=True)
-        return JSONResponse(
+        r = JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
         )
+        r.headers["X-Newsletter-Error"] = "1"
+        return r
 
 
 @router.post("/mailchimp/footer", status_code=status.HTTP_200_OK, tags=["newsletter"])
@@ -236,8 +237,6 @@ async def mailchimp_footer_newsletter(request: MailchimpFooterRequest):
             status_code=status.HTTP_400_BAD_REQUEST,
             content={"detail": err},
         )
-    except HTTPException:
-        raise
     except Exception as e:
         logger.exception("Mailchimp footer newsletter signup error: %s", e, exc_info=True)
         return JSONResponse(
