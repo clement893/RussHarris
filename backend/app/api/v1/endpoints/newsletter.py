@@ -159,7 +159,7 @@ async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
     Public endpoint - no authentication required.
     Never raises: returns 503 JSON on any unexpected error so the generic handler is never hit.
     """
-    logger.info("Mailchimp Montreal endpoint called (email=%s)", getattr(request, "email", "?"))
+    logger.info("Mailchimp Montreal endpoint called (email=%s)" % (getattr(request, "email", "?"),))
     try:
         service = MailchimpService()
         if not service.is_configured():
@@ -169,7 +169,7 @@ async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
             )
         result = await service.add_montreal_interest(email=request.email)
         if not isinstance(result, dict):
-            logger.error("Mailchimp Montreal: service returned non-dict %s", type(result))
+            logger.error("Mailchimp Montreal: service returned non-dict %s" % (type(result).__name__,))
             return JSONResponse(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
@@ -216,7 +216,7 @@ async def mailchimp_footer_newsletter(request: MailchimpFooterRequest):
             )
         result = await service.add_footer_newsletter(email=request.email)
         if not isinstance(result, dict):
-            logger.error("Mailchimp footer: service returned non-dict %s", type(result))
+            logger.error("Mailchimp footer: service returned non-dict %s" % (type(result).__name__,))
             return JSONResponse(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
