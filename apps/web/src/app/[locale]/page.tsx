@@ -195,7 +195,7 @@ export default function HomePage() {
                       className={combineAnimations(
                         microInteractions.button.base,
                         microInteractions.button.hover,
-                        "inline-block text-center bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
+                        "inline-block text-center bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto shrink-0"
                       )}
                     >
                       {t('registerCta')}
@@ -236,7 +236,7 @@ export default function HomePage() {
                       className={combineAnimations(
                         microInteractions.button.base,
                         microInteractions.button.hover,
-                        "inline-block text-center bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
+                        "inline-block text-center bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto shrink-0"
                       )}
                     >
                       {t('registerCta')}
