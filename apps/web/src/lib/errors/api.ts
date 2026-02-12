@@ -150,12 +150,21 @@ export function handleApiError(error: unknown): AppError {
       }
     }
 
-    // Generate contextual error message based on status code
-    let message = (responseData && typeof responseData === 'object' && 'error' in responseData && typeof responseData.error === 'object' && responseData.error && 'message' in responseData.error)
-      ? String(responseData.error.message)
-      : error.message;
-    
-    if (!message || message === 'Request failed with status code') {
+    // Generate contextual error message: prefer FastAPI detail, then our error.message, then axios message
+    let message: string | undefined;
+    if (responseData && typeof responseData === 'object' && 'detail' in responseData && typeof responseData.detail === 'string' && responseData.detail) {
+      message = responseData.detail;
+    } else if (responseData && typeof responseData === 'object' && 'error' in responseData && typeof responseData.error === 'object' && responseData.error && 'message' in responseData.error) {
+      message = String(responseData.error.message);
+    } else {
+      message = error.message;
+    }
+
+    // Always show a friendly message for newsletter 500 (even if backend returns generic "contact support")
+    if (statusCode === 500 && requestUrl && requestUrl.includes('newsletter')) {
+      message = 'Subscription is temporarily unavailable. Please try again later.';
+    }
+    if (!message || message === 'Request failed with status code' || message === 'An internal error occurred. Please contact support.') {
       // Generate user-friendly messages for common status codes
       switch (statusCode) {
         case 400:
@@ -196,7 +205,9 @@ export function handleApiError(error: unknown): AppError {
           }
           break;
         case 500:
-          message = 'Server error occurred. Our team has been notified. Please try again later.';
+          message = requestUrl && requestUrl.includes('newsletter')
+            ? 'Subscription is temporarily unavailable. Please try again later.'
+            : 'Server error occurred. Our team has been notified. Please try again later.';
           break;
         case 503:
           message = 'Service temporarily unavailable. Please try again in a few moments.';

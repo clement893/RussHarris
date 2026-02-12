@@ -1,4 +1,4 @@
-﻿"""
+"""
 Centralized Error Handler
 Handles all exceptions and returns standardized error responses
 """
@@ -49,7 +49,7 @@ def _add_cors_headers(response: JSONResponse, request: Request) -> JSONResponse:
             response.headers["Access-Control-Allow-Origin"] = allowed_origin
             response.headers["Access-Control-Allow-Credentials"] = "true"
             response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With, Accept, Origin, X-API-Key, X-Signature, X-Timestamp, X-CSRF-Token, X-Bootstrap-Key, Cache-Control, Pragma"
+            response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With, Accept, Origin, X-API-Key, X-Signature, X-Timestamp, X-CSRF-Token, X-Bootstrap-Key, Cache-Control, Pragma, Expires"
     except Exception as e:
         # If CORS header addition fails, log but don't break the error response
         logger.warning(f"Failed to add CORS headers to error response: {e}")
@@ -243,12 +243,17 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
         os.getenv("ENVIRONMENT", "").lower() == "production" or
         os.getenv("RAILWAY_ENVIRONMENT") is not None
     )
+    # Friendly message for newsletter endpoints so users never see generic "contact support"
+    if "/newsletter/" in request.url.path:
+        friendly_message = "Subscription is temporarily unavailable. Please try again later."
+    else:
+        friendly_message = "An internal error occurred. Please contact support."
     if is_production:
         error_response = {
             "success": False,
             "error": {
                 "code": "INTERNAL_SERVER_ERROR",
-                "message": "An internal error occurred. Please contact support.",
+                "message": friendly_message,
             },
             "timestamp": None,
         }

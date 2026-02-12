@@ -5,11 +5,14 @@ Manage newsletter subscriptions using SendGrid Marketing Contacts
 
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr, Field
 
 from app.services.newsletter_service import NewsletterService
 from app.services.mailchimp_service import MailchimpService
 from app.core.logging import logger
+
+NEWSLETTER_UNAVAILABLE_MSG = "Subscription is temporarily unavailable. Please try again later."
 
 router = APIRouter()
 
@@ -139,38 +142,62 @@ async def unsubscribe_from_newsletter(
         )
 
 
+@router.get("/mailchimp/check", tags=["newsletter"])
+async def mailchimp_check():
+    """
+    Check if Mailchimp is configured (API key and audience ID set).
+    Public endpoint - no authentication required. Use for debugging.
+    """
+    service = MailchimpService()
+    return {"configured": service.is_configured()}
+
+
 @router.post("/mailchimp/montreal", status_code=status.HTTP_200_OK, tags=["newsletter"])
 async def mailchimp_montreal_interest(request: MailchimpMontrealRequest):
     """
     Subscribe an email to the first Mailchimp audience with tag "Microsite - Intérêt Montréal".
     Public endpoint - no authentication required.
+    Never raises: returns 503 JSON on any unexpected error so the generic handler is never hit.
     """
+    logger.info("Mailchimp Montreal endpoint called (email=%s)" % (getattr(request, "email", "?"),))
     try:
         service = MailchimpService()
         if not service.is_configured():
-            raise HTTPException(
+            return JSONResponse(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Mailchimp is not configured. Set MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID.",
+                content={"detail": "Mailchimp is not configured. Set MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID."},
             )
         result = await service.add_montreal_interest(email=request.email)
+        if not isinstance(result, dict):
+            logger.error("Mailchimp Montreal: service returned non-dict %s" % (type(result).__name__,))
+            return JSONResponse(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
+            )
         if result.get("success"):
             return {
                 "success": True,
                 "message": result.get("message", "Successfully subscribed."),
                 "email": request.email,
             }
-        raise HTTPException(
+        err = result.get("error", "Failed to subscribe.")
+        if err == "Service temporarily unavailable.":
+            return JSONResponse(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
+            )
+        return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=result.get("error", "Failed to subscribe."),
+            content={"detail": err},
         )
-    except HTTPException:
-        raise
     except Exception as e:
-        logger.exception("Mailchimp Montreal signup error: %s", e)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to subscribe.",
+        logger.exception("Mailchimp Montreal signup error (full traceback above): %s" % (e,))
+        r = JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
         )
+        r.headers["X-Newsletter-Error"] = "1"
+        return r
 
 
 @router.post("/mailchimp/footer", status_code=status.HTTP_200_OK, tags=["newsletter"])
@@ -178,32 +205,43 @@ async def mailchimp_footer_newsletter(request: MailchimpFooterRequest):
     """
     Subscribe an email to the first Mailchimp audience with tag "Champ Newsletter Microsite Russ Harris".
     For the footer newsletter on the homepage only. Public endpoint.
+    Never raises: returns 503 JSON on any unexpected error.
     """
     try:
         service = MailchimpService()
         if not service.is_configured():
-            raise HTTPException(
+            return JSONResponse(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Mailchimp is not configured. Set MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID.",
+                content={"detail": "Mailchimp is not configured. Set MAILCHIMP_API_KEY and MAILCHIMP_AUDIENCE_ID."},
             )
         result = await service.add_footer_newsletter(email=request.email)
+        if not isinstance(result, dict):
+            logger.error("Mailchimp footer: service returned non-dict %s" % (type(result).__name__,))
+            return JSONResponse(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
+            )
         if result.get("success"):
             return {
                 "success": True,
                 "message": result.get("message", "Successfully subscribed."),
                 "email": request.email,
             }
-        raise HTTPException(
+        err = result.get("error", "Failed to subscribe.")
+        if err == "Service temporarily unavailable.":
+            return JSONResponse(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
+            )
+        return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=result.get("error", "Failed to subscribe."),
+            content={"detail": err},
         )
-    except HTTPException:
-        raise
     except Exception as e:
-        logger.exception("Mailchimp footer newsletter signup error: %s", e)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to subscribe.",
+        logger.exception("Mailchimp footer newsletter signup error: %s" % (e,))
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={"detail": NEWSLETTER_UNAVAILABLE_MSG},
         )
 
 

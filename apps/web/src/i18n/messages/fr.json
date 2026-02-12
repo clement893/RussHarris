@@ -33,6 +33,8 @@
     "switchLanguage": "Changer de langue"
   },
   "navigation": {
+    "menu": "Menu",
+    "close": "Fermer",
     "program": "Programme",
     "cities": "Villes & dates",
     "about": "À propos",
