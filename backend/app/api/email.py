@@ -123,7 +123,7 @@ async def email_info():
                 }
             },
             "POST /api/email/contact": {
-                "description": "Submit contact form (public, no auth). Sends email to omar@nukleo.com.",
+                "description": "Submit contact form (public, no auth). Sends email to admin@contextpsy.com.",
                 "method": "POST",
                 "auth": "None",
                 "body": {
@@ -145,7 +145,7 @@ async def email_info():
     }
 
 
-CONTACT_EMAIL_TO = "omar@nukleo.com"
+CONTACT_EMAIL_TO = "admin@contextpsy.com"
 
 
 def _build_contact_email_html(data: ContactFormRequest) -> str:
@@ -205,7 +205,7 @@ Message:
 @router.post("/contact")
 async def contact_form_submit(request_data: ContactFormRequest):
     """
-    Public endpoint: submit contact form. Sends an email to omar@nukleo.com
+    Public endpoint: submit contact form. Sends an email to admin@contextpsy.com
     with structured form data. Uses SENDGRID_API_KEY, SENDGRID_FROM_EMAIL, SENDGRID_FROM_NAME.
     No authentication required.
     """
