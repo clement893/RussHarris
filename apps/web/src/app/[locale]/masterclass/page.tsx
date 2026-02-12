@@ -8,7 +8,7 @@
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
-import { Target, BookOpen, CheckCircle, Info, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { BookOpen, CheckCircle, Info } from 'lucide-react';
 
 export default function MasterclassPage() {
   const t = useTranslations('masterclass');
@@ -47,9 +47,6 @@ export default function MasterclassPage() {
                 {t('programSubtitle')}
               </p>
             ) : null}
-            <p className="text-lg font-light text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-              {t('description2')}
-            </p>
             <p className="text-xl md:text-2xl text-white mb-10 leading-relaxed max-w-2xl mx-auto">
               {t('description3')}
             </p>
@@ -71,36 +68,16 @@ export default function MasterclassPage() {
           <div className="prose prose-lg max-w-none text-gray-700 space-y-8">
             <p className="text-lg leading-relaxed">{t('programIntro1')}</p>
 
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200">
-              <ThumbsUp className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" aria-hidden />
-              <p className="text-gray-800 m-0">{t('programGoodNews1')}</p>
-            </div>
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200">
-              <ThumbsDown className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" aria-hidden />
-              <p className="text-gray-800 m-0">{t('programBadNews')}</p>
-            </div>
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200">
-              <ThumbsUp className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" aria-hidden />
-              <p className="text-gray-800 m-0">{t('programGoodNews2')}</p>
-            </div>
-
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-16 mb-4">{t('whatsInvolvedTitle')}</h2>
             <p className="text-lg">{t('whatsInvolvedIntro')}</p>
             <ul className="grid sm:grid-cols-2 gap-3 list-none pl-0 mt-6">
-              {([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const).map((i) => (
+              {([1, 2, 3, 4, 5, 6, 7] as const).map((i) => (
                 <li key={i} className="flex items-start gap-2 p-3 rounded-lg bg-gray-50 border border-gray-100">
                   <CheckCircle className="w-5 h-5 text-[#FF8C42] flex-shrink-0 mt-0.5" aria-hidden />
                   <span>{t(`whatsInvolved${i}`)}</span>
                 </li>
               ))}
             </ul>
-            <p className="text-lg font-medium text-gray-800 mt-4">{t('whatsInvolvedImportant')}</p>
-
-            <div className="rounded-2xl border-2 border-[#FF8C42]/40 bg-[#FF8C42]/5 p-6 md:p-8 mt-10">
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">{t('oneSizeTitle')}</h3>
-              <p className="text-lg mb-4">{t('oneSize1')}</p>
-              <p className="text-lg m-0">{t('oneSize2')}</p>
-            </div>
 
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-16 mb-4">{t('youWillLearnTitle')}</h2>
             <div className="grid sm:grid-cols-2 gap-3">
@@ -113,8 +90,6 @@ export default function MasterclassPage() {
             </div>
             <p className="text-lg font-medium text-[#FF8C42] mt-2">{t('youWillLearnMore')}</p>
 
-            <p className="text-lg mt-10">{t('programClosing')}</p>
-
             <div className="flex justify-center my-12">
               <span className="inline-flex items-center px-6 py-3 rounded-full bg-[#FF8C42]/10 text-[#FF8C42] font-semibold text-lg border border-[#FF8C42]/30">
                 {t('cpdHours')}
@@ -122,89 +97,14 @@ export default function MasterclassPage() {
             </div>
 
             <h3 className="text-2xl font-bold text-gray-900 mt-12 mb-3">{t('whoAttendTitle')}</h3>
-            <p className="text-lg">{t('whoAttendText')}</p>
-
-            <h3 className="text-2xl font-bold text-gray-900 mt-12 mb-3">{t('prereqTitle')}</h3>
-            <p className="text-lg mb-4">{t('prereqIntro')}</p>
-            <ul className="space-y-2 list-none pl-0">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-[#FF8C42] flex-shrink-0 mt-0.5" aria-hidden />
-                <span>{t('prereq1')}</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-[#FF8C42] flex-shrink-0 mt-0.5" aria-hidden />
-                <span>{t('prereq2')}</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-[#FF8C42] flex-shrink-0 mt-0.5" aria-hidden />
-                <span>{t('prereq3')}</span>
-              </li>
-            </ul>
+            <p className="text-lg">{t('programClosing')} {t('whoAttendText')}</p>
+            <p className="text-lg mt-4">{t('whoAttendRecommend')}</p>
 
             <div className="flex items-start gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200 mt-8">
               <Info className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" aria-hidden />
               <div>
                 <p className="font-semibold text-gray-900 m-0 mb-1">{t('prereqNote')}</p>
                 <p className="text-gray-800 m-0">{t('diagnosisNote')}</p>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Section Objectifs Pédagogiques */}
-      <section className="py-32 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden" data-header-contrast="light">
-        <div className="absolute inset-0 opacity-[0.015]">
-          <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="hexPatternObjectives" x="0" y="0" width="100" height="86.6" patternUnits="userSpaceOnUse">
-                <polygon points="50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25" fill="none" stroke="#1F2937" strokeWidth="1"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#hexPatternObjectives)" />
-          </svg>
-        </div>
-
-        <Container className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <Target className="w-10 h-10 text-[#FF8C42]" aria-hidden="true" />
-              <h2 className="text-5xl md:text-6xl font-bold text-gray-900">
-                {t('objectivesTitle')}
-              </h2>
-            </div>
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">{t('objective1')}</span>
-                </div>
-              </div>
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">{t('objective2')}</span>
-                </div>
-              </div>
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">{t('objective3')}</span>
-                </div>
-              </div>
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">{t('objective4')}</span>
-                </div>
-              </div>
-              <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#FF8C42]/50 transition-colors md:col-span-2">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-[#FF8C42] mt-1 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700">{t('objective5')}</span>
-                </div>
               </div>
             </div>
           </div>
