@@ -47,7 +47,7 @@ export default function MasterclassPage() {
                 {t('programSubtitle')}
               </p>
             ) : null}
-            <p className="text-xl md:text-2xl text-white mb-10 leading-relaxed max-w-4xl mx-auto">
+            <p className="text-xl md:text-2xl text-white mb-10 leading-relaxed max-w-5xl mx-auto">
               {t('description3')}
             </p>
             <Link href="/cities">
