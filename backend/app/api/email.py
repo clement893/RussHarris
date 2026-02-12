@@ -1,5 +1,6 @@
 """Email endpoints using SendGrid."""
 
+import html
 import os
 from typing import Dict, List, Optional, Union
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -37,6 +38,14 @@ class EmailResponse(BaseModel):
 class TestEmailRequest(BaseModel):
     """Schema for test email request."""
     to_email: EmailStr = Field(..., description="Recipient email address for test")
+
+
+class ContactFormRequest(BaseModel):
+    """Schema for public contact form (no auth)."""
+    name: str = Field(..., min_length=1, description="Sender name")
+    email: EmailStr = Field(..., description="Sender email")
+    subject: str = Field(..., min_length=1, description="Subject (e.g. reservation, pricing, program, group, other)")
+    message: str = Field(..., min_length=1, description="Message body")
 
 
 @router.get("/health")
@@ -112,6 +121,17 @@ async def email_info():
                     "html_content": "<h1>Hello</h1>",
                     "text_content": "Hello (optional)"
                 }
+            },
+            "POST /api/email/contact": {
+                "description": "Submit contact form (public, no auth). Sends email to omar@nukleo.com.",
+                "method": "POST",
+                "auth": "None",
+                "body": {
+                    "name": "string",
+                    "email": "string",
+                    "subject": "string",
+                    "message": "string"
+                }
             }
         },
         "how_to_use": {
@@ -122,6 +142,93 @@ async def email_info():
         "example_curl": {
             "test_email": f'curl -X POST "{os.getenv("BASE_URL", "http://localhost:8000")}/api/email/test" \\\n  -H "Authorization: Bearer YOUR_TOKEN" \\\n  -H "Content-Type: application/json" \\\n  -d \'{{"to_email": "your-email@example.com"}}\''
         }
+    }
+
+
+CONTACT_EMAIL_TO = "omar@nukleo.com"
+
+
+def _build_contact_email_html(data: ContactFormRequest) -> str:
+    """Build HTML body for contact form email."""
+    subject_labels = {
+        "reservation": "Réservation",
+        "pricing": "Tarification",
+        "program": "Programme",
+        "group": "Groupe",
+        "other": "Autre",
+    }
+    subject_display = subject_labels.get(data.subject, data.subject)
+    safe_name = html.escape(data.name)
+    safe_email = html.escape(data.email)
+    safe_subject = html.escape(subject_display)
+    safe_message = html.escape(data.message)
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8"></head>
+    <body style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h2 style="color: #1F2937;">Nouveau message depuis le formulaire de contact</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+    <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Nom</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">{safe_name}</td></tr>
+    <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Email</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><a href="mailto:{safe_email}">{safe_email}</a></td></tr>
+    <tr><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Sujet</strong></td><td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">{safe_subject}</td></tr>
+    </table>
+    <h3 style="color: #374151; margin-top: 24px;">Message</h3>
+    <div style="white-space: pre-wrap; background: #f9fafb; padding: 16px; border-radius: 8px;">{safe_message}</div>
+    <p style="margin-top: 24px; color: #6b7280; font-size: 12px;">Envoyé depuis le formulaire de contact (SENDGRID_FROM_EMAIL / SENDGRID_FROM_NAME).</p>
+    </body>
+    </html>
+    """
+
+
+def _build_contact_email_text(data: ContactFormRequest) -> str:
+    """Build plain text body for contact form email."""
+    subject_labels = {
+        "reservation": "Réservation",
+        "pricing": "Tarification",
+        "program": "Programme",
+        "group": "Groupe",
+        "other": "Autre",
+    }
+    subject_display = subject_labels.get(data.subject, data.subject)
+    return f"""Nouveau message depuis le formulaire de contact
+
+Nom: {data.name}
+Email: {data.email}
+Sujet: {subject_display}
+
+Message:
+{data.message}
+"""
+
+
+@router.post("/contact")
+async def contact_form_submit(request_data: ContactFormRequest):
+    """
+    Public endpoint: submit contact form. Sends an email to omar@nukleo.com
+    with structured form data. Uses SENDGRID_API_KEY, SENDGRID_FROM_EMAIL, SENDGRID_FROM_NAME.
+    No authentication required.
+    """
+    email_service = EmailService()
+    if not email_service.is_configured():
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Email service is not configured. Please set SENDGRID_API_KEY.",
+        )
+    subject = f"[Contact] {request_data.name} – {request_data.subject}"
+    html_content = _build_contact_email_html(request_data)
+    text_content = _build_contact_email_text(request_data)
+    result = email_service.send_email(
+        to_email=CONTACT_EMAIL_TO,
+        subject=subject,
+        html_content=html_content,
+        text_content=text_content,
+        reply_to=request_data.email,
+    )
+    return {
+        "success": True,
+        "message": "Message sent successfully.",
+        "status_code": result.get("status_code"),
     }
 
 

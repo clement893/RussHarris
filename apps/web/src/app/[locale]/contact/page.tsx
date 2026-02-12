@@ -10,6 +10,8 @@ import { Container, Button } from '@/components/ui';
 import { Mail, Phone, MapPin, Send, Hexagon } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useTranslations } from 'next-intl';
+import { apiClient } from '@/lib/api/client';
+import { getErrorMessage } from '@/lib/errors';
 
 export default function ContactPage() {
   const t = useTranslations('contact');
@@ -21,19 +23,30 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // TODO: Implement actual form submission
-    // For now, just simulate submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setSubmitError(null);
+    try {
+      await apiClient.post<{ success: boolean; message?: string }>(
+        '/email/contact',
+        {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject,
+          message: formData.message.trim(),
+        }
+      );
       setSubmitted(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSubmitted(false), 5000);
-    }, 1000);
+    } catch (err) {
+      setSubmitError(getErrorMessage(err) || t('formError') || 'Une erreur est survenue. Veuillez réessayer.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -157,6 +170,13 @@ export default function ContactPage() {
                       <div className="mb-6 p-4 bg-[#FF8C42] text-white rounded-xl">
                         <p className="font-bold">{t('formSuccessTitle')}</p>
                         <p className="text-sm mt-1">{t('formSuccessDescription')}</p>
+                      </div>
+                    )}
+
+                    {submitError && (
+                      <div className="mb-6 p-4 bg-red-100 border border-red-300 text-red-800 rounded-xl">
+                        <p className="font-bold">{t('formErrorTitle') || 'Erreur'}</p>
+                        <p className="text-sm mt-1">{submitError}</p>
                       </div>
                     )}
 

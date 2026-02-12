@@ -200,6 +200,10 @@
     "currentLanguage": "Current language",
     "selectLanguage": "Select language"
   },
+  "contact": {
+    "formErrorTitle": "Error",
+    "formError": "Something went wrong. Please try again."
+  },
   "errors": {
     "somethingWentWrong": "Something went wrong",
     "tryAgain": "Try again",

@@ -130,6 +130,10 @@
     "currentLanguage": "Langue actuelle",
     "selectLanguage": "Sélectionner une langue"
   },
+  "contact": {
+    "formErrorTitle": "Erreur",
+    "formError": "Une erreur est survenue. Veuillez réessayer."
+  },
   "errors": {
     "somethingWentWrong": "Quelque chose s'est mal passé",
     "tryAgain": "Réessayer",
