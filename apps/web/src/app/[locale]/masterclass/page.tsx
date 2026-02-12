@@ -112,7 +112,7 @@ export default function MasterclassPage() {
       </section>
 
       {/* Section Ressources Incluses */}
-      <section className="py-32 bg-white" data-header-contrast="light">
+      <section className="pt-11 pb-16 bg-white" data-header-contrast="light">
         <Container className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-4 mb-6">
@@ -160,7 +160,7 @@ export default function MasterclassPage() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A] text-white relative overflow-hidden" data-header-contrast="dark">
+      <section className="pt-16 pb-32 bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A] text-white relative overflow-hidden" data-header-contrast="dark">
         <div className="absolute inset-0 opacity-[0.03]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
             <defs>
