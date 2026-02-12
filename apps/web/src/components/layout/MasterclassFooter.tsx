@@ -54,7 +54,6 @@ export default function MasterclassFooter() {
       { href: '/cities', labelKey: 'cities' },
     ],
     resources: [
-      { href: '/testimonials', labelKey: 'testimonials' },
       { href: '/faq', labelKey: 'faq' },
       { href: '/contact', labelKey: 'contact' },
       { href: '/legal', labelKey: 'legal' },
