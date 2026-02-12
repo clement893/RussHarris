@@ -33,13 +33,14 @@ export default function MasterclassFooter() {
         '/v1/newsletter/mailchimp/footer',
         { email: value }
       );
-      if (res.data?.success) {
+      // Backend returns { success, message, email } directly (apiClient returns response.data)
+      if ((res as { success?: boolean }).success) {
         setStatus('success');
-        setMessage(t('thankYou'));
+        setMessage((res as { message?: string }).message || t('thankYou'));
         setEmail('');
       } else {
         setStatus('error');
-        setMessage(res.data?.message || t('newsletterError') || 'Une erreur est survenue.');
+        setMessage((res as { message?: string }).message || t('newsletterError') || 'Une erreur est survenue.');
       }
     } catch (err) {
       setStatus('error');

@@ -33,13 +33,14 @@ export default function HomePage() {
         '/v1/newsletter/mailchimp/montreal',
         { email }
       );
-      if (res.data?.success) {
+      // Backend returns { success, message, email } directly (apiClient returns response.data)
+      if ((res as { success?: boolean }).success) {
         setMontrealStatus('success');
         setMontrealMessage(t('montrealSuccess') || 'Merci ! Vous serez informé des détails pour Montréal.');
         setMontrealEmail('');
       } else {
         setMontrealStatus('error');
-        setMontrealMessage(res.data?.message || t('montrealError') || 'Une erreur est survenue.');
+        setMontrealMessage((res as { message?: string }).message || t('montrealError') || 'Une erreur est survenue.');
       }
     } catch (err) {
       setMontrealStatus('error');
