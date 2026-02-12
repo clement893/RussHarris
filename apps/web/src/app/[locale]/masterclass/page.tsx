@@ -66,9 +66,8 @@ export default function MasterclassPage() {
       <section className="py-16 md:py-24 bg-white" data-header-contrast="light">
         <Container className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="prose prose-lg max-w-none text-gray-700 space-y-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t('whatsInvolvedTitle')}</h2>
             <p className="text-lg leading-relaxed">{t('programIntro1')}</p>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-16 mb-4">{t('whatsInvolvedTitle')}</h2>
             <p className="text-lg">{t('whatsInvolvedIntro')}</p>
             <ul className="grid sm:grid-cols-2 gap-3 list-none pl-0 mt-6">
               {([1, 2, 3, 4, 5, 6, 7] as const).map((i) => (
