@@ -49,7 +49,7 @@ export default function HomePage() {
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white text-gray-900">
       {/* Hero Section - Avec gris anthracite élégant */}
-      <section className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-[3.9rem] md:py-[6.5rem] bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]" data-header-contrast="dark">
+      <section className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-8 md:pt-[6.5rem] md:pb-[3.25rem] bg-gradient-to-br from-[#1F2937] via-[#111827] to-[#0F172A]" data-header-contrast="dark">
         {/* Grille hexagonale subtile en arrière-plan */}
         <div className="absolute inset-0 opacity-[0.03]">
           <svg className="w-full h-full" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -154,7 +154,7 @@ export default function HomePage() {
       </section>
 
       {/* Section Dates de Tournée - Fond foncé élégant */}
-      <section className="py-16 md:py-32 bg-gradient-to-b from-[#0F172A] to-[#1E293B]" data-header-contrast="dark">
+      <section className="pt-8 pb-16 md:pt-16 md:pb-32 bg-gradient-to-b from-[#0F172A] to-[#1E293B]" data-header-contrast="dark">
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
           <ScrollReveal>
             <div className="text-center mb-12 md:mb-16">
