@@ -1,7 +1,7 @@
 """
 Mailchimp Service - Add contacts to Mailchimp audience with tags.
 Uses Mailchimp Marketing API v3.
-Fetches list merge fields and fills missing ones with empty string so subscriptions always succeed.
+Uses skip_merge_validation=true so Mailchimp accepts the contact even when required merge fields are not sent.
 """
 
 import hashlib
@@ -10,9 +10,6 @@ from typing import Any
 
 import httpx
 from app.core.logging import logger
-
-# Cache: list_id -> list of merge field tags (so we only call merge-fields API once per list)
-_merge_fields_cache: dict[str, list[str]] = {}
 
 # Tag for Montreal microsite interest signups
 MONTREAL_INTEREST_TAG = "Microsite - Intérêt Montréal"
@@ -71,34 +68,6 @@ class MailchimpService:
         """Check if Mailchimp API key and audience ID are set."""
         return bool(self.api_key and self.audience_id)
 
-    async def _get_list_merge_field_tags(
-        self, client: httpx.AsyncClient, list_id: str, auth: tuple[str, str]
-    ) -> list[str]:
-        """Get merge field tags for the list (cached). Returns e.g. ['FNAME', 'LNAME', 'PHONE']."""
-        global _merge_fields_cache
-        if list_id in _merge_fields_cache:
-            return _merge_fields_cache[list_id]
-        url = f"{self._base_url}/lists/{list_id}/merge-fields"
-        try:
-            resp = await client.get(url, auth=auth, params={"count": 100})
-            if resp.status_code != 200:
-                return []
-            data = resp.json()
-            tags = []
-            for m in data.get("merge_fields", []):
-                tag = m.get("tag")
-                if isinstance(tag, str) and tag:
-                    tags.append(tag)
-            _merge_fields_cache[list_id] = tags
-            return tags
-        except Exception as e:
-            logger.warning("Mailchimp get merge-fields failed: %s" % (e,))
-            return []
-
-    def _merge_fields_for_list(self, tags: list[str]) -> dict[str, str]:
-        """Build merge_fields dict with empty string for each tag so all required fields are satisfied."""
-        return {tag: "" for tag in tags}
-
     async def add_montreal_interest(self, email: str) -> dict[str, Any]:
         """
         Add or update a contact in the first audience with tag "Microsite - Intérêt Montréal".
@@ -121,17 +90,12 @@ class MailchimpService:
             timeout = httpx.Timeout(15.0, connect=5.0)
 
             async with httpx.AsyncClient(timeout=timeout) as client:
-                # Merge fields: fetch list fields and fill all with empty string so Mailchimp accepts
-                merge_tags = await self._get_list_merge_field_tags(client, list_id, auth)
-                merge_fields = self._merge_fields_for_list(merge_tags) if merge_tags else {"FNAME": "", "LNAME": ""}
-
-                # 1) Add or update member (PUT is idempotent)
-                put_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}"
+                # skip_merge_validation=true so Mailchimp accepts the contact even when required merge fields are not sent
+                put_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}?skip_merge_validation=true"
                 put_body = {
                     "email_address": email,
                     "status": "subscribed",
                     "status_if_new": "subscribed",
-                    "merge_fields": merge_fields,
                 }
                 try:
                     put_resp = await client.put(put_url, json=put_body, auth=auth)
@@ -190,15 +154,11 @@ class MailchimpService:
             timeout = httpx.Timeout(15.0, connect=5.0)
 
             async with httpx.AsyncClient(timeout=timeout) as client:
-                merge_tags = await self._get_list_merge_field_tags(client, list_id, auth)
-                merge_fields = self._merge_fields_for_list(merge_tags) if merge_tags else {"FNAME": "", "LNAME": ""}
-
-                put_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}"
+                put_url = f"{self._base_url}/lists/{list_id}/members/{subscriber_hash}?skip_merge_validation=true"
                 put_body = {
                     "email_address": email,
                     "status": "subscribed",
                     "status_if_new": "subscribed",
-                    "merge_fields": merge_fields,
                 }
                 try:
                     put_resp = await client.put(put_url, json=put_body, auth=auth)
