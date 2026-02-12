@@ -99,17 +99,18 @@ export default function CitiesPage() {
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="w-full md:w-auto inline-block">
-                    <Button
-                      type="button"
+                    <a
+                      href="https://ipc.mylearnworlds.com/course/russ-harris-2026-toronto"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={combineAnimations(
                         microInteractions.button.base,
                         microInteractions.button.hover,
-                        "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
+                        "inline-block text-center bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
                       )}
-                      aria-disabled="true"
                     >
                       {t('registerCta')}
-                    </Button>
+                    </a>
                   </span>
                 </div>
               </div>
@@ -139,17 +140,18 @@ export default function CitiesPage() {
                 </div>
                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-4">
                   <span className="w-full md:w-auto inline-block">
-                    <Button
-                      type="button"
+                    <a
+                      href="https://ipc.mylearnworlds.com/course/vancouver-russ-harris-neuroaffirming-act-for-adhd-autism"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={combineAnimations(
                         microInteractions.button.base,
                         microInteractions.button.hover,
-                        "bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
+                        "inline-block text-center bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto"
                       )}
-                      aria-disabled="true"
                     >
                       {t('registerCta')}
-                    </Button>
+                    </a>
                   </span>
                 </div>
               </div>
