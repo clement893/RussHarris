@@ -69,7 +69,12 @@ export default function MasterclassFooter() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             {/* Brand Section */}
             <div className="lg:col-span-1">
-              <Link href="/" className="flex items-center gap-3 mb-6 group">
+              <a
+                href="https://ipc.mylearnworlds.com/courses"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 mb-6 group"
+              >
                 <div className="relative w-12 h-12 transition-transform duration-300 group-hover:scale-110">
                   <Image
                     src="/images/ips-logo.png"
@@ -81,7 +86,7 @@ export default function MasterclassFooter() {
                 <h3 className="text-xl font-bold text-white group-hover:text-[#F58220] transition-colors">
                   {t('brandName')}
                 </h3>
-              </Link>
+              </a>
               <p className="text-sm text-white/80 mb-6 leading-relaxed">
                 {t('brandDescription')}
               </p>
