@@ -111,7 +111,7 @@ export default function MasterclassPage() {
       </section>
 
       {/* Section Ressources Incluses */}
-      <section className="pt-11 pb-16 bg-white" data-header-contrast="light">
+      <section className="pt-4 pb-16 bg-white" data-header-contrast="light">
         <Container className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-4 mb-6">
