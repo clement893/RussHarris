@@ -80,7 +80,7 @@ export default function MasterclassPage() {
 
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-16 mb-4">{t('youWillLearnTitle')}</h2>
             <div className="grid sm:grid-cols-2 gap-3">
-              {([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] as const).map((i) => (
+              {([1, 2, 3, 8, 5, 6, 7, 4, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] as const).map((i) => (
                 <div key={i} className="flex items-start gap-2 p-3 rounded-lg bg-gray-50 border border-gray-100">
                   <CheckCircle className="w-5 h-5 text-[#FF8C42] flex-shrink-0 mt-0.5" aria-hidden />
                   <span>{t(`youWillLearn${i}`)}</span>
