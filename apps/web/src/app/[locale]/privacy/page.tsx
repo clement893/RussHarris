@@ -63,7 +63,7 @@ export default function PrivacyPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">5. Vos droits</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Conformément au RGPD, vous disposez des droits suivants : droit d'accès, droit de rectification, droit à l'effacement, droit à la portabilité, droit d'opposition. Pour exercer ces droits, contactez-nous à admin@contextpsy.com.
+                  Conformément à la Loi sur la protection des renseignements personnels et les documents électroniques (LPRPDE), vous disposez notamment des droits suivants : droit d'accès à vos renseignements personnels, droit de rectification, et droit de retirer votre consentement à l'utilisation ou à la communication de vos renseignements, sous réserve des restrictions légales applicables.
                 </p>
               </section>
 
