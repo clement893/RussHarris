@@ -144,7 +144,7 @@ export default function HomePage() {
                     src="/images/russ/8obb1myXAohZ.jpg"
                     alt="Dr. Russ Harris"
                     fill
-                    style={{ objectFit: 'cover' }}
+                    style={{ objectFit: 'cover', objectPosition: '50% 20%' }}
                     className=""
                   />
                 </div>
