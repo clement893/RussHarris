@@ -128,8 +128,8 @@ export default function LegalPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">3. Hébergement</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Le site est hébergé par [Nom de l'hébergeur].<br />
-                  [Adresse de l'hébergeur]
+                  Le site est hébergé par Railway.<br />
+                  548 Market St PMB 68956, San Francisco, California 94104
                 </p>
               </section>
 
