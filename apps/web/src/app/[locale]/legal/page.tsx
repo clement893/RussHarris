@@ -174,7 +174,7 @@ export default function LegalPage() {
               <section>
                 <h2 className="text-2xl font-black text-black mb-4">8. Droit applicable</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Les présentes mentions légales sont régies par le droit français. En cas de litige, les tribunaux français seront seuls compétents.
+                  Les présentes mentions légales sont régies par les lois applicables au Canada et par les lois de la province dans laquelle se tient l'événement concerné. Tout litige sera soumis à la compétence des tribunaux compétents de cette province.
                 </p>
               </section>
             </div>
