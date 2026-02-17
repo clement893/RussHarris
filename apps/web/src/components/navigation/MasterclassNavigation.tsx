@@ -7,6 +7,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
@@ -18,6 +19,25 @@ import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
 import { masterclassNavigationConfig } from '@/lib/navigation/config';
 import { getFilteredNavigation } from '@/lib/navigation/config';
 import { useAuthStore } from '@/lib/store';
+
+const DEFAULT_LOGO = {
+  src: '/images/ips-logo.png',
+  alt: 'Institut de Psychologie Contextuelle',
+};
+
+/** Logo to use on specific paths (path without locale). Alternate logo for legal/terms/privacy/cookies pages — add your image at public/images/logo-legal-pages.png to use it. */
+const LEGAL_PAGES_LOGO = { src: '/images/logo-legal-pages.png', alt: 'Institut de Psychologie Contextuelle' };
+export const HEADER_LOGO_BY_PATH: Record<string, { src: string; alt: string }> = {
+  '/legal': LEGAL_PAGES_LOGO,
+  '/terms': LEGAL_PAGES_LOGO,
+  '/privacy': LEGAL_PAGES_LOGO,
+  '/cookies': LEGAL_PAGES_LOGO,
+};
+
+function getPathWithoutLocale(pathname: string | null): string {
+  if (!pathname) return '/';
+  return pathname.replace(/^\/[a-z]{2}(?=\/|$)/, '') || '/';
+}
 
 interface MasterclassNavigationProps {
   variant?: 'default' | 'transparent' | 'solid';
@@ -34,6 +54,9 @@ export default function MasterclassNavigation({
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOnWhiteBackground, setIsOnWhiteBackground] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const pathname = usePathname();
+  const pathKey = getPathWithoutLocale(pathname);
+  const logo = HEADER_LOGO_BY_PATH[pathKey] ?? DEFAULT_LOGO;
   const t = useTranslations();
   const { isAuthenticated, user } = useAuthStore();
 
@@ -117,8 +140,8 @@ export default function MasterclassNavigation({
             <Link href="/" className="flex items-center group relative">
               <div className="relative w-32 h-32 transition-all duration-300 group-hover:scale-105">
                 <Image
-                  src="/images/ips-logo.png"
-                  alt="Institut de Psychologie Contextuelle"
+                  src={logo.src}
+                  alt={logo.alt}
                   fill
                   className={clsx(
                     'object-contain transition-all duration-300',
