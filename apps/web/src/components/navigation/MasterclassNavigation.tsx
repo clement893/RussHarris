@@ -36,7 +36,9 @@ export const HEADER_LOGO_BY_PATH: Record<string, { src: string; alt: string }> =
 
 function getPathWithoutLocale(pathname: string | null): string {
   if (!pathname) return '/';
-  return pathname.replace(/^\/[a-z]{2}(?=\/|$)/, '') || '/';
+  let p = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, '') || '/';
+  p = p.replace(/\/$/, '') || '/'; // no trailing slash
+  return p.startsWith('/') ? p : '/' + p; // ensure leading slash
 }
 
 interface MasterclassNavigationProps {
@@ -56,7 +58,11 @@ export default function MasterclassNavigation({
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const pathKey = getPathWithoutLocale(pathname);
-  const logo = HEADER_LOGO_BY_PATH[pathKey] ?? DEFAULT_LOGO;
+  const logo =
+    HEADER_LOGO_BY_PATH[pathKey] ??
+    HEADER_LOGO_BY_PATH[pathKey + '/'] ??
+    (pathKey.startsWith('/cookies') ? LEGAL_PAGES_LOGO : null) ??
+    DEFAULT_LOGO;
   const t = useTranslations();
   const { isAuthenticated, user } = useAuthStore();
 
