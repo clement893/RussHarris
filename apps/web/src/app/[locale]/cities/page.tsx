@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { Container, Button } from '@/components/ui';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
-import { Calendar, MapPin, Mail } from 'lucide-react';
+import { Calendar, MapPin, Mail, Sun, Tag, UserPlus } from 'lucide-react';
 import { microInteractions, combineAnimations } from '@/lib/animations/micro-interactions';
 import { ScrollReveal } from '@/components/examples/ScrollReveal';
 
@@ -29,9 +29,43 @@ export default function CitiesPage() {
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               {t('citiesPageSubtitle')}
             </p>
-            <p className="text-xl text-gray-400 mt-6 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-400 mt-6 max-w-3xl mx-auto mb-8">
               {t('limitedPlaces')}
             </p>
+
+            {/* Bloc tarifs */}
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6 max-w-4xl mx-auto">
+              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm min-w-[240px] md:min-w-0")}>
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#FF8C42]/20 flex items-center justify-center">
+                  <Sun className="w-6 h-6 text-[#FF8C42]" aria-hidden />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#FF8C42] mb-0.5">{t('pricingEarlyBirdLabel')}</p>
+                  <p className="text-white font-bold text-lg">{t('pricingEarlyBirdValue')}</p>
+                </div>
+              </div>
+              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm min-w-[240px] md:min-w-0")}>
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                  <Tag className="w-6 h-6 text-white" aria-hidden />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-0.5">{t('pricingBaseLabel')}</p>
+                  <p className="text-white font-bold text-lg">{t('pricingBaseValue')}</p>
+                </div>
+              </div>
+              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm min-w-[240px] md:min-w-0")}>
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#FF8C42]/20 flex items-center justify-center">
+                  <UserPlus className="w-6 h-6 text-[#FF8C42]" aria-hidden />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#FF8C42] mb-0.5">{t('pricingGroupLabel')}</p>
+                  <p className="text-white text-sm">
+                    {t('pricingGroupCta')}{' '}
+                    <a href="mailto:admin@contextpsy.com" className="text-[#FF8C42] font-semibold hover:underline">{t('pricingGroupEmail')}</a>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </Container>
       </section>

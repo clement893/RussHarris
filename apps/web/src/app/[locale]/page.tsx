@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Button, Container } from '@/components/ui';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
-import { Calendar, MapPin, Mail, Circle, Hexagon, Heart, Stethoscope, Users, Brain } from 'lucide-react';
+import { Calendar, MapPin, Mail, Circle, Hexagon, Heart, Stethoscope, Users, Brain, Sun, Tag, UserPlus } from 'lucide-react';
 import { microInteractions, animationVariants, combineAnimations } from '@/lib/animations/micro-interactions';
 import { ScrollReveal } from '@/components/examples/ScrollReveal';
 
@@ -123,9 +123,43 @@ export default function HomePage() {
       <section className="pt-8 pb-16 md:pt-16 md:pb-32 bg-gradient-to-b from-[#0F172A] to-[#1E293B]" data-header-contrast="dark">
         <Container className="max-w-7xl mx-auto px-4 sm:px-6">
           <ScrollReveal>
-            <div className="text-center mb-12 md:mb-16">
+            <div className="text-center mb-8 md:mb-12">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">{t('tourTitle')}</h2>
-              <p className="text-base sm:text-lg md:text-xl text-gray-400">{t('limitedPlaces')}</p>
+              <p className="text-base sm:text-lg md:text-xl text-gray-400 mb-8">{t('limitedPlaces')}</p>
+
+              {/* Bloc tarifs */}
+              <div className="flex flex-wrap justify-center gap-4 md:gap-6 max-w-4xl mx-auto">
+                <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm min-w-[240px] md:min-w-0")}>
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#FF8C42]/20 flex items-center justify-center">
+                    <Sun className="w-6 h-6 text-[#FF8C42]" aria-hidden />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-[#FF8C42] mb-0.5">{t('pricingEarlyBirdLabel')}</p>
+                    <p className="text-white font-bold text-lg">{t('pricingEarlyBirdValue')}</p>
+                  </div>
+                </div>
+                <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm min-w-[240px] md:min-w-0")}>
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                    <Tag className="w-6 h-6 text-white" aria-hidden />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-0.5">{t('pricingBaseLabel')}</p>
+                    <p className="text-white font-bold text-lg">{t('pricingBaseValue')}</p>
+                  </div>
+                </div>
+                <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm min-w-[240px] md:min-w-0")}>
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#FF8C42]/20 flex items-center justify-center">
+                    <UserPlus className="w-6 h-6 text-[#FF8C42]" aria-hidden />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-[#FF8C42] mb-0.5">{t('pricingGroupLabel')}</p>
+                    <p className="text-white text-sm">
+                      {t('pricingGroupCta')}{' '}
+                      <a href="mailto:admin@contextpsy.com" className="text-[#FF8C42] font-semibold hover:underline">{t('pricingGroupEmail')}</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </ScrollReveal>
 
