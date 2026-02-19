@@ -29,39 +29,39 @@ export default function CitiesPage() {
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
               {t('citiesPageSubtitle')}
             </p>
-            <p className="text-xl text-gray-400 mt-6 max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-gray-400 mt-6 max-w-3xl mx-auto mb-4 md:mb-8">
               {t('limitedPlaces')}
             </p>
 
-            {/* Bloc tarifs */}
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6 max-w-4xl mx-auto">
-              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm min-w-[240px] md:min-w-0")}>
-                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#FF8C42]/20 flex items-center justify-center">
-                  <Sun className="w-6 h-6 text-[#FF8C42]" aria-hidden />
+            {/* Bloc tarifs — compact sur mobile */}
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-2 sm:gap-3 md:gap-6 max-w-4xl mx-auto md:flex-nowrap">
+              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm sm:flex-1 sm:min-w-0 md:gap-4 md:px-5 md:py-4 md:rounded-2xl md:flex-initial")}>
+                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-[#FF8C42]/20 flex items-center justify-center md:w-12 md:h-12 md:rounded-xl">
+                  <Sun className="w-4 h-4 text-[#FF8C42] md:w-6 md:h-6" aria-hidden />
                 </div>
-                <div className="text-left">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-[#FF8C42] mb-0.5">{t('pricingEarlyBirdLabel')}</p>
-                  <p className="text-white font-bold text-lg">{t('pricingEarlyBirdValue')}</p>
-                </div>
-              </div>
-              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm min-w-[240px] md:min-w-0")}>
-                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
-                  <Tag className="w-6 h-6 text-white" aria-hidden />
-                </div>
-                <div className="text-left">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-0.5">{t('pricingBaseLabel')}</p>
-                  <p className="text-white font-bold text-lg">{t('pricingBaseValue')}</p>
+                <div className="text-left min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[#FF8C42] mb-0 md:mb-0.5 md:text-xs">{t('pricingEarlyBirdLabel')}</p>
+                  <p className="text-white font-bold text-sm leading-tight md:text-lg">{t('pricingEarlyBirdValue')}</p>
                 </div>
               </div>
-              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-4 px-5 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm min-w-[240px] md:min-w-0")}>
-                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#FF8C42]/20 flex items-center justify-center">
-                  <UserPlus className="w-6 h-6 text-[#FF8C42]" aria-hidden />
+              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm sm:flex-1 sm:min-w-0 md:gap-4 md:px-5 md:py-4 md:rounded-2xl md:flex-initial")}>
+                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center md:w-12 md:h-12 md:rounded-xl">
+                  <Tag className="w-4 h-4 text-white md:w-6 md:h-6" aria-hidden />
                 </div>
-                <div className="text-left">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-[#FF8C42] mb-0.5">{t('pricingGroupLabel')}</p>
-                  <p className="text-white text-sm">
+                <div className="text-left min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-0 md:mb-0.5 md:text-xs">{t('pricingBaseLabel')}</p>
+                  <p className="text-white font-bold text-sm leading-tight md:text-lg">{t('pricingBaseValue')}</p>
+                </div>
+              </div>
+              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm sm:flex-1 sm:min-w-0 md:gap-4 md:px-5 md:py-4 md:rounded-2xl md:flex-initial")}>
+                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-[#FF8C42]/20 flex items-center justify-center md:w-12 md:h-12 md:rounded-xl">
+                  <UserPlus className="w-4 h-4 text-[#FF8C42] md:w-6 md:h-6" aria-hidden />
+                </div>
+                <div className="text-left min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[#FF8C42] mb-0 md:mb-0.5 md:text-xs">{t('pricingGroupLabel')}</p>
+                  <p className="text-white text-xs leading-tight md:text-sm">
                     {t('pricingGroupCta')}{' '}
-                    <a href="mailto:admin@contextpsy.com" className="text-[#FF8C42] font-semibold hover:underline">{t('pricingGroupEmail')}</a>
+                    <a href="mailto:admin@contextpsy.com" className="text-[#FF8C42] font-semibold hover:underline break-all">{t('pricingGroupEmail')}</a>
                   </p>
                 </div>
               </div>
