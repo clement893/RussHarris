@@ -365,7 +365,7 @@ export default function HomePage() {
                 
                 <div className="relative w-full aspect-[3/4] rounded-2xl md:rounded-3xl overflow-hidden">
                   <Image
-                    src="/images/russ/8obb1myXAohZ.jpg"
+                    src="/images/russ/russ-harris-portrait.png"
                     alt="Dr. Russ Harris"
                     fill
                     style={{ objectFit: 'cover' }}
