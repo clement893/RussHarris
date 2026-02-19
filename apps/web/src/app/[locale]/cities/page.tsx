@@ -61,7 +61,7 @@ export default function CitiesPage() {
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-[#FF8C42] mb-0 md:mb-0.5 md:text-xs">{t('pricingGroupLabel')}</p>
                   <p className="text-white text-xs leading-tight md:text-sm">
                     {t('pricingGroupCta')}
-                    <br className="md:hidden" />
+                    <br />
                     {' '}
                     <a href="mailto:admin@contextpsy.com" className="text-[#FF8C42] font-semibold hover:underline break-all">{t('pricingGroupEmail')}</a>
                   </p>
