@@ -41,10 +41,14 @@ export default function CitiesPage() {
                 </div>
                 <div className="text-left min-w-0">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-[#FF8C42] mb-0 md:mb-0.5 md:text-xs">{t('pricingEarlyBirdLabel')}</p>
-                  <p className="text-white font-bold text-sm leading-tight md:text-lg">{t('pricingEarlyBirdValue')}</p>
+                  <p className="text-white font-bold text-sm leading-tight md:text-lg">
+                    {t('pricingEarlyBirdAmount')}
+                    <br />
+                    {t('pricingEarlyBirdDate')}
+                  </p>
                 </div>
               </div>
-              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm sm:flex-1 sm:min-w-0 md:gap-4 md:px-5 md:py-4 md:rounded-2xl md:flex-initial")}>
+              <div className={combineAnimations(microInteractions.card.base, "flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm sm:flex-1 sm:min-w-0 md:gap-4 md:px-5 md:py-4 md:rounded-2xl md:flex-initial md:min-w-[8.5rem]")}>
                 <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center md:w-12 md:h-12 md:rounded-xl">
                   <Tag className="w-4 h-4 text-white md:w-6 md:h-6" aria-hidden />
                 </div>
@@ -58,7 +62,7 @@ export default function CitiesPage() {
                   <UserPlus className="w-4 h-4 text-[#FF8C42] md:w-6 md:h-6" aria-hidden />
                 </div>
                 <div className="text-left min-w-0">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[#FF8C42] mb-0 md:mb-0.5 md:text-xs">{t('pricingGroupLabel')}</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[#FF8C42] mb-0 md:mb-0.5 md:text-xs">{t('pricingGroupLabel')}<br />{t('pricingGroupLabelNote')}</p>
                   <p className="text-white text-xs leading-tight md:text-sm">
                     {t('pricingGroupCta')}
                     <br />
