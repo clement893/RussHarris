@@ -592,7 +592,7 @@ export default function HomePage() {
                 <Heart className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
               
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words hyphens-none">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words hyphens-none">
                 {t('professional1TitleLine1')}
                 <br />
                 {t('professional1TitleLine2')}
@@ -612,7 +612,7 @@ export default function HomePage() {
                 <Stethoscope className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
               
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words">
                 {t('professional2Title')}
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -630,7 +630,7 @@ export default function HomePage() {
                 <Brain className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
               
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words">
                 {t('professional3Title')}
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
@@ -648,7 +648,7 @@ export default function HomePage() {
                 <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
               
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words">
                 {t('professional4Title')}
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
