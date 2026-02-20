@@ -4,7 +4,7 @@
  */
 
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import type { Metadata, Viewport } from 'next';
@@ -32,13 +32,19 @@ const inter = Inter({
   adjustFontFallback: true, // Adjust fallback font metrics
 });
 
-export const metadata: Metadata = {
-  title: 'MODELE-NEXTJS-FULLSTACK',
-  description: 'Full-stack template with Next.js 16 frontend and FastAPI backend',
-  icons: {
-    icon: '/favicon.ico',
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'seo' });
+  return {
+    title: t('defaultTitle'),
+    description: t('defaultDescription'),
+    icons: { icon: '/favicon.ico' },
+  };
+}
 
 export const viewport: Viewport = {
   width: 'device-width',

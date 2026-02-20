@@ -85,6 +85,7 @@
     "questionsCta": "Do you have any questions?",
     "contactUs": "Contact us",
     "aboutTitle": "L'homme derrière l'ACT",
+    "heroH1Seo": "Russ Harris – Formation ACT neuroaffirmante Canada",
     "aboutDescription1": "Le Dr. Russ Harris est docteur en médecine, psychothérapeute et l'un des formateurs ACT les plus respectés au monde. Auteur du best-seller international \"The Happiness Trap\", traduit en plus de 30 langues, il a formé plus de 90 000 professionnels de la santé mentale à travers le monde.",
     "aboutDescription2": "Son approche unique combine rigueur scientifique et accessibilité pratique, rendant les concepts complexes de l'ACT immédiatement applicables en contexte clinique.",
     "statsTrained": "Professionnels formés",
@@ -131,6 +132,7 @@
   },
   "masterclass": {
     "title": "Le Programme",
+    "heroTitle": "Le Programme | ACT neuroaffirmante TDAH et autisme",
     "programSubtitle": "ACT neuroaffirmante pour TDAH et autisme",
     "description1": "Cette classe de maître intensive de 2 jours vous plongera au cœur de la Thérapie d'Acceptation et d'Engagement (ACT). Vous découvrirez les fondements théoriques, les techniques pratiques et les applications cliniques de cette approche thérapeutique révolutionnaire.",
     "description2": "L'autisme et le TDAH sont des neurotypes qui s'accompagnent de nombreuses forces, mais aussi de difficultés. Bonne nouvelle : avec son format flexible et ses processus centraux faciles à adapter, l'ACT est idéalement adaptée pour faire la différence – surtout lorsqu'elle est pratiquée dans une posture neuroaffirmative.",
@@ -227,6 +229,7 @@
   },
   "contact": {
     "title": "Contactez-nous",
+    "heroTitle": "Contact | Russ Harris – Institut de Psychologie Contextuelle",
     "subtitle": "Une question ? N'hésitez pas à nous contacter. Nous vous répondrons dans les plus brefs délais.",
     "contactInfoTitle": "Informations de contact",
     "emailLabel": "Email",
@@ -487,5 +490,19 @@
     "privacy": "Confidentialité",
     "terms": "Conditions",
     "legal": "Mentions légales"
+  },
+  "seo": {
+    "defaultTitle": "Russ Harris Canada | Formation ACT neuroaffirmante 2026",
+    "defaultDescription": "Formation ACT neuroaffirmante avec le Dr. Russ Harris au Canada. Montréal, Toronto, Vancouver. Deux jours pour intégrer l'ACT auprès des personnes TDAH et autistes. Inscriptions ouvertes.",
+    "homeTitle": "Russ Harris Canada | Formation ACT neuroaffirmante 2026",
+    "homeDescription": "Formation ACT avec le Dr. Russ Harris au Canada. Deux jours pour intégrer l'ACT auprès des personnes TDAH et autistes. Montréal, Toronto, Vancouver. Places limitées.",
+    "citiesTitle": "Villes & dates | Tournée Russ Harris Canada 2026",
+    "citiesDescription": "Choisissez votre ville : Montréal, Toronto, Vancouver. Classe de maître ACT neuroaffirmante avec le Dr. Russ Harris. Tarifs et inscriptions pour la tournée 2026.",
+    "aboutRussTitle": "Dr. Russ Harris | À propos du formateur ACT – Canada 2026",
+    "aboutRussDescription": "Le Dr. Russ Harris est médecin, psychothérapeute et l'un des formateurs ACT les plus respectés au monde. Auteur du Piège du bonheur. Tournée Canada 2026.",
+    "masterclassTitle": "Le Programme | ACT neuroaffirmante TDAH et autisme – Canada",
+    "masterclassDescription": "Classe de maître ACT neuroaffirmante pour TDAH et autisme avec le Dr. Russ Harris. Deux jours en présentiel. Montréal, Toronto, Vancouver. Réservez.",
+    "contactTitle": "Contact | Russ Harris – Institut de Psychologie Contextuelle",
+    "contactDescription": "Contactez l'Institut de Psychologie Contextuelle pour la tournée Russ Harris Canada. Questions, réservations et tarifs de groupe. Réponse sous 48 h."
   }
 }

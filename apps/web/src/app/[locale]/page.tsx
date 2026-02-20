@@ -45,9 +45,12 @@ export default function HomePage() {
                 animationVariants.hero.title,
                 "text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold mb-4 leading-none text-white tracking-tight"
               )}>
-                RUSS
-                <br />
-                HARRIS
+                <span className="sr-only">{t('heroH1Seo')}</span>
+                <span aria-hidden="true">
+                  RUSS
+                  <br />
+                  HARRIS
+                </span>
               </h1>
               <div className={combineAnimations(
                 animationVariants.hero.subtitle,
