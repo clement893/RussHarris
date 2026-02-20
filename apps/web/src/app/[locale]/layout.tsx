@@ -86,6 +86,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={inter.variable} data-api-url={apiUrl} suppressHydrationWarning>
       <head>
+        <meta name="google-site-verification" content="google492133a25c06c294" />
         {/* CRITICAL: Apply theme script FIRST, before any CSS, to prevent flash */}
         {/* This script MUST execute synchronously and block rendering until theme is applied */}
         <script
