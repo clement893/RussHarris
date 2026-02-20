@@ -6,15 +6,9 @@ const isLocalHost = (hostname: string) =>
 
 export async function GET(request: Request) {
   let baseUrl = CANONICAL_SITE_URL;
-  try {
-    const envHost = new URL(BASE_URL).hostname;
-    if (!isLocalHost(envHost)) baseUrl = BASE_URL.replace(/\/$/, '');
-    else if (request?.url) {
-      const url = new URL(request.url);
-      if (isLocalHost(url.hostname)) baseUrl = BASE_URL.replace(/\/$/, '');
-    }
-  } catch {
-    // keep CANONICAL_SITE_URL
+  if (request?.url) {
+    const url = new URL(request.url);
+    if (isLocalHost(url.hostname)) baseUrl = BASE_URL.replace(/\/$/, '');
   }
   const robotsTxt = `User-agent: *
 Allow: /

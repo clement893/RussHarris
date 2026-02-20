@@ -5,17 +5,11 @@ const isLocalHost = (hostname: string) =>
   hostname === 'localhost' || hostname === '0.0.0.0' || hostname === '127.0.0.1';
 
 export async function GET(request: Request) {
-  // Always use canonical domain for sitemap (avoids Railway URL when env is missing)
+  // Sitemap always uses russharriscanada.com in production; only use BASE_URL when running locally
   let baseUrl = CANONICAL_SITE_URL;
-  try {
-    const envHost = new URL(BASE_URL).hostname;
-    if (!isLocalHost(envHost)) baseUrl = BASE_URL.replace(/\/$/, '');
-    else if (request?.url) {
-      const url = new URL(request.url);
-      if (isLocalHost(url.hostname)) baseUrl = BASE_URL.replace(/\/$/, '');
-    }
-  } catch {
-    // keep CANONICAL_SITE_URL
+  if (request?.url) {
+    const url = new URL(request.url);
+    if (isLocalHost(url.hostname)) baseUrl = BASE_URL.replace(/\/$/, '');
   }
   // Pages du site Russ Harris uniquement (accueil + Programme, Villes & dates, etc.) en FR et EN
   const pages = getPublicSitemapUrls();
