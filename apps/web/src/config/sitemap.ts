@@ -537,6 +537,33 @@ export function getAllPages(): SitemapPage[] {
   return Object.values(sitePages).flat();
 }
 
+// Pages publiques du site Russ Harris (sitemap XML) — FR et EN
+const PUBLIC_SITEMAP_LOCALES = ['fr', 'en'] as const;
+
+export const publicSitemapPages: Array<{ path: string; priority: number; changefreq: string }> = [
+  { path: '/', priority: 1.0, changefreq: 'daily' },
+  { path: '/masterclass', priority: 0.9, changefreq: 'weekly' },
+  { path: '/cities', priority: 0.9, changefreq: 'weekly' },
+  { path: '/about-russ', priority: 0.8, changefreq: 'monthly' },
+  { path: '/contact', priority: 0.8, changefreq: 'monthly' },
+  { path: '/faq', priority: 0.7, changefreq: 'monthly' },
+  { path: '/legal', priority: 0.5, changefreq: 'yearly' },
+  { path: '/privacy', priority: 0.5, changefreq: 'yearly' },
+  { path: '/terms', priority: 0.5, changefreq: 'yearly' },
+];
+
+/** Génère les entrées du sitemap XML pour le site public (chaque page en /fr/ et /en/) */
+export function getPublicSitemapUrls(): Array<{ path: string; priority: number; changefreq: string }> {
+  const urls: Array<{ path: string; priority: number; changefreq: string }> = [];
+  for (const locale of PUBLIC_SITEMAP_LOCALES) {
+    for (const page of publicSitemapPages) {
+      const path = page.path === '/' ? `/${locale}` : `/${locale}${page.path}`;
+      urls.push({ path, priority: page.priority, changefreq: page.changefreq });
+    }
+  }
+  return urls;
+}
+
 // Fonction utilitaire pour obtenir les pages pour le sitemap XML
 export function getPagesForXML(): Array<{ path: string; priority: number; changefreq: string }> {
   return getAllPages().map(page => ({

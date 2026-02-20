@@ -1,19 +1,9 @@
 import { NextResponse } from 'next/server';
-import { BASE_URL, getAllPages } from '@/config/sitemap';
+import { BASE_URL, getPublicSitemapUrls } from '@/config/sitemap';
 
 export async function GET() {
-  // Get all pages (excluding auth-required pages for public sitemap)
-  const publicPages = getAllPages().filter(page => !page.requiresAuth);
-  
-  // Add sitemap page itself
-  const pages = [
-    ...publicPages.map(page => ({
-      path: page.path,
-      priority: page.priority || 0.5,
-      changefreq: page.changefreq || 'monthly',
-    })),
-    { path: '/sitemap', priority: 0.5, changefreq: 'monthly' },
-  ];
+  // Pages du site Russ Harris uniquement (accueil + Programme, Villes & dates, etc.) en FR et EN
+  const pages = getPublicSitemapUrls();
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
