@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { BASE_URL } from '@/config/sitemap';
 
-export async function GET() {
+export async function GET(request: Request) {
+  const baseUrl = request?.url ? new URL(request.url).origin : BASE_URL;
   const robotsTxt = `User-agent: *
 Allow: /
 Disallow: /api/
@@ -10,7 +11,7 @@ Disallow: /dashboard/
 Disallow: /_next/
 Disallow: /auth/
 
-Sitemap: ${BASE_URL}/sitemap.xml
+Sitemap: ${baseUrl}/sitemap.xml
 `;
 
   return new NextResponse(robotsTxt, {

@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import { BASE_URL, getPublicSitemapUrls } from '@/config/sitemap';
 
-export async function GET() {
+export async function GET(request: Request) {
+  // Use request origin so sitemap URLs match the domain used (e.g. russharriscanada.com)
+  const baseUrl = request?.url ? new URL(request.url).origin : BASE_URL;
   // Pages du site Russ Harris uniquement (accueil + Programme, Villes & dates, etc.) en FR et EN
   const pages = getPublicSitemapUrls();
 
@@ -15,7 +17,7 @@ export async function GET() {
 ${pages
   .map(
     (page) => `  <url>
-    <loc>${BASE_URL}${page.path}</loc>
+    <loc>${baseUrl}${page.path}</loc>
     <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
