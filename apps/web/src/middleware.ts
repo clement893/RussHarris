@@ -33,8 +33,19 @@ export const config = {
  * - Validates token signature
  * - Supports both cookie-based and header-based authentication
  */
+const GOOGLE_SITE_VERIFICATION_PATH = '/google492133a25c06c294.html';
+const GOOGLE_SITE_VERIFICATION_CONTENT = 'google-site-verification: google492133a25c06c294.html';
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Serve Google Search Console verification file (must be at root URL)
+  if (pathname === GOOGLE_SITE_VERIFICATION_PATH) {
+    return new NextResponse(GOOGLE_SITE_VERIFICATION_CONTENT, {
+      status: 200,
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    });
+  }
 
   // Exclude non-localized routes from i18n middleware
   const nonLocalizedRoutes = ['/sitemap.xml', '/robots.txt', '/api'];
