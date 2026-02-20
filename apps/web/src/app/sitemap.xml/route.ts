@@ -1,9 +1,17 @@
 import { NextResponse } from 'next/server';
 import { BASE_URL, getPublicSitemapUrls } from '@/config/sitemap';
 
+const isLocalHost = (hostname: string) =>
+  hostname === 'localhost' || hostname === '0.0.0.0' || hostname === '127.0.0.1';
+
 export async function GET(request: Request) {
-  // Use request origin so sitemap URLs match the domain used (e.g. russharriscanada.com)
-  const baseUrl = request?.url ? new URL(request.url).origin : BASE_URL;
+  // Use request origin in production; in local/dev use NEXT_PUBLIC_APP_URL so URLs are canonical
+  let baseUrl = BASE_URL;
+  if (request?.url) {
+    const origin = new URL(request.url).origin;
+    const hostname = new URL(request.url).hostname;
+    if (!isLocalHost(hostname)) baseUrl = origin;
+  }
   // Pages du site Russ Harris uniquement (accueil + Programme, Villes & dates, etc.) en FR et EN
   const pages = getPublicSitemapUrls();
 
