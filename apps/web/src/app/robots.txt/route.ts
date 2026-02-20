@@ -6,9 +6,19 @@ const isLocalHost = (hostname: string) =>
 
 export async function GET(request: Request) {
   let baseUrl = BASE_URL;
-  if (request?.url) {
-    const url = new URL(request.url);
-    if (!isLocalHost(url.hostname)) baseUrl = url.origin;
+  try {
+    const canonicalHost = new URL(BASE_URL).hostname;
+    if (!isLocalHost(canonicalHost)) {
+      baseUrl = BASE_URL.replace(/\/$/, '');
+    } else if (request?.url) {
+      const url = new URL(request.url);
+      if (!isLocalHost(url.hostname)) baseUrl = url.origin;
+    }
+  } catch {
+    if (request?.url) {
+      const url = new URL(request.url);
+      if (!isLocalHost(url.hostname)) baseUrl = url.origin;
+    }
   }
   const robotsTxt = `User-agent: *
 Allow: /
