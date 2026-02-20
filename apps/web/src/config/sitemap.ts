@@ -21,6 +21,9 @@ export interface SitemapCategory {
 // Configuration de l'URL de base du site
 export const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
+/** URL canonique du site en production (sitemap/robots). Utilisée si NEXT_PUBLIC_APP_URL absent ou local. */
+export const CANONICAL_SITE_URL = 'https://russharriscanada.com';
+
 // Structure des pages du site organisées par catégories
 export const sitePages: Record<string, SitemapPage[]> = {
   'Accueil': [
