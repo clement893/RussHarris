@@ -598,7 +598,7 @@ export default function HomePage() {
               <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words hyphens-none">
                 {t('professional1TitleLine1')}
                 <br />
-                {t('professional1TitleLine2')}
+                {t('professional1TitleLine2B')}
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
                 {t('professional1Description')}
