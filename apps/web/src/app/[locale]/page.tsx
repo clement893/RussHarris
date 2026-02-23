@@ -595,10 +595,8 @@ export default function HomePage() {
                 <Heart className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
               
-              <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words hyphens-none">
-                {t('professional1TitleLine1')}
-                <br />
-                {t('professional1TitleLine2B')}
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 group-hover:text-[#FF8C42] transition-colors break-words">
+                {t('professional1Title')}
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
                 {t('professional1Description')}
