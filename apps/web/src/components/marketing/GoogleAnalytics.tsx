@@ -12,8 +12,10 @@ export function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Initialize Google Analytics
-    initGoogleAnalytics(measurementId);
+    // Initialize only if gtag not already loaded (e.g. from script in layout head)
+    if (typeof window !== 'undefined' && !window.gtag && measurementId) {
+      initGoogleAnalytics(measurementId);
+    }
   }, [measurementId]);
 
   useEffect(() => {
