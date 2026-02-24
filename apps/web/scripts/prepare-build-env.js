@@ -18,6 +18,7 @@ const envVars = [
   'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
   'NEXT_PUBLIC_SENTRY_DSN',
   'NEXT_PUBLIC_GOOGLE_CLIENT_ID',
+  'NEXT_PUBLIC_GA_MEASUREMENT_ID',
 ];
 
 const envPath = path.join(__dirname, '..', '.env.local');
