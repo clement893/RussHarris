@@ -87,6 +87,25 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={inter.variable} data-api-url={apiUrl} suppressHydrationWarning>
       <head>
+        {/* Google tag (gtag.js) - directly after <head> as per Analytics */}
+        {(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-T0WY66ENQT') && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-T0WY66ENQT'}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-T0WY66ENQT'}');
+                `,
+              }}
+            />
+          </>
+        )}
         <meta name="google-site-verification" content="google492133a25c06c294" />
         {/* Google tag (gtag.js) - one tag per page, read from env at runtime */}
         {gaMeasurementId && (

@@ -19,6 +19,8 @@ declare global {
  */
 export function initGoogleAnalytics(measurementId: string): void {
   if (typeof window === 'undefined') return;
+  // Skip if gtag already in <head> (e.g. from layout)
+  if (typeof window.gtag === 'function') return;
 
   // Load gtag script
   const script1 = document.createElement('script');
