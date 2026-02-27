@@ -82,8 +82,6 @@ export default async function LocaleLayout({
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
   const appName = process.env.NEXT_PUBLIC_APP_NAME || 'MODELE-NEXTJS-FULLSTACK';
   const appDescription = process.env.NEXT_PUBLIC_APP_DESCRIPTION || 'Full-stack template with Next.js 16 frontend and FastAPI backend';
-  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-
   return (
     <html lang={locale} className={inter.variable} data-api-url={apiUrl} suppressHydrationWarning>
       <head>
@@ -107,22 +105,6 @@ export default async function LocaleLayout({
           </>
         )}
         <meta name="google-site-verification" content="google492133a25c06c294" />
-        {/* Google tag (gtag.js) - one tag per page, read from env at runtime */}
-        {gaMeasurementId && (
-          <>
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`} />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${gaMeasurementId}');
-                `,
-              }}
-            />
-          </>
-        )}
         {/* CRITICAL: Apply theme script FIRST, before any CSS, to prevent flash */}
         {/* This script MUST execute synchronously and block rendering until theme is applied */}
         <script
