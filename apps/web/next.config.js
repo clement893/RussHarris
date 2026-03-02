@@ -236,12 +236,12 @@ const nextConfig = {
     // Also include WebSocket URLs (wss://) for WebSocket connections
     const apiUrlWss = apiUrl.replace(/^https?:\/\//, 'wss://');
     const connectSrcUrls = isProduction 
-      ? [`'self'`, apiUrl, apiUrlWss, 'https://*.sentry.io', 'wss://*.sentry.io']
-      : [`'self'`, apiUrl, apiUrlWss, 'http://localhost:8000', 'ws://localhost:8000', 'https://*.sentry.io', 'wss://*.sentry.io'];
+      ? [`'self'`, apiUrl, apiUrlWss, 'https://*.sentry.io', 'wss://*.sentry.io', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com', 'https://*.google.com']
+      : [`'self'`, apiUrl, apiUrlWss, 'http://localhost:8000', 'ws://localhost:8000', 'https://*.sentry.io', 'wss://*.sentry.io', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com', 'https://*.google.com'];
     
     const cspDirectives = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.railway.app blob:", // Required for Next.js dev mode and Sentry workers
+      "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.railway.app https://www.googletagmanager.com https://*.googletagmanager.com blob:", // Next.js, Sentry, GA4 gtag
       "worker-src 'self' blob:", // Required for Sentry workers and web workers
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.railway.app", // Required for Tailwind CSS
       "font-src 'self' https://fonts.gstatic.com data:",
