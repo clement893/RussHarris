@@ -25,5 +25,6 @@ interface Window {
     targetId: string,
     config?: Record<string, unknown>
   ) => void;
+  fbq?: (action: 'track', eventName: string, params?: Record<string, string>) => void;
 }
 

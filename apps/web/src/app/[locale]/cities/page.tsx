@@ -13,6 +13,7 @@ import { useTranslations } from 'next-intl';
 import { Calendar, MapPin, Mail, Sun, Tag, UserPlus } from 'lucide-react';
 import { microInteractions, combineAnimations } from '@/lib/animations/micro-interactions';
 import { ScrollReveal } from '@/components/examples/ScrollReveal';
+import { trackCityInterest } from '@/lib/marketing/metaPixel';
 
 export default function CitiesPage() {
   const t = useTranslations('home');
@@ -95,6 +96,7 @@ export default function CitiesPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-inherit hover:text-[#FF8C42] transition-colors no-underline"
+                      onClick={() => trackCityInterest('Montreal')}
                     >
                       MONTRÉAL
                     </a>
@@ -119,6 +121,7 @@ export default function CitiesPage() {
                         microInteractions.button.hover,
                         "inline-block text-center bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto shrink-0"
                       )}
+                      onClick={() => trackCityInterest('Montreal')}
                     >
                       {t('registerCta')}
                     </a>
@@ -143,6 +146,7 @@ export default function CitiesPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-inherit hover:text-[#FF8C42] transition-colors no-underline"
+                      onClick={() => trackCityInterest('Toronto')}
                     >
                       TORONTO
                     </a>
@@ -167,6 +171,7 @@ export default function CitiesPage() {
                         microInteractions.button.hover,
                         "inline-block text-center bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto shrink-0"
                       )}
+                      onClick={() => trackCityInterest('Toronto')}
                     >
                       {t('registerCta')}
                     </a>
@@ -191,6 +196,7 @@ export default function CitiesPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-inherit hover:text-[#FF8C42] transition-colors no-underline"
+                      onClick={() => trackCityInterest('Vancouver')}
                     >
                       VANCOUVER
                     </a>
@@ -215,6 +221,7 @@ export default function CitiesPage() {
                         microInteractions.button.hover,
                         "inline-block text-center bg-[#FF8C42] hover:bg-[#FF7A29] text-white px-4 md:px-6 py-2.5 text-xs md:text-sm font-medium rounded-full border border-[#FF8C42]/20 w-full md:w-auto shrink-0"
                       )}
+                      onClick={() => trackCityInterest('Vancouver')}
                     >
                       {t('registerCta')}
                     </a>
