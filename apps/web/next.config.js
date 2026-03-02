@@ -236,12 +236,12 @@ const nextConfig = {
     // Also include WebSocket URLs (wss://) for WebSocket connections
     const apiUrlWss = apiUrl.replace(/^https?:\/\//, 'wss://');
     const connectSrcUrls = isProduction 
-      ? [`'self'`, apiUrl, apiUrlWss, 'https://*.sentry.io', 'wss://*.sentry.io', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com', 'https://*.google.com']
-      : [`'self'`, apiUrl, apiUrlWss, 'http://localhost:8000', 'ws://localhost:8000', 'https://*.sentry.io', 'wss://*.sentry.io', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com', 'https://*.google.com'];
+      ? [`'self'`, apiUrl, apiUrlWss, 'https://*.sentry.io', 'wss://*.sentry.io', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com', 'https://*.google.com', 'https://www.facebook.com', 'https://*.facebook.com', 'https://*.facebook.net']
+      : [`'self'`, apiUrl, apiUrlWss, 'http://localhost:8000', 'ws://localhost:8000', 'https://*.sentry.io', 'wss://*.sentry.io', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com', 'https://*.google.com', 'https://www.facebook.com', 'https://*.facebook.com', 'https://*.facebook.net'];
     
     const cspDirectives = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.railway.app https://www.googletagmanager.com https://*.googletagmanager.com blob:", // Next.js, Sentry, GA4 gtag
+      "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.railway.app https://www.googletagmanager.com https://*.googletagmanager.com https://connect.facebook.net blob:", // Next.js, Sentry, GA4, Meta Pixel
       "worker-src 'self' blob:", // Required for Sentry workers and web workers
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.railway.app", // Required for Tailwind CSS
       "font-src 'self' https://fonts.gstatic.com data:",

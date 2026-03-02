@@ -90,7 +90,14 @@ export default function CitiesPage() {
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-2 group-hover:text-[#FF8C42] transition-colors break-words">
-                    MONTRÉAL
+                    <a
+                      href="https://ipc.mylearnworlds.com/course/montreal-russ-harris-neuroaffirming-act-for-adhd-autismact-neuroaffirmative-aupres-des-personnes-autistes-et-tdah"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-inherit hover:text-[#FF8C42] transition-colors no-underline"
+                    >
+                      MONTRÉAL
+                    </a>
                   </h3>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400 mb-2">
                     <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
@@ -131,7 +138,14 @@ export default function CitiesPage() {
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-2 group-hover:text-[#FF8C42] transition-colors break-words">
-                    TORONTO
+                    <a
+                      href="https://ipc.mylearnworlds.com/course/russ-harris-2026-toronto"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-inherit hover:text-[#FF8C42] transition-colors no-underline"
+                    >
+                      TORONTO
+                    </a>
                   </h3>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400 mb-2">
                     <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
@@ -172,7 +186,14 @@ export default function CitiesPage() {
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
                 <div className="flex-1 min-w-0">
                   <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-2 group-hover:text-[#FF8C42] transition-colors break-words">
-                    VANCOUVER
+                    <a
+                      href="https://ipc.mylearnworlds.com/course/vancouver-russ-harris-neuroaffirming-act-for-adhd-autism"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-inherit hover:text-[#FF8C42] transition-colors no-underline"
+                    >
+                      VANCOUVER
+                    </a>
                   </h3>
                   <div className="flex items-center gap-3 md:gap-4 text-gray-400 mb-2">
                     <Calendar className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
