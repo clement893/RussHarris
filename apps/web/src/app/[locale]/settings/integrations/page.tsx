@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { useAuthStore } from '@/lib/store';
 import { IntegrationsSettings } from '@/components/settings';

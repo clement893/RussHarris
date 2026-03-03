@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, type ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { checkMySuperAdminStatus } from '@/lib/api/admin';
@@ -39,6 +40,7 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const locale = useLocale();
   const { user, token, setUser } = useAuthStore();
   const isHydrated = useHydrated();
 
@@ -141,7 +143,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
             checkingRef.current = false;
             setIsChecking(false);
             setIsAuthorized(false);
-            router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+            router.replace(`/${locale}/auth/login?redirect=${encodeURIComponent(pathname)}`);
             return;
           }
           // For other errors (500, network, etc.), continue with token check
@@ -181,7 +183,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
         checkingRef.current = false;
         setIsChecking(false);
         setIsAuthorized(false);
-        router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+        router.replace(`/${locale}/auth/login?redirect=${encodeURIComponent(pathname)}`);
         return;
       }
 
@@ -261,7 +263,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
                   checkingRef.current = false;
                   setIsChecking(false);
                   setIsAuthorized(false);
-                  router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}&error=unauthorized`);
+                  router.replace(`/${locale}/auth/login?redirect=${encodeURIComponent(pathname)}&error=unauthorized`);
                   return;
                 }
               } else {
@@ -269,7 +271,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
                 checkingRef.current = false;
                 setIsChecking(false);
                 setIsAuthorized(false);
-                router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}&error=unauthorized`);
+                router.replace(`/${locale}/auth/login?redirect=${encodeURIComponent(pathname)}&error=unauthorized`);
                 return;
               }
             } else if (statusCode === 403) {
@@ -298,10 +300,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
           checkingRef.current = false;
           setIsChecking(false);
           setIsAuthorized(false);
-          // Get current locale from pathname and preserve it
-          const localeMatch = pathname.match(/^\/(en|fr|ar|he)/);
-          const locale = localeMatch ? localeMatch[1] : 'en';
-          const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized' : `/${locale}/dashboard?error=unauthorized`;
+          const redirectPath = `/${locale}/dashboard?error=unauthorized`;
           router.replace(redirectPath);
           return;
         }

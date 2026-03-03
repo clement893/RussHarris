@@ -1,11 +1,11 @@
-﻿/**
+/**
  * 404 Not Found Page
  * Shown when a route doesn't exist
  */
 
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import Button from '@/components/ui/Button';
 import Container from '@/components/ui/Container';
 import Card from '@/components/ui/Card';

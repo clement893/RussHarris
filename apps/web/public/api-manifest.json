@@ -1,12 +1,12 @@
 {
   "version": "1.0.0",
-  "generated": "2026-01-11T21:49:14.705Z",
+  "generated": "2026-03-03T20:45:13.514Z",
   "summary": {
-    "total": 149,
-    "connected": 63,
-    "partial": 32,
-    "needsIntegration": 86,
-    "static": 86
+    "total": 154,
+    "connected": 62,
+    "partial": 31,
+    "needsIntegration": 92,
+    "static": 92
   },
   "pages": [
     {
@@ -378,16 +378,11 @@
       "apiCalls": [
         {
           "method": "MODULE",
-          "endpoint": "masterclassAPI.getCityEvent"
-        },
-        {
-          "method": "MODULE",
           "endpoint": "bookingsAPI.create"
         }
       ],
       "hasApiCalls": true,
       "imports": [
-        "masterclass",
         "bookings"
       ]
     },
@@ -408,16 +403,9 @@
     {
       "path": "app/[locale]/book/page.tsx",
       "url": "/book",
-      "apiCalls": [
-        {
-          "method": "MODULE",
-          "endpoint": "masterclassAPI.listCitiesWithEvents"
-        }
-      ],
-      "hasApiCalls": true,
-      "imports": [
-        "masterclass"
-      ]
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
     },
     {
       "path": "app/[locale]/book/payment/page.tsx",
@@ -434,12 +422,33 @@
       ]
     },
     {
+      "path": "app/[locale]/calgary/page.tsx",
+      "url": "/calgary",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app/[locale]/check-my-superadmin-status/page.tsx",
       "url": "/check-my-superadmin-status",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": [
         "admin"
+      ]
+    },
+    {
+      "path": "app/[locale]/cities/[city]/inscription/page.tsx",
+      "url": "/cities/[city]/inscription",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "masterclassAPI.listCityEvents"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "masterclass"
       ]
     },
     {
@@ -459,16 +468,9 @@
     {
       "path": "app/[locale]/cities/page.tsx",
       "url": "/cities",
-      "apiCalls": [
-        {
-          "method": "MODULE",
-          "endpoint": "masterclassAPI.listCitiesWithEvents"
-        }
-      ],
-      "hasApiCalls": true,
-      "imports": [
-        "masterclass"
-      ]
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
     },
     {
       "path": "app/[locale]/client/dashboard/page.tsx",
@@ -508,7 +510,9 @@
       "url": "/contact",
       "apiCalls": [],
       "hasApiCalls": false,
-      "imports": []
+      "imports": [
+        "client"
+      ]
     },
     {
       "path": "app/[locale]/content/categories/page.tsx",
@@ -750,6 +754,32 @@
       "hasApiCalls": false,
       "imports": [
         "admin"
+      ]
+    },
+    {
+      "path": "app/[locale]/dashboard/cities/page.tsx",
+      "url": "/dashboard/cities",
+      "apiCalls": [
+        {
+          "method": "MODULE",
+          "endpoint": "masterclassAPI.listAllCities"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "masterclassAPI.updateCity"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "masterclassAPI.createCity"
+        },
+        {
+          "method": "MODULE",
+          "endpoint": "masterclassAPI.deleteCity"
+        }
+      ],
+      "hasApiCalls": true,
+      "imports": [
+        "masterclass"
       ]
     },
     {
@@ -1211,13 +1241,6 @@
       "imports": []
     },
     {
-      "path": "app/[locale]/homedemo/page.tsx",
-      "url": "/homedemo",
-      "apiCalls": [],
-      "hasApiCalls": false,
-      "imports": []
-    },
-    {
       "path": "app/[locale]/legal/page.tsx",
       "url": "/legal",
       "apiCalls": [],
@@ -1273,6 +1296,13 @@
       "imports": []
     },
     {
+      "path": "app/[locale]/montreal/page.tsx",
+      "url": "/montreal",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app/[locale]/onboarding/complete/page.tsx",
       "url": "/onboarding/complete",
       "apiCalls": [],
@@ -1317,16 +1347,9 @@
     {
       "path": "app/[locale]/page.tsx",
       "url": "app",
-      "apiCalls": [
-        {
-          "method": "MODULE",
-          "endpoint": "masterclassAPI.listCitiesWithEvents"
-        }
-      ],
-      "hasApiCalls": true,
-      "imports": [
-        "masterclass"
-      ]
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
     },
     {
       "path": "app/[locale]/pages/[slug]/edit/page.tsx",
@@ -1787,8 +1810,22 @@
       "imports": []
     },
     {
+      "path": "app/[locale]/toronto/page.tsx",
+      "url": "/toronto",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
       "path": "app/[locale]/upload/page.tsx",
       "url": "/upload",
+      "apiCalls": [],
+      "hasApiCalls": false,
+      "imports": []
+    },
+    {
+      "path": "app/[locale]/vancouver/page.tsx",
+      "url": "/vancouver",
       "apiCalls": [],
       "hasApiCalls": false,
       "imports": []

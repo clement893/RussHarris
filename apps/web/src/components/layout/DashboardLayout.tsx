@@ -13,7 +13,7 @@
 'use client';
 
 import { useState, useMemo, memo, useCallback } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/routing';
 import { useAuthStore } from '@/lib/store';
 import { useAuth } from '@/hooks/useAuth';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';

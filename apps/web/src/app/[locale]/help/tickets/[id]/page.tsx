@@ -7,7 +7,8 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { useAuthStore } from '@/lib/store';
 import { TicketDetails } from '@/components/help';

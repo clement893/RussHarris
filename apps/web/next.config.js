@@ -301,6 +301,13 @@ const nextConfig = {
       },
     ];
   },
+
+  // Redirect old English URLs (without /en) to /en for SEO and bookmarks
+  async redirects() {
+    return [
+      { source: '/', destination: '/en', permanent: true },
+    ];
+  },
 };
 
 // Wrap Next.js config with Sentry

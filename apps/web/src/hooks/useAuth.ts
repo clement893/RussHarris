@@ -4,7 +4,7 @@
  */
 
 import { useCallback, useEffect, startTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
 import { useAuthStore } from '@/lib/store';
 import { authAPI, usersAPI } from '@/lib/api';
 import { handleApiError } from '@/lib/errors/api';

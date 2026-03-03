@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
 import { WelcomeScreen } from '@/components/onboarding';
 import { PageContainer } from '@/components/layout';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';

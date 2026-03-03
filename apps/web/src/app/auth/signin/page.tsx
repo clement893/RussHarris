@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useRouter, Link } from '@/i18n/routing';
 import Container from '@/components/ui/Container';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, type ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { useAuthStore } from '@/lib/store';
 import { TokenStorage } from '@/lib/auth/tokenStorage';
 import { checkMySuperAdminStatus } from '@/lib/api/admin';
@@ -23,6 +24,7 @@ interface ProtectedSuperAdminRouteProps {
 export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdminRouteProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const locale = useLocale();
   const { user, isAuthenticated, token } = useAuthStore();
   const isHydrated = useHydrated();
 
@@ -78,7 +80,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
 
       if (!isAuth) {
         logger.debug('Not authenticated, redirecting to login', { pathname });
-        router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+        router.replace(`/${locale}/auth/login?redirect=${encodeURIComponent(pathname)}`);
         return;
       }
 
@@ -88,7 +90,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
           const authToken = token || tokenFromStorage;
           if (!authToken) {
             logger.warn('No token available for superadmin check', { email: user.email });
-            router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
+            router.replace(`/${locale}/auth/login?redirect=${encodeURIComponent(pathname)}`);
             return;
           }
 
@@ -119,10 +121,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
               user_is_admin: user.is_admin,
               status_response: status,
             });
-            // Get current locale from pathname and preserve it
-            const localeMatch = pathname.match(/^\/(en|fr|ar|he)/);
-            const locale = localeMatch ? localeMatch[1] : 'en';
-            const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized_superadmin' : `/${locale}/dashboard?error=unauthorized_superadmin`;
+            const redirectPath = `/${locale}/dashboard?error=unauthorized_superadmin`;
             router.replace(redirectPath);
             return;
           }
@@ -138,10 +137,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
           });
           if (!user?.is_admin) {
             logger.debug('User is not admin, redirecting', { pathname });
-            // Get current locale from pathname and preserve it
-            const localeMatch = pathname.match(/^\/(en|fr|ar|he)/);
-            const locale = localeMatch ? localeMatch[1] : 'en';
-            const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized_superadmin' : `/${locale}/dashboard?error=unauthorized_superadmin`;
+            const redirectPath = `/${locale}/dashboard?error=unauthorized_superadmin`;
             router.replace(redirectPath);
             return;
           }
@@ -170,7 +166,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
             pathname,
             status_code: statusCode,
           });
-          router.replace(`/auth/login?redirect=${encodeURIComponent(pathname)}&error=unauthorized`);
+          router.replace(`/${locale}/auth/login?redirect=${encodeURIComponent(pathname)}&error=unauthorized`);
           return;
         }
 
@@ -185,10 +181,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
             pathname,
             status_code: statusCode,
           });
-          // Get current locale from pathname and preserve it
-          const localeMatch = pathname.match(/^\/(en|fr|ar|he)/);
-          const locale = localeMatch ? localeMatch[1] : 'en';
-          const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized_superadmin' : `/${locale}/dashboard?error=unauthorized_superadmin`;
+          const redirectPath = `/${locale}/dashboard?error=unauthorized_superadmin`;
           router.replace(redirectPath);
           return;
         }
@@ -201,10 +194,7 @@ export default function ProtectedSuperAdminRoute({ children }: ProtectedSuperAdm
           error_message: error.message,
         });
         if (!user?.is_admin) {
-          // Get current locale from pathname and preserve it
-          const localeMatch = pathname.match(/^\/(en|fr|ar|he)/);
-          const locale = localeMatch ? localeMatch[1] : 'en';
-          const redirectPath = locale === 'en' ? '/dashboard?error=unauthorized_superadmin' : `/${locale}/dashboard?error=unauthorized_superadmin`;
+          const redirectPath = `/${locale}/dashboard?error=unauthorized_superadmin`;
           router.replace(redirectPath);
           return;
         }

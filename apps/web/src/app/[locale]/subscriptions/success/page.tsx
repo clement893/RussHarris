@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState, Suspense, useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useRouter, Link } from '@/i18n/routing';
 import { useAuthStore } from '@/lib/store';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';

@@ -7,7 +7,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/routing';
 import { WelcomeScreen, ProfileSetup, PreferencesSetup, TeamSetup, OnboardingComplete } from '@/components/onboarding';
 import type { ProfileData, PreferencesData, TeamMember } from '@/components/onboarding';
 import { PageContainer } from '@/components/layout';

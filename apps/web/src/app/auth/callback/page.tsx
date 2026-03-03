@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { Suspense, useEffect, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -54,9 +54,9 @@ function CallbackContent() {
         windowLocation: typeof window !== 'undefined' ? window.location.href : 'N/A',
         windowSearch: typeof window !== 'undefined' ? window.location.search : 'N/A'
       });
-      // Redirect to locale-specific login page
+      // Redirect to locale-specific login page (always use prefix: /en/..., /fr/...)
       const defaultLocale = routing.defaultLocale;
-      const loginPath = defaultLocale === 'en' ? '/auth/login' : `/${defaultLocale}/auth/login`;
+      const loginPath = `/${defaultLocale}/auth/login`;
       router.push(`${loginPath}?error=${encodeURIComponent('No access token provided')}`);
       return;
     }
@@ -126,9 +126,9 @@ function CallbackContent() {
         // Small delay to ensure store is updated
         await new Promise(resolve => setTimeout(resolve, 200));
         
-        // Redirect to locale-specific dashboard
+        // Redirect to locale-specific dashboard (always use prefix: /en/..., /fr/...)
       const defaultLocale = routing.defaultLocale;
-      const dashboardPath = defaultLocale === 'en' ? '/dashboard' : `/${defaultLocale}/dashboard`;
+      const dashboardPath = `/${defaultLocale}/dashboard`;
       router.push(dashboardPath);
       } else {
         throw new Error('No user data received');
@@ -140,9 +140,9 @@ function CallbackContent() {
         errorCode: appError.code,
         errorDetails: appError.details 
       });
-      // Redirect to locale-specific login page
+      // Redirect to locale-specific login page (always use prefix: /en/..., /fr/...)
       const defaultLocale = routing.defaultLocale;
-      const loginPath = defaultLocale === 'en' ? '/auth/login' : `/${defaultLocale}/auth/login`;
+      const loginPath = `/${defaultLocale}/auth/login`;
       router.push(`${loginPath}?error=${encodeURIComponent(appError.message || 'Failed to get user info')}`);
     }
   }, [searchParams, router, login]);

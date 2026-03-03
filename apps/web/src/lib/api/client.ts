@@ -134,7 +134,8 @@ class ApiClient {
               
               // Prevent redirect loop - check if already on login page or public page
               if (typeof window !== 'undefined' && !isPublicPage && !window.location.pathname.includes('/auth/login')) {
-                window.location.href = '/auth/login?error=session_expired';
+                const locale = window.location.pathname.match(/^\/(en|fr)/)?.[1] || 'en';
+                window.location.href = `/${locale}/auth/login?error=session_expired`;
               }
               
               return Promise.reject(appError);
@@ -155,7 +156,8 @@ class ApiClient {
             
             // Prevent redirect loop - check if already on login page or public page
             if (typeof window !== 'undefined' && !isPublicPage && !window.location.pathname.includes('/auth/login')) {
-              window.location.href = '/auth/login?error=unauthorized';
+              const locale = window.location.pathname.match(/^\/(en|fr)/)?.[1] || 'en';
+              window.location.href = `/${locale}/auth/login?error=unauthorized`;
             }
             
             return Promise.reject(appError);

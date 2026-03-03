@@ -38,11 +38,11 @@ export const routing = defineRouting({
   // Used when no locale matches
   defaultLocale: 'en',
 
-  // Locale prefix strategy
+  // Locale prefix strategy: always show locale (e.g. /en, /fr) for all pages
   localePrefix: {
-    mode: 'as-needed', // Only show locale prefix when not default
+    mode: 'always',
     prefixes: {
-      en: '', // English has no prefix
+      en: '/en',
       fr: '/fr',
     },
   },
