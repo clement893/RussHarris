@@ -1,11 +1,12 @@
 /**
- * 404 Not Found Page
- * Shown when a route doesn't exist
+ * 404 Not Found Page (root – no locale in URL)
+ * Uses next/link with explicit /en so prerender works without next-intl context.
+ * Keeps /en in the address bar for all links.
  */
 
 'use client';
 
-import { Link } from '@/i18n/routing';
+import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import Container from '@/components/ui/Container';
 import Card from '@/components/ui/Card';
@@ -33,7 +34,7 @@ export default function NotFound() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
-              <Link href="/">
+              <Link href="/en">
                 <Button variant="primary" className="w-full sm:w-auto">
                   <Home className="w-4 h-4 mr-2" />
                   Retour à l'accueil
@@ -47,26 +48,26 @@ export default function NotFound() {
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Retour
               </Button>
-              <Link href="/components">
+              <Link href="/en/components">
                 <Button variant="ghost" className="w-full sm:w-auto">
                   <Search className="w-4 h-4 mr-2" />
                   Explorer les composants
                 </Button>
               </Link>
             </div>
-            {/* Helpful Links */}
+            {/* Helpful Links - explicit /en so URL bar always shows locale */}
             <div className="mt-8 pt-6 border-t border-border">
               <p className="text-sm text-muted-foreground mb-3">
                 Liens utiles:
               </p>
               <div className="flex flex-wrap justify-center gap-4 text-sm">
-                <Link href="/docs" className="text-primary-600 dark:text-primary-400 hover:underline">
+                <Link href="/en/docs" className="text-primary-600 dark:text-primary-400 hover:underline">
                   Documentation
                 </Link>
-                <Link href="/sitemap" className="text-primary-600 dark:text-primary-400 hover:underline">
+                <Link href="/en/sitemap" className="text-primary-600 dark:text-primary-400 hover:underline">
                   Plan du site
                 </Link>
-                <Link href="/dashboard" className="text-primary-600 dark:text-primary-400 hover:underline">
+                <Link href="/en/dashboard" className="text-primary-600 dark:text-primary-400 hover:underline">
                   Dashboard
                 </Link>
               </div>
